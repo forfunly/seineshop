@@ -1,3 +1,6 @@
+import {useLocale} from '~/lib/i18n';
+import journal from '~/data/journal.json';
+import {JournalIndex} from '~/components/JournalIndex';
 import {Link, useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -6,7 +9,11 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Blogs`}];
+  return [
+    {
+      title: `Hydrogen | Blogs`,
+    },
+  ];
 };
 
 /**
@@ -14,12 +21,14 @@ export const meta = () => {
  */
 export async function loader(args) {
   // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const deferredData = loadDeferredData();
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
+  return {
+    ...deferredData,
+    ...criticalData,
+  };
 }
 
 /**
@@ -31,7 +40,6 @@ async function loadCriticalData({context, request}) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 10,
   });
-
   const [{blogs}] = await Promise.all([
     context.storefront.query(BLOGS_QUERY, {
       variables: {
@@ -40,8 +48,9 @@ async function loadCriticalData({context, request}) {
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
-
-  return {blogs};
+  return {
+    blogs,
+  };
 }
 
 /**
@@ -50,17 +59,16 @@ async function loadCriticalData({context, request}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {Route.LoaderArgs}
  */
-function loadDeferredData({context}) {
+function loadDeferredData() {
   return {};
 }
-
 export default function Blogs() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {blogs} = useLoaderData();
-
   return (
     <div className="blogs">
-      <h1>Blogs</h1>
+      <JournalIndex articles={journal} />
       <div className="blogs-grid">
         <PaginatedResourceSection connection={blogs}>
           {({node: blog}) => (
@@ -68,9 +76,9 @@ export default function Blogs() {
               className="blog"
               key={blog.handle}
               prefetch="intent"
-              to={`/blogs/${blog.handle}`}
+              to={localize(`/blogs/${blog.handle}`)}
             >
-              <h2>{blog.title}</h2>
+              <h2>{t(blog.title)}</h2>
             </Link>
           )}
         </PaginatedResourceSection>

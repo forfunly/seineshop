@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {Link, useFetcher} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import React, {useRef, useEffect} from 'react';
@@ -33,7 +34,6 @@ export function SearchResultsPredictive({children}) {
     resetInput();
     aside.close();
   }
-
   return children({
     items,
     closeSearch,
@@ -43,7 +43,6 @@ export function SearchResultsPredictive({children}) {
     total,
   });
 }
-
 SearchResultsPredictive.Articles = SearchResultsPredictiveArticles;
 SearchResultsPredictive.Collections = SearchResultsPredictiveCollections;
 SearchResultsPredictive.Pages = SearchResultsPredictivePages;
@@ -55,11 +54,11 @@ SearchResultsPredictive.Empty = SearchResultsPredictiveEmpty;
  * @param {PartialPredictiveSearchResult<'articles'>}
  */
 function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
+  const {t, localize} = useLocale();
   if (!articles.length) return null;
-
   return (
     <div className="predictive-search-result" key="articles">
-      <h5>Articles</h5>
+      <h5>{t('Articles')}</h5>
       <ul>
         {articles.map((article) => {
           const articleUrl = urlWithTrackingParams({
@@ -67,20 +66,19 @@ function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
             trackingParams: article.trackingParameters,
             term: term.current ?? '',
           });
-
           return (
             <li className="predictive-search-result-item" key={article.id}>
-              <Link onClick={closeSearch} to={articleUrl}>
+              <Link onClick={closeSearch} to={localize(articleUrl)}>
                 {article.image?.url && (
                   <Image
-                    alt={article.image.altText ?? ''}
+                    alt={t(article.image.altText ?? '')}
                     src={article.image.url}
                     width={50}
                     height={50}
                   />
                 )}
                 <div>
-                  <span>{article.title}</span>
+                  <span>{t(article.title)}</span>
                 </div>
               </Link>
             </li>
@@ -95,11 +93,11 @@ function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
  * @param {PartialPredictiveSearchResult<'collections'>}
  */
 function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
+  const {t, localize} = useLocale();
   if (!collections.length) return null;
-
   return (
     <div className="predictive-search-result" key="collections">
-      <h5>Collections</h5>
+      <h5>{t('Collections')}</h5>
       <ul>
         {collections.map((collection) => {
           const collectionUrl = urlWithTrackingParams({
@@ -107,20 +105,19 @@ function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
             trackingParams: collection.trackingParameters,
             term: term.current,
           });
-
           return (
             <li className="predictive-search-result-item" key={collection.id}>
-              <Link onClick={closeSearch} to={collectionUrl}>
+              <Link onClick={closeSearch} to={localize(collectionUrl)}>
                 {collection.image?.url && (
                   <Image
-                    alt={collection.image.altText ?? ''}
+                    alt={t(collection.image.altText ?? '')}
                     src={collection.image.url}
                     width={50}
                     height={50}
                   />
                 )}
                 <div>
-                  <span>{collection.title}</span>
+                  <span>{t(collection.title)}</span>
                 </div>
               </Link>
             </li>
@@ -135,11 +132,11 @@ function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
  * @param {PartialPredictiveSearchResult<'pages'>}
  */
 function SearchResultsPredictivePages({term, pages, closeSearch}) {
+  const {t, localize} = useLocale();
   if (!pages.length) return null;
-
   return (
     <div className="predictive-search-result" key="pages">
-      <h5>Pages</h5>
+      <h5>{t('Pages')}</h5>
       <ul>
         {pages.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -147,12 +144,11 @@ function SearchResultsPredictivePages({term, pages, closeSearch}) {
             trackingParams: page.trackingParameters,
             term: term.current,
           });
-
           return (
             <li className="predictive-search-result-item" key={page.id}>
-              <Link onClick={closeSearch} to={pageUrl}>
+              <Link onClick={closeSearch} to={localize(pageUrl)}>
                 <div>
-                  <span>{page.title}</span>
+                  <span>{t(page.title)}</span>
                 </div>
               </Link>
             </li>
@@ -167,11 +163,11 @@ function SearchResultsPredictivePages({term, pages, closeSearch}) {
  * @param {PartialPredictiveSearchResult<'products'>}
  */
 function SearchResultsPredictiveProducts({term, products, closeSearch}) {
+  const {t, localize} = useLocale();
   if (!products.length) return null;
-
   return (
     <div className="predictive-search-result" key="products">
-      <h5>Products</h5>
+      <h5>{t('Products')}</h5>
       <ul>
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
@@ -179,22 +175,21 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
             trackingParams: product.trackingParameters,
             term: term.current,
           });
-
           const price = product?.selectedOrFirstAvailableVariant?.price;
           const image = product?.selectedOrFirstAvailableVariant?.image;
           return (
             <li className="predictive-search-result-item" key={product.id}>
-              <Link to={productUrl} onClick={closeSearch}>
+              <Link to={localize(productUrl)} onClick={closeSearch}>
                 {image && (
                   <Image
-                    alt={image.altText ?? ''}
+                    alt={t(image.altText ?? '')}
                     src={image.url}
                     width={50}
                     height={50}
                   />
                 )}
                 <div>
-                  <p>{product.title}</p>
+                  <p>{t(product.title)}</p>
                   <small>{price && <Money data={price} />}</small>
                 </div>
               </Link>
@@ -213,12 +208,10 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
  */
 function SearchResultsPredictiveQueries({queries, queriesDatalistId}) {
   if (!queries.length) return null;
-
   return (
     <datalist id={queriesDatalistId}>
       {queries.map((suggestion) => {
         if (!suggestion) return null;
-
         return <option key={suggestion.text} value={suggestion.text} />;
       })}
     </datalist>
@@ -231,13 +224,14 @@ function SearchResultsPredictiveQueries({queries, queriesDatalistId}) {
  * }}
  */
 function SearchResultsPredictiveEmpty({term}) {
+  const {t, localize} = useLocale();
   if (!term.current) {
     return null;
   }
-
   return (
     <p>
-      No results found for <q>{term.current}</q>
+      {t('No results found for')}
+      <q>{t(term.current)}</q>
     </p>
   );
 }
@@ -251,10 +245,11 @@ function SearchResultsPredictiveEmpty({term}) {
  * @return {UsePredictiveSearchReturn}
  */
 function usePredictiveSearch() {
-  const fetcher = useFetcher({key: 'search'});
+  const fetcher = useFetcher({
+    key: 'search',
+  });
   const term = useRef('');
   const inputRef = useRef(null);
-
   if (fetcher?.state === 'loading') {
     term.current = String(fetcher.formData?.get('q') || '');
   }
@@ -265,11 +260,15 @@ function usePredictiveSearch() {
       inputRef.current = document.querySelector('input[type="search"]');
     }
   }, []);
-
   const {items, total} =
     fetcher?.data?.result ?? getEmptyPredictiveSearchResult();
-
-  return {items, total, inputRef, term, fetcher};
+  return {
+    items,
+    total,
+    inputRef,
+    term,
+    fetcher,
+  };
 }
 
 /** @typedef {PredictiveSearchReturn['result']['items']} PredictiveSearchItems */

@@ -1,3 +1,5 @@
+import {marketCountry} from './markets';
+import {localeFromPath} from './locale';
 import {createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
@@ -44,9 +46,13 @@ export async function createHydrogenRouterContext(
       waitUntil,
       session,
       // Or detect from URL path based on locale subpath, cookies, or any other strategy
-      i18n: {language: 'EN', country: 'US'},
+      i18n: {
+        language: localeFromPath(new URL(request.url).pathname).language,
+        country: marketCountry(session.get('marketCountry')),
+      },
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
+        buyerIdentity: {countryCode: marketCountry(session.get('marketCountry'))},
       },
     },
     additionalContext,

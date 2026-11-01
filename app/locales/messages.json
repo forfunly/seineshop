@@ -1,0 +1,2950 @@
+{
+  "Home": {
+    "ja": "ホーム",
+    "de": "Startseite"
+  },
+  "Search": {
+    "ja": "検索",
+    "de": "Suchen"
+  },
+  "Search products": {
+    "ja": "商品を検索",
+    "de": "Produkte suchen"
+  },
+  "All categories": {
+    "ja": "すべてのカテゴリー",
+    "de": "Alle Kategorien"
+  },
+  "All collections": {
+    "ja": "すべてのコレクション",
+    "de": "Alle Kollektionen"
+  },
+  "All products": {
+    "ja": "すべての商品",
+    "de": "Alle Produkte"
+  },
+  "Collections": {
+    "ja": "コレクション",
+    "de": "Kollektionen"
+  },
+  "Products": {
+    "ja": "商品",
+    "de": "Produkte"
+  },
+  "Cart": {
+    "ja": "カート",
+    "de": "Warenkorb"
+  },
+  "CART": {
+    "ja": "カート",
+    "de": "WARENKORB"
+  },
+  "MENU": {
+    "ja": "メニュー",
+    "de": "MENÜ"
+  },
+  "SEARCH": {
+    "ja": "検索",
+    "de": "SUCHE"
+  },
+  "Sign in / Register": {
+    "ja": "ログイン・新規登録",
+    "de": "Anmelden / Registrieren"
+  },
+  "My account": {
+    "ja": "マイアカウント",
+    "de": "Mein Konto"
+  },
+  "Contact us": {
+    "ja": "お問い合わせ",
+    "de": "Kontakt"
+  },
+  "Everyday tech, thoughtfully chosen.": {
+    "ja": "毎日のテクノロジーを、丁寧に選ぶ。",
+    "de": "Technik für jeden Tag, sorgfältig ausgewählt."
+  },
+  "Skip to content": {
+    "ja": "本文へ移動",
+    "de": "Zum Inhalt springen"
+  },
+  "Search phone cases, chargers, accessories…": {
+    "ja": "スマホケース、充電器、アクセサリーを検索…",
+    "de": "Hüllen, Ladegeräte und Zubehör suchen…"
+  },
+  "Category groups": {
+    "ja": "カテゴリー一覧",
+    "de": "Kategoriegruppen"
+  },
+  "EXPLORE THE COLLECTION": {
+    "ja": "コレクションを見る",
+    "de": "KOLLEKTION ENTDECKEN"
+  },
+  "View all collections →": {
+    "ja": "すべてのコレクションを見る →",
+    "de": "Alle Kollektionen ansehen →"
+  },
+  "Main navigation": {
+    "ja": "メインナビゲーション",
+    "de": "Hauptnavigation"
+  },
+  "Mobile navigation": {
+    "ja": "モバイルナビゲーション",
+    "de": "Mobile Navigation"
+  },
+  "Open navigation menu": {
+    "ja": "ナビゲーションを開く",
+    "de": "Navigationsmenü öffnen"
+  },
+  "SeineShop home": {
+    "ja": "SeineShop ホーム",
+    "de": "SeineShop Startseite"
+  },
+  "Shop by category": {
+    "ja": "カテゴリーから探す",
+    "de": "Nach Kategorie einkaufen"
+  },
+  "THE EVERYDAY TECH EDIT": {
+    "ja": "毎日使いたいテクノロジー",
+    "de": "TECHNIK FÜR JEDEN TAG"
+  },
+  "Small upgrades.": {
+    "ja": "小さなアップグレードで、",
+    "de": "Kleine Verbesserungen."
+  },
+  "Better every day.": {
+    "ja": "毎日をもっと快適に。",
+    "de": "Jeden Tag ein bisschen besser."
+  },
+  "Explore phone accessories, useful hardware and a simpler way to charge.": {
+    "ja": "スマホアクセサリーや便利な機器、より手軽な充電方法を見つけましょう。",
+    "de": "Entdecke Smartphone-Zubehör, praktische Hardware und einfacheres Laden."
+  },
+  "Explore phone accessories ↗": {
+    "ja": "スマホアクセサリーを見る ↗",
+    "de": "Smartphone-Zubehör entdecken ↗"
+  },
+  "Made for your pocket. Ready for your day.": {
+    "ja": "ポケットに収まる、毎日のパートナー。",
+    "de": "Für deine Tasche. Bereit für deinen Tag."
+  },
+  "FIND YOUR FIT": {
+    "ja": "ぴったりのアイテムを",
+    "de": "FINDE DAS PASSENDE"
+  },
+  "Cases & protection →": {
+    "ja": "ケース・保護アクセサリー →",
+    "de": "Hüllen & Schutz →"
+  },
+  "THE CHARGING EDIT": {
+    "ja": "充電アイテム特集",
+    "de": "ALLES RUND UMS LADEN"
+  },
+  "One place.": {
+    "ja": "ひとつの場所で。",
+    "de": "Ein Platz."
+  },
+  "Three devices.": {
+    "ja": "3つのデバイスを。",
+    "de": "Drei Geräte."
+  },
+  "Discover B-20A →": {
+    "ja": "B-20Aを見る →",
+    "de": "B-20A entdecken →"
+  },
+  "Shopping guide": {
+    "ja": "お買い物ガイド",
+    "de": "Einkaufsratgeber"
+  },
+  "Find your device": {
+    "ja": "デバイスから探す",
+    "de": "Finde dein Gerät"
+  },
+  "Browse by model and accessory": {
+    "ja": "機種やアクセサリーから選ぶ",
+    "de": "Nach Modell und Zubehör suchen"
+  },
+  "Compare the details": {
+    "ja": "詳しい仕様を比較",
+    "de": "Details vergleichen"
+  },
+  "Materials, features and compatibility": {
+    "ja": "素材・機能・対応機種",
+    "de": "Materialien, Funktionen und Kompatibilität"
+  },
+  "Choose your finish": {
+    "ja": "お好みの仕上げを",
+    "de": "Wähle dein Design"
+  },
+  "Discover colors for your everyday carry": {
+    "ja": "毎日持ち歩くアイテムに、お気に入りの色を",
+    "de": "Entdecke Farben für deine täglichen Begleiter"
+  },
+  "Need a hand?": {
+    "ja": "お困りですか？",
+    "de": "Brauchst du Hilfe?"
+  },
+  "Talk to SeineShop →": {
+    "ja": "SeineShopに相談する →",
+    "de": "SeineShop kontaktieren →"
+  },
+  "START WITH THE ESSENTIALS": {
+    "ja": "毎日の必需品から",
+    "de": "MIT DEM WESENTLICHEN BEGINNEN"
+  },
+  "Explore by category": {
+    "ja": "カテゴリーから探す",
+    "de": "Kategorien entdecken"
+  },
+  "All collections →": {
+    "ja": "すべてのコレクション →",
+    "de": "Alle Kollektionen →"
+  },
+  "Explore →": {
+    "ja": "詳しく見る →",
+    "de": "Entdecken →"
+  },
+  "LESS CLUTTER. MORE POSSIBILITY.": {
+    "ja": "すっきり整えて、もっと自由に。",
+    "de": "WENIGER UNORDNUNG. MEHR MÖGLICHKEITEN."
+  },
+  "A smarter spot": {
+    "ja": "日々のデバイスに、",
+    "de": "Ein smarter Platz"
+  },
+  "for your everyday tech.": {
+    "ja": "スマートな定位置を。",
+    "de": "für deine tägliche Technik."
+  },
+  "Meet a foldable charging station for a compatible phone, earbuds and Galaxy Watch.": {
+    "ja": "対応スマートフォン、イヤホン、Galaxy Watchをまとめて充電できる折りたたみ式スタンド。",
+    "de": "Eine faltbare Ladestation für ein kompatibles Smartphone, Ohrhörer und eine Galaxy Watch."
+  },
+  "Discover the charging edit ↗": {
+    "ja": "充電アイテム特集を見る ↗",
+    "de": "Ladezubehör entdecken ↗"
+  },
+  "Good tech. Clear answers.": {
+    "ja": "便利なテクノロジー。わかりやすいサポート。",
+    "de": "Gute Technik. Klare Antworten."
+  },
+  "Visit our support center ↗": {
+    "ja": "サポートセンターへ ↗",
+    "de": "Zum Support-Center ↗"
+  },
+  "Thoughtful tech.": {
+    "ja": "丁寧に選んだテクノロジー。",
+    "de": "Durchdachte Technik."
+  },
+  "Everyday possibilities.": {
+    "ja": "毎日に、新しい可能性を。",
+    "de": "Möglichkeiten für jeden Tag."
+  },
+  "Shop & discover": {
+    "ja": "お買い物・特集",
+    "de": "Einkaufen & entdecken"
+  },
+  "Charging edit": {
+    "ja": "充電アイテム特集",
+    "de": "Ladezubehör"
+  },
+  "Journal & guides": {
+    "ja": "ブログ・ガイド",
+    "de": "Journal & Ratgeber"
+  },
+  "Customer support": {
+    "ja": "カスタマーサポート",
+    "de": "Kundenservice"
+  },
+  "Support center": {
+    "ja": "サポートセンター",
+    "de": "Support-Center"
+  },
+  "Product compatibility": {
+    "ja": "製品の互換性",
+    "de": "Produktkompatibilität"
+  },
+  "Orders & delivery": {
+    "ja": "ご注文・配送",
+    "de": "Bestellungen & Lieferung"
+  },
+  "Store information": {
+    "ja": "ショップ情報",
+    "de": "Shop-Informationen"
+  },
+  "Store policies": {
+    "ja": "ショップポリシー",
+    "de": "Shop-Richtlinien"
+  },
+  "Returns & refunds": {
+    "ja": "返品・返金",
+    "de": "Rückgabe & Erstattung"
+  },
+  "SeineShop. All rights reserved.": {
+    "ja": "SeineShop. 無断転載を禁じます。",
+    "de": "SeineShop. Alle Rechte vorbehalten."
+  },
+  "Footer shop": {
+    "ja": "フッターの商品メニュー",
+    "de": "Shop im Fußbereich"
+  },
+  "Footer support": {
+    "ja": "フッターのサポート",
+    "de": "Support im Fußbereich"
+  },
+  "Footer policies": {
+    "ja": "フッターのポリシー",
+    "de": "Richtlinien im Fußbereich"
+  },
+  "Everyday essentials": {
+    "ja": "毎日の必需品",
+    "de": "Für jeden Tag"
+  },
+  "Everyday essentials.": {
+    "ja": "毎日の必需品。",
+    "de": "Alltagsbegleiter."
+  },
+  "Everyday charging and phone protection. Explore the details and find your fit.": {
+    "ja": "毎日の充電とスマホ保護に。仕様を確認して、ぴったりのアイテムを。",
+    "de": "Laden und Smartphone-Schutz für jeden Tag. Entdecke die Details und finde das Passende."
+  },
+  "View product →": {
+    "ja": "商品を見る →",
+    "de": "Produkt ansehen →"
+  },
+  "FROM THE SEINESHOP JOURNAL": {
+    "ja": "SEINESHOPのブログから",
+    "de": "AUS DEM SEINESHOP JOURNAL"
+  },
+  "Latest stories & guides": {
+    "ja": "最新記事・ガイド",
+    "de": "Aktuelle Beiträge & Ratgeber"
+  },
+  "View all articles →": {
+    "ja": "すべての記事を見る →",
+    "de": "Alle Beiträge ansehen →"
+  },
+  "Read the guide →": {
+    "ja": "ガイドを読む →",
+    "de": "Ratgeber lesen →"
+  },
+  "Read article →": {
+    "ja": "記事を読む →",
+    "de": "Beitrag lesen →"
+  },
+  "All articles": {
+    "ja": "すべての記事",
+    "de": "Alle Beiträge"
+  },
+  "Articles": {
+    "ja": "記事",
+    "de": "Beiträge"
+  },
+  "Blog topics": {
+    "ja": "ブログのトピック",
+    "de": "Blog-Themen"
+  },
+  "Article topics": {
+    "ja": "記事のトピック",
+    "de": "Beitragsthemen"
+  },
+  "Published": {
+    "ja": "公開日",
+    "de": "Veröffentlicht"
+  },
+  "Updated": {
+    "ja": "更新日",
+    "de": "Aktualisiert"
+  },
+  "THE SEINESHOP JOURNAL": {
+    "ja": "SEINESHOPブログ",
+    "de": "DAS SEINESHOP JOURNAL"
+  },
+  "THE SEINESHOP JOURNAL · BUYING GUIDES": {
+    "ja": "SEINESHOPブログ · 購入ガイド",
+    "de": "SEINESHOP JOURNAL · KAUFRATGEBER"
+  },
+  "THE EVERYDAY COLLECTION": {
+    "ja": "毎日のコレクション",
+    "de": "DIE ALLTAGSKOLLEKTION"
+  },
+  "Browse by device, product type or the things you use every day.": {
+    "ja": "デバイス、商品タイプ、毎日使うものから探せます。",
+    "de": "Entdecke Produkte nach Gerät, Produkttyp oder deinen täglichen Begleitern."
+  },
+  "Jump to category": {
+    "ja": "カテゴリーへ移動",
+    "de": "Zur Kategorie springen"
+  },
+  "Subcategories": {
+    "ja": "サブカテゴリー",
+    "de": "Unterkategorien"
+  },
+  "View collection →": {
+    "ja": "コレクションを見る →",
+    "de": "Kollektion ansehen →"
+  },
+  "Category": {
+    "ja": "カテゴリー",
+    "de": "Kategorie"
+  },
+  "Featured": {
+    "ja": "おすすめ",
+    "de": "Empfohlen"
+  },
+  "Search this collection": {
+    "ja": "コレクション内を検索",
+    "de": "Diese Kollektion durchsuchen"
+  },
+  "Search by feature or material…": {
+    "ja": "機能や素材で検索…",
+    "de": "Nach Funktion oder Material suchen…"
+  },
+  "Sort by": {
+    "ja": "並び替え",
+    "de": "Sortieren nach"
+  },
+  "Price: low to high": {
+    "ja": "価格の安い順",
+    "de": "Preis: aufsteigend"
+  },
+  "Price: high to low": {
+    "ja": "価格の高い順",
+    "de": "Preis: absteigend"
+  },
+  "Apply filters": {
+    "ja": "絞り込む",
+    "de": "Filter anwenden"
+  },
+  "Clear filters": {
+    "ja": "絞り込みを解除",
+    "de": "Filter zurücksetzen"
+  },
+  "Clear": {
+    "ja": "クリア",
+    "de": "Zurücksetzen"
+  },
+  "A LITTLE HELP CHOOSING": {
+    "ja": "選ぶときのヒント",
+    "de": "EINE KLEINE ENTSCHEIDUNGSHILFE"
+  },
+  "Find what works for you.": {
+    "ja": "あなたに合うものを。",
+    "de": "Finde, was zu dir passt."
+  },
+  "Check compatibility": {
+    "ja": "互換性を確認",
+    "de": "Kompatibilität prüfen"
+  },
+  "For device accessories, match the exact model, connector and power requirements.": {
+    "ja": "デバイスの機種、端子、必要な電力が一致することを確認してください。",
+    "de": "Achte bei Zubehör auf das genaue Modell, den Anschluss und die Leistungsanforderungen."
+  },
+  "Details that matter": {
+    "ja": "大切な仕様",
+    "de": "Die wichtigen Details"
+  },
+  "Review materials, dimensions and features in the product specifications.": {
+    "ja": "商品仕様で素材、サイズ、機能を確認してください。",
+    "de": "Prüfe Materialien, Abmessungen und Funktionen in den Produktspezifikationen."
+  },
+  "Review the contents": {
+    "ja": "付属品を確認",
+    "de": "Lieferumfang prüfen"
+  },
+  "Check what is included, then confirm availability and delivery details before ordering.": {
+    "ja": "付属品を確認し、ご注文前に在庫と配送条件をご確認ください。",
+    "de": "Prüfe vor der Bestellung Lieferumfang, Verfügbarkeit und Lieferbedingungen."
+  },
+  "Description": {
+    "ja": "商品説明",
+    "de": "Beschreibung"
+  },
+  "Technical specifications": {
+    "ja": "技術仕様",
+    "de": "Technische Daten"
+  },
+  "Material": {
+    "ja": "素材",
+    "de": "Material"
+  },
+  "Materials": {
+    "ja": "素材",
+    "de": "Materialien"
+  },
+  "Dimensions": {
+    "ja": "サイズ",
+    "de": "Abmessungen"
+  },
+  "Finish": {
+    "ja": "仕上げ",
+    "de": "Oberfläche"
+  },
+  "Input": {
+    "ja": "入力",
+    "de": "Eingang"
+  },
+  "Phone charging": {
+    "ja": "スマートフォン充電",
+    "de": "Smartphone-Laden"
+  },
+  "Earbuds / watch": {
+    "ja": "イヤホン・ウォッチ",
+    "de": "Ohrhörer / Uhr"
+  },
+  "Phone": {
+    "ja": "電話番号",
+    "de": "Telefon"
+  },
+  "Quantity": {
+    "ja": "数量",
+    "de": "Menge"
+  },
+  "Quantity:": {
+    "ja": "数量：",
+    "de": "Menge:"
+  },
+  "Price": {
+    "ja": "価格",
+    "de": "Preis"
+  },
+  "Product": {
+    "ja": "商品",
+    "de": "Produkt"
+  },
+  "Add to cart": {
+    "ja": "カートに追加",
+    "de": "In den Warenkorb"
+  },
+  "Sold out": {
+    "ja": "売り切れ",
+    "de": "Ausverkauft"
+  },
+  "Adding…": {
+    "ja": "追加中…",
+    "de": "Wird hinzugefügt…"
+  },
+  "Loading...": {
+    "ja": "読み込み中…",
+    "de": "Wird geladen…"
+  },
+  "Loading cart ...": {
+    "ja": "カートを読み込み中…",
+    "de": "Warenkorb wird geladen…"
+  },
+  "Looks like you haven’t added anything yet, let’s get you started!": {
+    "ja": "カートはまだ空です。お気に入りの商品を見つけましょう！",
+    "de": "Dein Warenkorb ist noch leer. Entdecke unsere Produkte!"
+  },
+  "Continue shopping →": {
+    "ja": "お買い物を続ける →",
+    "de": "Weiter einkaufen →"
+  },
+  "Continue to Checkout →": {
+    "ja": "購入手続きへ →",
+    "de": "Zur Kasse →"
+  },
+  "Subtotal": {
+    "ja": "小計",
+    "de": "Zwischensumme"
+  },
+  "Total": {
+    "ja": "合計",
+    "de": "Gesamt"
+  },
+  "Totals": {
+    "ja": "合計",
+    "de": "Summen"
+  },
+  "Tax": {
+    "ja": "税金",
+    "de": "Steuern"
+  },
+  "Discounts": {
+    "ja": "割引",
+    "de": "Rabatte"
+  },
+  "Discount code": {
+    "ja": "割引コード",
+    "de": "Rabattcode"
+  },
+  "Apply discount code": {
+    "ja": "割引コードを適用",
+    "de": "Rabattcode anwenden"
+  },
+  "Apply": {
+    "ja": "適用",
+    "de": "Anwenden"
+  },
+  "Remove": {
+    "ja": "削除",
+    "de": "Entfernen"
+  },
+  "Remove discount": {
+    "ja": "割引を削除",
+    "de": "Rabatt entfernen"
+  },
+  "Gift cards": {
+    "ja": "ギフトカード",
+    "de": "Geschenkgutscheine"
+  },
+  "Gift card code": {
+    "ja": "ギフトカードコード",
+    "de": "Gutscheincode"
+  },
+  "Apply gift card code": {
+    "ja": "ギフトカードを適用",
+    "de": "Gutscheincode anwenden"
+  },
+  "Applied Gift Card(s)": {
+    "ja": "適用済みギフトカード",
+    "de": "Angewendete Gutscheine"
+  },
+  "Increase quantity": {
+    "ja": "数量を増やす",
+    "de": "Menge erhöhen"
+  },
+  "Decrease quantity": {
+    "ja": "数量を減らす",
+    "de": "Menge verringern"
+  },
+  "Close": {
+    "ja": "閉じる",
+    "de": "Schließen"
+  },
+  "Close panel": {
+    "ja": "パネルを閉じる",
+    "de": "Bereich schließen"
+  },
+  "Orders": {
+    "ja": "注文履歴",
+    "de": "Bestellungen"
+  },
+  "Order": {
+    "ja": "注文",
+    "de": "Bestellung"
+  },
+  "Order #": {
+    "ja": "注文番号",
+    "de": "Bestellung Nr."
+  },
+  "Order number": {
+    "ja": "注文番号",
+    "de": "Bestellnummer"
+  },
+  "Confirmation #": {
+    "ja": "確認番号",
+    "de": "Bestätigung Nr."
+  },
+  "Confirmation number": {
+    "ja": "確認番号",
+    "de": "Bestätigungsnummer"
+  },
+  "Confirmation:": {
+    "ja": "確認番号：",
+    "de": "Bestätigung:"
+  },
+  "Filter Orders": {
+    "ja": "注文を絞り込む",
+    "de": "Bestellungen filtern"
+  },
+  "Search orders": {
+    "ja": "注文を検索",
+    "de": "Bestellungen suchen"
+  },
+  "Placed on": {
+    "ja": "注文日",
+    "de": "Bestelldatum"
+  },
+  "Status": {
+    "ja": "ステータス",
+    "de": "Status"
+  },
+  "View Order →": {
+    "ja": "注文を見る →",
+    "de": "Bestellung ansehen →"
+  },
+  "View Order Status →": {
+    "ja": "注文状況を見る →",
+    "de": "Bestellstatus ansehen →"
+  },
+  "Line items": {
+    "ja": "注文商品",
+    "de": "Bestellpositionen"
+  },
+  "Shipping Address": {
+    "ja": "配送先住所",
+    "de": "Lieferadresse"
+  },
+  "Addresses": {
+    "ja": "住所",
+    "de": "Adressen"
+  },
+  "Existing addresses": {
+    "ja": "登録済み住所",
+    "de": "Gespeicherte Adressen"
+  },
+  "Create address": {
+    "ja": "住所を追加",
+    "de": "Adresse hinzufügen"
+  },
+  "Set as default address": {
+    "ja": "既定の住所に設定",
+    "de": "Als Standardadresse festlegen"
+  },
+  "My profile": {
+    "ja": "プロフィール",
+    "de": "Mein Profil"
+  },
+  "Profile": {
+    "ja": "プロフィール",
+    "de": "Profil"
+  },
+  "Personal information": {
+    "ja": "個人情報",
+    "de": "Persönliche Angaben"
+  },
+  "First name": {
+    "ja": "名",
+    "de": "Vorname"
+  },
+  "First name*": {
+    "ja": "名*",
+    "de": "Vorname*"
+  },
+  "Last name": {
+    "ja": "姓",
+    "de": "Nachname"
+  },
+  "Last name*": {
+    "ja": "姓*",
+    "de": "Nachname*"
+  },
+  "Company": {
+    "ja": "会社名",
+    "de": "Firma"
+  },
+  "Address line 1": {
+    "ja": "住所1",
+    "de": "Adresszeile 1"
+  },
+  "Address line 1*": {
+    "ja": "住所1*",
+    "de": "Adresszeile 1*"
+  },
+  "Address line*": {
+    "ja": "住所*",
+    "de": "Adresse*"
+  },
+  "Address line 2": {
+    "ja": "住所2",
+    "de": "Adresszeile 2"
+  },
+  "City": {
+    "ja": "市区町村",
+    "de": "Ort"
+  },
+  "City*": {
+    "ja": "市区町村*",
+    "de": "Ort*"
+  },
+  "Country": {
+    "ja": "国",
+    "de": "Land"
+  },
+  "Country code": {
+    "ja": "国コード",
+    "de": "Ländercode"
+  },
+  "Country Code*": {
+    "ja": "国コード*",
+    "de": "Ländercode*"
+  },
+  "State / Province": {
+    "ja": "都道府県",
+    "de": "Bundesland / Region"
+  },
+  "State / Province*": {
+    "ja": "都道府県*",
+    "de": "Bundesland / Region*"
+  },
+  "State/Province": {
+    "ja": "都道府県",
+    "de": "Bundesland / Region"
+  },
+  "Zip": {
+    "ja": "郵便番号",
+    "de": "Postleitzahl"
+  },
+  "Zip / Postal Code": {
+    "ja": "郵便番号",
+    "de": "Postleitzahl"
+  },
+  "Zip / Postal Code*": {
+    "ja": "郵便番号*",
+    "de": "Postleitzahl*"
+  },
+  "Phone Number": {
+    "ja": "電話番号",
+    "de": "Telefonnummer"
+  },
+  "Sign out": {
+    "ja": "ログアウト",
+    "de": "Abmelden"
+  },
+  "Search…": {
+    "ja": "検索…",
+    "de": "Suchen…"
+  },
+  "No results found for": {
+    "ja": "検索結果がありません：",
+    "de": "Keine Ergebnisse für"
+  },
+  "No results, try a different search.": {
+    "ja": "該当する商品がありません。別のキーワードをお試しください。",
+    "de": "Keine Ergebnisse. Versuche einen anderen Suchbegriff."
+  },
+  "Pages": {
+    "ja": "ページ",
+    "de": "Seiten"
+  },
+  "WE’RE HERE TO HELP": {
+    "ja": "お気軽にご相談ください",
+    "de": "WIR HELFEN DIR GERNE"
+  },
+  "SeineShop support": {
+    "ja": "SeineShopサポート",
+    "de": "SeineShop Support"
+  },
+  "Contact SeineShop": {
+    "ja": "SeineShopに問い合わせる",
+    "de": "SeineShop kontaktieren"
+  },
+  "Questions about a product or an order? Email": {
+    "ja": "商品やご注文についてのご質問は、メールで",
+    "de": "Fragen zu einem Produkt oder einer Bestellung? Schreibe an"
+  },
+  "with the product name or order number.": {
+    "ja": "商品名または注文番号を添えてご連絡ください。",
+    "de": "und nenne den Produktnamen oder die Bestellnummer."
+  },
+  "Check your exact device model, charging standard and connector before ordering. Product descriptions list the compatibility information available for each item.": {
+    "ja": "ご注文前に機種、充電規格、端子をご確認ください。各商品の互換性は商品説明に記載しています。",
+    "de": "Prüfe vor der Bestellung das genaue Gerätemodell, den Ladestandard und den Anschluss. Die verfügbaren Angaben zur Kompatibilität stehen in der Produktbeschreibung."
+  },
+  "Available delivery methods and charges are shown at checkout for your address. For an existing order, include your order number when contacting us.": {
+    "ja": "配送方法と送料は、ご住所に応じて購入手続き時に表示されます。ご注文済みの場合は、注文番号を添えてお問い合わせください。",
+    "de": "Verfügbare Versandarten und Kosten werden an der Kasse für deine Adresse angezeigt. Nenne bei Fragen zu einer bestehenden Bestellung bitte die Bestellnummer."
+  },
+  "Read the store’s current policies before placing an order. Contact us with your order number and a description of the issue for help.": {
+    "ja": "ご注文前に最新のショップポリシーをご確認ください。お困りの場合は注文番号と状況を添えてご連絡ください。",
+    "de": "Lies vor der Bestellung die aktuellen Shop-Richtlinien. Kontaktiere uns bei Problemen mit deiner Bestellnummer und einer Beschreibung des Anliegens."
+  },
+  "View store policies →": {
+    "ja": "ショップポリシーを見る →",
+    "de": "Shop-Richtlinien ansehen →"
+  },
+  "Catalog availability": {
+    "ja": "商品の販売状況",
+    "de": "Produktverfügbarkeit"
+  },
+  "Products marked “Coming soon” are previews and cannot be purchased yet.": {
+    "ja": "「近日発売」と表示された商品はプレビューで、まだ購入できません。",
+    "de": "Mit „Demnächst erhältlich“ gekennzeichnete Produkte sind Vorschauen und noch nicht bestellbar."
+  },
+  "← Back to Policies": {
+    "ja": "← ポリシー一覧へ",
+    "de": "← Zurück zu den Richtlinien"
+  },
+  "← Back to SeineShop": {
+    "ja": "← SeineShopへ戻る",
+    "de": "← Zurück zu SeineShop"
+  },
+  "Cell Phone Accessories": {
+    "ja": "スマートフォンアクセサリー",
+    "de": "Smartphone-Zubehör"
+  },
+  "Cell Phone Batteries": {
+    "ja": "スマートフォン用バッテリー",
+    "de": "Smartphone-Akkus"
+  },
+  "Cell Phone Chargers": {
+    "ja": "スマートフォン充電器",
+    "de": "Smartphone-Ladegeräte"
+  },
+  "Smart Device Accessories": {
+    "ja": "スマートデバイス用アクセサリー",
+    "de": "Smart-Geräte-Zubehör"
+  },
+  "Tempered Glass": {
+    "ja": "強化ガラス",
+    "de": "Hartglas"
+  },
+  "Screen Protectors": {
+    "ja": "画面保護フィルム",
+    "de": "Displayschutz"
+  },
+  "Camera Lens Protectors": {
+    "ja": "カメラレンズ保護",
+    "de": "Kameraobjektiv-Schutz"
+  },
+  "Bluetooth Keyboards": {
+    "ja": "Bluetoothキーボード",
+    "de": "Bluetooth-Tastaturen"
+  },
+  "Packaging": {
+    "ja": "パッケージ用品",
+    "de": "Verpackungen"
+  },
+  "Dummy Phones": {
+    "ja": "展示用スマートフォン",
+    "de": "Smartphone-Dummys"
+  },
+  "Charging Cables": {
+    "ja": "充電ケーブル",
+    "de": "Ladekabel"
+  },
+  "Stylus & Accessories": {
+    "ja": "タッチペン・関連用品",
+    "de": "Eingabestifte & Zubehör"
+  },
+  "Mounts & Holders": {
+    "ja": "マウント・ホルダー",
+    "de": "Halterungen & Ständer"
+  },
+  "Cell Phone Cases": {
+    "ja": "スマートフォンケース",
+    "de": "Smartphone-Hüllen"
+  },
+  "Photo & Video": {
+    "ja": "写真・動画",
+    "de": "Foto & Video"
+  },
+  "Cameras": {
+    "ja": "カメラ",
+    "de": "Kameras"
+  },
+  "Action Camera Accessories": {
+    "ja": "アクションカメラ用品",
+    "de": "Actionkamera-Zubehör"
+  },
+  "Camera Accessories": {
+    "ja": "カメラ用品",
+    "de": "Kamerazubehör"
+  },
+  "Drone Accessories": {
+    "ja": "ドローン用品",
+    "de": "Drohnenzubehör"
+  },
+  "Live Streaming Equipment": {
+    "ja": "配信機材",
+    "de": "Livestreaming-Ausrüstung"
+  },
+  "Mobile Photography Accessories": {
+    "ja": "スマホ撮影用品",
+    "de": "Smartphone-Fotozubehör"
+  },
+  "Smart Watch Accessories": {
+    "ja": "スマートウォッチ用品",
+    "de": "Smartwatch-Zubehör"
+  },
+  "Smartwatch Accessories": {
+    "ja": "スマートウォッチ用品",
+    "de": "Smartwatch-Zubehör"
+  },
+  "Cases & Covers": {
+    "ja": "ケース・カバー",
+    "de": "Hüllen & Abdeckungen"
+  },
+  "Bands & Straps": {
+    "ja": "バンド・ストラップ",
+    "de": "Armbänder & Schlaufen"
+  },
+  "Tempered Glass Screen Protectors": {
+    "ja": "強化ガラス保護フィルム",
+    "de": "Hartglas-Displayschutz"
+  },
+  "Film Screen Protectors": {
+    "ja": "画面保護フィルム",
+    "de": "Displayschutzfolien"
+  },
+  "Bezels": {
+    "ja": "ベゼル",
+    "de": "Lünetten"
+  },
+  "Cables & Chargers": {
+    "ja": "ケーブル・充電器",
+    "de": "Kabel & Ladegeräte"
+  },
+  "Smartwatch Cases with Bands": {
+    "ja": "バンド付きウォッチケース",
+    "de": "Smartwatch-Hüllen mit Armband"
+  },
+  "Watch Band Connectors": {
+    "ja": "ウォッチバンド接続部品",
+    "de": "Uhrenarmband-Adapter"
+  },
+  "Watch Repair Tool": {
+    "ja": "時計修理工具",
+    "de": "Uhrenreparaturwerkzeug"
+  },
+  "Cell Phone Parts": {
+    "ja": "スマートフォン修理部品",
+    "de": "Smartphone-Ersatzteile"
+  },
+  "Smart Watch Parts": {
+    "ja": "スマートウォッチ修理部品",
+    "de": "Smartwatch-Ersatzteile"
+  },
+  "Consumer Electronics": {
+    "ja": "家電・電子機器",
+    "de": "Unterhaltungselektronik"
+  },
+  "Phones & Tablets": {
+    "ja": "スマートフォン・タブレット",
+    "de": "Smartphones & Tablets"
+  },
+  "AI Devices": {
+    "ja": "AIデバイス",
+    "de": "KI-Geräte"
+  },
+  "Smart Electronics": {
+    "ja": "スマート家電",
+    "de": "Smarte Elektronik"
+  },
+  "Home Audio & Video": {
+    "ja": "ホームオーディオ・映像",
+    "de": "Heim-Audio & Video"
+  },
+  "Portable Audio & Video": {
+    "ja": "ポータブルAV機器",
+    "de": "Tragbare Audio- & Videogeräte"
+  },
+  "Earphones & Headphones": {
+    "ja": "イヤホン・ヘッドホン",
+    "de": "Ohrhörer & Kopfhörer"
+  },
+  "Home & Garden": {
+    "ja": "ホーム・ガーデン",
+    "de": "Haus & Garten"
+  },
+  "Festival Gifts & Party Supplies": {
+    "ja": "ギフト・パーティー用品",
+    "de": "Festgeschenke & Partybedarf"
+  },
+  "Kitchen & Dining": {
+    "ja": "キッチン・食卓用品",
+    "de": "Küche & Esszimmer"
+  },
+  "Home Decor": {
+    "ja": "インテリア用品",
+    "de": "Wohnaccessoires"
+  },
+  "Housekeeping & Organization": {
+    "ja": "掃除・収納用品",
+    "de": "Reinigung & Aufbewahrung"
+  },
+  "Household Fans": {
+    "ja": "家庭用扇風機",
+    "de": "Haushaltsventilatoren"
+  },
+  "LED Lights": {
+    "ja": "LED照明",
+    "de": "LED-Leuchten"
+  },
+  "Luggage & Bags": {
+    "ja": "スーツケース・バッグ",
+    "de": "Gepäck & Taschen"
+  },
+  "Home Textiles": {
+    "ja": "ホームテキスタイル",
+    "de": "Heimtextilien"
+  },
+  "Household Appliances": {
+    "ja": "家電製品",
+    "de": "Haushaltsgeräte"
+  },
+  "Bathroom Supplies": {
+    "ja": "バスルーム用品",
+    "de": "Badbedarf"
+  },
+  "Garden": {
+    "ja": "ガーデン用品",
+    "de": "Garten"
+  },
+  "Robot Vacuum Accessories": {
+    "ja": "ロボット掃除機用品",
+    "de": "Saugroboter-Zubehör"
+  },
+  "Sports & Outdoors": {
+    "ja": "スポーツ・アウトドア",
+    "de": "Sport & Outdoor"
+  },
+  "Cycling": {
+    "ja": "サイクリング",
+    "de": "Radsport"
+  },
+  "Camping & Hiking": {
+    "ja": "キャンプ・ハイキング",
+    "de": "Camping & Wandern"
+  },
+  "Water Sports": {
+    "ja": "ウォータースポーツ",
+    "de": "Wassersport"
+  },
+  "Fishing": {
+    "ja": "釣り",
+    "de": "Angeln"
+  },
+  "Exercise & Fitness": {
+    "ja": "エクササイズ・フィットネス",
+    "de": "Training & Fitness"
+  },
+  "Ski & Snowboard": {
+    "ja": "スキー・スノーボード",
+    "de": "Ski & Snowboard"
+  },
+  "Sports Protective Gear": {
+    "ja": "スポーツ保護用品",
+    "de": "Sport-Schutzausrüstung"
+  },
+  "Golf Accessories": {
+    "ja": "ゴルフ用品",
+    "de": "Golfzubehör"
+  },
+  "Sports & Outdoors Accessories": {
+    "ja": "スポーツ・アウトドア用品",
+    "de": "Sport- & Outdoor-Zubehör"
+  },
+  "Sports Outdoors Clothing": {
+    "ja": "スポーツ・アウトドアウェア",
+    "de": "Sport- & Outdoor-Bekleidung"
+  },
+  "Scooters": {
+    "ja": "スクーター",
+    "de": "Scooter"
+  },
+  "Computer & Networking": {
+    "ja": "パソコン・ネットワーク",
+    "de": "Computer & Netzwerk"
+  },
+  "Networking": {
+    "ja": "ネットワーク機器",
+    "de": "Netzwerktechnik"
+  },
+  "Storage Devices": {
+    "ja": "ストレージ機器",
+    "de": "Speichergeräte"
+  },
+  "Computer Peripherals": {
+    "ja": "パソコン周辺機器",
+    "de": "Computer-Peripherie"
+  },
+  "Laptop Accessories": {
+    "ja": "ノートパソコン用品",
+    "de": "Laptop-Zubehör"
+  },
+  "Other Computer & Networking": {
+    "ja": "その他パソコン・ネットワーク用品",
+    "de": "Sonstiges Computer- & Netzwerkzubehör"
+  },
+  "Office Supplies": {
+    "ja": "事務用品",
+    "de": "Bürobedarf"
+  },
+  "Car Accessories": {
+    "ja": "カー用品",
+    "de": "Autozubehör"
+  },
+  "Car GPS Tracking": {
+    "ja": "車載GPS追跡機器",
+    "de": "GPS-Fahrzeugortung"
+  },
+  "Car Interior Accessories": {
+    "ja": "車内用品",
+    "de": "Auto-Innenraumzubehör"
+  },
+  "Car Exterior Accessories": {
+    "ja": "車外装用品",
+    "de": "Auto-Außenzubehör"
+  },
+  "Car Electronics Accessories": {
+    "ja": "車載電子機器用品",
+    "de": "Auto-Elektronikzubehör"
+  },
+  "Car Light Accessories": {
+    "ja": "車用照明用品",
+    "de": "Auto-Beleuchtungszubehör"
+  },
+  "Car Video Audio": {
+    "ja": "カーオーディオ・映像",
+    "de": "Auto-Audio & Video"
+  },
+  "Car Parking Accessories": {
+    "ja": "駐車補助用品",
+    "de": "Einparkzubehör"
+  },
+  "Car Maintenance & Care": {
+    "ja": "車のメンテナンス・ケア",
+    "de": "Autowartung & Pflege"
+  },
+  "Car Repair Tool": {
+    "ja": "自動車修理工具",
+    "de": "Kfz-Reparaturwerkzeug"
+  },
+  "Roadway Safety": {
+    "ja": "交通安全用品",
+    "de": "Verkehrssicherheit"
+  },
+  "Car Replacement Part": {
+    "ja": "自動車交換部品",
+    "de": "Auto-Ersatzteile"
+  },
+  "Diagnostic Scan Tools": {
+    "ja": "車両診断ツール",
+    "de": "Diagnosegeräte"
+  },
+  "Browse collections": {
+    "ja": "コレクションを見る",
+    "de": "Kollektionen entdecken"
+  },
+  "Journal": {
+    "ja": "ブログ",
+    "de": "Journal"
+  },
+  "Support": {
+    "ja": "サポート",
+    "de": "Support"
+  },
+  "Phone cases": {
+    "ja": "スマートフォンケース",
+    "de": "Smartphone-Hüllen"
+  },
+  "Screen protectors": {
+    "ja": "画面保護フィルム",
+    "de": "Displayschutz"
+  },
+  "Camera lens protectors": {
+    "ja": "カメラレンズ保護",
+    "de": "Kameraobjektiv-Schutz"
+  },
+  "Other accessories": {
+    "ja": "その他のアクセサリー",
+    "de": "Sonstiges Zubehör"
+  },
+  "Black": {
+    "ja": "ブラック",
+    "de": "Schwarz"
+  },
+  "White": {
+    "ja": "ホワイト",
+    "de": "Weiß"
+  },
+  "Orange": {
+    "ja": "オレンジ",
+    "de": "Orange"
+  },
+  "Green": {
+    "ja": "グリーン",
+    "de": "Grün"
+  },
+  "Transparent": {
+    "ja": "クリア",
+    "de": "Transparent"
+  },
+  "Color": {
+    "ja": "カラー",
+    "de": "Farbe"
+  },
+  "Model": {
+    "ja": "モデル",
+    "de": "Modell"
+  },
+  "Phone output": {
+    "ja": "スマートフォン出力",
+    "de": "Smartphone-Ausgang"
+  },
+  "Earbuds output": {
+    "ja": "イヤホン出力",
+    "de": "Ohrhörer-Ausgang"
+  },
+  "Watch output": {
+    "ja": "ウォッチ出力",
+    "de": "Uhren-Ausgang"
+  },
+  "Charging port": {
+    "ja": "充電端子",
+    "de": "Ladeanschluss"
+  },
+  "Charging distance": {
+    "ja": "充電距離",
+    "de": "Ladeabstand"
+  },
+  "Compatibility": {
+    "ja": "対応機種",
+    "de": "Kompatibilität"
+  },
+  "Features": {
+    "ja": "特徴",
+    "de": "Funktionen"
+  },
+  "Package contents": {
+    "ja": "付属品",
+    "de": "Lieferumfang"
+  },
+  "Package size": {
+    "ja": "梱包サイズ",
+    "de": "Verpackungsmaße"
+  },
+  "Gross package weight": {
+    "ja": "梱包総重量",
+    "de": "Bruttogewicht"
+  },
+  "Notes": {
+    "ja": "注意事項",
+    "de": "Hinweise"
+  },
+  "Privacy policy": {
+    "ja": "プライバシーポリシー",
+    "de": "Datenschutzerklärung"
+  },
+  "Phone Accessories & Smart Essentials": {
+    "ja": "スマホアクセサリーとスマートな必需品",
+    "de": "Smartphone-Zubehör & smarte Alltagsbegleiter"
+  },
+  "Shop Collections": {
+    "ja": "コレクションから探す",
+    "de": "Kollektionen entdecken"
+  },
+  "Shop All Accessories": {
+    "ja": "すべてのアクセサリー",
+    "de": "Alle Zubehörartikel"
+  },
+  "Your Shopping Bag": {
+    "ja": "ショッピングカート",
+    "de": "Dein Warenkorb"
+  },
+  "Store Policies": {
+    "ja": "ショップポリシー",
+    "de": "Shop-Richtlinien"
+  },
+  "Support & Product Help": {
+    "ja": "サポート・商品について",
+    "de": "Support & Produkthilfe"
+  },
+  "SeineShop Journal": {
+    "ja": "SeineShopブログ",
+    "de": "SeineShop Journal"
+  },
+  "Samsung Accessories": {
+    "ja": "Samsung用アクセサリー",
+    "de": "Samsung-Zubehör"
+  },
+  "Galaxy S Accessories": {
+    "ja": "Galaxy S用アクセサリー",
+    "de": "Galaxy S-Zubehör"
+  },
+  "Galaxy A Accessories": {
+    "ja": "Galaxy A用アクセサリー",
+    "de": "Galaxy A-Zubehör"
+  },
+  "Galaxy Z Accessories": {
+    "ja": "Galaxy Z用アクセサリー",
+    "de": "Galaxy Z-Zubehör"
+  },
+  "Galaxy M Accessories": {
+    "ja": "Galaxy M用アクセサリー",
+    "de": "Galaxy M-Zubehör"
+  },
+  "Galaxy F Accessories": {
+    "ja": "Galaxy F用アクセサリー",
+    "de": "Galaxy F-Zubehör"
+  },
+  "Galaxy Tab Accessories": {
+    "ja": "Galaxy Tab用アクセサリー",
+    "de": "Galaxy Tab-Zubehör"
+  },
+  "Galaxy Other Accessories": {
+    "ja": "Galaxy Other用アクセサリー",
+    "de": "Galaxy Other-Zubehör"
+  },
+  "Apple Accessories": {
+    "ja": "Apple用アクセサリー",
+    "de": "Apple-Zubehör"
+  },
+  "iPhone Accessories": {
+    "ja": "iPhone用アクセサリー",
+    "de": "iPhone-Zubehör"
+  },
+  "iPad Accessories": {
+    "ja": "iPad用アクセサリー",
+    "de": "iPad-Zubehör"
+  },
+  "iPod Accessories": {
+    "ja": "iPod用アクセサリー",
+    "de": "iPod-Zubehör"
+  },
+  "MacBook Accessories": {
+    "ja": "MacBook用アクセサリー",
+    "de": "MacBook-Zubehör"
+  },
+  "AirPods Accessories": {
+    "ja": "AirPods用アクセサリー",
+    "de": "AirPods-Zubehör"
+  },
+  "Apple AirTag Accessories": {
+    "ja": "Apple AirTag用アクセサリー",
+    "de": "Apple AirTag-Zubehör"
+  },
+  "Xiaomi Accessories": {
+    "ja": "Xiaomi用アクセサリー",
+    "de": "Xiaomi-Zubehör"
+  },
+  "Xiaomi Series Accessories": {
+    "ja": "Xiaomi シリーズ用アクセサリー",
+    "de": "Xiaomi Series-Zubehör"
+  },
+  "Redmi Series Accessories": {
+    "ja": "Redmi シリーズ用アクセサリー",
+    "de": "Redmi Series-Zubehör"
+  },
+  "Poco Series Accessories": {
+    "ja": "Poco シリーズ用アクセサリー",
+    "de": "Poco Series-Zubehör"
+  },
+  "Xiaomi Pad Accessories": {
+    "ja": "Xiaomi Pad用アクセサリー",
+    "de": "Xiaomi Pad-Zubehör"
+  },
+  "Other Xiaomi Accessories": {
+    "ja": "その他のXiaomi用アクセサリー",
+    "de": "Sonstiges Xiaomi-Zubehör"
+  },
+  "Motorola Accessories": {
+    "ja": "Motorola用アクセサリー",
+    "de": "Motorola-Zubehör"
+  },
+  "Motorola Moto Accessories": {
+    "ja": "Motorola Moto用アクセサリー",
+    "de": "Motorola Moto-Zubehör"
+  },
+  "Motorola Edge Accessories": {
+    "ja": "Motorola Edge用アクセサリー",
+    "de": "Motorola Edge-Zubehör"
+  },
+  "Motorola Razr Accessories": {
+    "ja": "Motorola Razr用アクセサリー",
+    "de": "Motorola Razr-Zubehör"
+  },
+  "Other Motorola Accessories": {
+    "ja": "その他のMotorola用アクセサリー",
+    "de": "Sonstiges Motorola-Zubehör"
+  },
+  "Motorola Pad Accessories": {
+    "ja": "Motorola Pad用アクセサリー",
+    "de": "Motorola Pad-Zubehör"
+  },
+  "OPPO & OnePlus Accessories": {
+    "ja": "OPPO & OnePlus用アクセサリー",
+    "de": "OPPO & OnePlus-Zubehör"
+  },
+  "Oppo A Series Accessories": {
+    "ja": "Oppo A シリーズ用アクセサリー",
+    "de": "Oppo A Series-Zubehör"
+  },
+  "OPPO Reno Accessories": {
+    "ja": "OPPO Reno用アクセサリー",
+    "de": "OPPO Reno-Zubehör"
+  },
+  "OPPO Find Accessories": {
+    "ja": "OPPO Find用アクセサリー",
+    "de": "OPPO Find-Zubehör"
+  },
+  "Oppo Pads Accessories": {
+    "ja": "Oppo Pads用アクセサリー",
+    "de": "Oppo Pads-Zubehör"
+  },
+  "Other Oppo Accessories": {
+    "ja": "その他のOppo用アクセサリー",
+    "de": "Sonstiges Oppo-Zubehör"
+  },
+  "Huawei Accessories": {
+    "ja": "Huawei用アクセサリー",
+    "de": "Huawei-Zubehör"
+  },
+  "Huawei Mate Accessories": {
+    "ja": "Huawei Mate用アクセサリー",
+    "de": "Huawei Mate-Zubehör"
+  },
+  "Huawei Pura Accessories": {
+    "ja": "Huawei Pura用アクセサリー",
+    "de": "Huawei Pura-Zubehör"
+  },
+  "Huawei nova Accessories": {
+    "ja": "Huawei nova用アクセサリー",
+    "de": "Huawei nova-Zubehör"
+  },
+  "Huawei P Series Accessories": {
+    "ja": "Huawei P シリーズ用アクセサリー",
+    "de": "Huawei P Series-Zubehör"
+  },
+  "Huawei Enjoy Accessories": {
+    "ja": "Huawei Enjoy用アクセサリー",
+    "de": "Huawei Enjoy-Zubehör"
+  },
+  "Huawei MatePad Accessories": {
+    "ja": "Huawei MatePad用アクセサリー",
+    "de": "Huawei MatePad-Zubehör"
+  },
+  "Other Huawei Accessories": {
+    "ja": "その他のHuawei用アクセサリー",
+    "de": "Sonstiges Huawei-Zubehör"
+  },
+  "Amazon Cases": {
+    "ja": "Amazon用ケース",
+    "de": "Amazon-Hüllen"
+  },
+  "Alcatel Cases": {
+    "ja": "Alcatel用ケース",
+    "de": "Alcatel-Hüllen"
+  },
+  "BLU Case": {
+    "ja": "BLU用ケース",
+    "de": "BLU-Hüllen"
+  },
+  "Doogee Cases": {
+    "ja": "Doogee用ケース",
+    "de": "Doogee-Hüllen"
+  },
+  "Google Cases": {
+    "ja": "Google用ケース",
+    "de": "Google-Hüllen"
+  },
+  "Teclast Cases": {
+    "ja": "Teclast用ケース",
+    "de": "Teclast-Hüllen"
+  },
+  "HTC Cases": {
+    "ja": "HTC用ケース",
+    "de": "HTC-Hüllen"
+  },
+  "Kobo Cases": {
+    "ja": "Kobo用ケース",
+    "de": "Kobo-Hüllen"
+  },
+  "Meizu Cases": {
+    "ja": "Meizu用ケース",
+    "de": "Meizu-Hüllen"
+  },
+  "Microsoft Cases": {
+    "ja": "Microsoft用ケース",
+    "de": "Microsoft-Hüllen"
+  },
+  "Nokia Cases": {
+    "ja": "Nokia用ケース",
+    "de": "Nokia-Hüllen"
+  },
+  "Realme Cases": {
+    "ja": "Realme用ケース",
+    "de": "Realme-Hüllen"
+  },
+  "Other Smartwatch Accessories": {
+    "ja": "その他のSmartwatch用アクセサリー",
+    "de": "Sonstiges Smartwatch-Zubehör"
+  },
+  "Apple Parts": {
+    "ja": "Apple用部品",
+    "de": "Apple-Ersatzteile"
+  },
+  "Samsung Parts": {
+    "ja": "Samsung用部品",
+    "de": "Samsung-Ersatzteile"
+  },
+  "Sony Parts": {
+    "ja": "Sony用部品",
+    "de": "Sony-Ersatzteile"
+  },
+  "Huawei Parts": {
+    "ja": "Huawei用部品",
+    "de": "Huawei-Ersatzteile"
+  },
+  "Xiaomi Parts": {
+    "ja": "Xiaomi用部品",
+    "de": "Xiaomi-Ersatzteile"
+  },
+  "OnePlus Parts": {
+    "ja": "OnePlus用部品",
+    "de": "OnePlus-Ersatzteile"
+  },
+  "LG Parts": {
+    "ja": "LG用部品",
+    "de": "LG-Ersatzteile"
+  },
+  "Motorola Parts": {
+    "ja": "Motorola用部品",
+    "de": "Motorola-Ersatzteile"
+  },
+  "Alcatel Parts": {
+    "ja": "Alcatel用部品",
+    "de": "Alcatel-Ersatzteile"
+  },
+  "Acer Parts": {
+    "ja": "Acer用部品",
+    "de": "Acer-Ersatzteile"
+  },
+  "Asus Parts": {
+    "ja": "Asus用部品",
+    "de": "Asus-Ersatzteile"
+  },
+  "Headphone Accessories": {
+    "ja": "Headphone用アクセサリー",
+    "de": "Headphone-Zubehör"
+  },
+  "Video Games Accessories": {
+    "ja": "Video Games用アクセサリー",
+    "de": "Video Games-Zubehör"
+  },
+  "VR & Accessories": {
+    "ja": "VR &用アクセサリー",
+    "de": "VR &-Zubehör"
+  },
+  "RC Toys & Accessories": {
+    "ja": "RC Toys &用アクセサリー",
+    "de": "RC Toys &-Zubehör"
+  },
+  "Smart Tracker & Accessories": {
+    "ja": "Smart Tracker &用アクセサリー",
+    "de": "Smart Tracker &-Zubehör"
+  },
+  "Scanner & Accessories": {
+    "ja": "Scanner &用アクセサリー",
+    "de": "Scanner &-Zubehör"
+  },
+  "All Cell Phone Accessories": {
+    "ja": "すべてのスマートフォンアクセサリー",
+    "de": "Smartphone-Zubehör – alle Artikel"
+  },
+  "All Samsung Accessories": {
+    "ja": "すべてのSamsung用アクセサリー",
+    "de": "Samsung-Zubehör – alle Artikel"
+  },
+  "All Apple Accessories": {
+    "ja": "すべてのApple用アクセサリー",
+    "de": "Apple-Zubehör – alle Artikel"
+  },
+  "All Xiaomi Accessories": {
+    "ja": "すべてのXiaomi用アクセサリー",
+    "de": "Xiaomi-Zubehör – alle Artikel"
+  },
+  "All Motorola Accessories": {
+    "ja": "すべてのMotorola用アクセサリー",
+    "de": "Motorola-Zubehör – alle Artikel"
+  },
+  "All OPPO & OnePlus Accessories": {
+    "ja": "すべてのOPPO & OnePlus用アクセサリー",
+    "de": "OPPO & OnePlus-Zubehör – alle Artikel"
+  },
+  "All Huawei Accessories": {
+    "ja": "すべてのHuawei用アクセサリー",
+    "de": "Huawei-Zubehör – alle Artikel"
+  },
+  "All Cell Phone Cases": {
+    "ja": "すべてのスマートフォンケース",
+    "de": "Smartphone-Hüllen – alle Artikel"
+  },
+  "All Photo & Video": {
+    "ja": "すべての写真・動画",
+    "de": "Foto & Video – alle Artikel"
+  },
+  "All Smartwatch Accessories": {
+    "ja": "すべてのスマートウォッチ用品",
+    "de": "Smartwatch-Zubehör – alle Artikel"
+  },
+  "All Cell Phone Parts": {
+    "ja": "すべてのスマートフォン修理部品",
+    "de": "Smartphone-Ersatzteile – alle Artikel"
+  },
+  "All Consumer Electronics": {
+    "ja": "すべての家電・電子機器",
+    "de": "Unterhaltungselektronik – alle Artikel"
+  },
+  "All Home & Garden": {
+    "ja": "すべてのホーム・ガーデン",
+    "de": "Haus & Garten – alle Artikel"
+  },
+  "All Sports & Outdoors": {
+    "ja": "すべてのスポーツ・アウトドア",
+    "de": "Sport & Outdoor – alle Artikel"
+  },
+  "All Computer & Networking": {
+    "ja": "すべてのパソコン・ネットワーク",
+    "de": "Computer & Netzwerk – alle Artikel"
+  },
+  "All Car Accessories": {
+    "ja": "すべてのカー用品",
+    "de": "Autozubehör – alle Artikel"
+  },
+  "% OFF": {
+    "ja": "% OFF",
+    "de": "% RABATT"
+  },
+  "Ask about this case →": {
+    "ja": "このケースについて問い合わせる →",
+    "de": "Zu dieser Hülle nachfragen →"
+  },
+  "COMING SOON": {
+    "ja": "近日発売",
+    "de": "DEMNÄCHST ERHÄLTLICH"
+  },
+  "COMING SOON /": {
+    "ja": "近日発売 /",
+    "de": "DEMNÄCHST ERHÄLTLICH /"
+  },
+  "Clear filters →": {
+    "ja": "絞り込みを解除 →",
+    "de": "Filter zurücksetzen →"
+  },
+  "Coming soon · not available to order": {
+    "ja": "近日発売・現在注文できません",
+    "de": "Demnächst erhältlich · noch nicht bestellbar"
+  },
+  "Line items with": {
+    "ja": "注文商品：",
+    "de": "Bestellpositionen mit"
+  },
+  "Load more": {
+    "ja": "もっと見る",
+    "de": "Mehr laden"
+  },
+  "Load more ↓": {
+    "ja": "もっと見る ↓",
+    "de": "Mehr laden ↓"
+  },
+  "Load previous": {
+    "ja": "前の項目を表示",
+    "de": "Vorherige laden"
+  },
+  "Next →": {
+    "ja": "次へ →",
+    "de": "Weiter →"
+  },
+  "No orders found matching your search.": {
+    "ja": "検索条件に一致する注文はありません。",
+    "de": "Keine passenden Bestellungen gefunden."
+  },
+  "No products match these filters. Try a different search or clear the filters.": {
+    "ja": "条件に一致する商品がありません。検索条件を変更するか、絞り込みを解除してください。",
+    "de": "Keine Produkte entsprechen diesen Filtern. Ändere die Suche oder setze die Filter zurück."
+  },
+  "No shipping address defined": {
+    "ja": "配送先住所が未登録です",
+    "de": "Keine Lieferadresse hinterlegt"
+  },
+  "Page": {
+    "ja": "ページ",
+    "de": "Seite"
+  },
+  "Pagination": {
+    "ja": "ページ送り",
+    "de": "Seitennavigation"
+  },
+  "Start Shopping →": {
+    "ja": "お買い物を始める →",
+    "de": "Jetzt einkaufen →"
+  },
+  "This collection is coming soon. Our products will appear here when they are ready to order.": {
+    "ja": "このコレクションは準備中です。注文可能になった商品から表示されます。",
+    "de": "Diese Kollektion ist in Vorbereitung. Bestellbare Produkte erscheinen hier, sobald sie verfügbar sind."
+  },
+  "View all results for": {
+    "ja": "すべての検索結果を見る：",
+    "de": "Alle Ergebnisse anzeigen für"
+  },
+  "View this case →": {
+    "ja": "このケースを見る →",
+    "de": "Diese Hülle ansehen →"
+  },
+  "You have no addresses saved.": {
+    "ja": "保存済みの住所はありません。",
+    "de": "Du hast noch keine Adressen gespeichert."
+  },
+  "You haven't placed any orders yet.": {
+    "ja": "まだご注文はありません。",
+    "de": "Du hast noch keine Bestellungen aufgegeben."
+  },
+  "of": {
+    "ja": "/",
+    "de": "von"
+  },
+  "← Previous": {
+    "ja": "← 前へ",
+    "de": "← Zurück"
+  },
+  "↑ Load previous": {
+    "ja": "↑ 前の項目を表示",
+    "de": "↑ Vorherige laden"
+  },
+  "A closer look at our three picks": {
+    "ja": "おすすめ3点を詳しく比較",
+    "de": "Unsere drei Empfehlungen im Detail"
+  },
+  "A note on fit": {
+    "ja": "適合についての注意",
+    "de": "Hinweis zur Passform"
+  },
+  "About this comparison": {
+    "ja": "この比較について",
+    "de": "Über diesen Vergleich"
+  },
+  "All recommendations are products in our own catalog. Here is what the listings support—and what still needs checking.": {
+    "ja": "おすすめはすべて当店の商品です。掲載仕様で確認できることと、確認が必要な点をまとめました。",
+    "de": "Alle Empfehlungen stammen aus unserem eigenen Sortiment. Hier erfährst du, was die Angaben belegen und was noch zu prüfen ist."
+  },
+  "Apple’s model-identification guide": {
+    "ja": "Appleのモデル識別ガイド",
+    "de": "Apples Anleitung zur Modellbestimmung"
+  },
+  "Breadcrumb": {
+    "ja": "パンくずリスト",
+    "de": "Brotkrumennavigation"
+  },
+  "CASE COMPARISON ·": {
+    "ja": "ケース比較 ·",
+    "de": "HÜLLENVERGLEICH ·"
+  },
+  "Case": {
+    "ja": "ケース",
+    "de": "Hülle"
+  },
+  "Case comparison": {
+    "ja": "ケース比較",
+    "de": "Hüllenvergleich"
+  },
+  "Case comparison table": {
+    "ja": "ケース比較表",
+    "de": "Vergleichstabelle für Hüllen"
+  },
+  "Catalog photography · physical fit and performance not independently tested": {
+    "ja": "商品写真・実機での適合や性能は独自検証していません",
+    "de": "Katalogfotos · Passform und Leistung nicht unabhängig getestet"
+  },
+  "Check before choosing": {
+    "ja": "購入前の確認事項",
+    "de": "Vor der Auswahl prüfen"
+  },
+  "Compare at a glance": {
+    "ja": "ひと目で比較",
+    "de": "Vergleich auf einen Blick"
+  },
+  "Common questions": {
+    "ja": "よくある質問",
+    "de": "Häufige Fragen"
+  },
+  "In this article": {
+    "ja": "記事の目次",
+    "de": "In diesem Beitrag"
+  },
+  "Listed features, with no independent performance testing": {
+    "ja": "掲載仕様に基づく比較・独自の性能試験は未実施",
+    "de": "Angegebene Funktionen, ohne unabhängige Leistungstests"
+  },
+  "Need help identifying your device?": {
+    "ja": "デバイスの確認にお困りですか？",
+    "de": "Hilfe bei der Gerätebestimmung?"
+  },
+  "Our three picks": {
+    "ja": "おすすめ3点",
+    "de": "Unsere drei Empfehlungen"
+  },
+  "Similar model names do not guarantee the same fit. Check the product’s listed device model, camera cutouts and dimensions before ordering.": {
+    "ja": "似た機種名でも同じサイズとは限りません。注文前に対応機種、カメラ開口部、寸法をご確認ください。",
+    "de": "Ähnliche Modellnamen garantieren keine identische Passform. Prüfe vor der Bestellung das angegebene Modell, die Kameraausschnitte und die Abmessungen."
+  },
+  "Start with the right model, then choose the materials and features you use most.": {
+    "ja": "まず対応機種を確認し、よく使う素材や機能から選びましょう。",
+    "de": "Beginne mit dem passenden Modell und wähle dann die Materialien und Funktionen, die du am meisten nutzt."
+  },
+  "THREE DESIGNS, THREE PRIORITIES": {
+    "ja": "3つのデザイン、3つの選び方",
+    "de": "DREI DESIGNS, DREI SCHWERPUNKTE"
+  },
+  "The trade-off": {
+    "ja": "気をつけたい点",
+    "de": "Die Kompromisse"
+  },
+  "What to confirm": {
+    "ja": "確認したいこと",
+    "de": "Was zu prüfen ist"
+  },
+  "Who should shortlist it?": {
+    "ja": "どんな方に向いている？",
+    "de": "Für wen kommt sie infrage?"
+  },
+  "Why shortlist it": {
+    "ja": "おすすめする理由",
+    "de": "Warum sie infrage kommt"
+  },
+  "Written by SeineShop Editorial using our catalog specifications and product photography, checked on October 30, 2026. No review units, laboratory tests or customer review scores were used. We sell the products discussed and may benefit from purchases.": {
+    "ja": "SeineShop編集部が商品仕様と写真をもとに執筆し、2026年10月30日に確認しました。実物レビュー、実験室試験、顧客評価は使用していません。当店は紹介商品を販売しており、購入によって利益を得る場合があります。",
+    "de": "Von der SeineShop-Redaktion anhand unserer Katalogangaben und Produktfotos erstellt und am 30. Oktober 2026 geprüft. Es wurden keine Testmuster, Labortests oder Kundenbewertungen verwendet. Wir verkaufen die besprochenen Produkte und können von Käufen profitieren."
+  },
+  "explains how to check.": {
+    "ja": "で確認方法をご覧いただけます。",
+    "de": "erklärt die Vorgehensweise."
+  },
+  "with your model and the product SKU for item-specific questions.": {
+    "ja": "機種名と商品SKUを添えてお問い合わせください。",
+    "de": "mit deinem Modell und der Produkt-SKU bei produktspezifischen Fragen."
+  },
+  "Explore iPhone 18 Pro Max accessories →": {
+    "ja": "iPhone 18 Pro Max用アクセサリーを見る →",
+    "de": "iPhone 18 Pro Max Zubehör entdecken →"
+  },
+  "Fit and long-term clarity": {
+    "ja": "適合と長期的な透明感",
+    "de": "Passform und langfristige Klarheit"
+  },
+  "Card capacity and attachment": {
+    "ja": "カード収納枚数と取り付け",
+    "de": "Kartenkapazität und Befestigung"
+  },
+  "Stand stability and charger compatibility": {
+    "ja": "スタンドの安定性と充電器の互換性",
+    "de": "Standfestigkeit und Ladegerät-Kompatibilität"
+  },
+  "7 min read": {
+    "ja": "読了時間：約7分",
+    "de": "7 Min. Lesezeit"
+  },
+  "SeineShop Editorial": {
+    "ja": "SeineShop編集部",
+    "de": "SeineShop-Redaktion"
+  },
+  "CHOOSE YOUR EVERYDAY.": {
+    "ja": "毎日にぴったりの一台を。",
+    "de": "WÄHLE DEINEN ALLTAGSBEGLEITER."
+  },
+  "Made for your everyday.": {
+    "ja": "毎日のために。",
+    "de": "Für deinen Alltag."
+  },
+  "One station.": {
+    "ja": "ひとつのスタンド。",
+    "de": "Eine Station."
+  },
+  "Bring a compatible Qi phone, wireless earbuds and Samsung Galaxy Watch together in one foldable charging station.": {
+    "ja": "対応するQiスマートフォン、ワイヤレスイヤホン、Samsung Galaxy Watchをひとつの折りたたみ式充電スタンドに。",
+    "de": "Vereine ein kompatibles Qi-Smartphone, kabellose Ohrhörer und eine Samsung Galaxy Watch auf einer faltbaren Ladestation."
+  },
+  "Explore both color options and check current availability on the product page.": {
+    "ja": "2色のバリエーションと現在の在庫を商品ページでご確認ください。",
+    "de": "Entdecke beide Farben und prüfe die aktuelle Verfügbarkeit auf der Produktseite."
+  },
+  "View product & colors ↗": {
+    "ja": "商品・カラーを見る ↗",
+    "de": "Produkt & Farben ansehen ↗"
+  },
+  "Thoughtful choices": {
+    "ja": "納得できる選択",
+    "de": "Durchdachte Entscheidungen"
+  },
+  "B-20A 3-in-1 Foldable Wireless Charging Station · Black": {
+    "ja": "B-20A 3-in-1 折りたたみ式ワイヤレス充電スタンド・ブラック",
+    "de": "B-20A faltbare 3-in-1-Ladestation · Schwarz"
+  },
+  "B-20A 3-in-1 Wireless Charging Station": {
+    "ja": "B-20A 3-in-1 ワイヤレス充電スタンド",
+    "de": "B-20A 3-in-1-Ladestation"
+  },
+  "B-20A black charging station; devices not included": {
+    "ja": "B-20A ブラック充電スタンド（デバイスは付属しません）",
+    "de": "Schwarze B-20A-Ladestation; Geräte nicht enthalten"
+  },
+  "B-20A three-device foldable charging station in black": {
+    "ja": "ブラックのB-20A 3台対応折りたたみ式充電スタンド",
+    "de": "Schwarze faltbare B-20A-Ladestation für drei Geräte"
+  },
+  "White B-20A foldable charging station": {
+    "ja": "ホワイトのB-20A折りたたみ式充電スタンド",
+    "de": "Weiße faltbare B-20A-Ladestation"
+  },
+  "ABS + PC, rubberized finish": {
+    "ja": "ABS＋PC、ラバー調仕上げ",
+    "de": "ABS + PC, gummierte Oberfläche"
+  },
+  "Supplier lists Galaxy Watch 3 / 4 / 5 / 6 / 7. Confirm exact device compatibility before purchase. The charger contains a weak magnet. Actual charging speed depends on the device and power supply. Supplier package list: charger, charging cable and English manual; no power adapter is listed. Devices in the image are for illustration.": {
+    "ja": "仕入先はGalaxy Watch 3 / 4 / 5 / 6 / 7への対応を記載しています。購入前に正確な互換性をご確認ください。本製品は弱い磁石を内蔵しています。充電速度はデバイスと電源により異なります。付属品は充電器、充電ケーブル、英語説明書で、電源アダプターの記載はありません。画像内のデバイスは使用イメージです。",
+    "de": "Der Lieferant nennt Galaxy Watch 3 / 4 / 5 / 6 / 7. Prüfe vor dem Kauf die genaue Kompatibilität. Das Ladegerät enthält einen schwachen Magneten. Die tatsächliche Ladegeschwindigkeit hängt vom Gerät und Netzteil ab. Angegebener Lieferumfang: Ladegerät, Ladekabel und englische Anleitung; kein Netzteil aufgeführt. Abgebildete Geräte dienen der Illustration."
+  },
+  "Collection preview · Products are being prepared. Ordering is not available yet.": {
+    "ja": "コレクションプレビュー・商品を準備中のため、まだ注文できません。",
+    "de": "Kollektionsvorschau · Produkte werden vorbereitet und sind noch nicht bestellbar."
+  },
+  "This item is being prepared for our collection. Exact compatibility, availability and delivery details will be confirmed before ordering opens.": {
+    "ja": "この商品は準備中です。販売開始前に対応機種、在庫、配送情報を確認します。",
+    "de": "Dieser Artikel wird für unser Sortiment vorbereitet. Genaue Kompatibilität, Verfügbarkeit und Lieferdetails werden vor Verkaufsstart bestätigt."
+  },
+  "Browse collections →": {
+    "ja": "コレクションを見る →",
+    "de": "Kollektionen entdecken →"
+  },
+  "Explore the collection": {
+    "ja": "コレクションを見る",
+    "de": "Kollektion entdecken"
+  },
+  "Explore the edit →": {
+    "ja": "特集を見る →",
+    "de": "Auswahl entdecken →"
+  },
+  "FIND YOUR EVERYDAY ESSENTIALS": {
+    "ja": "毎日の必需品を見つける",
+    "de": "FINDE DEINE ALLTAGSBEGLEITER"
+  },
+  "Our store is preparing to launch. Shipping and return policies will be available before ordering opens. Questions?": {
+    "ja": "ショップは開店準備中です。販売開始前に配送・返品ポリシーを公開します。ご質問は",
+    "de": "Unser Shop wird vorbereitet. Versand- und Rückgaberichtlinien werden vor Verkaufsstart veröffentlicht. Fragen?"
+  },
+  "iPhone 18 Pro Max cases compared: clear, kickstand or wallet?": {
+    "ja": "iPhone 18 Pro Maxケース比較：クリア・スタンド・ウォレット、どれを選ぶ？",
+    "de": "iPhone 18 Pro Max Hüllen im Vergleich: transparent, mit Ständer oder Wallet?"
+  },
+  "iPhone 18 Pro Max Case Review: 3 Styles Compared": {
+    "ja": "iPhone 18 Pro Maxケース比較レビュー：3つのスタイル",
+    "de": "iPhone 18 Pro Max Hüllen: 3 Designs im Vergleich"
+  },
+  "Compare three SeineShop iPhone 18 Pro Max case designs: clear TPU, magnetic kickstand and detachable wallet. See features, trade-offs and fit checks.": {
+    "ja": "SeineShopのiPhone 18 Pro Maxケース3種類を比較。クリアTPU、マグネット式スタンド、着脱式ウォレットの特徴、注意点、適合確認を紹介します。",
+    "de": "Drei SeineShop-Hüllen für das iPhone 18 Pro Max im Vergleich: transparentes TPU, magnetischer Ständer und abnehmbare Wallet. Funktionen, Kompromisse und Passformprüfung."
+  },
+  "Three different ways to carry your phone. A specification-based comparison to help you choose the features you will actually use.": {
+    "ja": "スマートフォンを持ち歩く3つのスタイル。掲載仕様に基づいて、実際に使う機能を選ぶための比較ガイドです。",
+    "de": "Drei Arten, dein Smartphone mitzunehmen. Ein Vergleich anhand der Spezifikationen hilft dir, die Funktionen auszuwählen, die du tatsächlich nutzt."
+  },
+  "For iPhone 18 Pro Max / 17 Pro Max Case Magnetic Kickstand Sliding Camera Cover Shockproof PC + TPU Phone Shell - Orange": {
+    "ja": "iPhone 18 Pro Max / 17 Pro Max用 マグネット式スタンド・スライドカメラカバー付き PC＋TPUケース（耐衝撃表記）・オレンジ",
+    "de": "Hülle für iPhone 18 Pro Max / 17 Pro Max mit magnetischem Ständer, verschiebbarer Kameraabdeckung und PC + TPU – Orange; als stoßfest beschrieben"
+  },
+  "Magnetic kickstand case with sliding camera cover": {
+    "ja": "スライドカメラカバー付きマグネット式スタンドケース",
+    "de": "Hülle mit magnetischem Ständer und verschiebbarer Kameraabdeckung"
+  },
+  "For a desk-first routine": {
+    "ja": "デスクで使うことが多い方に",
+    "de": "Für den Alltag am Schreibtisch"
+  },
+  "A useful shortlist option if you want a phone stand and a camera cover in the same case.": {
+    "ja": "スマホスタンドとカメラカバーをひとつのケースにまとめたい方の候補です。",
+    "de": "Eine mögliche Wahl, wenn du Smartphone-Ständer und Kameraabdeckung in einer Hülle möchtest."
+  },
+  "The listing combines a PC + TPU shell, a magnetic feature, a kickstand and a sliding camera cover. That combination suits someone who props up their phone for calls and wants a cover over the camera between uses.": {
+    "ja": "掲載仕様にはPC＋TPUのシェル、マグネット機能、スタンド、スライド式カメラカバーが含まれます。通話中にスマホを立て、使用しない間はカメラを覆いたい方に向いた構成です。",
+    "de": "Die Produktangaben kombinieren eine PC- und TPU-Schale, eine Magnetfunktion, einen Ständer und eine verschiebbare Kameraabdeckung. Das passt zu Nutzern, die ihr Smartphone für Anrufe aufstellen und die Kamera dazwischen abdecken möchten."
+  },
+  "A hinge and a sliding cover add moving parts. Their long-term durability, the stand’s usable angles and the cover’s clearance have not been tested by SeineShop. Check that the cover is fully open before taking a photo.": {
+    "ja": "ヒンジとスライドカバーにより可動部分が増えます。長期的な耐久性、使える角度、カバーのクリアランスはSeineShopでは試験していません。撮影前にカバーが完全に開いていることをご確認ください。",
+    "de": "Scharnier und Schiebeabdeckung bringen bewegliche Teile mit sich. Langzeitbeständigkeit, nutzbare Ständerwinkel und Freiraum der Abdeckung wurden von SeineShop nicht getestet. Öffne die Abdeckung vor dem Fotografieren vollständig."
+  },
+  "Magnetic does not establish MagSafe or Qi2 certification. Confirm compatibility with your specific mount and charger; charging performance and magnet strength have not been measured.": {
+    "ja": "マグネット機能があることは、MagSafeやQi2の認証を意味しません。お使いのマウントや充電器との互換性をご確認ください。充電性能や磁力は測定していません。",
+    "de": "Eine Magnetfunktion belegt keine MagSafe- oder Qi2-Zertifizierung. Prüfe die Kompatibilität mit deiner Halterung und deinem Ladegerät; Ladeleistung und Magnetstärke wurden nicht gemessen."
+  },
+  "PC + TPU": {
+    "ja": "PC＋TPU",
+    "de": "PC + TPU"
+  },
+  "Crystal-clear TPU case": {
+    "ja": "クリアTPUケース",
+    "de": "Kristallklare TPU-Hülle"
+  },
+  "For a simpler everyday setup": {
+    "ja": "シンプルに使いたい方に",
+    "de": "Für einen einfacheren Alltag"
+  },
+  "Our starting point for shoppers who want to see the phone’s finish and do not need wallet storage or a built-in stand.": {
+    "ja": "スマホ本体の色を見せたい方や、カード収納・内蔵スタンドが不要な方に、まず検討いただきたいケースです。",
+    "de": "Unser Ausgangspunkt für alle, die das Design ihres Smartphones sehen möchten und weder Kartenfach noch eingebauten Ständer brauchen."
+  },
+  "The listed transparent TPU construction keeps the design straightforward. Among these three options, it is the most direct match for a shopper who prioritizes a clear appearance over extra mechanisms.": {
+    "ja": "掲載仕様の透明TPU構造はシンプルなデザインです。この3種類の中では、追加機構よりも透明感を重視する方に最も直接的な選択肢です。",
+    "de": "Das angegebene transparente TPU hält das Design schlicht. Unter diesen drei Optionen passt es am ehesten zu Käufern, denen eine klare Optik wichtiger ist als zusätzliche Mechanismen."
+  },
+  "The title describes an anti-fingerprint finish, but we have not verified that claim. There is no measured long-term yellowing, scratch or drop-test evidence in the materials reviewed, so we cannot promise that it stays crystal clear.": {
+    "ja": "商品名には指紋防止仕上げとありますが、当店では検証していません。確認した資料には長期的な黄変、傷、落下試験の測定データがないため、透明感が長く続くとは保証できません。",
+    "de": "Der Titel nennt eine Anti-Fingerabdruck-Oberfläche, die wir nicht überprüft haben. Die geprüften Unterlagen enthalten keine Messdaten zu langfristiger Vergilbung, Kratzern oder Falltests. Dauerhafte Klarheit können wir daher nicht versprechen."
+  },
+  "Check the camera opening, button response and screen-edge clearance on your exact device. A transparent shell alone does not confirm magnetic attachment or wireless-charging performance.": {
+    "ja": "お使いの実機でカメラ開口部、ボタン操作、画面端の余裕をご確認ください。透明なシェルであることだけでは、磁力による固定やワイヤレス充電性能は確認できません。",
+    "de": "Prüfe Kameraöffnung, Tastenbedienung und Abstand zum Displayrand an deinem genauen Gerät. Eine transparente Schale allein bestätigt weder magnetische Befestigung noch kabellose Ladeleistung."
+  },
+  "TPU": {
+    "ja": "TPU",
+    "de": "TPU"
+  },
+  "For iPhone 18 Pro Max / 17 Pro Max Case Anti-Fingerprint Crystal Clear TPU Phone Cover - Transparent": {
+    "ja": "iPhone 18 Pro Max / 17 Pro Max用 クリアTPUケース（指紋防止表記）・透明",
+    "de": "Transparente TPU-Hülle für iPhone 18 Pro Max / 17 Pro Max, als Anti-Fingerabdruck-Hülle beschrieben"
+  },
+  "Detachable zipper wallet case": {
+    "ja": "着脱式ファスナーウォレットケース",
+    "de": "Abnehmbare Wallet-Hülle mit Reißverschluss"
+  },
+  "For carrying phone and cards together": {
+    "ja": "スマホとカードを一緒に持ち歩く方に",
+    "de": "Für Smartphone und Karten zusammen"
+  },
+  "A practical design to consider if storage matters more to you than a minimal pocket profile.": {
+    "ja": "ポケットに収まる薄さより、収納力を重視する方が検討したいデザインです。",
+    "de": "Ein praktisches Design, wenn dir Stauraum wichtiger ist als eine möglichst schlanke Form für die Hosentasche."
+  },
+  "The listing describes PU leather and TPU, a zipper wallet, a detachable cover and a stand feature. The detachable arrangement offers a reason to shortlist it if you want to separate the phone cover from the wallet section.": {
+    "ja": "掲載仕様にはPUレザーとTPU、ファスナー付きウォレット、着脱式カバー、スタンド機能が記載されています。スマホカバーをウォレット部分から分離して使いたい方に検討する価値があります。",
+    "de": "Die Angaben nennen PU-Kunstleder und TPU, eine Reißverschluss-Wallet, eine abnehmbare Abdeckung und eine Standfunktion. Die abnehmbare Konstruktion ist interessant, wenn du Handyhülle und Wallet trennen möchtest."
+  },
+  "The wallet format adds components and storage around the phone. We have not checked pocket fit, the attachment mechanism or how many cards it comfortably holds. PU leather is a synthetic material, not full-grain leather.": {
+    "ja": "ウォレット型はスマホの周囲に部品と収納が加わります。ポケットへの収まり、取り付け機構、無理なく入るカード枚数は確認していません。PUレザーは合成素材で、フルグレインレザーではありません。",
+    "de": "Die Wallet-Bauweise ergänzt Bauteile und Stauraum um das Smartphone. Wir haben weder Taschenpassform noch Befestigung oder komfortable Kartenkapazität geprüft. PU-Kunstleder ist synthetisch und kein vollnarbiges Leder."
+  },
+  "Confirm closure, card capacity and attachment security before purchase. Do not assume that this design supports wireless charging, magnetic mounts or RFID blocking; those capabilities are not established by the specifications reviewed.": {
+    "ja": "購入前に留め具、カード収納枚数、取り付けの安全性をご確認ください。確認した仕様ではワイヤレス充電、マグネットマウント、RFID遮断への対応は裏付けられていないため、対応するものとお考えにならないでください。",
+    "de": "Prüfe vor dem Kauf Verschluss, Kartenkapazität und sichere Befestigung. Gehe nicht von kabellosem Laden, Magnethalterungen oder RFID-Schutz aus; diese Eigenschaften sind durch die geprüften Angaben nicht belegt."
+  },
+  "PU leather + TPU": {
+    "ja": "PUレザー＋TPU",
+    "de": "PU-Kunstleder + TPU"
+  },
+  "For iPhone 18 Pro Max / 17 Pro Max Phone Case PU Leather Zipper Wallet Detachable Cover - Green": {
+    "ja": "iPhone 18 Pro Max / 17 Pro Max用 PUレザー着脱式ファスナーウォレットケース・グリーン",
+    "de": "Abnehmbare PU-Kunstleder-Wallet-Hülle mit Reißverschluss für iPhone 18 Pro Max / 17 Pro Max – Grün"
+  },
+  "The short answer: choose for your routine": {
+    "ja": "結論：毎日の使い方に合わせて選ぶ",
+    "de": "Die kurze Antwort: Wähle nach deinem Alltag"
+  },
+  "For a simple, transparent look, start with the clear TPU design. If your phone spends a lot of time propped up on a desk, consider the kickstand case. If carrying cards with your phone is the priority, the detachable wallet design is the more relevant option. None is a universal winner: the extra features only earn their place if you use them.": {
+    "ja": "シンプルで透明な見た目ならクリアTPUタイプから。デスクでスマホを立てる時間が長いならスタンド付き、カードと一緒に持ち歩くことが大切なら着脱式ウォレットが候補です。誰にでも最適な1つがあるわけではなく、追加機能は実際に使ってこそ役立ちます。",
+    "de": "Für eine schlichte, transparente Optik beginne mit TPU. Steht dein Smartphone oft auf dem Schreibtisch, kommt die Ständerhülle infrage. Sind Karten unterwegs wichtig, ist die abnehmbare Wallet relevanter. Keine ist für alle die beste Wahl: Zusatzfunktionen lohnen sich nur, wenn du sie nutzt."
+  },
+  "This is a comparison of three items in the SeineShop catalog, written by our own store team. We have reviewed their listed materials, features and product images; we have not handled or drop-tested these cases. Recommendations below are based on those specifications, not on hands-on testing, customer ratings or laboratory measurements.": {
+    "ja": "SeineShopの商品3点を当店チームが比較しました。掲載素材、機能、商品画像を確認しており、実物の使用や落下試験は行っていません。以下のおすすめは仕様に基づくもので、実機テスト、顧客評価、実験室での測定に基づくものではありません。",
+    "de": "Unser Shop-Team vergleicht drei Produkte aus dem SeineShop-Sortiment. Wir haben Materialangaben, Funktionen und Produktbilder geprüft, die Hüllen jedoch weder selbst benutzt noch Falltests durchgeführt. Die Empfehlungen beruhen auf Spezifikationen, nicht auf Praxistests, Kundenbewertungen oder Labormessungen."
+  },
+  "Before choosing: “iPhone 18” is not a complete fit specification": {
+    "ja": "選ぶ前に：「iPhone 18」だけでは適合を判断できません",
+    "de": "Vor der Auswahl: „iPhone 18“ allein reicht für die Passform nicht aus"
+  },
+  "This guide focuses on listings labeled for iPhone 18 Pro Max. Do not treat them as suitable for every iPhone 18 model. Check your exact model in Settings → General → About, then confirm the selected case variant, camera opening, button layout and connector access.": {
+    "ja": "このガイドはiPhone 18 Pro Max用と表示された商品を扱います。すべてのiPhone 18モデルに対応するとお考えにならないでください。「設定→一般→情報」で正確な機種を確認し、選択したケース、カメラ開口部、ボタン配置、端子へのアクセスをご確認ください。",
+    "de": "Dieser Ratgeber behandelt Angebote für das iPhone 18 Pro Max. Sie sind nicht automatisch für jedes iPhone-18-Modell geeignet. Prüfe dein genaues Modell unter Einstellungen → Allgemein → Info sowie die gewählte Variante, Kameraöffnung, Tastenanordnung und den Anschlusszugang."
+  },
+  "These catalog listings also mention iPhone 17 Pro Max. That shared label is a supplier compatibility claim, not an independently verified fit result. Ask us to confirm the specific SKU and device before ordering. Similar model names or screen sizes alone are not enough to establish case compatibility.": {
+    "ja": "これらの商品にはiPhone 17 Pro Maxも記載されています。これは仕入先の互換性表記であり、独自に適合を検証した結果ではありません。ご注文前にSKUとデバイスを当店へお知らせください。似た機種名や画面サイズだけでは互換性を判断できません。",
+    "de": "Die Angebote nennen auch das iPhone 17 Pro Max. Diese gemeinsame Angabe ist eine Kompatibilitätsaussage des Lieferanten, kein unabhängig bestätigtes Testergebnis. Lass die konkrete SKU und dein Gerät vor der Bestellung von uns prüfen. Ähnliche Modellnamen oder Displaygrößen allein reichen nicht aus."
+  },
+  "How we would narrow the shortlist": {
+    "ja": "候補を絞るための考え方",
+    "de": "So würden wir die Auswahl eingrenzen"
+  },
+  "First, decide whether you need storage or a stand. If you need neither, a simpler case is the natural place to start. If you use video calls at a desk, inspect the kickstand angle and stability before prioritizing a stand design. If you carry cards, check the wallet’s closure and capacity rather than judging it only by its photograph.": {
+    "ja": "まず収納やスタンドが必要かを決めましょう。どちらも不要ならシンプルなケースから。デスクでビデオ通話をするなら、スタンドの角度と安定性を確認してください。カードを持ち歩くなら、写真だけで判断せず、ウォレットの留め具と容量をご確認ください。",
+    "de": "Entscheide zuerst, ob du Stauraum oder einen Ständer brauchst. Falls nicht, beginne mit einer einfachen Hülle. Für Videoanrufe am Schreibtisch prüfe Winkel und Stabilität des Ständers. Bei Karten kommt es auf Verschluss und Kapazität an, nicht nur auf das Produktfoto."
+  },
+  "Next, check how the case works with the accessories you already own. A magnetic label does not tell you the holding force, charging speed or certification. A wallet section can also change the space between a phone and a charger. Confirm the exact combination instead of assuming that all magnetic or detachable cases behave alike.": {
+    "ja": "次に、すでに持っているアクセサリーとの組み合わせを確認しましょう。マグネットという表記だけでは保持力、充電速度、認証はわかりません。ウォレット部分がスマホと充電器の距離を変えることもあります。すべてのマグネット式・着脱式ケースが同じように使えるとは限りません。",
+    "de": "Prüfe anschließend das Zusammenspiel mit deinem vorhandenen Zubehör. „Magnetisch“ sagt nichts über Haltekraft, Ladegeschwindigkeit oder Zertifizierung aus. Ein Wallet-Teil kann den Abstand zum Ladegerät verändern. Prüfe die konkrete Kombination, statt identisches Verhalten aller magnetischen oder abnehmbaren Hüllen anzunehmen."
+  },
+  "Finally, consider protection claims separately from convenience features. A camera slider, a flexible shell or a rugged-looking corner is not a measured drop rating. We have not verified a drop height, raised-edge measurement or durability standard for any of these three cases. If that evidence is essential to your decision, ask for it before purchasing.": {
+    "ja": "最後に、保護性能の表記と便利な機能は別々に判断してください。スライドカメラカバー、柔軟なシェル、頑丈そうな角があっても、落下性能の測定結果にはなりません。この3点について落下高さ、縁の高さ、耐久規格は検証していません。判断に必要な場合は購入前にお問い合わせください。",
+    "de": "Betrachte Schutzversprechen getrennt von Komfortfunktionen. Kameraschieber, flexible Schale oder robuste Ecken sind keine gemessene Fallfestigkeit. Für keine der drei Hüllen haben wir Fallhöhe, Randhöhe oder Haltbarkeitsstandard verifiziert. Wenn du diese Nachweise brauchst, frage vor dem Kauf danach."
+  },
+  "Shop the SeineShop shortlist": {
+    "ja": "SeineShopのおすすめを見る",
+    "de": "Die SeineShop-Auswahl entdecken"
+  },
+  "Explore the three SeineShop cases below using their product-details links. Check the exact model, selected variant, current price and availability on each product page. A published product is not necessarily in stock; sold-out items cannot be ordered until inventory is available.": {
+    "ja": "以下の商品リンクから3種類のケースをご覧いただけます。各ページで正確な機種、バリエーション、現在の価格と在庫をご確認ください。公開済みの商品でも在庫があるとは限りません。売り切れの場合は入荷まで注文できません。",
+    "de": "Öffne die Produktlinks zu den drei SeineShop-Hüllen. Prüfe das genaue Modell, die Variante, den aktuellen Preis und die Verfügbarkeit. Eine veröffentlichte Produktseite bedeutet nicht automatisch Lagerbestand; ausverkaufte Artikel sind bis zur Verfügbarkeit nicht bestellbar."
+  },
+  "Will these cases fit a standard iPhone 18?": {
+    "ja": "通常のiPhone 18にも使えますか？",
+    "de": "Passen diese Hüllen auf ein normales iPhone 18?"
+  },
+  "This shortlist covers catalog listings for iPhone 18 Pro Max. Do not order one for another model unless the exact product variant explicitly confirms compatibility.": {
+    "ja": "この比較はiPhone 18 Pro Max用と記載された商品が対象です。選択したバリエーションに対応が明記されていない限り、別の機種用として注文しないでください。",
+    "de": "Diese Auswahl umfasst Angebote für das iPhone 18 Pro Max. Bestelle sie nicht für ein anderes Modell, sofern die genaue Variante die Kompatibilität nicht ausdrücklich bestätigt."
+  },
+  "Is the magnetic kickstand case MagSafe certified?": {
+    "ja": "マグネット式スタンドケースはMagSafe認証済みですか？",
+    "de": "Ist die magnetische Ständerhülle MagSafe-zertifiziert?"
+  },
+  "The listing describes a magnetic feature. We do not have certification evidence, magnet-strength measurements or charging test results for this SKU, so we do not describe it as MagSafe or Qi2 certified.": {
+    "ja": "掲載情報にはマグネット機能の記載がありますが、このSKUの認証資料、磁力測定、充電試験結果はありません。そのためMagSafeまたはQi2認証済みとは案内していません。",
+    "de": "Die Angaben nennen eine Magnetfunktion. Für diese SKU liegen uns weder Zertifizierungsnachweise noch Magnetmessungen oder Ladetests vor. Wir bezeichnen sie daher nicht als MagSafe- oder Qi2-zertifiziert."
+  },
+  "Which option would you shortlist for a clear look?": {
+    "ja": "透明な見た目ならどれを選びますか？",
+    "de": "Welche Option kommt für eine transparente Optik infrage?"
+  },
+  "The transparent TPU case, SKU 6601223322A, is the closest match among these three designs. Its anti-fingerprint claim and long-term clarity have not been independently tested by SeineShop.": {
+    "ja": "この3種類では、透明TPUケース（SKU 6601223322A）が最も近い選択肢です。指紋防止の表記や長期的な透明感は、SeineShopでは独自に試験していません。",
+    "de": "Unter diesen drei Designs passt die transparente TPU-Hülle, SKU 6601223322A, am besten. Anti-Fingerabdruck-Eigenschaft und langfristige Klarheit wurden von SeineShop nicht unabhängig getestet."
+  },
+  "Can I buy these cases now?": {
+    "ja": "今すぐ購入できますか？",
+    "de": "Kann ich diese Hüllen jetzt kaufen?"
+  },
+  "The recommended cases now have live product pages. Check the availability shown for your selected variant. Sold-out items cannot be ordered; contact us with the SKU if you need help with availability or compatibility.": {
+    "ja": "おすすめのケースは商品ページを公開しています。選択したバリエーションの在庫表示をご確認ください。売り切れの商品は注文できません。在庫や互換性についてはSKUを添えてお問い合わせください。",
+    "de": "Die empfohlenen Hüllen haben veröffentlichte Produktseiten. Prüfe die Verfügbarkeit deiner Variante. Ausverkaufte Artikel sind nicht bestellbar. Kontaktiere uns mit der SKU bei Fragen zu Verfügbarkeit oder Kompatibilität."
+  },
+  "iPhone 18": {
+    "ja": "iPhone 18",
+    "de": "iPhone 18"
+  },
+  "Compare iPhone 18 case styles, materials and everyday features. Check the exact model and compatibility before choosing.": {
+    "ja": "iPhone 18ケースのデザイン、素材、毎日使う機能を比較。選ぶ前に正確な機種と互換性をご確認ください。",
+    "de": "Vergleiche Designs, Materialien und Alltagsfunktionen von iPhone-18-Hüllen. Prüfe vor der Auswahl das genaue Modell und die Kompatibilität."
+  },
+  "The SeineShop edit": {
+    "ja": "SeineShopのおすすめ",
+    "de": "Die SeineShop-Auswahl"
+  },
+  "OUR FEATURED PICKS": {
+    "ja": "おすすめアイテム",
+    "de": "UNSERE EMPFEHLUNGEN"
+  },
+  "CHARGING ESSENTIAL": {
+    "ja": "充電の必需品",
+    "de": "LADEZUBEHÖR"
+  },
+  "PHONE PROTECTION": {
+    "ja": "スマートフォン保護",
+    "de": "SMARTPHONE-SCHUTZ"
+  },
+  "Available": {
+    "ja": "在庫あり",
+    "de": "Verfügbar"
+  },
+  "Available products": {
+    "ja": "販売中の商品",
+    "de": "Verfügbare Produkte"
+  },
+  "Accessory comparisons and practical guides, with the details that matter before you choose.": {
+    "ja": "選ぶ前に知っておきたい情報をまとめた、アクセサリー比較と実用ガイド。",
+    "de": "Zubehörvergleiche und praktische Ratgeber mit den Details, die vor der Auswahl wichtig sind."
+  },
+  "Good tech. Thoughtful choices.": {
+    "ja": "便利なテクノロジー。納得できる選択。",
+    "de": "Gute Technik. Durchdachte Entscheidungen."
+  },
+  "Privacy Policy": {
+    "ja": "プライバシーポリシー",
+    "de": "Datenschutzerklärung"
+  },
+  "Camera protection": {
+    "ja": "カメラ保護",
+    "de": "Kameraschutz"
+  },
+  "iPhone 18 Pro Max Accessories": {
+    "ja": "iPhone 18 Pro Max用アクセサリー",
+    "de": "iPhone 18 Pro Max Zubehör"
+  },
+  "Find your everyday fit: protective cases, screen protectors and camera protection listed for iPhone 18 Pro Max. Compare materials, finishes and features, and check the exact device compatibility on each product.": {
+    "ja": "iPhone 18 Pro Max用のケース、画面保護、カメラ保護アイテム。素材、仕上げ、機能を比較し、各商品の正確な対応機種をご確認ください。",
+    "de": "Entdecke Hüllen, Displayschutz und Kameraschutz für das iPhone 18 Pro Max. Vergleiche Materialien, Oberflächen und Funktionen und prüfe die genaue Kompatibilität jedes Produkts."
+  },
+  "Rubberized coating": {
+    "ja": "ラバー調コーティング",
+    "de": "Gummierte Beschichtung"
+  },
+  "Qi-enabled phones; Wireless-charging earbuds; Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7 (supplier-listed; verify exact device)": {
+    "ja": "Qi対応スマートフォン、ワイヤレス充電対応イヤホン、Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7（仕入先表記・正確な対応機種をご確認ください）",
+    "de": "Qi-fähige Smartphones; kabellos ladbare Ohrhörer; Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7 (Lieferantenangabe; genaues Gerät prüfen)"
+  },
+  "Foldable stand; Portrait and landscape phone charging": {
+    "ja": "折りたたみ式スタンド、スマートフォンの縦置き・横置き充電",
+    "de": "Faltbarer Ständer; Smartphone-Laden im Hoch- und Querformat"
+  },
+  "Wireless charger, Charging cable, English user manual": {
+    "ja": "ワイヤレス充電器、充電ケーブル、英語説明書",
+    "de": "Kabelloses Ladegerät, Ladekabel, englische Bedienungsanleitung"
+  },
+  "Weak magnet; Charging speed depends on device and power supply": {
+    "ja": "弱い磁石を内蔵、充電速度はデバイスと電源により異なります",
+    "de": "Schwacher Magnet; Ladegeschwindigkeit abhängig von Gerät und Stromversorgung"
+  },
+  "Cart drawer": {
+    "ja": "カートパネル",
+    "de": "Warenkorb-Seitenleiste"
+  },
+  "Cart page": {
+    "ja": "カートページ",
+    "de": "Warenkorbseite"
+  },
+  "Create": {
+    "ja": "追加",
+    "de": "Erstellen"
+  },
+  "Creating": {
+    "ja": "追加中",
+    "de": "Wird erstellt"
+  },
+  "Delete": {
+    "ja": "削除",
+    "de": "Löschen"
+  },
+  "Deleting": {
+    "ja": "削除中",
+    "de": "Wird gelöscht"
+  },
+  "Save": {
+    "ja": "保存",
+    "de": "Speichern"
+  },
+  "Saving": {
+    "ja": "保存中",
+    "de": "Wird gespeichert"
+  },
+  "Update": {
+    "ja": "更新",
+    "de": "Aktualisieren"
+  },
+  "Updating": {
+    "ja": "更新中",
+    "de": "Wird aktualisiert"
+  },
+  "Searching": {
+    "ja": "検索中",
+    "de": "Suche läuft"
+  },
+  "Discover phone cases, screen protection, wireless charging and everyday smart essentials at SeineShop.": {
+    "ja": "SeineShopでスマホケース、画面保護、ワイヤレス充電、毎日のスマートな必需品を見つけましょう。",
+    "de": "Entdecke Smartphone-Hüllen, Displayschutz, kabelloses Laden und smarte Alltagsbegleiter bei SeineShop."
+  },
+  "Orange magnetic kickstand case with sliding camera cover from the SeineShop shortlist": {
+    "ja": "SeineShopおすすめのオレンジ色マグネット式スタンド・スライドカメラカバー付きケース",
+    "de": "Orange Hülle mit magnetischem Ständer und Kamera-Schiebeabdeckung aus der SeineShop-Auswahl"
+  },
+  "Product Image": {
+    "ja": "商品画像",
+    "de": "Produktbild"
+  },
+  "5W / 7.5W / 10W / up to 15W": {
+    "ja": "5W / 7.5W / 10W / 最大15W",
+    "de": "5W / 7,5W / 10W / bis zu 15W"
+  },
+  "Get help with SeineShop product compatibility, orders, delivery and store policies. Contact our team with your product or order questions.": {
+    "ja": "SeineShopの製品互換性、ご注文、配送、ポリシーについてご案内します。商品やご注文のご質問は当店までお問い合わせください。",
+    "de": "Hilfe zu SeineShop-Produktkompatibilität, Bestellungen, Lieferung und Richtlinien. Kontaktiere unser Team bei Fragen zu Produkten oder Bestellungen."
+  },
+  "Browse SeineShop collections of phone accessories, protective cases, screen protection and everyday charging essentials.": {
+    "ja": "SeineShopのスマホアクセサリー、保護ケース、画面保護、毎日の充電アイテムをカテゴリーから探せます。",
+    "de": "Entdecke SeineShop-Kollektionen mit Smartphone-Zubehör, Schutzhüllen, Displayschutz und Ladezubehör für jeden Tag."
+  },
+  "Explore all available SeineShop accessories. Compare features, prices and exact device compatibility before choosing.": {
+    "ja": "SeineShopの販売中のアクセサリーを一覧で比較。機能、価格、正確な互換性を確認して選びましょう。",
+    "de": "Entdecke alle verfügbaren SeineShop-Accessoires. Vergleiche Funktionen, Preise und genaue Gerätekompatibilität vor der Auswahl."
+  },
+  "Find the published SeineShop store policies and information for your shopping experience.": {
+    "ja": "SeineShopの公開済みショップポリシーとお買い物に関する情報をご覧いただけます。",
+    "de": "Hier findest du die veröffentlichten SeineShop-Richtlinien und Informationen für deinen Einkauf."
+  },
+  "Read the latest published stories and accessory guides from SeineShop.": {
+    "ja": "SeineShopの最新記事とアクセサリーガイドを読む。",
+    "de": "Lies die neuesten Beiträge und Zubehör-Ratgeber von SeineShop."
+  },
+  "Explore the B-20A foldable 3-in-1 charging station for compatible phones, wireless earbuds and Samsung Galaxy Watch models.": {
+    "ja": "対応スマートフォン、ワイヤレスイヤホン、Samsung Galaxy Watch向けB-20A折りたたみ式3-in-1充電スタンドをご紹介。",
+    "de": "Entdecke die faltbare B-20A 3-in-1-Ladestation für kompatible Smartphones, kabellose Ohrhörer und Samsung Galaxy Watch Modelle."
+  },
+  "Blog": {
+    "ja": "ブログ",
+    "de": "Blog"
+  },
+  "Welcome to your account.": {
+    "ja": "マイアカウントへようこそ。",
+    "de": "Willkommen in deinem Konto."
+  },
+  "Account Details": {
+    "ja": "アカウント情報",
+    "de": "Kontodetails"
+  },
+  "Product photos": {
+    "ja": "商品写真",
+    "de": "Produktfotos"
+  },
+  "Product photo": {
+    "ja": "商品写真",
+    "de": "Produktfoto"
+  },
+  "Image unavailable": {
+    "ja": "画像はありません",
+    "de": "Kein Bild verfügbar"
+  },
+  "Available to order": {
+    "ja": "ご注文いただけます",
+    "de": "Bestellbar"
+  },
+  "One compact home for your daily charging routine. Fold it down, take it along, and keep your essentials together.": {
+    "ja": "毎日の充電をひとつに。コンパクトに折りたたんで、外出先にも持ち運べます。",
+    "de": "Alles für deine tägliche Laderoutine an einem Ort. Zusammenklappen, mitnehmen und die wichtigsten Geräte gemeinsam laden."
+  },
+  "Phone · earbuds · watch": {
+    "ja": "スマホ・イヤホン・時計",
+    "de": "Handy · Earbuds · Uhr"
+  },
+  "Max. phone output": {
+    "ja": "スマホ最大出力",
+    "de": "Max. Handy-Ladeleistung"
+  },
+  "Foldable design": {
+    "ja": "折りたたみ式",
+    "de": "Zusammenklappbar"
+  },
+  "For Qi-compatible phones, wireless-charging earbuds and compatible Samsung Galaxy Watches. Check your device before ordering. Power adapter not included.": {
+    "ja": "Qi対応スマホ、ワイヤレス充電対応イヤホン、対応するSamsung Galaxy Watch用。ご購入前に対応機種をご確認ください。電源アダプターは付属しません。",
+    "de": "Für Qi-fähige Handys, kabellos ladbare Earbuds und kompatible Samsung Galaxy Watches. Bitte vor dem Kauf die Kompatibilität prüfen. Netzteil nicht enthalten."
+  },
+  "Buy now": {
+    "ja": "今すぐ購入",
+    "de": "Jetzt kaufen"
+  },
+  "Opening checkout…": {
+    "ja": "購入手続きへ移動中…",
+    "de": "Kasse wird geöffnet…"
+  },
+  "Secure checkout by Shopify. Shipping and taxes calculated at checkout.": {
+    "ja": "Shopifyの安全な決済。送料・税金は購入手続きで計算されます。",
+    "de": "Sicherer Checkout mit Shopify. Versand und Steuern werden an der Kasse berechnet."
+  },
+  "Choose a valid option and a quantity from 1 to 99.": {
+    "ja": "有効なオプションと1～99の数量を選択してください。",
+    "de": "Bitte eine gültige Variante und eine Menge zwischen 1 und 99 wählen."
+  },
+  "Checkout is temporarily unavailable. Please try again or use your cart.": {
+    "ja": "現在、購入手続きを利用できません。再試行するか、カートをご利用ください。",
+    "de": "Der Checkout ist vorübergehend nicht verfügbar. Bitte erneut versuchen oder den Warenkorb verwenden."
+  },
+  "Product details": {
+    "ja": "商品詳細",
+    "de": "Produktdetails"
+  },
+  "A closer look": {
+    "ja": "詳しく見る",
+    "de": "Im Detail"
+  },
+  "Enlarge product photo": {
+    "ja": "商品画像を拡大",
+    "de": "Produktfoto vergrößern"
+  },
+  "Zoom": {
+    "ja": "拡大",
+    "de": "Vergrößern"
+  },
+  "Close enlarged photo": {
+    "ja": "拡大画像を閉じる",
+    "de": "Vergrößertes Foto schließen"
+  },
+  "Previous photo": {
+    "ja": "前の画像",
+    "de": "Vorheriges Foto"
+  },
+  "Next photo": {
+    "ja": "次の画像",
+    "de": "Nächstes Foto"
+  },
+  "Quick purchase": {
+    "ja": "クイック購入",
+    "de": "Schnellkauf"
+  },
+  "Edit options": {
+    "ja": "選択を変更",
+    "de": "Auswahl ändern"
+  },
+  "Payment options": {
+    "ja": "お支払い方法",
+    "de": "Zahlungsmöglichkeiten"
+  },
+  "Available payment options are shown at checkout for your location and device.": {
+    "ja": "ご利用可能な決済方法は、お住まいの地域や端末に応じて購入手続きで表示されます。",
+    "de": "Verfügbare Zahlungsarten werden an der Kasse passend zu Standort und Gerät angezeigt."
+  },
+  "Secure checkout": {
+    "ja": "安全な決済",
+    "de": "Sicherer Checkout"
+  },
+  "Pay through Shopify": {
+    "ja": "Shopifyでお支払い",
+    "de": "Bezahlen über Shopify"
+  },
+  "Delivery options": {
+    "ja": "配送方法",
+    "de": "Versandoptionen"
+  },
+  "See rates before you pay": {
+    "ja": "お支払い前に送料を確認",
+    "de": "Versandkosten vor der Zahlung sehen"
+  },
+  "View store policies": {
+    "ja": "ストアポリシーを見る",
+    "de": "Shop-Richtlinien ansehen"
+  },
+  "Here to help": {
+    "ja": "お問い合わせ",
+    "de": "Wir helfen gerne"
+  },
+  "Explore this product": {
+    "ja": "商品について詳しく見る",
+    "de": "Dieses Produkt entdecken"
+  },
+  "Details & specifications": {
+    "ja": "詳細・仕様",
+    "de": "Details & Spezifikationen"
+  },
+  "Questions & answers": {
+    "ja": "よくある質問",
+    "de": "Fragen & Antworten"
+  },
+  "Made for your everyday": {
+    "ja": "毎日の暮らしに",
+    "de": "Für deinen Alltag"
+  },
+  "Three essentials.": {
+    "ja": "3つの必需品。",
+    "de": "Drei Alltagsbegleiter."
+  },
+  "One charging spot.": {
+    "ja": "充電はひとつの場所で。",
+    "de": "Ein Ladeplatz."
+  },
+  "Bring your phone, earbuds and compatible Galaxy Watch together. A foldable stand keeps your charging setup in one place, at your desk or on the move.": {
+    "ja": "スマホ、イヤホン、対応するGalaxy Watchをひとつに。折りたたみ式スタンドで、デスクでも外出先でも充電環境をまとめられます。",
+    "de": "Handy, Earbuds und kompatible Galaxy Watch gemeinsam laden. Der faltbare Ständer bündelt deinen Ladeplatz am Schreibtisch und unterwegs."
+  },
+  "Find your fit": {
+    "ja": "対応機種を確認",
+    "de": "Kompatibilität prüfen"
+  },
+  "B-20A white charging station; devices not included": {
+    "ja": "B-20A ホワイト充電スタンド。端末は付属しません",
+    "de": "B-20A Ladestation in Weiß; Geräte nicht enthalten"
+  },
+  "Black or White. Your space, your choice.": {
+    "ja": "ブラックとホワイト。空間に合う色を。",
+    "de": "Schwarz oder Weiß. Dein Raum, deine Wahl."
+  },
+  "Simplify": {
+    "ja": "すっきり",
+    "de": "Vereinfachen"
+  },
+  "Adapt": {
+    "ja": "使い方に合わせて",
+    "de": "Anpassen"
+  },
+  "Take along": {
+    "ja": "持ち運ぶ",
+    "de": "Mitnehmen"
+  },
+  "A place for all three.": {
+    "ja": "3つをまとめて。",
+    "de": "Ein Platz für alle drei."
+  },
+  "Dedicated charging areas for a compatible phone, earbuds and Galaxy Watch.": {
+    "ja": "対応するスマホ、イヤホン、Galaxy Watchそれぞれの充電エリア。",
+    "de": "Eigene Ladebereiche für ein kompatibles Handy, Earbuds und eine Galaxy Watch."
+  },
+  "Portrait or landscape.": {
+    "ja": "縦向きでも横向きでも。",
+    "de": "Hoch- oder Querformat."
+  },
+  "Keep your phone upright or turn it sideways while charging.": {
+    "ja": "充電しながら、スマホを縦向きにも横向きにも置けます。",
+    "de": "Stelle dein Handy beim Laden aufrecht oder quer auf."
+  },
+  "Fold into your routine.": {
+    "ja": "暮らしに合わせて折りたたむ。",
+    "de": "Faltbar für deinen Alltag."
+  },
+  "A foldable design and USB-C input make it easy to move your setup.": {
+    "ja": "折りたたみ式デザインとUSB-C入力で、充電環境の移動も簡単。",
+    "de": "Faltbares Design und USB-C-Eingang erleichtern das Mitnehmen."
+  },
+  "Check before you choose": {
+    "ja": "ご購入前に確認",
+    "de": "Vor dem Kauf prüfen"
+  },
+  "Does it fit your devices?": {
+    "ja": "お使いの端末に対応していますか？",
+    "de": "Passt es zu deinen Geräten?"
+  },
+  "Ask us about your device": {
+    "ja": "対応機種について問い合わせる",
+    "de": "Zur Gerätekompatibilität fragen"
+  },
+  "Your phone": {
+    "ja": "スマートフォン",
+    "de": "Dein Handy"
+  },
+  "Qi-enabled phones": {
+    "ja": "Qi対応スマートフォン",
+    "de": "Qi-fähige Handys"
+  },
+  "Up to 15W. Actual speed depends on your phone and power supply.": {
+    "ja": "最大15W。実際の速度はスマホと電源により異なります。",
+    "de": "Bis zu 15W. Die tatsächliche Leistung hängt von Handy und Stromversorgung ab."
+  },
+  "Your earbuds": {
+    "ja": "イヤホン",
+    "de": "Deine Earbuds"
+  },
+  "Wireless-charging cases": {
+    "ja": "ワイヤレス充電対応ケース",
+    "de": "Kabellos ladbare Cases"
+  },
+  "3W charging for compatible earbuds cases. A wireless-charging case is required.": {
+    "ja": "対応するイヤホンケースを3Wで充電。ワイヤレス充電対応ケースが必要です。",
+    "de": "3W für kompatible Earbud-Cases. Ein kabellos ladbares Case ist erforderlich."
+  },
+  "Your watch": {
+    "ja": "スマートウォッチ",
+    "de": "Deine Uhr"
+  },
+  "Samsung Galaxy Watch": {
+    "ja": "Samsung Galaxy Watch",
+    "de": "Samsung Galaxy Watch"
+  },
+  "Supplier-listed models: Galaxy Watch 3 / 4 / 5 / 6 / 7. Confirm your exact model; Apple Watch compatibility is not listed.": {
+    "ja": "メーカー掲載機種：Galaxy Watch 3 / 4 / 5 / 6 / 7。お使いの機種をご確認ください。Apple Watchへの対応は記載されていません。",
+    "de": "Vom Lieferanten aufgeführt: Galaxy Watch 3 / 4 / 5 / 6 / 7. Bitte das genaue Modell prüfen; Apple Watch wird nicht als kompatibel genannt."
+  },
+  "Devices shown are for illustration and are not included. This model contains a weak magnet; it is not advertised as Qi2 or MagSafe-certified.": {
+    "ja": "画像の端末は使用例で、付属しません。本製品は弱い磁石を使用しています。Qi2・MagSafe認証品としては案内していません。",
+    "de": "Abgebildete Geräte dienen der Illustration und sind nicht enthalten. Das Modell enthält einen schwachen Magneten und wird nicht als Qi2- oder MagSafe-zertifiziert beworben."
+  },
+  "Ready to unpack": {
+    "ja": "開封する前に",
+    "de": "Bereit zum Auspacken"
+  },
+  "What is in the box?": {
+    "ja": "同梱物は？",
+    "de": "Was ist im Lieferumfang?"
+  },
+  "A power adapter is not listed in the package contents.": {
+    "ja": "同梱物一覧に電源アダプターは記載されていません。",
+    "de": "Ein Netzteil ist im Lieferumfang nicht aufgeführt."
+  },
+  "B-20A charging station": {
+    "ja": "B-20A充電スタンド",
+    "de": "B-20A Ladestation"
+  },
+  "Charging cable": {
+    "ja": "充電ケーブル",
+    "de": "Ladekabel"
+  },
+  "English user manual": {
+    "ja": "英語の取扱説明書",
+    "de": "Englische Bedienungsanleitung"
+  },
+  "A little clarity": {
+    "ja": "疑問を解消",
+    "de": "Gut zu wissen"
+  },
+  "Before you plug in.": {
+    "ja": "充電を始める前に。",
+    "de": "Bevor du loslädst."
+  },
+  "Still have a question?": {
+    "ja": "ご不明な点はありますか？",
+    "de": "Noch eine Frage?"
+  },
+  "Will it charge my Apple Watch?": {
+    "ja": "Apple Watchを充電できますか？",
+    "de": "Kann ich meine Apple Watch laden?"
+  },
+  "Apple Watch compatibility is not listed for this model. The watch charger is listed for Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7. Please confirm your device before ordering.": {
+    "ja": "本モデルはApple Watchへの対応が記載されていません。Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7用として掲載されています。ご購入前に機種をご確認ください。",
+    "de": "Apple Watch ist für dieses Modell nicht als kompatibel aufgeführt. Der Uhren-Lader ist für Samsung Galaxy Watch 3 / 4 / 5 / 6 / 7 gelistet. Bitte vor dem Kauf das Gerät prüfen."
+  },
+  "Is a power adapter included?": {
+    "ja": "電源アダプターは付属しますか？",
+    "de": "Ist ein Netzteil enthalten?"
+  },
+  "The listed package contains the charging station, a charging cable and an English manual. A power adapter is not listed. Required input: 9V/2A or 12V/3A through USB-C.": {
+    "ja": "同梱物は充電スタンド、充電ケーブル、英語の説明書です。電源アダプターは記載されていません。USB-C入力は9V/2Aまたは12V/3Aです。",
+    "de": "Aufgeführt sind Ladestation, Ladekabel und englische Anleitung. Ein Netzteil ist nicht gelistet. Benötigter USB-C-Eingang: 9V/2A oder 12V/3A."
+  },
+  "Will my phone charge at 15W?": {
+    "ja": "スマホは15Wで充電されますか？",
+    "de": "Lädt mein Handy mit 15W?"
+  },
+  "15W is the maximum listed phone output, not a guaranteed speed for every phone. Supported outputs are 5W, 7.5W, 10W and 15W; actual speed depends on the device and power supply.": {
+    "ja": "15Wは最大出力であり、すべてのスマホで保証される速度ではありません。出力は5W・7.5W・10W・15Wに対応し、実際の速度は端末と電源に依存します。",
+    "de": "15W ist die angegebene Maximalleistung, keine Garantie für jedes Handy. Unterstützt werden 5W, 7,5W, 10W und 15W; die tatsächliche Leistung hängt von Gerät und Stromversorgung ab."
+  },
+  "Can I use my phone while it charges?": {
+    "ja": "充電中にスマホを使えますか？",
+    "de": "Kann ich das Handy beim Laden nutzen?"
+  },
+  "The stand supports portrait and landscape phone charging. Check alignment and compatibility with your device and case.": {
+    "ja": "縦向き・横向きでの充電に対応します。端末やケースとの相性、位置合わせをご確認ください。",
+    "de": "Der Ständer unterstützt Laden im Hoch- und Querformat. Bitte Ausrichtung und Kompatibilität mit Gerät und Hülle prüfen."
+  },
+  "How much is delivery?": {
+    "ja": "送料はいくらですか？",
+    "de": "Wie hoch sind die Versandkosten?"
+  },
+  "Available delivery methods, shipping charges and taxes are shown in Shopify checkout for your delivery address before you pay.": {
+    "ja": "配送方法・送料・税金は、お届け先に応じてShopifyの購入手続きでお支払い前に表示されます。",
+    "de": "Versandarten, Versandkosten und Steuern werden im Shopify-Checkout für deine Lieferadresse vor der Zahlung angezeigt."
+  },
+  "Shopping preferences": {
+    "ja": "ショッピング設定",
+    "de": "Einkaufseinstellungen"
+  },
+  "Ship to": {
+    "ja": "配送先",
+    "de": "Lieferland"
+  },
+  "Language": {
+    "ja": "言語",
+    "de": "Sprache"
+  },
+  "Currency": {
+    "ja": "通貨",
+    "de": "Währung"
+  },
+  "Save preferences": {
+    "ja": "設定を保存",
+    "de": "Einstellungen speichern"
+  },
+  "Updating…": {
+    "ja": "更新中…",
+    "de": "Wird aktualisiert…"
+  },
+  "Currency follows your shipping country. Final shipping and taxes are calculated at checkout.": {
+    "ja": "通貨は配送先の国に応じて設定されます。送料と税金はチェックアウト時に計算されます。",
+    "de": "Die Währung richtet sich nach dem Lieferland. Versandkosten und Steuern werden an der Kasse berechnet."
+  },
+  "Choose a supported country and language.": {
+    "ja": "対応する国と言語を選択してください。",
+    "de": "Bitte wähle ein unterstütztes Land und eine Sprache."
+  },
+  "Currency options have changed. Please refresh and try again.": {
+    "ja": "通貨設定が変更されました。再読み込みしてお試しください。",
+    "de": "Die Währungsoptionen haben sich geändert. Bitte lade die Seite neu."
+  },
+  "Your cart could not be updated. Please review your cart and try again.": {
+    "ja": "カートを更新できませんでした。カートを確認して再度お試しください。",
+    "de": "Der Warenkorb konnte nicht aktualisiert werden. Bitte prüfe ihn und versuche es erneut."
+  },
+  "Unable to update your preferences. Please try again.": {
+    "ja": "設定を更新できませんでした。もう一度お試しください。",
+    "de": "Die Einstellungen konnten nicht aktualisiert werden. Bitte versuche es erneut."
+  },
+  "Talk to Steven": {
+    "ja": "Stevenに相談",
+    "de": "Sprich mit Steven"
+  },
+  "Your business contact": {
+    "ja": "ビジネスのお問い合わせ",
+    "de": "Dein Geschäftskontakt"
+  },
+  "Bulk orders · OEM · ODM": {
+    "ja": "大口注文 · OEM · ODM",
+    "de": "Großbestellungen · OEM · ODM"
+  },
+  "Quantity options": {
+    "ja": "数量の選択",
+    "de": "Mengenoptionen"
+  },
+  "Buy more for your business": {
+    "ja": "ビジネス向けのまとめ買い",
+    "de": "Größere Mengen für dein Unternehmen"
+  },
+  "Request a quote": {
+    "ja": "見積もりを依頼",
+    "de": "Angebot anfordern"
+  },
+  "Request quote": {
+    "ja": "見積もり依頼",
+    "de": "Angebot anfragen"
+  },
+  "pieces": {
+    "ja": "点",
+    "de": "Stück"
+  },
+  "Wholesale": {
+    "ja": "卸売",
+    "de": "Großhandel"
+  },
+  "Wholesale & customization": {
+    "ja": "卸売・カスタマイズ",
+    "de": "Großhandel & Individualisierung"
+  },
+  "Total at current unit price": {
+    "ja": "現在の単価での合計",
+    "de": "Gesamtbetrag zum aktuellen Stückpreis"
+  },
+  "Built around your business.": {
+    "ja": "ビジネスに合わせたご提案。",
+    "de": "Passend zu deinem Unternehmen."
+  },
+  "Inquiry type": {
+    "ja": "お問い合わせ種別",
+    "de": "Art der Anfrage"
+  },
+  "A quote for your next order.": {
+    "ja": "次のご注文に向けた見積もり。",
+    "de": "Ein Angebot für deine nächste Bestellung."
+  },
+  "Your brand. A considered finish.": {
+    "ja": "ブランドに合った仕上がりを。",
+    "de": "Deine Marke. Passend umgesetzt."
+  },
+  "From concept to a product brief.": {
+    "ja": "アイデアから製品仕様へ。",
+    "de": "Vom Konzept zur Produktbeschreibung."
+  },
+  "Share your requirements": {
+    "ja": "要件の共有",
+    "de": "Anforderungen teilen"
+  },
+  "Receive a quotation": {
+    "ja": "見積もりの確認",
+    "de": "Angebot erhalten"
+  },
+  "Review a sample": {
+    "ja": "サンプルの確認",
+    "de": "Muster prüfen"
+  },
+  "Confirm your order": {
+    "ja": "注文の確認",
+    "de": "Bestellung bestätigen"
+  },
+  "Production & quality review": {
+    "ja": "生産・品質確認",
+    "de": "Produktion & Qualitätsprüfung"
+  },
+  "Shipping & follow-up": {
+    "ja": "発送・アフターサポート",
+    "de": "Versand & Nachbetreuung"
+  },
+  "Prepare an inquiry": {
+    "ja": "お問い合わせを作成",
+    "de": "Anfrage vorbereiten"
+  },
+  "Contact Steven": {
+    "ja": "Stevenにお問い合わせ",
+    "de": "Steven kontaktieren"
+  },
+  "Company (optional)": {
+    "ja": "会社名（任意）",
+    "de": "Unternehmen (optional)"
+  },
+  "Delivery country / target market": {
+    "ja": "配送先・対象市場",
+    "de": "Lieferland / Zielmarkt"
+  },
+  "Your requirements": {
+    "ja": "ご要望",
+    "de": "Deine Anforderungen"
+  },
+  "Create email draft": {
+    "ja": "メールの下書きを作成",
+    "de": "E-Mail-Entwurf erstellen"
+  },
+  "Open email draft": {
+    "ja": "メールの下書きを開く",
+    "de": "E-Mail-Entwurf öffnen"
+  },
+  "Send to": {
+    "ja": "送信先",
+    "de": "Senden an"
+  },
+  "Wholesale pricing is quoted individually. Online orders use the current unit price until a separate quote is agreed.": {
+    "ja": "卸売価格は個別見積もりです。別途合意するまではオンライン注文に現在の単価が適用されます。",
+    "de": "Großhandelspreise werden individuell angeboten. Bis zur Vereinbarung eines separaten Angebots gilt online der aktuelle Stückpreis."
+  },
+  "Choose a valid option and a quantity from 1 to 9999.": {
+    "ja": "有効な選択肢と1～9999の数量を選択してください。",
+    "de": "Wähle eine gültige Variante und eine Menge von 1 bis 9999."
+  },
+  "Ask about volume pricing, branded packaging, logo customization or a new product concept.": {
+    "ja": "大口価格、ブランド包装、ロゴ、新製品のアイデアについてご相談ください。",
+    "de": "Frage nach Mengenpreisen, Markenverpackungen, Logos oder einem neuen Produktkonzept."
+  },
+  "Tell us the quantity, variants and delivery country. Steven will confirm the available price and fulfillment details.": {
+    "ja": "数量、バリエーション、配送先をお知らせください。Stevenが価格と配送条件を確認します。",
+    "de": "Nenne uns Menge, Varianten und Lieferland. Steven bestätigt Preis und Lieferdetails."
+  },
+  "Discuss logo placement, packaging and labeling for this product. Availability depends on the model and quantity.": {
+    "ja": "ロゴ、包装、ラベルをご相談ください。対応可否はモデルと数量によります。",
+    "de": "Besprich Logo, Verpackung und Etiketten. Die Möglichkeiten hängen von Modell und Menge ab."
+  },
+  "Share your design, features and target market. We will review feasibility and the development requirements.": {
+    "ja": "デザイン、機能、対象市場をお知らせください。実現可能性と開発要件を確認します。",
+    "de": "Teile Design, Funktionen und Zielmarkt mit uns. Wir prüfen Machbarkeit und Entwicklungsanforderungen."
+  },
+  "Customization availability, minimum order quantity, sample costs and lead times are confirmed by quotation.": {
+    "ja": "対応可否、最低数量、サンプル費用、納期は見積もりで確認します。",
+    "de": "Machbarkeit, Mindestmenge, Musterkosten und Lieferzeiten werden im Angebot bestätigt."
+  },
+  "Quantity by variant, logo, packaging, specifications and preferred delivery date…": {
+    "ja": "バリエーション別数量、ロゴ、包装、仕様、希望納期など…",
+    "de": "Menge je Variante, Logo, Verpackung, Spezifikationen und Wunschliefertermin…"
+  },
+  "Prepare an email draft, then review and send it in your email app. This form does not submit an order or send an email automatically.": {
+    "ja": "下書きを作成し、メールアプリで確認して送信してください。注文やメールの自動送信は行いません。",
+    "de": "Erstelle einen Entwurf und sende ihn nach Prüfung in deiner E-Mail-App. Dieses Formular bestellt nichts und sendet keine E-Mail automatisch."
+  },
+  "Shopping bag": {
+    "ja": "ショッピングバッグ",
+    "de": "Einkaufstasche"
+  },
+  "Shopping cart": {
+    "ja": "ショッピングカート",
+    "de": "Warenkorb"
+  },
+  "Order summary": {
+    "ja": "ご注文内容",
+    "de": "Bestellübersicht"
+  },
+  "Your cart is empty": {
+    "ja": "カートは空です",
+    "de": "Dein Warenkorb ist leer"
+  },
+  "Find your next everyday essential.": {
+    "ja": "毎日に役立つアイテムを見つけましょう。",
+    "de": "Entdecke Zubehör für deinen Alltag."
+  },
+  "Explore best sellers": {
+    "ja": "人気商品を見る",
+    "de": "Bestseller entdecken"
+  },
+  "Cases & protection": {
+    "ja": "ケース・保護用品",
+    "de": "Hüllen & Schutz"
+  },
+  "Charging essentials": {
+    "ja": "充電アクセサリー",
+    "de": "Ladezubehör"
+  },
+  "Gift card": {
+    "ja": "ギフトカード",
+    "de": "Geschenkkarte"
+  },
+  "This discount code is not available for your cart.": {
+    "ja": "この割引コードは現在のカートに適用できません。",
+    "de": "Dieser Rabattcode ist für deinen Warenkorb nicht verfügbar."
+  },
+  "Mobile Accessories, Wholesale & Custom Orders": {
+    "ja": "モバイルアクセサリー・卸売・カスタム注文",
+    "de": "Handyzubehör, Großhandel & Sonderanfertigungen"
+  },
+  "Shop phone cases, screen protectors, chargers and mobile accessories at SeineShop. Order online or request wholesale pricing and OEM/ODM customization.": {
+    "ja": "SeineShopでスマホケース、画面保護、充電器などを探す。オンライン注文、卸売価格のお問い合わせ、OEM・ODMカスタマイズに対応。",
+    "de": "Handyhüllen, Displayschutz und Ladegeräte bei SeineShop kaufen. Online bestellen oder Großhandelspreise und OEM/ODM-Anpassungen anfragen."
+  },
+  "Best Sellers": {
+    "ja": "人気商品",
+    "de": "Bestseller"
+  }
+}

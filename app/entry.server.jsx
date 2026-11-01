@@ -1,3 +1,4 @@
+import {siteSettings, isJournalPath} from '~/lib/seo';
 import {ServerRouter} from 'react-router';
 import {isbot} from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
@@ -18,6 +19,25 @@ export default async function handleRequest(
   context,
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+    scriptSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      'https://www.googletagmanager.com',
+    ],
+    connectSrc: [
+      'https://www.googletagmanager.com',
+      'https://*.google-analytics.com',
+      'https://*.analytics.google.com',
+    ],
+    imgSrc: [
+      'https://www.googletagmanager.com',
+      'https://*.google-analytics.com',
+
+      "'self'",
+      'https://cdn.shopify.com',
+      'data:',
+    ],
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -46,6 +66,16 @@ export default async function handleRequest(
     await body.allReady;
   }
 
+  const settings = siteSettings(context.env, request.url);
+  if (
+    (!settings.indexable &&
+      !(
+        settings.journalIndexable &&
+        isJournalPath(new URL(request.url).pathname)
+      )) ||
+    responseStatusCode >= 400
+  )
+    responseHeaders.set('X-Robots-Tag', 'noindex, follow');
   responseHeaders.set('Content-Type', 'text/html');
   responseHeaders.set('Content-Security-Policy', header);
 

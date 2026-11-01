@@ -1,130 +1,60 @@
-import {Suspense} from 'react';
-import {Await, NavLink} from 'react-router';
-
-/**
- * @param {FooterProps}
- */
-export function Footer({footer: footerPromise, header, publicStoreDomain}) {
+import {MarketSelector} from '~/components/MarketSelector';
+import {useLocale} from '~/lib/i18n';
+import {Link} from 'react-router';
+export function Footer() {
+  const {t, localize} = useLocale();
   return (
-    <Suspense>
-      <Await resolve={footerPromise}>
-        {(footer) => (
-          <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
-          </footer>
-        )}
-      </Await>
-    </Suspense>
-  );
-}
-
-/**
- * @param {{
- *   menu: FooterQuery['menu'];
- *   primaryDomainUrl: FooterProps['header']['shop']['primaryDomain']['url'];
- *   publicStoreDomain: string;
- * }}
- */
-function FooterMenu({menu, primaryDomainUrl, publicStoreDomain}) {
-  return (
-    <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
+    <footer className="market-footer">
+      <div className="footer-columns">
+        <div>
+          <Link className="brand" to={localize('/')}>
+            {t('seine')}
+            <span>{t('shop')}</span>
+          </Link>
+          <p>
+            {t('Thoughtful tech.')}
+            <br />
+            {t('Everyday possibilities.')}
+          </p>
+          <a href={localize('mailto:hello@seineshop.com')}>
+            {t('hello@seineshop.com')}
           </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
-    </nav>
+        </div>
+        <nav aria-label={t('Footer shop')}>
+          <h2>{t('Shop & discover')}</h2>
+          <Link to={localize('/collections')}>{t('All collections')}</Link>
+          <Link to={localize('/collections/iphone-18-pro-max')}>
+            {t('iPhone 18 Pro Max')}
+          </Link>
+          <Link to={localize('/discover/b20a')}>{t('Charging edit')}</Link>
+          <Link to={localize('/search')}>{t('Search products')}</Link>
+          <Link to={localize('/blogs/journal')}>{t('Journal & guides')}</Link>
+        </nav>
+        <nav aria-label={t('Footer support')}>
+          <h2>{t('Customer support')}</h2>
+          <Link to={localize('/support')}>{t('Support center')}</Link>
+          <Link to={localize('/support#compatibility')}>
+            {t('Product compatibility')}
+          </Link>
+          <Link to={localize('/support#orders')}>{t('Orders & delivery')}</Link>
+          <a href={localize('mailto:hello@seineshop.com')}>{t('Contact us')}</a>
+        </nav>
+        <nav aria-label={t('Footer policies')}>
+          <h2>{t('Store information')}</h2>
+          <Link to={localize('/policies')}>{t('Store policies')}</Link>
+          <Link to={localize('/support#returns')}>
+            {t('Returns & refunds')}
+          </Link>
+          <div className="footer-shopping-preferences"><MarketSelector /></div>
+        </nav>
+      </div>
+      <div className="footer-bottom">
+        <small>
+          © {new Date().getFullYear()}
+          {t('SeineShop. All rights reserved.')}
+        </small>
+        <span>{t('Everyday tech, thoughtfully chosen.')}</span>
+      </div>
+    </footer>
   );
 }
-
-const FALLBACK_FOOTER_MENU = {
-  id: 'gid://shopify/Menu/199655620664',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461633060920',
-      resourceId: 'gid://shopify/ShopPolicy/23358046264',
-      tags: [],
-      title: 'Privacy Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/privacy-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633093688',
-      resourceId: 'gid://shopify/ShopPolicy/23358013496',
-      tags: [],
-      title: 'Refund Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/refund-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633126456',
-      resourceId: 'gid://shopify/ShopPolicy/23358111800',
-      tags: [],
-      title: 'Shipping Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/shipping-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633159224',
-      resourceId: 'gid://shopify/ShopPolicy/23358079032',
-      tags: [],
-      title: 'Terms of Service',
-      type: 'SHOP_POLICY',
-      url: '/policies/terms-of-service',
-      items: [],
-    },
-  ],
-};
-
-/**
- * @param {{
- *   isActive: boolean;
- *   isPending: boolean;
- * }}
- */
-function activeLinkStyle({isActive, isPending}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
-}
-
-/**
- * @typedef {Object} FooterProps
- * @property {Promise<FooterQuery|null>} footer
- * @property {HeaderQuery} header
- * @property {string} publicStoreDomain
- */
-
-/** @typedef {import('storefrontapi.generated').FooterQuery} FooterQuery */
-/** @typedef {import('storefrontapi.generated').HeaderQuery} HeaderQuery */

@@ -7,3 +7,13 @@ node_modules
 .env
 .shopify
 .react-router
+
+# Local production and deployment credentials
+.env.*
+!.env.example
+
+# Machine-local deployment output and private operational notes
+h2_deploy_log.json
+SEINESHOP-SETUP.md
+*.log
+.DS_Store

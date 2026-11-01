@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {useFetcher, useNavigate} from 'react-router';
 import React, {useRef, useEffect} from 'react';
 import {useAside} from './Aside';
@@ -13,6 +14,7 @@ export function SearchFormPredictive({
   className = 'predictive-search-form',
   ...props
 }) {
+  const {localize} = useLocale();
   const fetcher = useFetcher({key: 'search'});
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -30,7 +32,10 @@ export function SearchFormPredictive({
   /** Navigate to the search page with the current input value */
   function goToSearch() {
     const term = inputRef?.current?.value;
-    void navigate(SEARCH_ENDPOINT + (term ? `?q=${term}` : ''));
+    void navigate(
+      localize(SEARCH_ENDPOINT) +
+        (term ? `?q=${encodeURIComponent(term)}` : ''),
+    );
     aside.close();
   }
 
@@ -38,7 +43,7 @@ export function SearchFormPredictive({
   function fetchResults(event) {
     void fetcher.submit(
       {q: event.target.value || '', limit: 5, predictive: true},
-      {method: 'GET', action: SEARCH_ENDPOINT},
+      {method: 'GET', action: localize(SEARCH_ENDPOINT)},
     );
   }
 

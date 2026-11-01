@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
 import {
   data,
@@ -11,7 +12,11 @@ import {
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Profile'}];
+  return [
+    {
+      title: 'Profile',
+    },
+  ];
 };
 
 /**
@@ -19,7 +24,6 @@ export const meta = () => {
  */
 export async function loader({context}) {
   await context.customerAccount.handleAuthStatus();
-
   return {};
 }
 
@@ -28,13 +32,17 @@ export async function loader({context}) {
  */
 export async function action({request, context}) {
   const {customerAccount} = context;
-
   if (request.method !== 'PUT') {
-    return data({error: 'Method not allowed'}, {status: 405});
+    return data(
+      {
+        error: 'Method not allowed',
+      },
+      {
+        status: 405,
+      },
+    );
   }
-
   const form = await request.formData();
-
   try {
     const customer = {};
     const validInputKeys = ['firstName', 'lastName'];
@@ -57,77 +65,78 @@ export async function action({request, context}) {
         },
       },
     );
-
     if (errors?.length) {
       throw new Error(errors[0].message);
     }
-
     if (!data?.customerUpdate?.customer) {
       throw new Error('Customer profile update failed.');
     }
-
     return {
       error: null,
       customer: data?.customerUpdate?.customer,
     };
   } catch (error) {
     return data(
-      {error: error.message, customer: null},
+      {
+        error: error.message,
+        customer: null,
+      },
       {
         status: 400,
       },
     );
   }
 }
-
 export default function AccountProfile() {
+  const {t, localize} = useLocale();
   const account = useOutletContext();
   const {state} = useNavigation();
   /** @type {ActionReturnData} */
   const action = useActionData();
   const customer = action?.customer ?? account?.customer;
-
   return (
     <div className="account-profile">
-      <h2>My profile</h2>
+      <h2>{t('My profile')}</h2>
       <br />
       <Form method="PUT">
-        <legend>Personal information</legend>
+        <legend>{t('Personal information')}</legend>
         <fieldset>
-          <label htmlFor="firstName">First name</label>
+          <label htmlFor="firstName">{t('First name')}</label>
           <input
             id="firstName"
             name="firstName"
             type="text"
             autoComplete="given-name"
-            placeholder="First name"
-            aria-label="First name"
+            placeholder={t('First name')}
+            aria-label={t('First name')}
             defaultValue={customer.firstName ?? ''}
             minLength={2}
           />
-          <label htmlFor="lastName">Last name</label>
+          <label htmlFor="lastName">{t('Last name')}</label>
           <input
             id="lastName"
             name="lastName"
             type="text"
             autoComplete="family-name"
-            placeholder="Last name"
-            aria-label="Last name"
+            placeholder={t('Last name')}
+            aria-label={t('Last name')}
             defaultValue={customer.lastName ?? ''}
             minLength={2}
           />
         </fieldset>
-        {action?.error ? (
-          <p>
-            <mark>
-              <small>{action.error}</small>
-            </mark>
-          </p>
-        ) : (
-          <br />
+        {t(
+          action?.error ? (
+            <p>
+              <mark>
+                <small>{t(action.error)}</small>
+              </mark>
+            </p>
+          ) : (
+            <br />
+          ),
         )}
         <button type="submit" disabled={state !== 'idle'}>
-          {state !== 'idle' ? 'Updating' : 'Update'}
+          {t(state !== 'idle' ? 'Updating' : 'Update')}
         </button>
       </Form>
     </div>

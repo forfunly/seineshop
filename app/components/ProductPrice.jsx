@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {Money} from '@shopify/hydrogen';
 
 /**
@@ -7,19 +8,22 @@ import {Money} from '@shopify/hydrogen';
  * }}
  */
 export function ProductPrice({price, compareAtPrice}) {
+  const {t, localize} = useLocale();
   return (
-    <div aria-label="Price" className="product-price" role="group">
-      {compareAtPrice ? (
-        <div className="product-price-on-sale">
-          {price ? <Money data={price} /> : null}
-          <s>
-            <Money data={compareAtPrice} />
-          </s>
-        </div>
-      ) : price ? (
-        <Money data={price} />
-      ) : (
-        <span>&nbsp;</span>
+    <div aria-label={t('Price')} className="product-price" role="group">
+      {t(
+        compareAtPrice ? (
+          <div className="product-price-on-sale">
+            {price ? <Money data={price} /> : null}
+            <s>
+              <Money data={compareAtPrice} />
+            </s>
+          </div>
+        ) : price ? (
+          <Money data={price} />
+        ) : (
+          <span>&nbsp;</span>
+        ),
       )}
     </div>
   );

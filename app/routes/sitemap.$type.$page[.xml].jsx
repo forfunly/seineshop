@@ -1,24 +1,14 @@
-import {getSitemap} from '@shopify/hydrogen';
-
-/**
- * @param {Route.LoaderArgs}
- */
-export async function loader({request, params, context: {storefront}}) {
-  const response = await getSitemap({
-    storefront,
-    request,
-    params,
-    locales: ['EN-US', 'EN-CA', 'FR-CA'],
-    getLink: ({type, baseUrl, handle, locale}) => {
-      if (!locale) return `${baseUrl}/${type}/${handle}`;
-      return `${baseUrl}/${locale}/${type}/${handle}`;
-    },
-  });
-
-  response.headers.set('Cache-Control', `max-age=${60 * 60 * 24}`);
-
-  return response;
+import {redirect} from 'react-router';
+import {sitemapPath} from '~/lib/sitemaps.server';
+export function loader({params}) {
+  const types = {
+    products: 'products',
+    collections: 'collections',
+    pages: 'pages',
+    articles: 'articles',
+    blogs: 'blog-collections',
+  };
+  if (!types[params.type] || !/^[1-9]\d*$/.test(params.page || ''))
+    throw new Response('Not found', {status: 404});
+  return redirect(sitemapPath(types[params.type], Number(params.page)), 301);
 }
-
-/** @typedef {import('./+types/sitemap.$type.$page[.xml]').Route} Route */
-/** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */

@@ -1,108 +1,80 @@
-import {redirect, useLoaderData} from 'react-router';
+import {FacetedCollection} from '~/components/FacetedCollection';
+import {parseCollectionFilters, collectionSearchQuery} from '~/lib/collection-filters';
+import {useLoaderData} from 'react-router';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {CollectionTemplate} from '~/components/CollectionTemplate';
+import {
+  previewEnabled,
+  previewCollection,
+  collectionNodes,
+} from '~/lib/catalog.server';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ProductItem} from '~/components/ProductItem';
-
-/**
- * @type {Route.MetaFunction}
- */
-export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
-};
-
-/**
- * @param {Route.LoaderArgs} args
- */
-export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {Route.LoaderArgs}
- */
-async function loadCriticalData({context, params, request}) {
-  const {handle} = params;
-  const {storefront} = context;
-  const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
-  });
-
-  if (!handle) {
-    throw redirect('/collections');
+export async function loader({context, params, request}) {
+  if (
+    (params.handle === 'iphone-18-pro-max' ||
+      collectionNodes.some((c) => c.handle === params.handle)) &&
+    previewEnabled(context, request)
+  )
+    return previewCollection(request, params.handle);
+  const search = new URL(request.url).searchParams;
+  const browse = parseCollectionFilters(search);
+  const searching = params.handle === 'best-sellers' && Boolean(browse.q);
+  if (searching && !browse.sort.startsWith('price-')) browse.sort = 'featured';
+  const variables = {
+    handle: params.handle,
+    filters: browse.filters,
+    sortKey: browse.sort.startsWith('price-') ? 'PRICE' : browse.sort === 'newest' ? 'CREATED' : browse.sort === 'best-selling' ? 'BEST_SELLING' : 'COLLECTION_DEFAULT',
+    reverse: browse.sort === 'price-desc' || browse.sort === 'newest',
+    ...getPaginationVariables(request, {pageBy: browse.size}),
+  };
+  let {collection} = await context.storefront.query(COLLECTION_QUERY, {variables});
+  if (searching && collection) {
+    const {search: results} = await context.storefront.query(COLLECTION_SEARCH_QUERY, {variables: {
+      ...variables, query: collectionSearchQuery(browse.q), sortKey: browse.sort.startsWith('price-') ? 'PRICE' : 'RELEVANCE', reverse: browse.sort === 'price-desc',
+    }});
+    collection = {...collection, products: {...results, filters: results.productFilters}, searchTotal: results.totalCount};
   }
-
-  const [{collection}] = await Promise.all([
-    storefront.query(COLLECTION_QUERY, {
-      variables: {handle, ...paginationVariables},
-      // Add other queries here, so that they are loaded in parallel
-    }),
-  ]);
-
   if (!collection) {
-    throw new Response(`Collection ${handle} not found`, {
-      status: 404,
-    });
+    const pending = collectionNodes.find((c) => c.handle === params.handle);
+    if (!pending) throw new Response('Collection not found', {status: 404});
+    collection = {
+      title: pending.title,
+      handle: pending.handle,
+      description: '',
+      products: {nodes: []},
+    };
   }
-
-  // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: collection});
-
+  if (!collection.description)
+    collection.description = `Explore ${collection.title.toLowerCase()} at SeineShop. Compare product specifications, materials and compatibility to find the right choice for your everyday needs.`;
+  redirectIfHandleIsLocalized(request, {
+    handle: params.handle,
+    data: collection,
+  });
   return {
     collection,
+    preview: false,
+    browse,
+    types: [],
   };
 }
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
- */
-function loadDeferredData({context}) {
-  return {};
-}
-
 export default function Collection() {
-  /** @type {LoaderReturnData} */
-  const {collection} = useLoaderData();
-
+  const data = useLoaderData();
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <PaginatedResourceSection
-        connection={collection.products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
-      <Analytics.CollectionView
-        data={{
-          collection: {
-            id: collection.id,
-            handle: collection.handle,
-          },
-        }}
-      />
-    </div>
+    <>
+      {data.preview ? <CollectionTemplate {...data} /> : <FacetedCollection {...data} />}
+      {!data.preview && data.collection.id && (
+        <Analytics.CollectionView
+          data={{
+            collection: {
+              id: data.collection.id,
+              handle: data.collection.handle,
+            },
+          }}
+        />
+      )}
+    </>
   );
 }
-
 const PRODUCT_ITEM_FRAGMENT = `#graphql
   fragment MoneyProductItem on MoneyV2 {
     amount
@@ -112,6 +84,9 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    vendor
+    productType
+    availableForSale
     featuredImage {
       id
       altText
@@ -135,6 +110,9 @@ const COLLECTION_QUERY = `#graphql
   ${PRODUCT_ITEM_FRAGMENT}
   query Collection(
     $handle: String!
+    $filters: [ProductFilter!]
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
     $country: CountryCode
     $language: LanguageCode
     $first: Int
@@ -147,12 +125,17 @@ const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      seo { title description }
       products(
+        filters: $filters,
+        sortKey: $sortKey,
+        reverse: $reverse,
         first: $first,
         last: $last,
         before: $startCursor,
         after: $endCursor
       ) {
+        filters { id label type values { id label count input } }
         nodes {
           ...ProductItem
         }
@@ -170,3 +153,15 @@ const COLLECTION_QUERY = `#graphql
 /** @typedef {import('./+types/collections.$handle').Route} Route */
 /** @typedef {import('storefrontapi.generated').ProductItemFragment} ProductItemFragment */
 /** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */
+
+const COLLECTION_SEARCH_QUERY = `#graphql
+  ${PRODUCT_ITEM_FRAGMENT}
+  query CollectionSearch($query: String!, $filters: [ProductFilter!], $sortKey: SearchSortKeys, $reverse: Boolean, $first: Int, $last: Int, $startCursor: String, $endCursor: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+    search(query: $query, types: [PRODUCT], productFilters: $filters, sortKey: $sortKey, reverse: $reverse, first: $first, last: $last, before: $startCursor, after: $endCursor) {
+      totalCount
+      productFilters { id label type values { id label count input } }
+      nodes { ... on Product { ...ProductItem } }
+      pageInfo { hasPreviousPage hasNextPage endCursor startCursor }
+    }
+  }
+`;

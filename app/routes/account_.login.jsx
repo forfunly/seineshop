@@ -6,14 +6,15 @@ export async function loader({request, context}) {
   const acrValues = url.searchParams.get('acr_values') || undefined;
   const loginHint = url.searchParams.get('login_hint') || undefined;
   const loginHintMode = url.searchParams.get('login_hint_mode') || undefined;
-  const locale = url.searchParams.get('locale') || undefined;
+  const locale = context.storefront.i18n.language.toLowerCase();
+  context.session.set('storefrontLocale', locale === 'ja' ? 'jp' : locale);
 
   return context.customerAccount.login({
     countryCode: context.storefront.i18n.country,
     acrValues,
     loginHint,
     loginHintMode,
-    locale,
+    uiLocales: locale,
   });
 }
 

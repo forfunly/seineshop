@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {Link} from 'react-router';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import {urlWithTrackingParams} from '~/lib/search';
@@ -9,10 +10,11 @@ export function SearchResults({term, result, children}) {
   if (!result?.total) {
     return null;
   }
-
-  return children({...result.items, term});
+  return children({
+    ...result.items,
+    term,
+  });
 }
-
 SearchResults.Articles = SearchResultsArticles;
 SearchResults.Pages = SearchResultsPages;
 SearchResults.Products = SearchResultsProducts;
@@ -22,25 +24,24 @@ SearchResults.Empty = SearchResultsEmpty;
  * @param {PartialSearchResult<'articles'>}
  */
 function SearchResultsArticles({term, articles}) {
+  const {t, localize} = useLocale();
   if (!articles?.nodes.length) {
     return null;
   }
-
   return (
     <div className="search-result">
-      <h2>Articles</h2>
+      <h2>{t('Articles')}</h2>
       <div>
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
-            baseUrl: `/blogs/${article.handle}`,
+            baseUrl: `/blogs/${article.blog?.handle || 'journal'}/${article.handle}`,
             trackingParams: article.trackingParameters,
             term,
           });
-
           return (
             <div className="search-results-item" key={article.id}>
-              <Link prefetch="intent" to={articleUrl}>
-                {article.title}
+              <Link prefetch="intent" to={localize(articleUrl)}>
+                {t(article.title)}
               </Link>
             </div>
           );
@@ -55,13 +56,13 @@ function SearchResultsArticles({term, articles}) {
  * @param {PartialSearchResult<'pages'>}
  */
 function SearchResultsPages({term, pages}) {
+  const {t, localize} = useLocale();
   if (!pages?.nodes.length) {
     return null;
   }
-
   return (
     <div className="search-result">
-      <h2>Pages</h2>
+      <h2>{t('Pages')}</h2>
       <div>
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -69,11 +70,10 @@ function SearchResultsPages({term, pages}) {
             trackingParams: page.trackingParameters,
             term,
           });
-
           return (
             <div className="search-results-item" key={page.id}>
-              <Link prefetch="intent" to={pageUrl}>
-                {page.title}
+              <Link prefetch="intent" to={localize(pageUrl)}>
+                {t(page.title)}
               </Link>
             </div>
           );
@@ -88,13 +88,13 @@ function SearchResultsPages({term, pages}) {
  * @param {PartialSearchResult<'products'>}
  */
 function SearchResultsProducts({term, products}) {
+  const {t, localize} = useLocale();
   if (!products?.nodes.length) {
     return null;
   }
-
   return (
     <div className="search-result">
-      <h2>Products</h2>
+      <h2>{t('Products')}</h2>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
@@ -103,39 +103,48 @@ function SearchResultsProducts({term, products}) {
               trackingParams: product.trackingParameters,
               term,
             });
-
             const price = product?.selectedOrFirstAvailableVariant?.price;
             const image = product?.selectedOrFirstAvailableVariant?.image;
-
             return (
               <div className="search-results-item" key={product.id}>
-                <Link prefetch="intent" to={productUrl}>
+                <Link prefetch="intent" to={localize(productUrl)}>
                   {image && (
-                    <Image data={image} alt={product.title} width={50} />
+                    <Image data={image} alt={t(product.title)} width={50} />
                   )}
                   <div>
-                    <p>{product.title}</p>
+                    <p>{t(product.title)}</p>
                     <small>{price && <Money data={price} />}</small>
                   </div>
                 </Link>
               </div>
             );
           });
-
           return (
             <div>
               <div>
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {t(
+                    isLoading ? (
+                      'Loading...'
+                    ) : (
+                      <span>{t('\u2191 Load previous')}</span>
+                    ),
+                  )}
                 </PreviousLink>
               </div>
               <div>
-                {ItemsMarkup}
+                {t(ItemsMarkup)}
                 <br />
               </div>
               <div>
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {t(
+                    isLoading ? (
+                      'Loading...'
+                    ) : (
+                      <span>{t('Load more \u2193')}</span>
+                    ),
+                  )}
                 </NextLink>
               </div>
             </div>
@@ -146,9 +155,9 @@ function SearchResultsProducts({term, products}) {
     </div>
   );
 }
-
 function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+  const {t} = useLocale();
+  return <p>{t('No results, try a different search.')}</p>;
 }
 
 /** @typedef {RegularSearchReturn['result']['items']} SearchItems */

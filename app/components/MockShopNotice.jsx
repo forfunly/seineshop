@@ -1,18 +1,22 @@
+import {useLocale} from '~/lib/i18n';
 export function MockShopNotice() {
+  const {t, localize} = useLocale();
   return (
     <section
       className="mock-shop-notice"
       aria-labelledby="mock-shop-notice-heading"
     >
       <div className="inner">
-        <h2 id="mock-shop-notice-heading">Welcome to Hydrogen!</h2>
+        <h2 id="mock-shop-notice-heading">{t('Welcome to Hydrogen!')}</h2>
         <p>
-          You&rsquo;re seeing mocked products because no store is connected to
-          this project yet.
+          {t(
+            'You\u2019re seeing mocked products because no store is connected to this project yet.',
+          )}
         </p>
         <p>
-          Link a store by running <code>npx shopify hydrogen link</code> in your
-          terminal.
+          {t('Link a store by running')}
+          <code>{t('npx shopify hydrogen link')}</code>
+          {t('in your terminal.')}
         </p>
       </div>
     </section>

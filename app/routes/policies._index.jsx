@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {useLoaderData, Link} from 'react-router';
 
 /**
@@ -5,7 +6,6 @@ import {useLoaderData, Link} from 'react-router';
  */
 export async function loader({context}) {
   const data = await context.storefront.query(POLICIES_QUERY);
-
   const shopPolicies = data.shop;
   const policies = [
     shopPolicies?.privacyPolicy,
@@ -14,32 +14,40 @@ export async function loader({context}) {
     shopPolicies?.refundPolicy,
     shopPolicies?.subscriptionPolicy,
   ].filter((policy) => policy != null);
-
-  if (!policies.length) {
-    throw new Response('No policies found', {status: 404});
-  }
-
-  return {policies};
+  return {
+    policies,
+  };
 }
-
 export default function Policies() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {policies} = useLoaderData();
-
   return (
     <div className="policies">
-      <h1>Policies</h1>
+      <h1>{t('Store policies')}</h1>
+      {!policies.length && (
+        <p>
+          {t(
+            'Our store is preparing to launch. Shipping and return policies will be available before ordering opens. Questions?',
+          )}
+          <a href={localize('mailto:hello@seineshop.com')}>
+            {t('Contact SeineShop')}
+          </a>
+          .
+        </p>
+      )}
       <div>
         {policies.map((policy) => (
           <fieldset key={policy.id}>
-            <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
+            <Link to={localize(`/policies/${policy.handle}`)}>
+              {t(policy.title)}
+            </Link>
           </fieldset>
         ))}
       </div>
     </div>
   );
 }
-
 const POLICIES_QUERY = `#graphql
   fragment PolicyItem on ShopPolicy {
     id

@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {
   data as remixData,
   Form,
@@ -6,7 +7,6 @@ import {
   useLoaderData,
 } from 'react-router';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
-
 export function shouldRevalidate() {
   return true;
 }
@@ -21,13 +21,13 @@ export async function loader({context}) {
       language: customerAccount.i18n.language,
     },
   });
-
   if (errors?.length || !data?.customer) {
     throw new Error('Customer not found');
   }
-
   return remixData(
-    {customer: data.customer},
+    {
+      customer: data.customer,
+    },
     {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -35,60 +35,62 @@ export async function loader({context}) {
     },
   );
 }
-
 export default function AccountLayout() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {customer} = useLoaderData();
-
   const heading = customer
     ? customer.firstName
       ? `Welcome, ${customer.firstName}`
       : `Welcome to your account.`
     : 'Account Details';
-
   return (
     <div className="account">
-      <h1>{heading}</h1>
+      <h1>{t(heading)}</h1>
       <br />
       <AccountMenu />
       <br />
       <br />
-      <Outlet context={{customer}} />
+      <Outlet
+        context={{
+          customer,
+        }}
+      />
     </div>
   );
 }
-
 function AccountMenu() {
+  const {t, localize} = useLocale();
   function isActiveStyle({isActive, isPending}) {
     return {
       fontWeight: isActive ? 'bold' : undefined,
       color: isPending ? 'grey' : 'black',
     };
   }
-
   return (
     <nav role="navigation">
-      <NavLink to="/account/orders" style={isActiveStyle}>
-        Orders &nbsp;
+      <NavLink to={localize('/account/orders')} style={isActiveStyle}>
+        {t('Orders')}
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/profile" style={isActiveStyle}>
-        &nbsp; Profile &nbsp;
+      <NavLink to={localize('/account/profile')} style={isActiveStyle}>
+        {t('Profile')}
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/addresses" style={isActiveStyle}>
-        &nbsp; Addresses &nbsp;
+      <NavLink to={localize('/account/addresses')} style={isActiveStyle}>
+        {t('Addresses')}
       </NavLink>
-      &nbsp;|&nbsp;
       <Logout />
     </nav>
   );
 }
-
 function Logout() {
+  const {t, localize} = useLocale();
   return (
-    <Form className="account-logout" method="POST" action="/account/logout">
-      &nbsp;<button type="submit">Sign out</button>
+    <Form
+      className="account-logout"
+      method="POST"
+      action={localize('/account/logout')}
+    >
+      &nbsp;<button type="submit">{t('Sign out')}</button>
     </Form>
   );
 }

@@ -1,141 +1,53 @@
-import {useLoaderData, Link} from 'react-router';
-import {getPaginationVariables, Image} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-
-/**
- * @param {Route.LoaderArgs} args
- */
-export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {Route.LoaderArgs}
- */
-async function loadCriticalData({context, request}) {
-  const paginationVariables = getPaginationVariables(request, {
-    pageBy: 4,
-  });
-
-  const [{collections}] = await Promise.all([
-    context.storefront.query(COLLECTIONS_QUERY, {
-      variables: paginationVariables,
-    }),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
-
-  return {collections};
-}
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
- */
-function loadDeferredData({context}) {
-  return {};
-}
-
+import {useLocale} from '~/lib/i18n';
+import {Link} from 'react-router';
+import {categories} from '~/data/navigation';
 export default function Collections() {
-  /** @type {LoaderReturnData} */
-  const {collections} = useLoaderData();
-
+  const {t, localize} = useLocale();
   return (
-    <div className="collections">
-      <h1>Collections</h1>
-      <PaginatedResourceSection
-        connection={collections}
-        resourcesClassName="collections-grid"
-      >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
-        )}
-      </PaginatedResourceSection>
+    <div className="collection-directory">
+      <nav className="catalog-breadcrumb" aria-label={t('Breadcrumb')}>
+        <Link to={localize('/')}>{t('Home')}</Link>
+        <span>/</span>
+        <span>{t('Collections')}</span>
+      </nav>
+      <header>
+        <p className="eyebrow">{t('FIND YOUR EVERYDAY ESSENTIALS')}</p>
+        <h1>{t('Shop by category')}</h1>
+        <p>
+          {t('Browse by device, product type or the things you use every day.')}
+        </p>
+        <Link to={localize('/collections/iphone-18-pro-max')}>
+          {t('Explore iPhone 18 Pro Max accessories \u2192')}
+        </Link>
+      </header>
+      <nav className="directory-jump" aria-label={t('Jump to category')}>
+        {categories.map((c) => (
+          <a key={c.handle} href={localize(`#${c.handle}`)}>
+            {t(c.title)}
+          </a>
+        ))}
+      </nav>
+      <div className="directory-grid">
+        {categories.map((c) => (
+          <section key={c.handle} id={c.handle}>
+            <h2>
+              <Link to={localize(c.url)}>
+                {t(c.title)} <span aria-hidden="true">↗</span>
+              </Link>
+            </h2>
+            <ul>
+              {c.children.map((child) => (
+                <li key={child.handle}>
+                  <Link to={localize(child.url)}>{t(child.title)}</Link>
+                </li>
+              ))}
+            </ul>
+            <Link className="directory-all" to={localize(c.url)}>
+              {t('View collection \u2192')}
+            </Link>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
-
-/**
- * @param {{
- *   collection: CollectionFragment;
- *   index: number;
- * }}
- */
-function CollectionItem({collection, index}) {
-  return (
-    <Link
-      className="collection-item"
-      key={collection.id}
-      to={`/collections/${collection.handle}`}
-      prefetch="intent"
-    >
-      {collection?.image && (
-        <Image
-          alt={collection.image.altText || collection.title}
-          aspectRatio="1/1"
-          data={collection.image}
-          loading={index < 3 ? 'eager' : undefined}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h5>{collection.title}</h5>
-    </Link>
-  );
-}
-
-const COLLECTIONS_QUERY = `#graphql
-  fragment Collection on Collection {
-    id
-    title
-    handle
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-  }
-  query StoreCollections(
-    $country: CountryCode
-    $endCursor: String
-    $first: Int
-    $language: LanguageCode
-    $last: Int
-    $startCursor: String
-  ) @inContext(country: $country, language: $language) {
-    collections(
-      first: $first,
-      last: $last,
-      before: $startCursor,
-      after: $endCursor
-    ) {
-      nodes {
-        ...Collection
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-    }
-  }
-`;
-
-/** @typedef {import('./+types/collections._index').Route} Route */
-/** @typedef {import('storefrontapi.generated').CollectionFragment} CollectionFragment */
-/** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */

@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -7,7 +8,11 @@ import {ProductItem} from '~/components/ProductItem';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Products`}];
+  return [
+    {
+      title: `Hydrogen | Products`,
+    },
+  ];
 };
 
 /**
@@ -19,8 +24,10 @@ export async function loader(args) {
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
+  return {
+    ...deferredData,
+    ...criticalData,
+  };
 }
 
 /**
@@ -33,14 +40,17 @@ async function loadCriticalData({context, request}) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
-
   const [{products}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
-      variables: {...paginationVariables},
+      variables: {
+        ...paginationVariables,
+      },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
-  return {products};
+  return {
+    products,
+  };
 }
 
 /**
@@ -52,14 +62,13 @@ async function loadCriticalData({context, request}) {
 function loadDeferredData({context}) {
   return {};
 }
-
 export default function Collection() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {products} = useLoaderData();
-
   return (
     <div className="collection">
-      <h1>Products</h1>
+      <h1>{t('Products')}</h1>
       <PaginatedResourceSection
         connection={products}
         resourcesClassName="products-grid"
@@ -75,7 +84,6 @@ export default function Collection() {
     </div>
   );
 }
-
 const COLLECTION_ITEM_FRAGMENT = `#graphql
   fragment MoneyCollectionItem on MoneyV2 {
     amount

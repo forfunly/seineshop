@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import * as React from 'react';
 import {Pagination} from '@shopify/hydrogen';
 
@@ -11,42 +12,53 @@ export function PaginatedResourceSection({
   ariaLabel,
   resourcesClassName,
 }) {
+  const {t, localize} = useLocale();
   return (
     <Pagination connection={connection}>
       {({nodes, isLoading, PreviousLink, NextLink}) => {
         const resourcesMarkup = nodes.map((node, index) =>
-          children({node, index}),
+          children({
+            node,
+            index,
+          }),
         );
-
         return (
           <div>
             <PreviousLink>
-              {isLoading ? (
-                'Loading...'
-              ) : (
-                <span>
-                  <span aria-hidden="true">↑</span> Load previous
-                </span>
+              {t(
+                isLoading ? (
+                  'Loading...'
+                ) : (
+                  <span>
+                    <span aria-hidden="true">↑</span>
+                    {t('Load previous')}
+                  </span>
+                ),
               )}
             </PreviousLink>
-            {resourcesClassName ? (
-              <div
-                aria-label={ariaLabel}
-                className={resourcesClassName}
-                role={ariaLabel ? 'region' : undefined}
-              >
-                {resourcesMarkup}
-              </div>
-            ) : (
-              resourcesMarkup
+            {t(
+              resourcesClassName ? (
+                <div
+                  aria-label={t(ariaLabel)}
+                  className={resourcesClassName}
+                  role={ariaLabel ? 'region' : undefined}
+                >
+                  {t(resourcesMarkup)}
+                </div>
+              ) : (
+                resourcesMarkup
+              ),
             )}
             <NextLink>
-              {isLoading ? (
-                'Loading...'
-              ) : (
-                <span>
-                  Load more <span aria-hidden="true">↓</span>
-                </span>
+              {t(
+                isLoading ? (
+                  'Loading...'
+                ) : (
+                  <span>
+                    {t('Load more')}
+                    <span aria-hidden="true">↓</span>
+                  </span>
+                ),
               )}
             </NextLink>
           </div>

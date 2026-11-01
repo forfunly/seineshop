@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {CartForm} from '@shopify/hydrogen';
 
 /**
@@ -16,8 +17,15 @@ export function AddToCartButton({
   lines,
   onClick,
 }) {
+  const {t, localize} = useLocale();
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm
+      route={localize('/cart')}
+      inputs={{
+        lines,
+      }}
+      action={CartForm.ACTIONS.LinesAdd}
+    >
       {(fetcher) => (
         <>
           <input
@@ -28,10 +36,22 @@ export function AddToCartButton({
           <button
             type="submit"
             onClick={onClick}
-            disabled={disabled ?? fetcher.state !== 'idle'}
+            disabled={Boolean(disabled) || fetcher.state !== 'idle'}
           >
-            {children}
+            {t(fetcher.state !== 'idle' ? 'Adding…' : children)}
           </button>
+          {fetcher.data?.errors?.length > 0 && (
+            <p role="alert">
+              {fetcher.data.errors.map((error) => error.message).join(' ')}
+            </p>
+          )}
+          {fetcher.data?.warnings?.length > 0 && (
+            <p role="status">
+              {fetcher.data.warnings
+                .map((warning) => warning.message)
+                .join(' ')}
+            </p>
+          )}
         </>
       )}
     </CartForm>

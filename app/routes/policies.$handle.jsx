@@ -1,10 +1,15 @@
+import {useLocale} from '~/lib/i18n';
 import {Link, useLoaderData} from 'react-router';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.policy.title ?? ''}`}];
+  return [
+    {
+      title: `Hydrogen | ${data?.policy.title ?? ''}`,
+    },
+  ];
 };
 
 /**
@@ -12,13 +17,13 @@ export const meta = ({data}) => {
  */
 export async function loader({params, context}) {
   if (!params.handle) {
-    throw new Response('No handle was passed in', {status: 404});
+    throw new Response('No handle was passed in', {
+      status: 404,
+    });
   }
-
   const policyName = params.handle.replace(/-([a-z])/g, (_, m1) =>
     m1.toUpperCase(),
   );
-
   const data = await context.storefront.query(POLICY_CONTENT_QUERY, {
     variables: {
       privacyPolicy: false,
@@ -29,30 +34,34 @@ export async function loader({params, context}) {
       language: context.storefront.i18n?.language,
     },
   });
-
   const policy = data.shop?.[policyName];
-
   if (!policy) {
-    throw new Response('Could not find the policy', {status: 404});
+    throw new Response('Could not find the policy', {
+      status: 404,
+    });
   }
-
-  return {policy};
+  return {
+    policy,
+  };
 }
-
 export default function Policy() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {policy} = useLoaderData();
-
   return (
     <div className="policy">
       <br />
       <br />
       <div>
-        <Link to="/policies">← Back to Policies</Link>
+        <Link to={localize('/policies')}>{t('\u2190 Back to Policies')}</Link>
       </div>
       <br />
-      <h1>{policy.title}</h1>
-      <div dangerouslySetInnerHTML={{__html: policy.body}} />
+      <h1>{t(policy.title)}</h1>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: policy.body,
+        }}
+      />
     </div>
   );
 }

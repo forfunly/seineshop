@@ -1,3 +1,6 @@
+import {useLocale} from '~/lib/i18n';
+import {blogArticles, blogTags} from '~/lib/journal';
+import {JournalIndex} from '~/components/JournalIndex';
 import {Link, useLoaderData} from 'react-router';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -7,7 +10,11 @@ import {redirectIfHandleIsLocalized} from '~/lib/redirect';
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.blog.title ?? ''} blog`}];
+  return [
+    {
+      title: `Hydrogen | ${data?.blog.title ?? ''} blog`,
+    },
+  ];
 };
 
 /**
@@ -15,12 +22,14 @@ export const meta = ({data}) => {
  */
 export async function loader(args) {
   // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const deferredData = loadDeferredData();
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
+  return {
+    ...deferredData,
+    ...criticalData,
+  };
 }
 
 /**
@@ -29,14 +38,22 @@ export async function loader(args) {
  * @param {Route.LoaderArgs}
  */
 async function loadCriticalData({context, request, params}) {
+  const articles = blogArticles(params.blogHandle);
+  if (articles.length)
+    return {
+      blog: articles[0].blog,
+      articles,
+      tags: blogTags(params.blogHandle),
+      editorial: true,
+    };
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 4,
   });
-
   if (!params.blogHandle) {
-    throw new Response(`blog not found`, {status: 404});
+    throw new Response(`blog not found`, {
+      status: 404,
+    });
   }
-
   const [{blog}] = await Promise.all([
     context.storefront.query(BLOGS_QUERY, {
       variables: {
@@ -46,14 +63,18 @@ async function loadCriticalData({context, request, params}) {
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
-
   if (!blog?.articles) {
-    throw new Response('Not found', {status: 404});
+    throw new Response('Not found', {
+      status: 404,
+    });
   }
-
-  redirectIfHandleIsLocalized(request, {handle: params.blogHandle, data: blog});
-
-  return {blog};
+  redirectIfHandleIsLocalized(request, {
+    handle: params.blogHandle,
+    data: blog,
+  });
+  return {
+    blog,
+  };
 }
 
 /**
@@ -62,18 +83,21 @@ async function loadCriticalData({context, request, params}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {Route.LoaderArgs}
  */
-function loadDeferredData({context}) {
+function loadDeferredData() {
   return {};
 }
-
 export default function Blog() {
+  const {t, localize, locale} = useLocale();
   /** @type {LoaderReturnData} */
-  const {blog} = useLoaderData();
+  const {blog, editorial, articles: editorialArticles, tags} = useLoaderData();
+  if (editorial)
+    return (
+      <JournalIndex articles={editorialArticles} blog={blog} tags={tags} />
+    );
   const {articles} = blog;
-
   return (
     <div className="blog">
-      <h1>{blog.title}</h1>
+      <h1>{t(blog.title)}</h1>
       <div className="blog-grid">
         <PaginatedResourceSection connection={articles}>
           {({node: article, index}) => (
@@ -96,18 +120,19 @@ export default function Blog() {
  * }}
  */
 function ArticleItem({article, loading}) {
-  const publishedAt = new Intl.DateTimeFormat('en-US', {
+  const {t, localize, locale} = useLocale();
+  const publishedAt = new Intl.DateTimeFormat(locale.code, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   }).format(new Date(article.publishedAt));
   return (
     <div className="blog-article" key={article.id}>
-      <Link to={`/blogs/${article.blog.handle}/${article.handle}`}>
+      <Link to={localize(`/blog/${article.handle}`)}>
         {article.image && (
           <div className="blog-article-image">
             <Image
-              alt={article.image.altText || article.title}
+              alt={t(article.image.altText || article.title)}
               aspectRatio="3/2"
               data={article.image}
               loading={loading}
@@ -115,8 +140,8 @@ function ArticleItem({article, loading}) {
             />
           </div>
         )}
-        <h3>{article.title}</h3>
-        <small>{publishedAt}</small>
+        <h3>{t(article.title)}</h3>
+        <small>{t(publishedAt)}</small>
       </Link>
     </div>
   );

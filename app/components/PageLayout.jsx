@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {Await, Link} from 'react-router';
 import {Suspense, useId} from 'react';
 import {Aside} from '~/components/Aside';
@@ -21,6 +22,7 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }) {
+  const {t, localize} = useLocale();
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -34,7 +36,7 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main id="main-content">{t(children)}</main>
       <Footer
         footer={footer}
         header={header}
@@ -48,9 +50,10 @@ export function PageLayout({
  * @param {{cart: PageLayoutProps['cart']}}
  */
 function CartAside({cart}) {
+  const {t, localize} = useLocale();
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+    <Aside type="cart" heading={t('Shopping cart')}>
+      <Suspense fallback={<p>{t('Loading cart ...')}</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -60,11 +63,11 @@ function CartAside({cart}) {
     </Aside>
   );
 }
-
 function SearchAside() {
+  const {t, localize} = useLocale();
   const queriesDatalistId = useId();
   return (
-    <Aside type="search" heading="SEARCH">
+    <Aside type="search" heading={t('SEARCH')}>
       <div className="predictive-search">
         <br />
         <SearchFormPredictive>
@@ -74,13 +77,13 @@ function SearchAside() {
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}
-                placeholder="Search"
+                placeholder={t('Search')}
                 ref={inputRef}
                 type="search"
                 list={queriesDatalistId}
               />
               &nbsp;
-              <button onClick={goToSearch}>Search</button>
+              <button onClick={goToSearch}>{t('Search')}</button>
             </>
           )}
         </SearchFormPredictive>
@@ -88,15 +91,12 @@ function SearchAside() {
         <SearchResultsPredictive>
           {({items, total, term, state, closeSearch}) => {
             const {articles, collections, pages, products, queries} = items;
-
             if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
+              return <div>{t('Loading...')}</div>;
             }
-
             if (!total) {
               return <SearchResultsPredictive.Empty term={term} />;
             }
-
             return (
               <>
                 <SearchResultsPredictive.Queries
@@ -123,17 +123,20 @@ function SearchAside() {
                   closeSearch={closeSearch}
                   term={term}
                 />
-                {term.current && total ? (
-                  <Link
-                    onClick={closeSearch}
-                    to={`${SEARCH_ENDPOINT}?q=${term.current}`}
-                  >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
-                    </p>
-                  </Link>
-                ) : null}
+                {t(
+                  term.current && total ? (
+                    <Link
+                      onClick={closeSearch}
+                      to={localize(`${SEARCH_ENDPOINT}?q=${term.current}`)}
+                    >
+                      <p>
+                        {t('View all results for')}
+                        <q>{t(term.current)}</q>
+                        &nbsp; →
+                      </p>
+                    </Link>
+                  ) : null,
+                )}
               </>
             );
           }}
@@ -150,10 +153,10 @@ function SearchAside() {
  * }}
  */
 function MobileMenuAside({header, publicStoreDomain}) {
+  const {t, localize} = useLocale();
   return (
-    header.menu &&
     header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
+      <Aside type="mobile" heading={t('MENU')}>
         <HeaderMenu
           menu={header.menu}
           viewport="mobile"

@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {useLoaderData} from 'react-router';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
@@ -5,7 +6,11 @@ import {redirectIfHandleIsLocalized} from '~/lib/redirect';
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
+  return [
+    {
+      title: `Hydrogen | ${data?.page.title ?? ''}`,
+    },
+  ];
 };
 
 /**
@@ -17,8 +22,10 @@ export async function loader(args) {
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
+  return {
+    ...deferredData,
+    ...criticalData,
+  };
 }
 
 /**
@@ -30,7 +37,6 @@ async function loadCriticalData({context, request, params}) {
   if (!params.handle) {
     throw new Error('Missing page handle');
   }
-
   const [{page}] = await Promise.all([
     context.storefront.query(PAGE_QUERY, {
       variables: {
@@ -39,13 +45,15 @@ async function loadCriticalData({context, request, params}) {
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
-
   if (!page) {
-    throw new Response('Not Found', {status: 404});
+    throw new Response('Not Found', {
+      status: 404,
+    });
   }
-
-  redirectIfHandleIsLocalized(request, {handle: params.handle, data: page});
-
+  redirectIfHandleIsLocalized(request, {
+    handle: params.handle,
+    data: page,
+  });
   return {
     page,
   };
@@ -60,21 +68,23 @@ async function loadCriticalData({context, request, params}) {
 function loadDeferredData({context}) {
   return {};
 }
-
 export default function Page() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const {page} = useLoaderData();
-
   return (
     <div className="page">
       <header>
-        <h1>{page.title}</h1>
+        <h1>{t(page.title)}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
+      <main
+        dangerouslySetInnerHTML={{
+          __html: page.body,
+        }}
+      />
     </div>
   );
 }
-
 const PAGE_QUERY = `#graphql
   query Page(
     $language: LanguageCode,

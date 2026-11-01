@@ -1,188 +1,202 @@
-import {Await, useLoaderData, Link} from 'react-router';
-import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
-import {MockShopNotice} from '~/components/MockShopNotice';
-
-/**
- * @type {Route.MetaFunction}
- */
-export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
-};
-
-/**
- * @param {Route.LoaderArgs} args
- */
-export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {Route.LoaderArgs}
- */
-async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
-
+import {useLocale} from '~/lib/i18n';
+import journal from '~/data/journal.json';
+import {LatestArticles} from '~/components/LatestArticles';
+import {useLoaderData, Link} from 'react-router';
+import {FeaturedProducts} from '~/components/FeaturedProducts';
+import {categories} from '~/data/navigation';
+export async function loader({context}) {
+  const {collection} = await context.storefront.query(HOME_FEATURED_QUERY);
+  const featuredProducts = [...(collection?.products.nodes || [])];
+  featuredProducts.sort(
+    (a, b) =>
+      Number(b.handle === 'b-20a-3-in-1-foldable-wireless-charging-station') -
+      Number(a.handle === 'b-20a-3-in-1-foldable-wireless-charging-station'),
+  );
+  const latestArticles = journal
+    .filter((article) => Date.parse(article.publishedAt) <= Date.now())
+    .slice()
+    .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
+    .slice(0, 3)
+    .map(({handle, title, excerpt, image, publishedAt, readTime}) => ({
+      handle,
+      title,
+      excerpt,
+      image,
+      publishedAt,
+      readTime,
+    }));
   return {
-    isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
-    featuredCollection: collections.nodes[0],
+    featuredProducts,
+    latestArticles,
   };
 }
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
- */
-function loadDeferredData({context}) {
-  const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      console.error(error);
-      return null;
-    });
-
-  return {
-    recommendedProducts,
-  };
-}
-
 export default function Homepage() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
   return (
-    <div className="home">
-      {data.isShopLinked ? null : <MockShopNotice />}
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+    <div className="home marketplace-home">
+      <div className="market-intro">
+        <nav className="category-rail" aria-label={t('Shop by category')}>
+          <h2>{t('Shop by category')}</h2>
+          {categories.map((category) => (
+            <details key={category.title}>
+              <summary>
+                <span>{t(category.icon)}</span>
+                {t(category.title)}
+                <b>›</b>
+              </summary>
+              <div>
+                {category.links.map(([title, url]) => (
+                  <Link key={title} to={localize(url)}>
+                    {t(title)}
+                  </Link>
+                ))}
+              </div>
+            </details>
+          ))}
+        </nav>
+        <section className="market-hero">
+          <div>
+            <p className="eyebrow">{t('THE EVERYDAY TECH EDIT')}</p>
+            <h1>
+              {t('Small upgrades.')}
+              <br />
+              <em>{t('Better every day.')}</em>
+            </h1>
+            <p>
+              {t(
+                'Explore phone accessories, useful hardware and a simpler way to charge.',
+              )}
+            </p>
+            <Link
+              className="seine-button"
+              to={localize('/collections/iphone-18-pro-max')}
+            >
+              {t('Explore phone accessories \u2197')}
+            </Link>
+            <span className="hero-caption">
+              {t('Made for your pocket. Ready for your day.')}
+            </span>
+          </div>
+          <img
+            src="/images/b20a-black.webp"
+            alt={t('B-20A three-device foldable charging station in black')}
+            width="800"
+            height="800"
+            fetchPriority="high"
+          />
+        </section>
+        <div className="market-features">
+          <Link to={localize('/collections/iphone-18-pro-max')}>
+            <span>{t('FIND YOUR FIT')}</span>
+            <h2>
+              {t('iPhone 18')}
+              <br />
+              {t('Pro Max')}
+            </h2>
+            <p>{t('Cases & protection \u2192')}</p>
+            <b className="device-art" aria-hidden="true">
+              18
+            </b>
+          </Link>
+          <Link to={localize('/discover/b20a')}>
+            <span>{t('THE CHARGING EDIT')}</span>
+            <h2>
+              {t('One place.')}
+              <br />
+              {t('Three devices.')}
+            </h2>
+            <p>{t('Discover B-20A \u2192')}</p>
+          </Link>
+        </div>
+      </div>
+      <section className="market-guide" aria-label={t('Shopping guide')}>
+        <div>
+          <b>{t('Find your device')}</b>
+          <span>{t('Browse by model and accessory')}</span>
+        </div>
+        <div>
+          <b>{t('Compare the details')}</b>
+          <span>{t('Materials, features and compatibility')}</span>
+        </div>
+        <div>
+          <b>{t('Choose your finish')}</b>
+          <span>{t('Discover colors for your everyday carry')}</span>
+        </div>
+        <div>
+          <b>{t('Need a hand?')}</b>
+          <a href={localize('mailto:hello@seineshop.com')}>
+            {t('Talk to SeineShop \u2192')}
+          </a>
+        </div>
+      </section>
+      <FeaturedProducts products={data.featuredProducts} />
+      <section className="market-category-section">
+        <div className="market-section-heading">
+          <div>
+            <p className="eyebrow">{t('START WITH THE ESSENTIALS')}</p>
+            <h2>{t('Explore by category')}</h2>
+          </div>
+          <Link to={localize('/collections')}>
+            {t('All collections \u2192')}
+          </Link>
+        </div>
+        <div className="market-category-grid">
+          {categories.slice(0, 6).map((category) => (
+            <Link key={category.title} to={localize(category.links[0][1])}>
+              <span aria-hidden="true">{t(category.icon)}</span>
+              <h3>{t(category.title)}</h3>
+              <small>{t('Explore \u2192')}</small>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="market-editorial">
+        <div>
+          <p className="eyebrow">{t('LESS CLUTTER. MORE POSSIBILITY.')}</p>
+          <h2>
+            {t('A smarter spot')}
+            <br />
+            {t('for your everyday tech.')}
+          </h2>
+          <p>
+            {t(
+              'Meet a foldable charging station for a compatible phone, earbuds and Galaxy Watch.',
+            )}
+          </p>
+          <Link className="seine-button" to={localize('/discover/b20a')}>
+            {t('Discover the charging edit \u2197')}
+          </Link>
+        </div>
+        <img
+          src="/images/b20a-white.webp"
+          alt={t('White B-20A foldable charging station')}
+          width="800"
+          height="800"
+          loading="lazy"
+        />
+      </section>
+      <section className="seine-contact">
+        <h2>{t('Good tech. Clear answers.')}</h2>
+        <Link to={localize('/support')}>
+          {t('Visit our support center \u2197')}
+        </Link>
+      </section>
+      <LatestArticles articles={data.latestArticles} />
     </div>
   );
 }
-
-/**
- * @param {{
- *   collection: FeaturedCollectionFragment;
- * }}
- */
-function FeaturedCollection({collection}) {
-  if (!collection) return null;
-  const image = collection?.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image
-            data={image}
-            sizes="100vw"
-            alt={image.altText || collection.title}
-          />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
-
-/**
- * @param {{
- *   products: Promise<RecommendedProductsQuery | null>;
- * }}
- */
-function RecommendedProducts({products}) {
-  return (
-    <section
-      className="recommended-products"
-      aria-labelledby="recommended-products"
-    >
-      <h2 id="recommended-products">Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : null}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </section>
-  );
-}
-
-const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
-    id
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    handle
+const HOME_FEATURED_QUERY = `#graphql
+ query HomeFeatured($country: CountryCode, $language: LanguageCode)
+ @inContext(country: $country, language: $language) {
+  collection(handle: "frontpage") {
+   products(first: 4) { nodes {
+    id title handle availableForSale
+    priceRange { minVariantPrice { amount currencyCode } }
+    featuredImage { id url altText width height }
+   } }
   }
-  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...FeaturedCollection
-      }
-    }
-  }
+ }
 `;
-
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    featuredImage {
-      id
-      url
-      altText
-      width
-      height
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
-
-/** @typedef {import('./+types/_index').Route} Route */
-/** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
-/** @typedef {import('storefrontapi.generated').RecommendedProductsQuery} RecommendedProductsQuery */
 /** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */

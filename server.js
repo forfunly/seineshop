@@ -1,3 +1,4 @@
+import {localeFromPath, localizePath} from '~/lib/locale';
 import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
@@ -14,6 +15,11 @@ export default {
    */
   async fetch(request, env, executionContext) {
     try {
+      const requestUrl = new URL(request.url);
+      if (['/jp', '/de'].includes(requestUrl.pathname)) {
+        requestUrl.pathname += '/';
+        return Response.redirect(requestUrl.href, 301);
+      }
       const hydrogenContext = await createHydrogenRouterContext(
         request,
         env,
@@ -32,8 +38,23 @@ export default {
 
       const response = await handleRequest(request);
 
-      if (hydrogenContext.session.isPending) {
+      const destination = response.headers.get('Location');
+      if (destination?.startsWith('/') && !destination.startsWith('//') && !requestUrl.pathname.endsWith('/localization')) {
         response.headers.set(
+          'Location',
+          localizePath(
+            destination,
+            localeFromPath(new URL(request.url).pathname),
+          ),
+        );
+      }
+
+      if (hydrogenContext.session.get('marketCountry')) {
+        response.headers.set('Cache-Control', 'private, no-store');
+      }
+
+      if (hydrogenContext.session.isPending) {
+        response.headers.append(
           'Set-Cookie',
           await hydrogenContext.session.commit(),
         );

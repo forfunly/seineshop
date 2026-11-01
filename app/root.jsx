@@ -1,10 +1,14 @@
+import {LOCALIZATION_QUERY, MARKET_COUNTRIES} from '~/lib/markets';
+import {localeFromPath} from '~/lib/locale';
+import {SiteSeo} from '~/components/SiteSeo';
+import {siteSettings} from '~/lib/seo';
 import {Analytics, getShopAnalytics, useNonce} from '@shopify/hydrogen';
 import {
   Outlet,
+  useLocation,
   useRouteError,
   isRouteErrorResponse,
   Links,
-  Meta,
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
@@ -13,6 +17,9 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
+import mobileStyles from '~/styles/mobile.css?url';
+import brandStyles from '~/styles/brand.css?url';
+import cartStyles from '~/styles/cart.css?url';
 import {PageLayout} from './components/PageLayout';
 
 /**
@@ -20,6 +27,11 @@ import {PageLayout} from './components/PageLayout';
  * @type {ShouldRevalidateFunction}
  */
 export const shouldRevalidate = ({formMethod, currentUrl, nextUrl}) => {
+  if (
+    localeFromPath(currentUrl.pathname).code !==
+    localeFromPath(nextUrl.pathname).code
+  )
+    return true;
   // revalidate when a mutation is performed e.g add to cart, login...
   if (formMethod && formMethod !== 'GET') return true;
 
@@ -62,6 +74,8 @@ export function links() {
  * @param {Route.LoaderArgs} args
  */
 export async function loader(args) {
+  if (args.params.locale && !['jp', 'de'].includes(args.params.locale))
+    throw new Response('Not found', {status: 404});
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
@@ -73,6 +87,7 @@ export async function loader(args) {
   return {
     ...deferredData,
     ...criticalData,
+    seoSettings: siteSettings(env, args.request.url),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -97,17 +112,17 @@ export async function loader(args) {
 async function loadCriticalData({context}) {
   const {storefront} = context;
 
-  const [header] = await Promise.all([
+  const [header, marketData] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
+    storefront.query(LOCALIZATION_QUERY),
   ]);
 
-  return {header};
+  return {header, localization: {...marketData.localization, availableCountries: marketData.localization.availableCountries.filter((item) => MARKET_COUNTRIES.includes(item.isoCode))}};
 }
 
 /**
@@ -144,15 +159,36 @@ function loadDeferredData({context}) {
  */
 export function Layout({children}) {
   const nonce = useNonce();
+  const locale = localeFromPath(useLocation().pathname);
 
   return (
-    <html lang="en">
+    <html lang={locale.code}>
       <head>
         <meta charSet="utf-8" />
+        {/* Google tag (gtag.js): initialize once in the shared document head. */}
+        <script
+          async
+          nonce={nonce}
+          src="https://www.googletagmanager.com/gtag/js?id=G-BKLZMJ9EP7"
+        />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-BKLZMJ9EP7');
+          `,
+          }}
+        />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
-        <Meta />
+        <link rel="stylesheet" href={mobileStyles}></link>
+        <link rel="stylesheet" href={brandStyles}></link>
+        <link rel="stylesheet" href={cartStyles}></link>
+        <SiteSeo />
         <Links />
       </head>
       <body>

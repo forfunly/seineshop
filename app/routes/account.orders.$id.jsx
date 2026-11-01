@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {redirect, useLoaderData} from 'react-router';
 import {Money, Image} from '@shopify/hydrogen';
 import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
@@ -6,7 +7,11 @@ import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuer
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Order ${data?.order?.name}`}];
+  return [
+    {
+      title: `Order ${data?.order?.name}`,
+    },
+  ];
 };
 
 /**
@@ -17,7 +22,6 @@ export async function loader({params, context}) {
   if (!params.id) {
     return redirect('/account/orders');
   }
-
   const orderId = atob(params.id);
   const {data, errors} = await customerAccount.query(CUSTOMER_ORDER_QUERY, {
     variables: {
@@ -25,11 +29,9 @@ export async function loader({params, context}) {
       language: customerAccount.i18n.language,
     },
   });
-
   if (errors?.length || !data?.order) {
     throw new Error('Order not found');
   }
-
   const {order} = data;
 
   // Extract line items directly from nodes array
@@ -53,7 +55,6 @@ export async function loader({params, context}) {
     firstDiscount?.__typename === 'PricingPercentageValue'
       ? firstDiscount.percentage
       : null;
-
   return {
     order,
     lineItems,
@@ -62,8 +63,8 @@ export async function loader({params, context}) {
     fulfillmentStatus,
   };
 }
-
 export default function OrderRoute() {
+  const {t, localize, locale} = useLocale();
   /** @type {LoaderReturnData} */
   const {
     order,
@@ -74,20 +75,34 @@ export default function OrderRoute() {
   } = useLoaderData();
   return (
     <div className="account-order">
-      <h2>Order {order.name}</h2>
-      <p>Placed on {new Date(order.processedAt).toDateString()}</p>
+      <h2>
+        {t('Order')}
+        {order.name}
+      </h2>
+      <p>
+        {t('Placed on')}
+        {new Date(order.processedAt).toLocaleDateString(locale.code, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC',
+        })}
+      </p>
       {order.confirmationNumber && (
-        <p>Confirmation: {order.confirmationNumber}</p>
+        <p>
+          {t('Confirmation:')}
+          {order.confirmationNumber}
+        </p>
       )}
       <br />
       <div>
         <table>
           <thead>
             <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
+              <th scope="col">{t('Product')}</th>
+              <th scope="col">{t('Price')}</th>
+              <th scope="col">{t('Quantity')}</th>
+              <th scope="col">{t('Total')}</th>
             </tr>
           </thead>
           <tbody>
@@ -101,26 +116,31 @@ export default function OrderRoute() {
               discountPercentage) && (
               <tr>
                 <th scope="row" colSpan={3}>
-                  <p>Discounts</p>
+                  <p>{t('Discounts')}</p>
                 </th>
                 <th scope="row">
-                  <p>Discounts</p>
+                  <p>{t('Discounts')}</p>
                 </th>
                 <td>
-                  {discountPercentage ? (
-                    <span>-{discountPercentage}% OFF</span>
-                  ) : (
-                    discountValue && <Money data={discountValue} />
+                  {t(
+                    discountPercentage ? (
+                      <span>
+                        -{t(discountPercentage)}
+                        {t('% OFF')}
+                      </span>
+                    ) : (
+                      discountValue && <Money data={discountValue} />
+                    ),
                   )}
                 </td>
               </tr>
             )}
             <tr>
               <th scope="row" colSpan={3}>
-                <p>Subtotal</p>
+                <p>{t('Subtotal')}</p>
               </th>
               <th scope="row">
-                <p>Subtotal</p>
+                <p>{t('Subtotal')}</p>
               </th>
               <td>
                 <Money data={order.subtotal} />
@@ -128,10 +148,10 @@ export default function OrderRoute() {
             </tr>
             <tr>
               <th scope="row" colSpan={3}>
-                Tax
+                {t('Tax')}
               </th>
               <th scope="row">
-                <p>Tax</p>
+                <p>{t('Tax')}</p>
               </th>
               <td>
                 <Money data={order.totalTax} />
@@ -139,10 +159,10 @@ export default function OrderRoute() {
             </tr>
             <tr>
               <th scope="row" colSpan={3}>
-                Total
+                {t('Total')}
               </th>
               <th scope="row">
-                <p>Total</p>
+                <p>{t('Total')}</p>
               </th>
               <td>
                 <Money data={order.totalPrice} />
@@ -151,34 +171,40 @@ export default function OrderRoute() {
           </tfoot>
         </table>
         <div>
-          <h3>Shipping Address</h3>
-          {order?.shippingAddress ? (
-            <address>
-              <p>{order.shippingAddress.name}</p>
-              {order.shippingAddress.formatted ? (
-                <p>{order.shippingAddress.formatted}</p>
-              ) : (
-                ''
-              )}
-              {order.shippingAddress.formattedArea ? (
-                <p>{order.shippingAddress.formattedArea}</p>
-              ) : (
-                ''
-              )}
-            </address>
-          ) : (
-            <p>No shipping address defined</p>
+          <h3>{t('Shipping Address')}</h3>
+          {t(
+            order?.shippingAddress ? (
+              <address>
+                <p>{t(order.shippingAddress.name)}</p>
+                {order.shippingAddress.formatted ? (
+                  <p>{t(order.shippingAddress.formatted)}</p>
+                ) : (
+                  ''
+                )}
+                {order.shippingAddress.formattedArea ? (
+                  <p>{t(order.shippingAddress.formattedArea)}</p>
+                ) : (
+                  ''
+                )}
+              </address>
+            ) : (
+              <p>{t('No shipping address defined')}</p>
+            ),
           )}
-          <h3>Status</h3>
+          <h3>{t('Status')}</h3>
           <div>
-            <p>{fulfillmentStatus}</p>
+            <p>{t(fulfillmentStatus)}</p>
           </div>
         </div>
       </div>
       <br />
       <p>
-        <a target="_blank" href={order.statusPageUrl} rel="noreferrer">
-          View Order Status →
+        <a
+          target="_blank"
+          href={localize(order.statusPageUrl)}
+          rel="noreferrer"
+        >
+          {t('View Order Status \u2192')}
         </a>
       </p>
     </div>
@@ -189,6 +215,7 @@ export default function OrderRoute() {
  * @param {{lineItem: OrderLineItemFullFragment}}
  */
 function OrderLineRow({lineItem}) {
+  const {t, localize, locale} = useLocale();
   return (
     <tr key={lineItem.id}>
       <td>
@@ -199,15 +226,15 @@ function OrderLineRow({lineItem}) {
             </div>
           )}
           <div>
-            <p>{lineItem.title}</p>
-            <small>{lineItem.variantTitle}</small>
+            <p>{t(lineItem.title)}</p>
+            <small>{t(lineItem.variantTitle)}</small>
           </div>
         </div>
       </td>
       <td>
         <Money data={lineItem.price} />
       </td>
-      <td>{lineItem.quantity}</td>
+      <td>{t(lineItem.quantity)}</td>
       <td>
         <Money data={lineItem.totalDiscount} />
       </td>

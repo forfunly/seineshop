@@ -1,5 +1,7 @@
+import {useLocale} from '~/lib/i18n';
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
+import {urlWithTrackingParams} from '~/lib/search';
 import {useVariantUrl} from '~/lib/variants';
 
 /**
@@ -8,10 +10,12 @@ import {useVariantUrl} from '~/lib/variants';
  *     | CollectionItemFragment
  *     | ProductItemFragment
  *     | RecommendedProductFragment;
+ *   searchTerm?: string;
  *   loading?: 'eager' | 'lazy';
  * }}
  */
-export function ProductItem({product, loading}) {
+export function ProductItem({product, loading, searchTerm}) {
+  const {t, localize} = useLocale();
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
   return (
@@ -19,18 +23,26 @@ export function ProductItem({product, loading}) {
       className="product-item"
       key={product.id}
       prefetch="intent"
-      to={variantUrl}
+      to={localize(
+        searchTerm !== undefined
+          ? urlWithTrackingParams({
+              baseUrl: variantUrl,
+              trackingParams: product.trackingParameters,
+              term: searchTerm,
+            })
+          : variantUrl,
+      )}
     >
       {image && (
         <Image
-          alt={image.altText || product.title}
+          alt={t(image.altText || product.title)}
           aspectRatio="1/1"
           data={image}
           loading={loading}
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h4>{product.title}</h4>
+      <h4>{t(product.title)}</h4>
       <small>
         <Money data={product.priceRange.minVariantPrice} />
       </small>

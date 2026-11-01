@@ -1,0 +1,177 @@
+.global-search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.global-search .market-search {
+  width: 100%;
+  margin: 0;
+}
+.global-search-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #dce7df;
+  border-radius: 18px;
+  box-shadow: 0 14px 38px #17231c26;
+  padding: 22px;
+  z-index: 45;
+  max-height: 70dvh;
+  overflow: auto;
+  color: #17231c;
+}
+.global-search-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.global-search-panel-head button {
+  border: 0;
+  background: #f1f7f2;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.global-search-panel h3 {
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: #647368;
+  margin: 18px 0 12px;
+}
+.global-search-status,
+.global-search-explore p {
+  font-size: 12px;
+  color: #647368;
+  margin: 12px 0;
+}
+.global-search-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.3fr);
+  gap: 24px;
+}
+.global-search-terms a {
+  display: block;
+  font-size: 13px;
+  padding: 9px 0;
+  line-height: 1.5;
+}
+.global-search-products a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.global-search-products a:hover,
+.global-search-panel a:focus-visible {
+  background: #e8f8ed;
+}
+.global-search-products img {
+  object-fit: contain;
+  flex: none;
+  border-radius: 6px;
+}
+.global-search-products strong {
+  font-size: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+.global-search-products span > div {
+  font-size: 13px;
+  font-weight: 700;
+}
+.global-search-all {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  background: #c3fbb6;
+  border-radius: 24px;
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.global-search-explore a {
+  display: inline-block;
+  padding: 9px 13px;
+  border: 1px solid #dce7df;
+  border-radius: 20px;
+  font-size: 12px;
+  margin: 4px;
+}
+.global-search-panel a {
+  color: #17231c;
+}
+.global-search-panel :is(a, button):focus-visible {
+  outline: 2px solid #327442;
+  outline-offset: 2px;
+}
+.search-content-results {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 40px 40px;
+}
+.search-content-results:empty {
+  display: none;
+}
+@media (max-width: 760px) {
+  .market-header-main > .global-search {
+    grid-column: 1/-1;
+    grid-row: 2;
+    width: 100%;
+    order: 3;
+  }
+  .global-search-panel {
+    padding: 16px;
+    max-height: 65dvh;
+  }
+  .global-search-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .global-search-terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+  }
+  .global-search-products a {
+    padding: 9px 0;
+  }
+  .search-content-results {
+    padding: 0 20px 30px;
+  }
+}
+.global-search-panel section {
+  padding: 0;
+  margin: 0;
+}
+.global-search-panel .global-search-all {
+  position: sticky;
+  bottom: 0;
+  box-shadow: 0 -8px 12px #fff;
+}
+.global-search-terms a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 760px) {
+  .market-header-main > .global-search {
+    flex: 1 0 100%;
+    max-width: 100%;
+  }
+  .global-search .market-search {
+    min-width: 0;
+  }
+  .global-search-panel {
+    box-sizing: border-box;
+  }
+}

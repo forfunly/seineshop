@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {useLoaderData, data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {CartMain} from '~/components/CartMain';
@@ -6,7 +7,11 @@ import {CartMain} from '~/components/CartMain';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return [
+    {
+      title: `Hydrogen | Cart`,
+    },
+  ];
 };
 
 /**
@@ -19,18 +24,13 @@ export const headers = ({actionHeaders}) => actionHeaders;
  */
 export async function action({request, context}) {
   const {cart} = context;
-
   const formData = await request.formData();
-
   const {action, inputs} = CartForm.getFormInput(formData);
-
   if (!action) {
     throw new Error('No action provided');
   }
-
   let status = 200;
   let result;
-
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
       result = await cart.addLines(inputs.lines);
@@ -49,15 +49,12 @@ export async function action({request, context}) {
 
       // Combine discount codes already applied on cart
       discountCodes.push(...inputs.discountCodes);
-
       result = await cart.updateDiscountCodes(discountCodes);
       break;
     }
     case CartForm.ACTIONS.GiftCardCodesAdd: {
       const formGiftCardCode = inputs.giftCardCode;
-
       const giftCardCodes = formGiftCardCode ? [formGiftCardCode] : [];
-
       result = await cart.addGiftCardCodes(giftCardCodes);
       break;
     }
@@ -75,17 +72,21 @@ export async function action({request, context}) {
     default:
       throw new Error(`${action} cart action is not defined`);
   }
-
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
   const {cart: cartResult, errors, warnings} = result;
-
+  headers.set('Cache-Control', 'private, no-store');
   const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string') {
+  if (
+    !errors?.length &&
+    typeof redirectTo === 'string' &&
+    redirectTo.startsWith('/') &&
+    !redirectTo.startsWith('//') &&
+    !redirectTo.includes('\\')
+  ) {
     status = 303;
     headers.set('Location', redirectTo);
   }
-
   return data(
     {
       cart: cartResult,
@@ -95,7 +96,10 @@ export async function action({request, context}) {
         cartId,
       },
     },
-    {status, headers},
+    {
+      status,
+      headers,
+    },
   );
 }
 
@@ -104,16 +108,19 @@ export async function action({request, context}) {
  */
 export async function loader({context}) {
   const {cart} = context;
-  return await cart.get();
+  return data(await cart.get(), {
+    headers: {
+      'Cache-Control': 'private, no-store',
+    },
+  });
 }
-
 export default function Cart() {
+  const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
   const cart = useLoaderData();
-
   return (
     <div className="cart">
-      <h1>Cart</h1>
+      <h1>{t('Cart')}</h1>
       <CartMain layout="page" cart={cart} />
     </div>
   );

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {parseCollectionFilters, collectionSearchQuery} from '../app/lib/collection-filters.js';
+const parse = q=>parseCollectionFilters(new URLSearchParams(q));
+assert.deepEqual(parse('min=9&max=2').filters,[{price:{min:2,max:9}}]);
+assert.deepEqual(parse('min=Infinity&max=-1').filters,[]);
+assert.deepEqual(parse('filter=null&filter=broken&filter='+encodeURIComponent(JSON.stringify({productMetafield:{namespace:'custom',key:'source_snapshot',value:'x'}}))).filters,[]);
+const filter=JSON.stringify({productMetafield:{namespace:'custom',key:'material',value:'TPU'}});
+assert.deepEqual(parse('filter='+encodeURIComponent(filter)).filters,[JSON.parse(filter)]);
+assert.equal(parse('size=1000&sort=invalid').size,40);
+assert.equal(parse('size=80&view=list').view,'list');
+assert.equal(collectionSearchQuery('case" OR tag:other'),'tag:seineshop-best-sellers AND ("case" "OR" "tag" "other")');
+console.log('Collection filter checks passed');

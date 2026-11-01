@@ -1,3 +1,4 @@
+import {useLocale} from '~/lib/i18n';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
@@ -6,6 +7,7 @@ import {useFetcher} from 'react-router';
  * @param {CartSummaryProps}
  */
 export function CartSummary({cart, layout}) {
+  const {t} = useLocale();
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
   const summaryId = useId();
@@ -13,30 +15,36 @@ export function CartSummary({cart, layout}) {
   const discountCodeInputId = useId();
   const giftCardHeadingId = useId();
   const giftCardInputId = useId();
-
   return (
     <div aria-labelledby={summaryId} className={className}>
-      <h4 id={summaryId}>Totals</h4>
+      <h4 id={summaryId}>{t('Order summary')}</h4>
       <dl role="group" className="cart-subtotal">
-        <dt>Subtotal</dt>
+        <dt>{t('Subtotal')}</dt>
         <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
-          ) : (
-            '-'
+          {t(
+            cart?.cost?.subtotalAmount?.amount ? (
+              <Money data={cart?.cost?.subtotalAmount} />
+            ) : (
+              '-'
+            ),
           )}
         </dd>
       </dl>
+      <details className="cart-code-panel"><summary>{t('Discount code')}</summary>
       <CartDiscounts
         discountCodes={cart?.discountCodes}
         discountsHeadingId={discountsHeadingId}
         discountCodeInputId={discountCodeInputId}
       />
+      </details>
+      <details className="cart-code-panel"><summary>{t('Gift card')}</summary>
       <CartGiftCard
         giftCardCodes={cart?.appliedGiftCards}
         giftCardHeadingId={giftCardHeadingId}
         giftCardInputId={giftCardInputId}
       />
+      </details>
+      <p className="cart-tax-note">{t('Shipping and taxes calculated at checkout.')}</p>
       <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
     </div>
   );
@@ -46,14 +54,20 @@ export function CartSummary({cart, layout}) {
  * @param {{checkoutUrl?: string}}
  */
 function CartCheckoutActions({checkoutUrl}) {
+  const {locale, t} = useLocale();
   if (!checkoutUrl) return null;
-
+  const localizedCheckoutUrl = new URL(checkoutUrl);
+  localizedCheckoutUrl.searchParams.set('locale', locale.code);
   return (
     <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+      <a
+        className="cart-checkout"
+        href={localizedCheckoutUrl.href}
+        target="_self"
+      >
+        <p>{t('Continue to Checkout \u2192')}</p>
       </a>
-      <br />
+      <p className="cart-checkout-note">{t('Secure checkout by Shopify')}</p>
     </div>
   );
 }
@@ -70,17 +84,17 @@ function CartDiscounts({
   discountsHeadingId,
   discountCodeInputId,
 }) {
+  const {t} = useLocale();
   const codes =
     discountCodes
       ?.filter((discount) => discount.applicable)
       ?.map(({code}) => code) || [];
-
   return (
-    <section aria-label="Discounts">
+    <section aria-label={t('Discounts')}>
       {/* Have existing discount, display it with a remove option */}
       <dl hidden={!codes.length}>
         <div>
-          <dt id={discountsHeadingId}>Discounts</dt>
+          <dt id={discountsHeadingId}>{t('Discounts')}</dt>
           <UpdateDiscountForm>
             <div
               className="cart-discount"
@@ -89,29 +103,29 @@ function CartDiscounts({
             >
               <code>{codes?.join(', ')}</code>
               &nbsp;
-              <button type="submit" aria-label="Remove discount">
-                Remove
+              <button type="submit" aria-label={t('Remove discount')}>
+                {t('Remove')}
               </button>
             </div>
           </UpdateDiscountForm>
         </div>
       </dl>
 
+      {discountCodes?.some((discount) => !discount.applicable) && <p role="status" className="cart-code-error">{t('This discount code is not available for your cart.')}</p>}
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
+        <div className="cart-code-input">
           <label htmlFor={discountCodeInputId} className="sr-only">
-            Discount code
+            {t('Discount code')}
           </label>
           <input
             id={discountCodeInputId}
             type="text"
             name="discountCode"
-            placeholder="Discount code"
+            placeholder={t('Discount code')}
           />
-          &nbsp;
-          <button type="submit" aria-label="Apply discount code">
-            Apply
+          <button type="submit" aria-label={t('Apply discount code')}>
+            {t('Apply')}
           </button>
         </div>
       </UpdateDiscountForm>
@@ -125,16 +139,17 @@ function CartDiscounts({
  *   children: React.ReactNode;
  * }}
  */
-function UpdateDiscountForm({discountCodes, children}) {
+function UpdateDiscountForm({discountCodes = [], children}) {
+  const {t, localize} = useLocale();
   return (
     <CartForm
-      route="/cart"
-      action={CartForm.ACTIONS.DiscountCodesUpdate}
+      route={localize('/cart')}
+      action={localize(CartForm.ACTIONS.DiscountCodesUpdate)}
       inputs={{
         discountCodes: discountCodes || [],
       }}
     >
-      {children}
+      {t(children)}
     </CartForm>
   );
 }
@@ -147,12 +162,14 @@ function UpdateDiscountForm({discountCodes, children}) {
  * }}
  */
 function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
+  const {t} = useLocale();
   const giftCardCodeInput = useRef(null);
   const removeButtonRefs = useRef(new Map());
   const previousCardIdsRef = useRef([]);
-  const giftCardAddFetcher = useFetcher({key: 'gift-card-add'});
+  const giftCardAddFetcher = useFetcher({
+    key: 'gift-card-add',
+  });
   const [removedCardIndex, setRemovedCardIndex] = useState(null);
-
   useEffect(() => {
     if (giftCardAddFetcher.data) {
       if (giftCardCodeInput.current !== null) {
@@ -160,10 +177,8 @@ function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
       }
     }
   }, [giftCardAddFetcher.data]);
-
   useEffect(() => {
     const currentCardIds = giftCardCodes?.map((card) => card.id) || [];
-
     if (removedCardIndex !== null && giftCardCodes) {
       const focusTargetIndex = Math.min(
         removedCardIndex,
@@ -173,31 +188,26 @@ function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
       const focusButton = focusTargetCard
         ? removeButtonRefs.current.get(focusTargetCard.id)
         : null;
-
       if (focusButton) {
         focusButton.focus();
       } else if (giftCardCodeInput.current) {
         giftCardCodeInput.current.focus();
       }
-
       setRemovedCardIndex(null);
     }
-
     previousCardIdsRef.current = currentCardIds;
   }, [giftCardCodes, removedCardIndex]);
-
   const handleRemoveClick = (cardId) => {
     const index = previousCardIdsRef.current.indexOf(cardId);
     if (index !== -1) {
       setRemovedCardIndex(index);
     }
   };
-
   return (
-    <section aria-label="Gift cards">
+    <section aria-label={t('Gift cards')}>
       {giftCardCodes && giftCardCodes.length > 0 && (
         <dl>
-          <dt id={giftCardHeadingId}>Applied Gift Card(s)</dt>
+          <dt id={giftCardHeadingId}>{t('Applied Gift Card(s)')}</dt>
           {giftCardCodes.map((giftCard) => (
             <dd key={giftCard.id} className="cart-discount">
               <RemoveGiftCardForm
@@ -212,7 +222,7 @@ function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
                   }
                 }}
               >
-                <code>***{giftCard.lastCharacters}</code>
+                <code>***{t(giftCard.lastCharacters)}</code>
                 &nbsp;
                 <Money data={giftCard.amountUsed} />
               </RemoveGiftCardForm>
@@ -222,24 +232,23 @@ function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
       )}
 
       <AddGiftCardForm fetcherKey="gift-card-add">
-        <div>
+        <div className="cart-code-input">
           <label htmlFor={giftCardInputId} className="sr-only">
-            Gift card code
+            {t('Gift card code')}
           </label>
           <input
             id={giftCardInputId}
             type="text"
             name="giftCardCode"
-            placeholder="Gift card code"
+            placeholder={t('Gift card code')}
             ref={giftCardCodeInput}
           />
-          &nbsp;
           <button
             type="submit"
             disabled={giftCardAddFetcher.state !== 'idle'}
-            aria-label="Apply gift card code"
+            aria-label={t('Apply gift card code')}
           >
-            Apply
+            {t('Apply')}
           </button>
         </div>
       </AddGiftCardForm>
@@ -254,13 +263,14 @@ function CartGiftCard({giftCardCodes, giftCardHeadingId, giftCardInputId}) {
  * }}
  */
 function AddGiftCardForm({fetcherKey, children}) {
+  const {t, localize} = useLocale();
   return (
     <CartForm
       fetcherKey={fetcherKey}
-      route="/cart"
-      action={CartForm.ACTIONS.GiftCardCodesAdd}
+      route={localize('/cart')}
+      action={localize(CartForm.ACTIONS.GiftCardCodesAdd)}
     >
-      {children}
+      {t(children)}
     </CartForm>
   );
 }
@@ -281,23 +291,24 @@ function RemoveGiftCardForm({
   onRemoveClick,
   buttonRef,
 }) {
+  const {t, localize} = useLocale();
   return (
     <CartForm
-      route="/cart"
-      action={CartForm.ACTIONS.GiftCardCodesRemove}
+      route={localize('/cart')}
+      action={localize(CartForm.ACTIONS.GiftCardCodesRemove)}
       inputs={{
         giftCardCodes: [giftCardId],
       }}
     >
-      {children}
+      {t(children)}
       &nbsp;
       <button
         type="submit"
-        aria-label={`Remove gift card ending in ${lastCharacters}`}
+        aria-label={t(`Remove gift card ending in ${lastCharacters}`)}
         onClick={onRemoveClick}
         ref={buttonRef}
       >
-        Remove
+        {t('Remove')}
       </button>
     </CartForm>
   );
