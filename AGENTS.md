@@ -5,7 +5,16 @@
 - 根目录：`D:\AI_workspace\seineshop`；默认中文、结论先行，代码/命令/变量使用英文。不虚构商品、销量、评价或服务承诺。
 - 架构：Shopify Headless，优先使用官方 Hydrogen，按实际安装版本开发，禁止混用新旧 API；使用 Shopify 托管结账。
 - **开发基线以远程 `origin/main` 为准**：使用仓库 package.json、锁文件、架构和依赖版本（2026-11-02 为 Hydrogen 2026.4.7 / React 18）；本地独立创建的 Hydrogen 2026.10.2 / React 19 工程停用为开发/发布基线。工作区尚未对齐时不得继续基于旧本地工程开发、部署或将其整体上传覆盖远程。
-- 线上：`https://www.seineshop.com/`，Oxygen SeineShop Production；本地已关联 storefront `1000183956`。Git 远程 `origin` 为 `git@github.com:forfunly/seineshop.git`，已 fetch `origin/main`；本地工作文件尚未同步远程源码，也未部署本次代码。关联、拉取历史不等于合并代码或上线。
+- **首次对齐仅合并规则**：远程工程的代码、配置、依赖和测试作为基础，只融入用户已确定的项目规则；不迁入旧前台、旧管理脚本或旧版 SDK 技能，不建立旧工程备份目录。清理旧文件仍须按明确路径先获得删除授权；现有 `.env`、`.shopify/` 和 Git 历史保留。
+- 线上：`https://www.seineshop.com/`，Oxygen SeineShop Production；本地已关联 storefront `1000183956`。本地工作文件尚未同步远程源码，也未部署本次代码。关联、拉取历史不等于合并代码或上线。
+
+## Git 仓库与强制工作流
+
+- **指定仓库**：`git@github.com:forfunly/seineshop.git`（https://github.com/forfunly/seineshop），远程名 `origin`，新改动的提交与上传目标为 `main`。
+- **每次改动前必须检查远程**：包括代码和文档，先查看本地状态并执行 `git fetch origin`，检查远程新增提交、日志及文件差异，再判断如何同步或合并。已建立远程基线、工作区干净且可快进时，执行 `git pull --ff-only origin main` 后再改；有未提交改动、分歧或冲突时先保留成果并评估合并，不能盲目覆盖或跳过远程检查。
+- **每次 push 前必须停下来问用户**：先完成变更、适用验证，准备明确的提交及文件清单，说明目标为 `origin/main`，得到用户针对本次推送的明确同意后才能执行 `git push`。此要求适用于所有推送，包括文档；“以后上传 main”、历史授权、用户未回复或默认选项均不能代替本次确认。
+- **撤销先前的免确认 push 约定**：不再适用“普通 main push 已获持续授权/无需重复确认”。未经本次明确同意，即使验证通过或 commit 完成也不得推送；不得用其他命令、工具或 GitHub API 绕过确认。上传后核对远程 main 的提交哈希，防止漏传或误传。
+- 上传前再次检查远程更新，必要时重新评估合并及验证；不擅自 rebase、reset --hard 或强推。首次源码对齐、大改动、生产部署及其他受限操作仍遵守各自授权边界，详见 [Git 工作流](docs/rules/git-workflow.md)。
 
 ## 按任务必读
 
@@ -37,7 +46,7 @@
 - 删除文件、目录或 Git 历史；不自动清理临时文件。
 - 超出既有授权的 `.env`、密钥、token、CI/CD 配置操作；不轮换其他现有 token。
 - 数据库 schema 变更或数据迁移。
-- `git rebase`、`git reset --hard`、强制推送或向其他仓库/分支 push。用户已持续授权本项目完成验证后的普通 `git push` 到 `origin/main`，按 Git 工作流执行，无需重复确认；生产部署、密钥及 CI/CD 改动仍按各自边界处理。
+- **每一次 `git push`**（包括本项目 `origin/main` 的普通推送和文档推送）、`git rebase`、`git reset --hard` 或强制推送。推送必须获得针对本次提交的明确同意，不能沿用先前授权；生产部署、密钥及 CI/CD 改动另守各自边界。
 - 安装新的全局依赖或修改系统配置。
 - 公开发布，包括生产部署、文章或 `npm publish`。
 - 大改动先提交方案，经用户确认后实施。

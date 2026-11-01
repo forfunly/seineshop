@@ -42,7 +42,7 @@
 - 删除文件、目录或 Git 历史。
 - 超出授权范围的 `.env`、密钥、token、CI/CD 配置操作；已授权复用现有 Storefront 凭据、创建 SeineShop AI Manager 并取得和本地保存管理凭据。不允许轮换其他现有 token。
 - 数据库 schema 变更或数据迁移。
-- `git rebase`、`git reset --hard`、强制推送或超出本项目 `origin/main` 的 push；本项目验证后的普通 main push 已获持续授权，按 Git 工作流执行。
+- **每一次 `git push`**，包括本项目 `origin/main` 的普通推送及文档推送；必须先说明本次提交并获得用户明确同意，先前免确认约定已撤销。`git rebase`、`git reset --hard` 或强制推送也必须先问。按根 AGENTS.md 和 Git 工作流执行。
 - 安装新的全局依赖或修改系统配置。
 - 公开发布，包括生产部署、发布文章或 `npm publish`。
 - 登录、多因素验证和安全挑战由用户本人完成。
