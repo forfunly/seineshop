@@ -6,7 +6,10 @@
 
 - **最新迁移范围**：用户要求干净的远程工程，只把此前确定的规则合并进去；不迁入本地独立前台、管理脚本、旧依赖或旧版技能，也不建立旧工程归档。旧工具及接入记录仅用于理解历史，不能据此扩大本次合并范围。代码对齐及获准清理完成前，不声称工作区已经干净。
 
-- **最新用户决定（2026-11-02，覆盖此前推送授权）**：仓库为 `git@github.com:forfunly/seineshop.git`，以远程 main 的工程及版本为准。每次新改动前先获取、检查远程更新并判断如何同步/合并；新改动上传目标为 main，但**每一次 push 前都必须停下来问用户，获得针对本次提交的明确同意后才可推送**。先前普通 main push 的免确认约定已撤销，详见根 AGENTS.md 与 [Git 工作流](rules/git-workflow.md)。实际本地源码尚未对齐；第一次源码对齐仍需先给保留方案，经确认后实施。
+- **最新用户决定（2026-11-02，覆盖此前推送授权）**：仓库为 `git@github.com:forfunly/seineshop.git`，以远程 main 的工程及版本为准。每次新改动前先获取、检查远程更新并判断如何同步/合并；新改动上传目标为 main，但**每一次 push 前都必须停下来问用户，获得针对本次提交的明确同意后才可推送**。先前普通 main push 的免确认约定已撤销，详见根 AGENTS.md 与 [Git 工作流](rules/git-workflow.md)。
+- **本轮实际状态**：用户确认对齐方案并于回复“已清理”后完成旧工程清理；再次 fetch 核实远程仍为 `407eeab256f4671ed832ecc8f452a52edc8aa526`。本地 `main` 已建立并跟踪 `origin/main`，恢复远程完整源码，仅合并已保存的规则。未迁入旧管理脚本或 SDK 技能，未新建工作树或旧工程备份；`.env`、`.shopify/project.json` 的 SHA-256 与清理前一致，均继续被 Git 忽略。依赖安装、30 项测试、codegen、构建、集合筛选与来源暴露检查通过；全量 lint 因远程 Jest 配置问题中断，本机页面预览因缺少 `SESSION_SECRET` 未验收，详见 [对齐验收](qa/2026-11-02-remote-alignment.md)。未推送或部署，不将源码恢复表述为运行或上线成功。
+
+### 仓库关联历史（不代表当前工作区状态）
 
 - 用户指定本项目仓库为 `git@github.com:forfunly/seineshop.git`，已授权在当前本地目录关联该远程仓库并读取远程分支。此次关联不包含 push、覆盖本地文件、合并不同源码、修改 CI/CD 或部署。
 - 关联前本地为尚无提交的 `main`，现有源码与规范均未跟踪，未配置远程仓库；核对远程内容时保留全部本地文件及获授权的 `.env`。
@@ -30,4 +33,4 @@
 - 管理 API：用户已授权创建 SeineShop AI Manager，接通商品上架、集合、页面、菜单、文件、库存、翻译与主题编辑相关管理权限，并将新凭据仅保存于本地 `.env`；不得将管理凭据传到前台。授权接通不代表授权实际发布商品或生产网页，验证先使用只读请求。
 - 现有管理 App：用户也已授权接入 SeineShop Catalog Manager，优先复用其现有凭据；目前已核实安装与商品等权限，但尚未取得凭据。不得把“已安装”“有调用记录”描述为本项目已接通，不得从一个组织的 403 推断用户在所有组织都没有创建或安装 App 的权限。
 - 接入替代方案：既有新建管理 App 和本地保存凭据授权涵盖在当前可访问 Partner 组织通过 custom distribution 接入本店；安装目标仅限 `ps83if-c4.myshopify.com`，不申请公开 App Store 分发，不给其他店铺安装，不修改其他现有 App。
-- 当前管理连接：Partner 组织 `234051952` 的 SeineShop AI Manager（App ID `441790234625`）已通过单店 custom distribution + OAuth 安装。Admin offline token 仅在本地 `.env`，24 项 scopes 已由真实 Admin API 核验；`npm run admin:check` 验证店铺、App 身份和资源读取。组织 `233393793` 下未安装的同名 App 仅保留记录与本地备用凭据，不用于当前连接。现有 Catalog Manager 保持原状。
+- 管理接入历史：Partner 组织 `234051952` 的 SeineShop AI Manager（App ID `441790234625`）已通过单店 custom distribution + OAuth 安装。Admin offline token 仅在本地 `.env`，24 项 scopes 曾由真实 Admin API 核验；旧工程的 `npm run admin:check` 曾验证店铺、App 身份和资源读取。本次只迁移规则，旧管理脚本未迁入，当前工程没有该命令，也未重新进行管理 API 验证。组织 `233393793` 下未安装的同名 App 仅保留记录与本地备用凭据，不用于当前连接。现有 Catalog Manager 保持原状。

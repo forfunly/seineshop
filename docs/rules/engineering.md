@@ -2,7 +2,7 @@
 
 工程结构、可复用工具、框架接入、验证或交付任务必须读取；沿用根 AGENTS.md 的操作边界。
 
-- 开始改动、同步、提交及上传前还必须读取 [Git 工作流](git-workflow.md)。远程 `origin/main` 是唯一开发基线；旧本地独立工程仅保留待评估成果，不再用于开发或发布。
+- 开始改动、同步、提交及上传前还必须读取 [Git 工作流](git-workflow.md)。远程 `origin/main` 是唯一开发基线；首次对齐只合并项目规则，不迁入旧本地独立工程的代码、工具或依赖。
 
 ## 代码留存与复用
 
@@ -18,10 +18,11 @@
 - `docs/rules/`：按主题拆分的项目详细规范，英文 kebab-case 命名；由根 AGENTS.md 指定必读条件，保留原有重要规则，不自动清理。`docs/project-state.md` 保存当前连接状态、已有授权范围与历史接入事实；它不替代根规范中的操作红线。
 - `app/`：React Router 页面、组件、样式、服务端数据接入与会话；沿用官方模板命名。
 - `public/`：可公开的静态资源；不得包含环境变量或后台数据导出。
-- `.agents/skills/`：Hydrogen 官方项目技能，仅在所需功能开发时读取。
-- `.claude/skills/`：Hydrogen 同步工具维护的兼容技能副本；与安装的 SDK 版本一致。
+- `.agents/skills/`、`.claude/skills/`：仅在实际需要且版本匹配时使用的项目技能；2026-11-02 已清理旧版 SDK 技能，远程基线没有这两个目录，不为对齐而重建。根目录 `AGENTS.md` 是必须保留的项目总规定，与技能目录不同。
 - `docs/qa/`：不含后台或凭据信息的本地预览截图与验收记录；按日期及视口命名，保留交付版本。
-- `.react-router/`、`dist/`、`node_modules/`：工具生成文件及本地依赖，不纳入源代码提交，不自动清理。
+- `.react-router/`、`dist/`、`build/`、`.cache/`、`node_modules/`：工具生成文件、项目级缓存及本地依赖，不纳入源代码提交，不自动清理。npm 共享缓存被占用时可用命令级 `--cache .cache/npm`，不更改系统或全局 npm 配置。
+- `tests/`、`guides/`、`.cursor/rules/`：沿用远程已有的测试、开发指南和编辑器规则及命名，不混入旧工程实现。
+- 对齐前遗留的 `docs/plans/2026-10-30-headless-storefront.md` 和 `docs/qa/2026-10-30-*` 保留为本机历史资料，不参与新工程构建或验收；在 `.git/info/exclude` 逐项排除，不上传远程，也不自动删除。
 - `.env`：获授权的本地连接参数；必须被 Git 忽略，不输出其内容。
 - 管理 App 的身份、实际权限、接入历史与已有授权见 [项目连接状态](../project-state.md)；处理连接或凭据前必须读取，不从旧安装记录推断当前已接通。
 - `scripts/`：本地管理工具与验证脚本，使用英文 kebab-case 命名；只读为默认，不内嵌凭据，不导入前台构建。保留有用工具，不自动删除临时文件。
@@ -51,7 +52,7 @@
 
 - 工程验证以远程工程实际配置为准：2026-11-02 package.json 提供 `npm run lint`、`npm run codegen`、`npm run build`；运行与变更相关的 tests/ 测试。旧本地工程曾使用 `npm run typecheck`、`npm run test:admin` 与 `npm run admin:check`，仅作为历史工具记录，在获准迁入并验证前不得当作远程已有命令。
 - 本地启动使用远程工程 `npm run dev`，核对该版本 CLI 的监听选项并仅监听本机；旧本地 Vite 的 `--host 127.0.0.1` 不能直接照搬到 Hydrogen CLI。不主动建立公开隧道。
-- 初始化后，在本文件补充 package.json 中实际存在的类型检查、静态检查及构建命令。
+- 当前可执行：`npm ci`、`node --test tests/*.test.mjs`、`npm run lint`、`npm run codegen`、`npm run build`、`node scripts/check-collection-filters.mjs`、构建后 `node scripts/audit-source-exposure.mjs --built`。`codegen` 生成 GraphQL/路由类型，不等于全项目类型检查；远程没有独立 `typecheck` 命令。全量 lint 的已知基线配置问题见 [对齐验收](../qa/2026-11-02-remote-alignment.md)，不通过忽略规则绕过。
 - 改动后主动执行适用验证，并在浏览器检查桌面和手机布局、商品选择、购物车及结账跳转。
 - 真实店铺尚未接通时，明确标记演示数据与尚未验证的交易功能。
 - `robots.txt`、`llms.txt`、`agents.md`、CSV 等文本资源采用 UTF-8；上线后检查实际 Content-Type 的 `charset=utf-8` 并通过浏览器验证多语言及特殊符号显示，不能只依据 HTTP 200 或构建结果。
