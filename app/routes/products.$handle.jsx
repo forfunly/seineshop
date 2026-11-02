@@ -39,7 +39,7 @@ export const meta = ({data}) => {
  */
 export async function loader(args) {
   // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const deferredData = loadDeferredData();
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
@@ -89,9 +89,8 @@ async function loadCriticalData({context, params, request}) {
  * Load data for rendering content below the fold. This data is deferred and will be
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
  */
-function loadDeferredData({context, params}) {
+function loadDeferredData() {
   // Put any API calls that is not critical to be available on first page render
   // For example: product reviews, product recommendations, social feeds.
 

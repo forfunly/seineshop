@@ -20,7 +20,7 @@ export const meta = () => {
  */
 export async function loader(args) {
   // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const deferredData = loadDeferredData();
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
@@ -57,13 +57,12 @@ async function loadCriticalData({context, request}) {
  * Load data for rendering content below the fold. This data is deferred and will be
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
  */
-function loadDeferredData({context}) {
+function loadDeferredData() {
   return {};
 }
 export default function Collection() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   /** @type {LoaderReturnData} */
   const {products} = useLoaderData();
   return (

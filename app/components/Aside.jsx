@@ -25,7 +25,7 @@ import {useId} from 'react';
  * }}
  */
 export function Aside({children, heading, type}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
   const id = useId();

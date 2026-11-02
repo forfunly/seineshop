@@ -1,5 +1,4 @@
 import {useLocale} from '~/lib/i18n';
-import * as React from 'react';
 import {Pagination} from '@shopify/hydrogen';
 
 /**
@@ -12,7 +11,7 @@ export function PaginatedResourceSection({
   ariaLabel,
   resourcesClassName,
 }) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <Pagination connection={connection}>
       {({nodes, isLoading, PreviousLink, NextLink}) => {

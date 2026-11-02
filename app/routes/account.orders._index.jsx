@@ -75,7 +75,7 @@ export default function Orders() {
  * }}
  */
 function OrdersTable({orders, filters}) {
-  const {t, localize, locale} = useLocale();
+  const {t} = useLocale();
   const hasFilters = !!(filters.name || filters.confirmationNumber);
   return (
     <div className="acccount-orders" aria-live="polite">
@@ -96,7 +96,7 @@ function OrdersTable({orders, filters}) {
  * @param {{hasFilters?: boolean}}
  */
 function EmptyOrders({hasFilters = false}) {
-  const {t, localize, locale} = useLocale();
+  const {t, localize} = useLocale();
   return (
     <div>
       {t(
@@ -132,8 +132,8 @@ function EmptyOrders({hasFilters = false}) {
  * }}
  */
 function OrderSearchForm({currentFilters}) {
-  const {t, localize, locale} = useLocale();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {t} = useLocale();
+  const [, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const isSearching =
     navigation.state !== 'idle' &&

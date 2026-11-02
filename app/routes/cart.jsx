@@ -115,7 +115,7 @@ export async function loader({context}) {
   });
 }
 export default function Cart() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   /** @type {LoaderReturnData} */
   const cart = useLoaderData();
   return (

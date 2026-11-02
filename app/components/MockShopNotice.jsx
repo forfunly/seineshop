@@ -1,6 +1,6 @@
 import {useLocale} from '~/lib/i18n';
 export function MockShopNotice() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <section
       className="mock-shop-notice"

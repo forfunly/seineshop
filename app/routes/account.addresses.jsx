@@ -272,7 +272,7 @@ export async function action({request, context}) {
   }
 }
 export default function Addresses() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const {customer} = useOutletContext();
   const {defaultAddress, addresses} = customer;
   return (
@@ -302,7 +302,7 @@ export default function Addresses() {
   );
 }
 function NewAddressForm() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const newAddress = {
     address1: '',
     address2: '',
@@ -341,7 +341,7 @@ function NewAddressForm() {
  * @param {Pick<CustomerFragment, 'addresses' | 'defaultAddress'>}
  */
 function ExistingAddresses({addresses, defaultAddress}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <div>
       <legend>{t('Existing addresses')}</legend>
@@ -387,7 +387,7 @@ function ExistingAddresses({addresses, defaultAddress}) {
  * }}
  */
 export function AddressForm({addressId, address, defaultAddress, children}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const {state, formMethod} = useNavigation();
   /** @type {ActionReturnData} */
   const action = useActionData();

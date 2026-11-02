@@ -1,6 +1,7 @@
-import {useRef, useState} from 'react';
+import {useState} from 'react';
 import {Money} from '@shopify/hydrogen';
 import {useLocale} from '~/lib/i18n';
+import {useModalDialog} from '~/lib/use-modal-dialog';
 import {QUANTITY_TIERS, SALES_EMAIL, inquiryMailto, validPurchaseQuantity} from '~/lib/wholesale';
 
 export function SalesContact() {
@@ -27,7 +28,7 @@ export function BusinessInquiry({product, variant, quantity}) {
   const {t} = useLocale();
   const [type, setType] = useState('Wholesale');
   const [draft, setDraft] = useState('');
-  const dialog = useRef(null);
+  const {dialogRef, triggerRef, closeButtonRef, openDialog, closeDialog} = useModalDialog({lightDismiss: true});
   return <section className="pdp-business" id="business-inquiry" aria-labelledby="business-heading">
     <div className="pdp-business-intro"><p className="pdp-eyebrow">SEINESHOP BUSINESS</p><h2 id="business-heading">{t('Built around your business.')}</h2><p>{t('Ask about volume pricing, branded packaging, logo customization or a new product concept.')}</p><SalesContact/></div>
     <div className="pdp-business-details">
@@ -36,10 +37,10 @@ export function BusinessInquiry({product, variant, quantity}) {
       <p>{t(type === 'Wholesale' ? 'Tell us the quantity, variants and delivery country. Steven will confirm the available price and fulfillment details.' : type === 'OEM' ? 'Discuss logo placement, packaging and labeling for this product. Availability depends on the model and quantity.' : 'Share your design, features and target market. We will review feasibility and the development requirements.')}</p>
       <ol className="pdp-business-steps">{steps.map((step,index)=><li key={step}><span>{String(index+1).padStart(2,'0')}</span>{t(step)}</li>)}</ol>
       <p className="pdp-business-note">{t('Customization availability, minimum order quantity, sample costs and lead times are confirmed by quotation.')}</p>
-      <button type="button" className="pdp-inquiry-button" onClick={()=>{setDraft('');dialog.current.showModal();}}>{t('Prepare an inquiry')} ↗</button>
+      <button ref={triggerRef} type="button" className="pdp-inquiry-button" onClick={()=>{setDraft('');openDialog();}}>{t('Prepare an inquiry')} ↗</button>
     </div>
-    <dialog ref={dialog} className="pdp-inquiry-dialog" aria-labelledby="inquiry-title" onClick={(e)=>{if(e.target===dialog.current)dialog.current.close();}}>
-      <div className="pdp-inquiry-content"><div className="pdp-inquiry-heading"><h2 id="inquiry-title">{t('Contact Steven')}</h2><button type="button" aria-label={t('Close')} onClick={()=>dialog.current.close()}>×</button></div>
+    <dialog ref={dialogRef} className="pdp-inquiry-dialog" aria-labelledby="inquiry-title">
+      <div className="pdp-inquiry-content"><div className="pdp-inquiry-heading"><h2 id="inquiry-title">{t('Contact Steven')}</h2><button ref={closeButtonRef} type="button" aria-label={t('Close')} onClick={closeDialog}>×</button></div>
       <p>{t(product.title)}</p><p className="pdp-inquiry-sku">SKU: {variant?.sku || '—'} · {t(variant?.title)}</p>
       <form onChange={()=>setDraft('')} onSubmit={(event)=>{event.preventDefault(); const form = new FormData(event.currentTarget);setDraft(inquiryMailto({product,variant,quantity:form.get('quantity'),type:form.get('type'),company:form.get('company'),destination:form.get('destination'),requirements:form.get('requirements')}));}}>
         <label>{t('Inquiry type')}<select name="type" value={type} onChange={(event)=>setType(event.target.value)}>{['Wholesale','OEM','ODM'].map((mode)=><option key={mode}>{mode}</option>)}</select></label>

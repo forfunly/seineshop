@@ -20,6 +20,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
   const navigate = useNavigate();
   const {open} = useAside();
   const checkout = useFetcher();
+  const checkoutErrors = [...new Set(checkout.data?.errors?.map(({message}) => message) || [])];
   const fetchers = useFetchers();
   const navigation = useNavigation();
   const quantityId = useId();
@@ -132,7 +133,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
           <button className="pdp-buy-now" type="submit" disabled={unavailable}>
             {t(checkout.state !== 'idle' ? 'Opening checkout…' : 'Buy now')}
           </button>
-          {checkout.data?.errors?.length > 0 && <div className="pdp-purchase-error" role="alert">{checkout.data.errors.map((error, index) => <p key={index}>{t(error.message)}</p>)}</div>}
+          {checkoutErrors.length > 0 && <div className="pdp-purchase-error" role="alert">{checkoutErrors.map((message) => <p key={message}>{t(message)}</p>)}</div>}
         </checkout.Form>
       </div>
       <p className="pdp-checkout-note">{t('Secure checkout by Shopify. Shipping and taxes calculated at checkout.')}</p>
@@ -148,7 +149,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
  * }}
  */
 function ProductOptionSwatch({swatch, name}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
   if (!image && !color) return <span className="pdp-option-text">{['Black', 'White'].includes(name) && <span className={`pdp-color-dot ${name.toLowerCase()}`} aria-hidden="true" />}{t(name)}</span>;

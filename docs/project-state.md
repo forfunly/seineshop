@@ -19,6 +19,9 @@
 
 ## 当前阶段
 
+- 2026-11-02 用户回复“确认”批准批量修复后，已清除 39 个 lint 代码错误并修复 ESLint 配置及一个列表 key 警告；最终 lint 退出 0，保留 2 条脚本成功输出警告。商品询盘/图片弹窗共用原生 dialog 焦点管理，已实际检查桌面及手机视口；30 项测试、构建、集合筛选及构建来源检查通过。加购白色款 2 件、刷新保留、数量改为 3 件及移除恢复空购物车通过，未进入结账。浏览器额外报告本地分析缺少 `PUBLIC_CHECKOUT_DOMAIN`，已请求单项授权且尚未修改，详见 [修复验收](qa/2026-11-02-local-check-fixes.md)。下方早期排查记录中的待修错误和待确认批量方案已被本条更新。
+
+- 2026-11-02 后续本地修复：用户明确授权在 `.env` 仅新增随机 `SESSION_SECRET`，已追加并验证其他原配置未变；签名会话读回、篡改 Cookie 拒绝、本机首页及商品页打开均已验证。开发服务为 `http://localhost:3000/`，仅本机回环监听；CLI 复用既有 Oxygen 关联加载其余远程运行配置，未改动线上配置。首次对齐时的“缺少 SESSION_SECRET”阻碍已解决。lint 配置已可执行，但仍有 39 个代码错误、3 个警告；批量前台修复方案仍待确认。无 push 或部署。
 - Shopify 店铺：`ps83if-c4`；开发目标为 Shopify Headless 店铺。
 - 用户已确认使用 Headless 架构，并授权读取现有 Storefront 凭据、创建本地 `.env`。执行 Hydrogen + React Router 本地预览方案。
 - 现有线上站点为 `https://www.seineshop.com/`，由 Shopify Hydrogen / Oxygen 的 SeineShop（Storefront ID `1000183956`）Production 环境承载。2026-10-30 后台核实：主域名 Connected、DNS 指向 Shopify、TLS 证书已签发；根域名及 Oxygen 默认域名也已连接。

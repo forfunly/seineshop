@@ -36,7 +36,7 @@ export async function loader({context}) {
   );
 }
 export default function AccountLayout() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   /** @type {LoaderReturnData} */
   const {customer} = useLoaderData();
   const heading = customer

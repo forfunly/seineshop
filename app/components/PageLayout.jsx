@@ -22,7 +22,7 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -50,7 +50,7 @@ export function PageLayout({
  * @param {{cart: PageLayoutProps['cart']}}
  */
 function CartAside({cart}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <Aside type="cart" heading={t('Shopping cart')}>
       <Suspense fallback={<p>{t('Loading cart ...')}</p>}>
@@ -153,7 +153,7 @@ function SearchAside() {
  * }}
  */
 function MobileMenuAside({header, publicStoreDomain}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     header.shop.primaryDomain?.url && (
       <Aside type="mobile" heading={t('MENU')}>

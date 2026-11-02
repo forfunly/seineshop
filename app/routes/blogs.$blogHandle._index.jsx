@@ -87,7 +87,7 @@ function loadDeferredData() {
   return {};
 }
 export default function Blog() {
-  const {t, localize, locale} = useLocale();
+  const {t} = useLocale();
   /** @type {LoaderReturnData} */
   const {blog, editorial, articles: editorialArticles, tags} = useLoaderData();
   if (editorial)

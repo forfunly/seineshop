@@ -88,7 +88,7 @@ export async function action({request, context}) {
   }
 }
 export default function AccountProfile() {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   const account = useOutletContext();
   const {state} = useNavigation();
   /** @type {ActionReturnData} */

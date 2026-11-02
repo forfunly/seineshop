@@ -6,7 +6,7 @@
 - 架构：Shopify Headless，优先使用官方 Hydrogen，按实际安装版本开发，禁止混用新旧 API；使用 Shopify 托管结账。
 - **开发基线以远程 `origin/main` 为准**：使用仓库 package.json、锁文件、架构和依赖版本（2026-11-02 为 Hydrogen 2026.4.7 / React 18）；本地独立创建的 Hydrogen 2026.10.2 / React 19 工程停用为开发/发布基线。工作区尚未对齐时不得继续基于旧本地工程开发、部署或将其整体上传覆盖远程。
 - **首次对齐仅合并规则**：远程工程的代码、配置、依赖和测试作为基础，只融入用户已确定的项目规则；不迁入旧前台、旧管理脚本或旧版 SDK 技能，不建立旧工程备份目录。清理旧文件仍须按明确路径先获得删除授权；现有 `.env`、`.shopify/` 和 Git 历史保留。
-- 线上：`https://www.seineshop.com/`，Oxygen SeineShop Production；本地已关联 storefront `1000183956`。2026-11-02 本地源码已恢复为远程 `main` 基线，仅合并项目规则，结果见 [对齐验收](docs/qa/2026-11-02-remote-alignment.md)；未推送或部署。远程最新提交是否对应当前生产仍需单独核对。
+- 线上：`https://www.seineshop.com/`，Oxygen SeineShop Production；本地已关联 storefront `1000183956`。2026-11-02 本地先完成远程 `main` 源码对齐及规则合并，随后按用户批准方案修复 lint 与商品弹窗焦点，见 [对齐验收](docs/qa/2026-11-02-remote-alignment.md)及[本地修复验收](docs/qa/2026-11-02-local-check-fixes.md)；未推送或部署。远程最新提交是否对应当前生产仍需单独核对。
 
 ## Git 仓库与强制工作流
 

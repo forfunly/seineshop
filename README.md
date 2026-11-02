@@ -20,8 +20,11 @@ Open http://localhost:3000. Keep indexing disabled locally. Real environment fil
 ## Checks
 
 ```sh
+npm run lint
 node --test tests/*.test.mjs
+npm run codegen
 npm run build
+node scripts/check-collection-filters.mjs
 node scripts/audit-source-exposure.mjs --built
 ```
 
@@ -48,6 +51,8 @@ The production environment requires the variables listed in `.env.example`; set 
 - `public/images/`: product fallback artwork and payment icons.
 - `tests/`: checkout, markets, locale, SEO, sitemap and wholesale behavior checks.
 - `scripts/`: release audits and collection filter verification.
+
+The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.js`. It opens native modal dialogs, focuses the close button only when opened, wraps Tab/Shift+Tab within the dialog, and restores focus to the trigger on close. Business inquiries use native backdrop dismissal where supported, with a fallback for older browsers.
 
 ## Shopify configuration
 

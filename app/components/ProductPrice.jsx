@@ -8,7 +8,7 @@ import {Money} from '@shopify/hydrogen';
  * }}
  */
 export function ProductPrice({price, compareAtPrice}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   return (
     <div aria-label={t('Price')} className="product-price" role="group">
       {t(

@@ -34,6 +34,7 @@
 
 - 先更新规范，再调整目录或工程实践；大改动先提交方案，用户确认后实施。
 - 优先采用 Shopify 官方 Hydrogen；先确认实际版本，依照该版本文档开发，禁止混用新旧 API。
+- `tests/` 当前使用 Node 内置 `node:test` 与 `node:assert/strict`，ESLint 测试配置必须匹配实际框架，不套用需要 Jest 运行时的规则；不得为修复检查配置而引入无关测试框架或跳过测试检查。
 - 使用 Shopify 托管结账；只实现已经验证可用的功能。
 - 不通过注释错误、忽略类型检查或加入绕过标记处理故障。
 - 密钥、token、密码不得进入代码、commit 或日志；不要求用户在聊天发送验证码。
@@ -52,7 +53,7 @@
 
 - 工程验证以远程工程实际配置为准：2026-11-02 package.json 提供 `npm run lint`、`npm run codegen`、`npm run build`；运行与变更相关的 tests/ 测试。旧本地工程曾使用 `npm run typecheck`、`npm run test:admin` 与 `npm run admin:check`，仅作为历史工具记录，在获准迁入并验证前不得当作远程已有命令。
 - 本地启动使用远程工程 `npm run dev`，核对该版本 CLI 的监听选项并仅监听本机；旧本地 Vite 的 `--host 127.0.0.1` 不能直接照搬到 Hydrogen CLI。不主动建立公开隧道。
-- 当前可执行：`npm ci`、`node --test tests/*.test.mjs`、`npm run lint`、`npm run codegen`、`npm run build`、`node scripts/check-collection-filters.mjs`、构建后 `node scripts/audit-source-exposure.mjs --built`。`codegen` 生成 GraphQL/路由类型，不等于全项目类型检查；远程没有独立 `typecheck` 命令。全量 lint 的已知基线配置问题见 [对齐验收](../qa/2026-11-02-remote-alignment.md)，不通过忽略规则绕过。
+- 当前可执行：`npm ci`、`node --test tests/*.test.mjs`、`npm run lint`、`npm run codegen`、`npm run build`、`node scripts/check-collection-filters.mjs`、构建后 `node scripts/audit-source-exposure.mjs --built`。`codegen` 生成 GraphQL/路由类型，不等于全项目类型检查；远程没有独立 `typecheck` 命令。2026-11-02 已修复 lint 配置及代码错误，检查为 0 错误、2 条脚本成功输出警告，见 [修复验收](../qa/2026-11-02-local-check-fixes.md)；不通过忽略规则绕过。
 - 改动后主动执行适用验证，并在浏览器检查桌面和手机布局、商品选择、购物车及结账跳转。
 - 真实店铺尚未接通时，明确标记演示数据与尚未验证的交易功能。
 - `robots.txt`、`llms.txt`、`agents.md`、CSV 等文本资源采用 UTF-8；上线后检查实际 Content-Type 的 `charset=utf-8` 并通过浏览器验证多语言及特殊符号显示，不能只依据 HTTP 200 或构建结果。

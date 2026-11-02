@@ -1,7 +1,7 @@
 import {useLocale} from '~/lib/i18n';
 import {Link, useFetcher} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
-import React, {useRef, useEffect} from 'react';
+import {useRef, useEffect} from 'react';
 import {
   getEmptyPredictiveSearchResult,
   urlWithTrackingParams,
@@ -224,7 +224,7 @@ function SearchResultsPredictiveQueries({queries, queriesDatalistId}) {
  * }}
  */
 function SearchResultsPredictiveEmpty({term}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   if (!term.current) {
     return null;
   }

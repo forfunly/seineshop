@@ -215,7 +215,7 @@ export default function OrderRoute() {
  * @param {{lineItem: OrderLineItemFullFragment}}
  */
 function OrderLineRow({lineItem}) {
-  const {t, localize, locale} = useLocale();
+  const {t} = useLocale();
   return (
     <tr key={lineItem.id}>
       <td>

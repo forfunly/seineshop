@@ -7,7 +7,7 @@ import {Image} from '@shopify/hydrogen';
  * }}
  */
 export function ProductImage({image}) {
-  const {t, localize} = useLocale();
+  const {t} = useLocale();
   if (!image) {
     return <div className="product-image" />;
   }
