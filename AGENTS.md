@@ -53,6 +53,7 @@
 
 ## 目录与验证
 
+- 项目进度见 [进度流程图](docs/project-progress.md)：记录实际状态、完成依据、下一步及更新时间；阶段切换、遇阻、验收和发布后更新，仅作内部记录，不放入公开资源或网站构建。
 - `app/`：前台；`scripts/`：采集/归并/定价及管理工具，英文 kebab-case 命名、默认只读、不导入前台。
 - `public/`：公开静态资源；`docs/plans/`、`docs/qa/`：方案/验收，日期命名；`docs/rules/`：按主题规则；`docs/project-state.md`：连接状态与历史。
 - `.agents/skills/`、`.claude/skills/`：版本匹配的项目技能；`.shopify/` 为 CLI 本地关联目录并被忽略。生成物、依赖不提交、不自动删除，完整目录约定见工程规范。

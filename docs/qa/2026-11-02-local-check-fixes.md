@@ -30,9 +30,16 @@
 - 白色变体切换后加购 2 件，购物车显示 `$38.00`；进入完整购物车页面后仍为白色 2 件；增加为 3 件后显示 `$57.00`；移除后恢复空购物车。保留店铺密码，没有进入结账或创建订单。
 - 开发时热更新重启 Worker 期间曾出现一次上游请求 `Network connection lost`，购物车返回 500；待更新完成重新加载后返回正常页面并完成以上数量、金额及移除验证，没有用忽略错误或修改凭据处理。
 
+## 2026-11-03 本地结账域名配置复验
+
+- 用户明确授权后，仅追加本地 `PUBLIC_CHECKOUT_DOMAIN=ps83if-c4.myshopify.com`；追加前原文件字节保持不变，包含既有 token 与 `SESSION_SECRET`，`.env` 继续被 Git 忽略。
+- 启动前重新 fetch，远程仍为 `407eeab256f4671ed832ecc8f452a52edc8aa526`，无新增提交。重启预览后只监听 `::1:3000`；CLI 确认从本地加载新配置。
+- 商品页完整重新加载后，浏览器不再报告 `consent.checkoutDomain is required`，页面标题与商品内容正常；首页及购物车请求返回 200，响应包含已配置域名。控制台仍有既有 CSP nonce hydration 提示。
+- 本次只涉及本地配置及记录，未重跑此前全量测试/构建，不将此前结果冒充本轮重跑；未进入结账、未改生产、未推送或部署。启动 codegen 造成的两个声明文件换行变化已恢复，没有应用源码改动。
+
 ## 仍有的缺口
 
-- 浏览器报告 Hydrogen 分析/同意管理缺少 `PUBLIC_CHECKOUT_DOMAIN`。建议值为仓库 `.env.example` 已列明的 `ps83if-c4.myshopify.com`；已请求仅新增这一项的本地授权，未收到答复时不修改 `.env`。页面和购物车可用不等于分析/同意管理已完整验证。
+- 缺少 `PUBLIC_CHECKOUT_DOMAIN` 的本地配置问题已按上方记录解决；完整分析事件与同意管理流程仍未验收，页面可用及配置报错消失不能替代该验收。
 - 开发模式另有既有 CSP nonce hydration 提示，以及首页图片的 React 18 fetchPriority 提示；本次未扩展到 CSP 或图片实现。生产运行、线上编码、收录及完整结账未验收。
 - Shopify Toolkit 按 Hydrogen `2026-04` 对 22 个改动应用文件逐项运行独立校验：共享 hook 通过；其余 21 个文件在隔离环境中无法解析项目 Hydrogen/React JSX 类型或报告既有 JS/JSDoc 类型问题，没有声称全部通过。最初工具入口缺少 TypeScript，后复用项目已安装依赖启动；未安装全局包或修改插件。摘要仅保存在被忽略的 `.cache/hydrogen-validation-results.json`。项目实际 lint、测试、构建及浏览器结果如上，也不等于全项目 TypeScript 检查通过。
 - 点击询盘遮罩关闭的实现已保留，并核对当前浏览器原生属性为 `any`；未跨 Safari/Firefox 做真实背景点击验收，不把原生属性读回当作全浏览器验证。
