@@ -987,7 +987,7 @@
       <div class="next">
         <span class="next-label"
           ><i class="dot" aria-hidden="true"></i>当前节点</span
-        ><a href="#task-T12">上传审查完成 · 等待批准本次推送</a
+        ><a href="#task-T13">代码已上传 · 等待生产部署授权</a
         ><small>线上原店铺已运行 · 本轮改动未发布</small>
       </div>
       <nav class="nav" aria-label="进度视图">
@@ -1039,7 +1039,7 @@
             ><label class="field"
               >任务状态<select id="status-filter">
                 <option value="all">全部状态</option>
-                <option value="verified">本地已验证</option>
+                <option value="verified">已验证</option>
                 <option value="awaiting">等待授权</option>
                 <option value="pending">待开始</option>
                 <option value="blocked">受阻 · 待修复</option>
@@ -1218,8 +1218,8 @@
           id: 5,
           title: '审查与上传',
           short: '仓库上传',
-          label: '等待本次授权',
-          note: '目标 origin/main · 尚未推送',
+          label: '已上传并核对',
+          note: 'origin/main · 56ffe2e',
           description:
             '先审查本次提交、文件清单和验证结果。用户针对本次明确批准后，才可推送 main。',
           tasks: ['T11', 'T12'],
@@ -1228,8 +1228,8 @@
           id: 6,
           title: '生产发布与复验',
           short: '生产验收',
-          label: '待开始',
-          note: '现有线上店铺已运行',
+          label: '等待部署授权',
+          note: '本批未部署 · 现有线上店铺已运行',
           description:
             '本轮改动的生产部署须另获批准。发布后检查真实域名上的响应、交互、编码和 SEO。',
           tasks: ['T13', 'T14'],
@@ -1349,7 +1349,7 @@
           body: '获准后以 Shopify 同意状态控制 GA4，新增官方 Cookie 设置入口。拒绝刷新后脚本和请求均为 0；接受后正常发送，撤回后停发。',
           check:
             '35 项测试通过；lint 0 错误/2 既有警告、构建和来源审计通过。EN/JA/DE、手机与键盘代表交互完成；Toolkit 独立类型解析受限。',
-          next: '进入上传审查。GA4 后台归因、购买转化、跨地区/浏览器及生产环境仍待验收。',
+          next: '代码已上传，生产部署后复验。GA4 后台归因、购买转化、跨地区/浏览器仍待验收。',
           source: 'qa/2026-11-03-analytics-consent.md',
         },
         {
@@ -1357,33 +1357,34 @@
           title: '审查本次待上传改动',
           status: 'verified',
           date: '2026-11-03',
-          scope: '本地审查完成 · 尚未上传',
+          scope: '审查完成 · 获准批次已上传',
           body: '已核对 8 个既有提交及本次审查记录提交，合计 9 个提交、48 个文件；远程无新提交。规则、弹窗、同意管理和内部进度资料均列入明确清单。',
           check:
             '35 测试通过，lint 0 错误/2 既有警告，集合筛选和来源审计通过。依赖、环境与 CI/CD 无改动；外部自动发布关联未实时复核。',
-          next: 'T12 取得用户针对该批次到 origin/main 的明确批准后才可推送。',
+          next: 'T12 已获单次批准并完成上传；生产发布另行授权。',
           source: 'qa/2026-11-03-upload-review.md',
         },
         {
           id: 'T12',
           title: '获准后上传并核对远程 main',
-          status: 'awaiting',
-          date: null,
-          scope: '当前节点 · 等待本次推送授权',
-          body: '推送目标为 origin/main。上传前再次检查远程并评估并发改动，禁止擅自 rebase、强推或覆盖。',
-          check: '推送后核对远程 main 哈希，确认提交已到远程。',
-          next: '本批 9 个提交、48 个文件待批准；需要针对该批次的明确推送授权。生产部署另行确认。',
+          status: 'verified',
+          date: '2026-11-03',
+          scope: 'GitHub 已上传 · 远程哈希已核对',
+          body: '用户明确批准本批后，复核远程和提交头未变，普通推送 9 个提交、48 个文件至 origin/main 成功。',
+          check:
+            'ls-remote 和 fetch 均确认远程 main 为 56ffe2ef09ba2274837694871a052389fd332374，与批准的提交头一致。',
+          next: '进入生产部署准备。本次上传后的状态记录仅保存在本地，后续推送需另获批准。',
           source: 'qa/2026-11-03-upload-review.md',
         },
         {
           id: 'T13',
           title: '获准后部署本轮改动至 Oxygen',
-          status: 'pending',
+          status: 'awaiting',
           date: null,
-          scope: '生产发布',
+          scope: '当前节点 · 等待单独部署授权',
           body: '现有 www.seineshop.com 已在运行；本节点只指本轮本地改动的发布，不代表店铺尚未上线。',
           check: '核对目标环境和生产配置，单独取得部署批准后执行。',
-          next: '先完成代码上传与发布范围确认，不自动部署。',
+          next: '代码上传已完成。核对本批发布范围、目标及生产配置，再取得部署单独批准；不将 Git 上传当作已上线。',
           source: 'project-state.md',
         },
         {
@@ -1399,6 +1400,12 @@
         },
       ];
       const events = [
+        {
+          date: '2026-11-03',
+          title: '获准批次已上传，远程哈希核对通过',
+          body: '9 个提交、48 个文件已推送到 origin/main，远程提交头 56ffe2e 已读回。T12 完成，进入阶段六；未执行生产部署。本次状态更新仅在本地保存。',
+          source: 'qa/2026-11-03-upload-review.md',
+        },
         {
           date: '2026-11-03',
           title: '上传批次审查完成，等待本次批准',
@@ -1443,7 +1450,7 @@
         },
       ];
       const labels = {
-        verified: '本地已验证',
+        verified: '已验证',
         awaiting: '等待授权',
         pending: '待开始',
         blocked: '受阻 · 待修复',
@@ -1462,7 +1469,7 @@
               "'": '&#39;',
             })[character],
         );
-      const currentStage = 5;
+      const currentStage = 6;
       let selectedStage = currentStage;
       let selectedTask = null;
       function taskMarkup(task, open = false) {
@@ -1532,7 +1539,7 @@
           (id) => byId.get(id).status === 'verified',
         ).length;
         document.querySelector('#stage-panel').innerHTML =
-          `<div class="stage-header"><div><h3>阶段 ${stage.id} · ${stage.title}</h3><p>${stage.description}</p></div><div class="stage-counter">本地已验证<strong>${done} / ${stage.tasks.length}</strong></div></div>${stage.tasks.map((id) => taskMarkup(byId.get(id), id === selectedTask)).join('')}`;
+          `<div class="stage-header"><div><h3>阶段 ${stage.id} · ${stage.title}</h3><p>${stage.description}</p></div><div class="stage-counter">已验证<strong>${done} / ${stage.tasks.length}</strong></div></div>${stage.tasks.map((id) => taskMarkup(byId.get(id), id === selectedTask)).join('')}`;
       }
       function renderTasks() {
         const query = document
