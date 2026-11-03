@@ -15,6 +15,7 @@
 
 - 根目录：本规范、项目说明及工具生成的必要配置。
 - `docs/plans/`：开发方案，按 `YYYY-MM-DD-topic.md` 命名；保留决策与验收记录。
+- `docs/project-progress.md`：项目进度事实与入口；`docs/project-progress.html`：内部交互展示，单文件 HTML/CSS/JavaScript，无外部依赖，不导入前台、不放 `public/`、不加入 sitemap。`scripts/serve-project-progress.mjs` 仅在本机提供该页面及明确列出的验收 Markdown，响应声明 UTF-8；不读取 `.env`。进度数据与事实记录同步更新，保留历史验证日期，未知时间不编造。页面只是更新时的快照，不执行推送、部署或店铺写入；不自动清理文件。
 - `docs/rules/`：按主题拆分的项目详细规范，英文 kebab-case 命名；由根 AGENTS.md 指定必读条件，保留原有重要规则，不自动清理。`docs/project-state.md` 保存当前连接状态、已有授权范围与历史接入事实；它不替代根规范中的操作红线。
 - `app/`：React Router 页面、组件、样式、服务端数据接入与会话；沿用官方模板命名。
 - `public/`：可公开的静态资源；不得包含环境变量或后台数据导出。

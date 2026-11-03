@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="SeineShop 内部项目进度快照：阶段路线、任务详情与验收依据。"
+    />
+    <meta name="color-scheme" content="light" />
+    <title>SeineShop · 项目路线图</title>
+    <style>
+      :root {
+        --paper: #f3f2ee;
+        --ink: #22231f;
+        --muted: #686960;
+        --line: #d7d6ce;
+        --accent: #bf3c0d;
+        --orange: #eb501c;
+        --white: #fffefa;
+        --pending: #d8d7cf;
+        --verified: #252620;
+        --waiting: #efce74;
+        --font: Inter, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        --mono: 'SFMono-Regular', Consolas, monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 24px;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font);
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+        color: inherit;
+      }
+      button,
+      a,
+      input,
+      select,
+      summary {
+        -webkit-tap-highlight-color: transparent;
+      }
+      a {
+        color: inherit;
+        text-underline-offset: 5px;
+      }
+      button,
+      a {
+        touch-action: manipulation;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 5px;
+      }
+      a:hover {
+        color: var(--accent);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .skip {
+        position: fixed;
+        top: -80px;
+        left: 16px;
+        background: var(--ink);
+        color: white;
+        padding: 10px 18px;
+        z-index: 3;
+      }
+      .skip:focus {
+        top: 16px;
+      }
+      .shell {
+        max-width: 1320px;
+        margin: auto;
+        padding: 54px 56px 28px;
+      }
+      .eyebrow,
+      .mono {
+        font-family: var(--mono);
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 18px;
+      }
+      .edition {
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+      }
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 32px;
+        padding: 40px 0 30px;
+      }
+      .hero h1 {
+        font-size: clamp(32px, 4.2vw, 54px);
+        letter-spacing: -0.045em;
+        line-height: 1.2;
+        margin: 0 0 19px;
+        font-weight: 700;
+      }
+      .hero h1 span {
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .intro {
+        max-width: 660px;
+        color: var(--muted);
+        margin: 0;
+        font-size: 16px;
+      }
+      .stamp {
+        min-width: 190px;
+        text-align: right;
+        color: var(--muted);
+        font-size: 13px;
+        padding-top: 7px;
+      }
+      .stamp strong {
+        display: block;
+        color: var(--ink);
+        font-weight: 500;
+        font-family: var(--mono);
+        font-size: 15px;
+      }
+      .stamp .snapshot {
+        display: inline-block;
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        padding: 3px 10px;
+        border-radius: 2px;
+        font-size: 12px;
+      }
+      .next {
+        display: flex;
+        align-items: baseline;
+        gap: 18px;
+        flex-wrap: wrap;
+        padding: 20px 0 24px;
+        border-bottom: 2px solid var(--ink);
+      }
+      .next-label {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--orange);
+        border-radius: 50%;
+        margin-right: 9px;
+      }
+      .next a {
+        font-size: 14px;
+        text-decoration-style: dotted;
+      }
+      .next small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .nav {
+        display: flex;
+        gap: 30px;
+        border-bottom: 1px solid var(--line);
+        padding-top: 25px;
+      }
+      .nav a {
+        display: flex;
+        align-items: center;
+        min-height: 55px;
+        text-decoration: none;
+        color: var(--muted);
+        position: relative;
+        white-space: nowrap;
+        font-size: 15px;
+      }
+      .nav a[aria-current='page'] {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .nav a[aria-current='page']:after {
+        content: '';
+        height: 2px;
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        background: var(--ink);
+      }
+      .view {
+        padding-top: 32px;
+      }
+      .view-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 18px;
+        margin-bottom: 10px;
+      }
+      .view-heading h2 {
+        font-size: 22px;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0;
+      }
+      .roadmap {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 26px 0;
+        padding: 25px 0 20px;
+      }
+      .route-links {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+      }
+      .phase {
+        position: relative;
+        min-width: 0;
+        padding: 14px 26px 22px;
+        border-right: 1px dashed var(--line);
+      }
+      .phase:nth-of-type(3n) {
+        border-right: 0;
+      }
+      .phase:nth-of-type(-n + 3) {
+        border-bottom: 1px dashed var(--line);
+      }
+      .phase-kicker {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+      .phase-title {
+        font-size: 23px;
+        letter-spacing: -0.025em;
+        margin: 6px 0 4px;
+      }
+      .phase-title a {
+        text-decoration-thickness: 1px;
+      }
+      .phase-meta {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .phase-meta b {
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .phase.current .phase-meta b {
+        color: var(--accent);
+      }
+      .rail {
+        display: flex;
+        position: relative;
+        gap: 4px;
+        align-items: center;
+        margin-top: 38px;
+        min-height: 48px;
+        padding: 0 15px;
+      }
+      .rail:before {
+        content: '';
+        height: 1.5px;
+        background: var(--ink);
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 23px;
+      }
+      .rail:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 18px;
+        width: 10px;
+        height: 10px;
+        border: 1.5px solid var(--ink);
+        border-radius: 50%;
+        background: var(--paper);
+      }
+      .rail-start {
+        position: absolute;
+        left: 0;
+        top: 18px;
+        width: 11px;
+        height: 11px;
+        border: 1.5px solid var(--ink);
+        border-radius: 50%;
+        background: var(--paper);
+      }
+      .task-square {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        flex: 0 0 44px;
+        height: 44px;
+        text-decoration: none;
+        background: var(--paper);
+        border: 0;
+        transition: transform 0.18s ease;
+      }
+      .task-square:hover {
+        transform: translateY(-4px);
+      }
+      .tile {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        background: var(--pending);
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink);
+      }
+      .task-square.verified .tile {
+        background: var(--verified);
+        color: white;
+      }
+      .task-square.awaiting .tile {
+        background: repeating-linear-gradient(
+          135deg,
+          var(--paper) 0 4px,
+          var(--waiting) 4px 7px
+        );
+        outline: 1px solid #b48a26;
+      }
+      .task-square.pending .tile {
+        border: 1px solid #a4a399;
+      }
+      .task-square.selected .tile {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .you-are-here {
+        color: var(--accent);
+        font-size: 12px;
+        position: absolute;
+        top: -23px;
+        left: 15px;
+        white-space: nowrap;
+      }
+      .phase-foot {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .legend {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px 22px;
+        border-top: 1px solid var(--line);
+        padding: 16px 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .legend span {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .swatch {
+        width: 13px;
+        height: 13px;
+        display: inline-block;
+        background: var(--verified);
+      }
+      .swatch.awaiting {
+        background: repeating-linear-gradient(
+          135deg,
+          var(--paper) 0 3px,
+          var(--waiting) 3px 5px
+        );
+        border: 1px solid #b48a26;
+      }
+      .swatch.pending {
+        background: var(--pending);
+        border: 1px solid #a4a399;
+      }
+      .swatch.current {
+        background: var(--orange);
+      }
+      .caption {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 28px;
+      }
+      .detail-area {
+        border-top: 2px solid var(--ink);
+        margin-top: 8px;
+      }
+      .stage-tabs {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        padding: 17px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .stage-tabs a {
+        padding: 9px 13px;
+        min-height: 44px;
+        text-decoration: none;
+        font-size: 13px;
+        border: 1px solid transparent;
+      }
+      .stage-tabs a[aria-current='true'] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--white);
+      }
+      .stage-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px 0 20px;
+      }
+      .stage-header h3 {
+        font-size: 24px;
+        margin: 0 0 8px;
+        letter-spacing: -0.025em;
+      }
+      .stage-header p {
+        color: var(--muted);
+        font-size: 14px;
+        max-width: 700px;
+        margin: 0;
+      }
+      .stage-counter {
+        flex-shrink: 0;
+        font-size: 13px;
+        text-align: right;
+      }
+      .stage-counter strong {
+        display: block;
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 24px;
+      }
+      .task {
+        border-top: 1px solid var(--line);
+      }
+      .task:last-child {
+        border-bottom: 1px solid var(--line);
+      }
+      .task summary {
+        list-style: none;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr) auto 20px;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 0;
+        min-height: 72px;
+      }
+      .task summary::-webkit-details-marker {
+        display: none;
+      }
+      .task-id {
+        font-family: var(--mono);
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .task-title {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .task-sub {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 3px;
+        font-weight: 400;
+      }
+      .badge {
+        font-size: 12px;
+        border: 1px solid var(--line);
+        padding: 3px 8px;
+        white-space: nowrap;
+      }
+      .badge.awaiting {
+        color: #754c00;
+        border-color: #bfa251;
+        background: #f7edcd;
+      }
+      .badge.verified {
+        background: #e5e5de;
+        border-color: transparent;
+      }
+      .chevron {
+        font-size: 19px;
+        color: var(--muted);
+      }
+      .task[open] .chevron {
+        transform: rotate(45deg);
+      }
+      .task-body {
+        padding: 0 34px 25px 58px;
+        max-width: 930px;
+        font-size: 14px;
+      }
+      .task-body p {
+        margin: 0 0 15px;
+      }
+      .fact-grid {
+        display: grid;
+        grid-template-columns: 70px minmax(0, 1fr);
+        gap: 9px 14px;
+      }
+      .fact-grid dt {
+        color: var(--muted);
+      }
+      .fact-grid dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      .task-body a {
+        color: var(--accent);
+      }
+      .toolbar {
+        display: flex;
+        gap: 14px;
+        align-items: end;
+        flex-wrap: wrap;
+        padding: 20px 0;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .field:first-child {
+        flex: 1;
+        min-width: 190px;
+      }
+      .field input,
+      .field select {
+        height: 46px;
+        background: var(--white);
+        border: 1px solid #a6a69a;
+        border-radius: 0;
+        padding: 8px 12px;
+        font-size: 14px;
+        width: 100%;
+      }
+      .empty {
+        padding: 40px 0;
+        color: var(--muted);
+      }
+      .feed {
+        margin: 25px 0;
+        padding: 0;
+        list-style: none;
+      }
+      .feed li {
+        display: grid;
+        grid-template-columns: 140px minmax(0, 1fr);
+        gap: 26px;
+        padding: 24px 0;
+        border-top: 1px solid var(--line);
+      }
+      .feed time {
+        font: 13px var(--mono);
+        color: var(--muted);
+        padding-top: 5px;
+      }
+      .feed h3 {
+        font-size: 17px;
+        margin: 0 0 8px;
+      }
+      .feed p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .feed a {
+        font-size: 13px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+      .evidence-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 35px;
+        margin: 24px 0;
+      }
+      .evidence-card {
+        padding: 24px 0;
+        border-top: 1px solid var(--line);
+      }
+      .evidence-card h3 {
+        font-size: 18px;
+        margin: 8px 0;
+      }
+      .evidence-card p {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .evidence-card a {
+        font-size: 13px;
+      }
+      .note {
+        border-left: 3px solid var(--orange);
+        padding: 12px 18px;
+        background: #eae9e1;
+        font-size: 13px;
+        line-height: 1.8;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--ink);
+        margin-top: 48px;
+        padding-top: 18px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .footer a {
+        color: var(--muted);
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+      }
+      .noscript {
+        padding: 24px;
+      }
+      .task-count {
+        font: 13px var(--mono);
+        color: var(--muted);
+      }
+      @media (min-width: 901px) {
+        .phase:nth-of-type(1) {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        .phase:nth-of-type(2) {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .phase:nth-of-type(3) {
+          grid-column: 3;
+          grid-row: 1;
+        }
+        .phase:nth-of-type(4) {
+          grid-column: 3;
+          grid-row: 2;
+        }
+        .phase:nth-of-type(5) {
+          grid-column: 2;
+          grid-row: 2;
+        }
+        .phase:nth-of-type(6) {
+          grid-column: 1;
+          grid-row: 2;
+        }
+        .phase {
+          border-right: 1px dashed var(--line) !important;
+          border-bottom: 0 !important;
+        }
+        .phase:nth-of-type(3),
+        .phase:nth-of-type(4) {
+          border-right: 0 !important;
+        }
+        .phase:nth-of-type(-n + 3) {
+          border-bottom: 1px dashed var(--line) !important;
+        }
+        .phase:nth-of-type(n + 4) .rail {
+          flex-direction: row-reverse;
+        }
+      }
+      @media (max-width: 900px) {
+        .route-links {
+          display: none;
+        }
+        .shell {
+          padding: 30px 28px 24px;
+        }
+        .roadmap {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px 0;
+        }
+        .phase {
+          padding: 14px 20px 20px;
+          border-right: 0 !important;
+          border-bottom: 1px dashed var(--line) !important;
+        }
+        .phase:nth-of-type(odd) {
+          border-right: 1px dashed var(--line) !important;
+        }
+        .phase-title {
+          font-size: 21px;
+        }
+        .hero {
+          gap: 20px;
+        }
+        .stamp {
+          min-width: 160px;
+        }
+      }
+      @media (max-width: 560px) {
+        .shell {
+          padding: 24px 20px;
+        }
+        .topline {
+          display: block;
+        }
+        .topline .eyebrow {
+          font-size: 11px;
+        }
+        .edition {
+          display: block;
+          margin-top: 6px;
+          font-size: 10px;
+          text-align: left;
+        }
+        .hero {
+          display: block;
+          padding: 30px 0 20px;
+        }
+        .hero h1 {
+          font-size: 34px;
+        }
+        .intro {
+          font-size: 14px;
+        }
+        .stamp {
+          display: flex;
+          text-align: left;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 22px;
+          padding: 0;
+        }
+        .stamp strong {
+          font-size: 13px;
+        }
+        .stamp .snapshot {
+          margin: 0;
+          font-size: 11px;
+        }
+        .stamp .stamp-label {
+          display: none;
+        }
+        .next {
+          gap: 8px 14px;
+          padding: 17px 0;
+        }
+        .next small {
+          flex-basis: 100%;
+        }
+        .nav {
+          gap: 22px;
+          padding-top: 12px;
+        }
+        .nav a {
+          font-size: 13px;
+          min-height: 52px;
+        }
+        .view {
+          padding-top: 25px;
+        }
+        .view-heading {
+          align-items: start;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .view-heading h2 {
+          font-size: 20px;
+        }
+        .roadmap {
+          grid-template-columns: 1fr;
+          padding-top: 15px;
+          gap: 0;
+        }
+        .phase {
+          padding: 22px 12px 20px !important;
+          border-right: 0 !important;
+        }
+        .phase:nth-of-type(odd) {
+          border-right: 0 !important;
+        }
+        .phase-title {
+          font-size: 23px;
+        }
+        .rail {
+          margin-top: 30px;
+        }
+        .phase-foot {
+          font-size: 12px;
+        }
+        .legend {
+          gap: 12px 16px;
+        }
+        .stage-tabs {
+          gap: 2px;
+        }
+        .stage-tabs a {
+          padding: 8px 9px;
+          font-size: 12px;
+        }
+        .stage-header {
+          gap: 14px;
+        }
+        .stage-header h3 {
+          font-size: 21px;
+        }
+        .stage-counter strong {
+          font-size: 20px;
+        }
+        .task summary {
+          grid-template-columns: 28px minmax(0, 1fr) 18px;
+          gap: 10px;
+          padding: 17px 0;
+        }
+        .badge {
+          grid-column: 2;
+          grid-row: 2;
+          justify-self: start;
+        }
+        .chevron {
+          grid-column: 3;
+          grid-row: 1;
+        }
+        .task-title {
+          font-size: 14px;
+        }
+        .task-body {
+          padding: 0 6px 22px 38px;
+          font-size: 13px;
+        }
+        .fact-grid {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        .fact-grid dd {
+          margin-bottom: 10px;
+        }
+        .feed li {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .evidence-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer {
+          margin-top: 34px;
+        }
+        .field {
+          flex: 1;
+          min-width: 130px;
+        }
+        .note {
+          padding: 12px;
+          font-size: 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *:before,
+        *:after {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      @media print {
+        .nav,
+        .next,
+        .toolbar,
+        .stage-tabs {
+          display: none;
+        }
+        body {
+          background: white;
+        }
+        .shell {
+          max-width: none;
+          padding: 0;
+        }
+        .view[hidden] {
+          display: block !important;
+        }
+        .task-body {
+          display: block;
+        }
+        .footer {
+          margin-top: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到项目进度</a>
+    <div class="shell">
+      <div class="topline">
+        <span class="eyebrow">SeineShop / Project journal</span
+        ><span class="edition">INTERNAL · 仅供内部查看</span>
+      </div>
+      <header class="hero">
+        <div>
+          <h1>SeineShop <span>项目路线图</span></h1>
+          <p class="intro">
+            从远程代码对齐，到本地验证，再到批准发布。<br />每一格是一项任务，每一步都有完成依据。
+          </p>
+        </div>
+        <div class="stamp">
+          <div>
+            <span class="stamp-label">最近更新 · 北京时间</span
+            ><strong>2026-11-03</strong>
+          </div>
+          <span class="snapshot">手动维护的进度快照</span>
+        </div>
+      </header>
+      <div class="next">
+        <span class="next-label"
+          ><i class="dot" aria-hidden="true"></i>当前节点</span
+        ><a href="#stage-5">本地修改待审查、待批准推送</a
+        ><small>线上原店铺已运行 · 本轮改动未发布</small>
+      </div>
+      <nav class="nav" aria-label="进度视图">
+        <a href="#overview" data-view="overview">全局进度</a
+        ><a href="#tasks" data-view="tasks">任务清单</a
+        ><a href="#activity" data-view="activity">近期动态</a
+        ><a href="#evidence" data-view="evidence">验收依据</a>
+      </nav>
+      <main id="main" tabindex="-1">
+        <section id="overview" class="view" aria-labelledby="overview-title">
+          <div class="view-heading">
+            <h2 id="overview-title">六个阶段，一条推进路线</h2>
+            <p class="hint">点击方块看任务 · 点击阶段看详情</p>
+          </div>
+          <div class="roadmap" id="roadmap" aria-label="项目阶段路线"></div>
+          <div class="legend" aria-label="任务状态图例">
+            <span><i class="swatch" aria-hidden="true"></i>本地已验证</span
+            ><span
+              ><i class="swatch awaiting" aria-hidden="true"></i>等待授权</span
+            ><span><i class="swatch pending" aria-hidden="true"></i>待开始</span
+            ><span
+              ><i class="swatch current" aria-hidden="true"></i>当前位置</span
+            >
+          </div>
+          <p class="caption">
+            沿阶段编号推进；阶段内的方块对应下方任务。已验证指记录中的本地检查，不能替代上线验收。
+          </p>
+          <section class="detail-area" aria-label="阶段详情">
+            <nav id="stage-tabs" class="stage-tabs" aria-label="选择阶段"></nav>
+            <div id="stage-panel" aria-live="polite"></div>
+          </section>
+        </section>
+        <section id="tasks" class="view" aria-labelledby="tasks-title" hidden>
+          <div class="view-heading">
+            <h2 id="tasks-title">所有任务与待办</h2>
+            <span class="task-count" id="task-count" role="status"></span>
+          </div>
+          <div class="toolbar">
+            <label class="field"
+              >搜索任务<input
+                id="search"
+                type="search"
+                placeholder="输入任务名、编号或关键词"
+                autocomplete="off" /></label
+            ><label class="field"
+              >任务状态<select id="status-filter">
+                <option value="all">全部状态</option>
+                <option value="verified">本地已验证</option>
+                <option value="awaiting">等待授权</option>
+                <option value="pending">待开始</option>
+              </select></label
+            >
+          </div>
+          <div id="task-list"></div>
+          <p id="no-results" class="empty" hidden>
+            没有匹配的任务，试试其他关键词或状态。
+          </p>
+        </section>
+        <section
+          id="activity"
+          class="view"
+          aria-labelledby="activity-title"
+          hidden
+        >
+          <div class="view-heading">
+            <h2 id="activity-title">近期动态</h2>
+            <p class="hint">按工作记录排列，不是实时操作日志</p>
+          </div>
+          <ol class="feed" id="feed"></ol>
+        </section>
+        <section
+          id="evidence"
+          class="view"
+          aria-labelledby="evidence-title"
+          hidden
+        >
+          <div class="view-heading">
+            <h2 id="evidence-title">可追溯的完成依据</h2>
+            <p class="hint">保留验证范围，也保留尚未确认的部分</p>
+          </div>
+          <div class="evidence-grid">
+            <article class="evidence-card">
+              <span class="eyebrow">01 / Alignment</span>
+              <h3>远程代码对齐</h3>
+              <p>
+                同一目录恢复远程工程，只融入已确认规则。框架、依赖与代码基线以
+                origin/main 为准。
+              </p>
+              <a
+                href="qa/2026-11-02-remote-alignment.md"
+                target="_blank"
+                rel="noopener"
+                >查看对齐验收 ↗</a
+              >
+            </article>
+            <article class="evidence-card">
+              <span class="eyebrow">02 / Validation</span>
+              <h3>代码修复与浏览器验收</h3>
+              <p>
+                记录 lint、30 项测试、构建、弹窗及购物车检查；含 11 月 3
+                日本地域名配置复验。
+              </p>
+              <a
+                href="qa/2026-11-02-local-check-fixes.md"
+                target="_blank"
+                rel="noopener"
+                >查看修复验收 ↗</a
+              >
+            </article>
+            <article class="evidence-card">
+              <span class="eyebrow">03 / Connections</span>
+              <h3>连接与授权边界</h3>
+              <p>
+                区分本地、Preview 和
+                Production，保留店铺连接与授权历史。接入权限不等于批准业务写入或发布。
+              </p>
+              <a href="project-state.md" target="_blank" rel="noopener"
+                >查看项目状态 ↗</a
+              >
+            </article>
+            <article class="evidence-card">
+              <span class="eyebrow">04 / Source of truth</span>
+              <h3>进度事实记录</h3>
+              <p>
+                本页根据 Markdown
+                记录手动同步。任务详情中的验证日期保留历史时间，不因打开网页自动更新。
+              </p>
+              <a href="project-progress.md" target="_blank" rel="noopener"
+                >查看进度记录 ↗</a
+              >
+            </article>
+          </div>
+          <p class="note">
+            待验证：完整分析事件与 Cookie 同意管理；既有 CSP nonce hydration
+            和首页 fetchPriority 提示；跨 Safari / Firefox
+            的遮罩交互；生产部署后的页面、编码与
+            SEO。按现有要求保留店铺密码，暂不进行完整结账验证。
+          </p>
+        </section>
+      </main>
+      <noscript
+        ><p class="noscript">
+          交互视图需要 JavaScript。你也可以<a href="project-progress.md"
+            >查看 Markdown 进度记录</a
+          >。
+        </p></noscript
+      >
+      <footer class="footer">
+        <span>本地进度快照 · 不连接 Shopify API · 不执行推送或部署</span>
+        <div class="footer-links">
+          <a href="project-progress.md" target="_blank" rel="noopener"
+            >事实记录 ↗</a
+          ><a
+            href="https://claude.ai/artifact/SmRXGvGVFSzJK4hfAHa9Sq#overview"
+            target="_blank"
+            rel="noopener"
+            >展示参考 ↗</a
+          >
+        </div>
+      </footer>
+    </div>
+    <script>
+      'use strict';
+      // Keep task facts and dates aligned with docs/project-progress.md and QA records.
+      const qa = 'qa/2026-11-02-local-check-fixes.md';
+      const alignment = 'qa/2026-11-02-remote-alignment.md';
+      const stages = [
+        {
+          id: 1,
+          title: '远程代码对齐',
+          short: '代码基线',
+          label: '已验证',
+          note: '同目录 · 无额外工作树',
+          description:
+            '采用远程 main 的工程、锁文件和依赖版本，停止使用此前独立创建的本地前台。',
+          tasks: ['T01', 'T02'],
+        },
+        {
+          id: 2,
+          title: '规则与工作空间',
+          short: '项目规则',
+          label: '已验证',
+          note: '保留规则 · 保留获准配置',
+          description:
+            '把已确认的业务规则融入远程工程，明确目录用途、Git 工作流与授权边界。',
+          tasks: ['T03', 'T04'],
+        },
+        {
+          id: 3,
+          title: '代码问题修复',
+          short: '代码修复',
+          label: '本地已验证',
+          note: '代码已修复 · 尚未上传',
+          description:
+            '修正实际检查问题，改善商品弹窗键盘操作，不通过关闭检查来掩盖错误。',
+          tasks: ['T05', 'T06'],
+        },
+        {
+          id: 4,
+          title: '本地配置与验收',
+          short: '本地验收',
+          label: '代表流程已验证',
+          note: '完整分析流程仍待验证',
+          description:
+            '补齐获准的本地运行配置，检查桌面、手机、商品选择和购物车，并保留已知缺口。',
+          tasks: ['T07', 'T08', 'T09', 'T10'],
+        },
+        {
+          id: 5,
+          title: '审查与上传',
+          short: '仓库上传',
+          label: '等待本次授权',
+          note: '目标 origin/main · 尚未推送',
+          description:
+            '先审查本次提交、文件清单和验证结果。用户针对本次明确批准后，才可推送 main。',
+          tasks: ['T11', 'T12'],
+        },
+        {
+          id: 6,
+          title: '生产发布与复验',
+          short: '生产验收',
+          label: '待开始',
+          note: '现有线上店铺已运行',
+          description:
+            '本轮改动的生产部署须另获批准。发布后检查真实域名上的响应、交互、编码和 SEO。',
+          tasks: ['T13', 'T14'],
+        },
+      ];
+      const tasks = [
+        {
+          id: 'T01',
+          title: '恢复远程 main 工程基线',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '本地源码',
+          body: '已在原目录采用远程工程。Hydrogen 2026.4.7、React 18；没有另开工作树或迁入旧前台。',
+          check:
+            '远程代码、package.json 和锁文件已对齐；以验收记录中的提交为基线。',
+          next: '后续每次新改动先 fetch 并判断同步方式。',
+          source: alignment,
+        },
+        {
+          id: 'T02',
+          title: '安装并检查远程依赖',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '本地依赖',
+          body: '使用远程锁文件安装依赖；共享缓存占用时仅使用项目缓存，没有修改全局配置。',
+          check: '安装及远程工程代表性检查完成，实际结果见对齐验收。',
+          next: '按仓库实际版本继续开发，不混用新旧 Hydrogen API。',
+          source: alignment,
+        },
+        {
+          id: 'T03',
+          title: '合并业务与 Git 强制规则',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '内部规范',
+          body: '保留 TVCMALL 参考、逐 SKU 来源价 ×2、同 SPU 多变体、商品 handle 与全站 SEO 规则。',
+          check: '根 AGENTS.md 与主题规则文件已保留；每次 push 均需单次确认。',
+          next: '按任务读取对应规则，规则变化与实际操作同步。',
+          source: 'project-progress.md',
+        },
+        {
+          id: 'T04',
+          title: '保留连接信息与单一工作目录',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '本地目录',
+          body: '保留 .env、.shopify/ 与 Git 历史；没有旧工程备份目录。根 AGENTS.md 与旧技能目录相互独立。',
+          check:
+            '对齐时核对原配置哈希与忽略规则；后续 .env 新增项分别获得授权。',
+          next: '不自动删除文件，不将凭据纳入提交。',
+          source: alignment,
+        },
+        {
+          id: 'T05',
+          title: '修正 lint 配置及代码错误',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '代码 · 待上线',
+          body: '测试实际使用 node:test，移除误用的 Jest 规则；解析器使用真实 jsconfig.json，并处理未使用变量及稳定列表 key。',
+          check:
+            'npm run lint：0 错误、2 条现有脚本成功输出警告。没有静音或绕过检查。',
+          next: '上传前根据新增改动执行受影响检查。',
+          source: qa,
+        },
+        {
+          id: 'T06',
+          title: '完善商品弹窗键盘交互',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '代码 · 待上线',
+          body: '图片和询盘共用原生 dialog 焦点管理：打开聚焦关闭按钮、Tab 循环、Escape 关闭并返回触发处。',
+          check: '桌面与手机代表流程通过；遮罩关闭未跨 Safari / Firefox 实测。',
+          next: '生产发布后复验；跨浏览器覆盖仍有缺口。',
+          source: qa,
+        },
+        {
+          id: 'T07',
+          title: '本地会话签名配置',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '仅本地环境',
+          body: '用户单独授权后新增随机 SESSION_SECRET。配置不进入源码或远程仓库。',
+          check: '签名 Cookie 读回和篡改拒绝通过，原有配置保持不变。',
+          next: '此本地配置不会随 Git 上传，也不表示生产配置有缺失。',
+          source: qa,
+        },
+        {
+          id: 'T08',
+          title: '补齐本地结账域名配置',
+          status: 'verified',
+          date: '2026-11-03',
+          scope: '仅本地环境',
+          body: '经授权追加 PUBLIC_CHECKOUT_DOMAIN，重启本机服务，原有配置字节保持不变。',
+          check:
+            '商品页不再报告 consent.checkoutDomain is required；首页及购物车返回 200。',
+          next: '完整分析事件与同意管理仍需单独验收。',
+          source: qa,
+        },
+        {
+          id: 'T09',
+          title: '测试、构建与代表交易交互',
+          status: 'verified',
+          date: '2026-11-02',
+          scope: '本地验收',
+          body: '覆盖 30 项测试、构建、集合筛选与来源审计；浏览器检查手机布局、变体、加购、刷新保留、改数量与移除。',
+          check:
+            '30 测试通过；构建退出 0。仍有已有构建告警，未宣称全项目类型检查通过。',
+          next: '保留店铺密码，暂不验证完整结账或下单。',
+          source: qa,
+        },
+        {
+          id: 'T10',
+          title: '完整分析与同意管理验收',
+          status: 'pending',
+          date: null,
+          scope: '验证缺口',
+          body: '配置报错消失不代表分析事件与 Cookie 同意管理全部正常。目前未完成全流程验证。',
+          check: '待确认可用验证范围并记录事件、同意选择与实际行为。',
+          next: '在后续专项验证中检查，不据此宣称已上线或已完成归因追踪。',
+          source: qa,
+        },
+        {
+          id: 'T11',
+          title: '审查本次待上传改动',
+          status: 'awaiting',
+          date: null,
+          scope: '当前节点',
+          body: '本地已有规则与修复提交，远程仓库尚未收到这些改动。本次内部进度页也只在本地。',
+          check:
+            '推送前列出明确提交、文件及验证结果，取得针对该批次的用户批准。',
+          next: '先完成可审查的文件清单；没有单次授权不执行 push。',
+          source: 'project-state.md',
+        },
+        {
+          id: 'T12',
+          title: '获准后上传并核对远程 main',
+          status: 'pending',
+          date: null,
+          scope: 'Git 远程',
+          body: '推送目标为 origin/main。上传前再次检查远程并评估并发改动，禁止擅自 rebase、强推或覆盖。',
+          check: '推送后核对远程 main 哈希，确认提交已到远程。',
+          next: '依赖 T11 的本次明确批准。',
+          source: 'project-progress.md',
+        },
+        {
+          id: 'T13',
+          title: '获准后部署本轮改动至 Oxygen',
+          status: 'pending',
+          date: null,
+          scope: '生产发布',
+          body: '现有 www.seineshop.com 已在运行；本节点只指本轮本地改动的发布，不代表店铺尚未上线。',
+          check: '核对目标环境和生产配置，单独取得部署批准后执行。',
+          next: '先完成代码上传与发布范围确认，不自动部署。',
+          source: 'project-state.md',
+        },
+        {
+          id: 'T14',
+          title: '真实域名上线复验',
+          status: 'pending',
+          date: null,
+          scope: '线上验收',
+          body: '部署后检查页面、购物车、SEO、状态码及实际响应编码；本地构建不能替代线上结果。',
+          check: '文本响应实测 charset=utf-8，并在浏览器检查中文及特殊符号。',
+          next: '依赖 T13 发布完成；按既有要求保留密码和结账验证边界。',
+          source: 'project-progress.md',
+        },
+      ];
+      const events = [
+        {
+          date: '2026-11-03',
+          title: '内部交互路线图完成本地验证',
+          body: '按指定参考制作内部网页，阶段切换、任务展开、搜索筛选及手机布局已验证。进度仍是手动维护的快照。',
+          source: 'project-progress.md',
+        },
+        {
+          date: '2026-11-03',
+          title: '本地缺少结账域名的报错消失',
+          body: '单项授权后补齐本地配置并在浏览器复验，未改生产环境，也未进行完整结账。',
+          source: qa,
+        },
+        {
+          date: '2026-11-02',
+          title: '代码修复完成本地验证',
+          body: 'lint 0 错误，30 项测试通过；完成构建、手机和桌面弹窗、购物车代表交互检查，保留已知缺口。',
+          source: qa,
+        },
+        {
+          date: '2026-11-02',
+          title: '回到远程工程基线',
+          body: '原目录完成源码对齐及规则合并，没有迁入旧前台，没有另开工作树。',
+          source: alignment,
+        },
+      ];
+      const labels = {
+        verified: '本地已验证',
+        awaiting: '等待授权',
+        pending: '待开始',
+      };
+      const byId = new Map(tasks.map((task) => [task.id, task]));
+      const escapeHtml = (value) =>
+        String(value).replace(
+          /[&<>"']/g,
+          (character) =>
+            ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;',
+            })[character],
+        );
+      let selectedStage = 5;
+      let selectedTask = null;
+      function taskMarkup(task, open = false) {
+        return `<details class="task" data-task="${task.id}" ${open ? 'open' : ''}><summary><span class="task-id">${task.id}</span><span class="task-title">${escapeHtml(task.title)}<span class="task-sub">${escapeHtml(task.scope)} · ${task.date || '日期待定'}</span></span><span class="badge ${task.status}">${labels[task.status]}</span><span class="chevron" aria-hidden="true">+</span></summary><div class="task-body"><p>${escapeHtml(task.body)}</p><dl class="fact-grid"><dt>验收依据</dt><dd>${escapeHtml(task.check)}</dd><dt>下一步</dt><dd>${escapeHtml(task.next)}</dd><dt>来源记录</dt><dd><a href="${escapeHtml(task.source)}" target="_blank" rel="noopener">查看原始记录 ↗</a></dd></dl></div></details>`;
+      }
+      function renderRoadmap() {
+        document.querySelector('#roadmap').innerHTML = stages
+          .map((stage) => {
+            const done = stage.tasks.filter(
+              (id) => byId.get(id).status === 'verified',
+            ).length;
+            return `<article class="phase ${stage.id === 5 ? 'current' : ''}"><div class="phase-kicker">阶段 ${String(stage.id).padStart(2, '0')} / ${stage.id < 5 ? '本地工作' : '发布流程'}</div><h3 class="phase-title"><a href="#stage-${stage.id}">${stage.title}</a></h3><div class="phase-meta"><b>${stage.label}</b><span class="mono">${done} / ${stage.tasks.length} 已验证</span></div><div class="rail"><span class="rail-start" aria-hidden="true"></span>${stage.id === 5 ? '<span class="you-are-here">▼ 当前在这里</span>' : ''}${stage.tasks
+              .map((id) => {
+                const task = byId.get(id);
+                return `<a class="task-square ${task.status} ${id === selectedTask ? 'selected' : ''}" href="#task-${id}" title="${escapeHtml(task.title)} · ${labels[task.status]}" aria-label="${id} ${escapeHtml(task.title)}，${labels[task.status]}"><span class="tile" aria-hidden="true">${id.slice(1)}</span></a>`;
+              })
+              .join(
+                '',
+              )}</div><div class="phase-foot">${stage.note}</div></article>`;
+          })
+          .join('');
+        document
+          .querySelector('#roadmap')
+          .insertAdjacentHTML(
+            'beforeend',
+            '<svg class="route-links" aria-hidden="true"></svg>',
+          );
+        drawRoadmapLinks();
+      }
+      function drawRoadmapLinks() {
+        const root = document.querySelector('#roadmap');
+        const svg = root.querySelector('.route-links');
+        if (!svg || innerWidth <= 900 || root.offsetWidth === 0) return;
+        const bounds = root.getBoundingClientRect();
+        const rails = [...root.querySelectorAll('.rail')].map((rail) => {
+          const rect = rail.getBoundingClientRect();
+          return {
+            left: rect.left - bounds.left + 5,
+            right: rect.right - bounds.left - 5,
+            y: rect.top - bounds.top + 23,
+          };
+        });
+        svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+        svg.innerHTML = rails
+          .slice(0, -1)
+          .map((from, index) => {
+            const to = rails[index + 1];
+            let path;
+            if (index < 2)
+              path = `M ${from.right} ${from.y} L ${to.left} ${to.y}`;
+            else if (index === 2)
+              path = `M ${from.right} ${from.y} C ${from.right + 28} ${from.y}, ${to.right + 28} ${to.y}, ${to.right} ${to.y}`;
+            else path = `M ${from.left} ${from.y} L ${to.right} ${to.y}`;
+            return `<path d="${path}" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="3 5"/>`;
+          })
+          .join('');
+      }
+      function renderStage() {
+        const stage = stages.find((item) => item.id === selectedStage);
+        document.querySelector('#stage-tabs').innerHTML = stages
+          .map(
+            (item) =>
+              `<a href="#stage-${item.id}" aria-current="${item.id === selectedStage}">${String(item.id).padStart(2, '0')} ${item.short}</a>`,
+          )
+          .join('');
+        const done = stage.tasks.filter(
+          (id) => byId.get(id).status === 'verified',
+        ).length;
+        document.querySelector('#stage-panel').innerHTML =
+          `<div class="stage-header"><div><h3>阶段 ${stage.id} · ${stage.title}</h3><p>${stage.description}</p></div><div class="stage-counter">本地已验证<strong>${done} / ${stage.tasks.length}</strong></div></div>${stage.tasks.map((id) => taskMarkup(byId.get(id), id === selectedTask)).join('')}`;
+      }
+      function renderTasks() {
+        const query = document
+          .querySelector('#search')
+          .value.trim()
+          .toLowerCase();
+        const status = document.querySelector('#status-filter').value;
+        const matching = tasks.filter(
+          (task) =>
+            (status === 'all' || task.status === status) &&
+            [task.id, task.title, task.body, task.scope]
+              .join(' ')
+              .toLowerCase()
+              .includes(query),
+        );
+        document.querySelector('#task-list').innerHTML = matching
+          .map((task) => taskMarkup(task))
+          .join('');
+        document.querySelector('#task-count').textContent =
+          `${matching.length} / ${tasks.length} 项任务`;
+        document.querySelector('#no-results').hidden = matching.length > 0;
+      }
+      function route() {
+        const hash = location.hash.slice(1) || 'overview';
+        let view = ['overview', 'tasks', 'activity', 'evidence'].includes(hash)
+          ? hash
+          : 'overview';
+        let focusTask = false;
+        const stageMatch = /^stage-([1-6])$/.exec(hash);
+        const taskMatch = /^task-(T\d{2})$/.exec(hash);
+        if (stageMatch) {
+          selectedStage = Number(stageMatch[1]);
+          selectedTask = null;
+        }
+        if (taskMatch && byId.has(taskMatch[1])) {
+          selectedTask = taskMatch[1];
+          selectedStage = stages.find((stage) =>
+            stage.tasks.includes(selectedTask),
+          ).id;
+          focusTask = true;
+        }
+        document.querySelectorAll('.view').forEach((section) => {
+          section.hidden = section.id !== view;
+        });
+        document.querySelectorAll('[data-view]').forEach((link) => {
+          if (link.dataset.view === view)
+            link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
+        if (view === 'overview') {
+          renderRoadmap();
+          renderStage();
+        }
+        if (view === 'tasks') renderTasks();
+        if (stageMatch || focusTask) {
+          const target = focusTask
+            ? document.querySelector(
+                `#stage-panel [data-task="${selectedTask}"] summary`,
+              )
+            : document.querySelector('#stage-panel h3');
+          if (target.tagName !== 'SUMMARY')
+            target.setAttribute('tabindex', '-1');
+          target.focus({preventScroll: true});
+          target.scrollIntoView({
+            block: 'nearest',
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
+              ? 'instant'
+              : 'smooth',
+          });
+        }
+      }
+      document.querySelector('#feed').innerHTML = events
+        .map(
+          (event) =>
+            `<li><time datetime="${event.date}">${event.date}</time><div><h3>${event.title}</h3><p>${event.body}</p><a href="${event.source}" target="_blank" rel="noopener">查看记录 ↗</a></div></li>`,
+        )
+        .join('');
+      document.querySelector('#search').addEventListener('input', renderTasks);
+      document
+        .querySelector('#status-filter')
+        .addEventListener('change', renderTasks);
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href]');
+        if (
+          link &&
+          link.getAttribute('href') === location.hash &&
+          /^#(?:stage-|task-)/.test(location.hash)
+        ) {
+          event.preventDefault();
+          route();
+        }
+      });
+      window.addEventListener('hashchange', route);
+      new ResizeObserver(drawRoadmapLinks).observe(
+        document.querySelector('#roadmap'),
+      );
+      route();
+    </script>
+  </body>
+</html>

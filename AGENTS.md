@@ -53,7 +53,7 @@
 
 ## 目录与验证
 
-- 项目进度见 [进度流程图](docs/project-progress.md)：记录实际状态、完成依据、下一步及更新时间；阶段切换、遇阻、验收和发布后更新，仅作内部记录，不放入公开资源或网站构建。
+- 项目进度见 [进度记录](docs/project-progress.md)及[交互网页](docs/project-progress.html)，使用 `node scripts/serve-project-progress.mjs` 在本机打开：记录实际状态、完成依据、下一步及更新时间；阶段切换、遇阻、验收和发布后同步更新，仅作内部记录，不放入公开资源或网站构建。
 - 进度图展示以用户指定的 [交互路线图参考](https://claude.ai/artifact/SmRXGvGVFSzJK4hfAHa9Sq#overview) 为准：按阶段/依赖展示线路，每格对应一项任务，以颜色和文字区分状态并标出当前位置；可切换阶段、展开任务详情/验收依据，提供当前任务和近期动态。`docs/project-progress.md` 保留事实记录与展示入口，简单 Mermaid 不视为已实现该交互展示。阶段、工期和 KPI 使用本项目真实信息，未确定则标明待定，不套用参考项目的数据；区分本地完成、已验证、待发布和已发布，不声称自动实时同步。
 - `app/`：前台；`scripts/`：采集/归并/定价及管理工具，英文 kebab-case 命名、默认只读、不导入前台。
 - `public/`：公开静态资源；`docs/plans/`、`docs/qa/`：方案/验收，日期命名；`docs/rules/`：按主题规则；`docs/project-state.md`：连接状态与历史。
