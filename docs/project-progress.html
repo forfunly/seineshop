@@ -374,6 +374,16 @@
       .task-square.pending .tile {
         border: 1px solid #a4a399;
       }
+      .task-square.blocked .tile,
+      .swatch.blocked {
+        background: #9d3828;
+        color: white;
+      }
+      .badge.blocked {
+        color: #7a2a1d;
+        background: #f6e4df;
+        border-color: #b87364;
+      }
       .task-square.selected .tile {
         outline: 2px solid var(--accent);
         outline-offset: 3px;
@@ -969,7 +979,7 @@
       <div class="next">
         <span class="next-label"
           ><i class="dot" aria-hidden="true"></i>当前节点</span
-        ><a href="#stage-5">本地修改待审查、待批准推送</a
+        ><a href="#task-T10">分析同意验收未通过 · 修复方案待确认</a
         ><small>线上原店铺已运行 · 本轮改动未发布</small>
       </div>
       <nav class="nav" aria-label="进度视图">
@@ -986,6 +996,10 @@
           </div>
           <div class="roadmap" id="roadmap" aria-label="项目阶段路线"></div>
           <div class="legend" aria-label="任务状态图例">
+            <span
+              ><i class="swatch blocked" aria-hidden="true"></i>受阻 ·
+              待修复</span
+            >
             <span><i class="swatch" aria-hidden="true"></i>本地已验证</span
             ><span
               ><i class="swatch awaiting" aria-hidden="true"></i>等待授权</span
@@ -1020,6 +1034,7 @@
                 <option value="verified">本地已验证</option>
                 <option value="awaiting">等待授权</option>
                 <option value="pending">待开始</option>
+                <option value="blocked">受阻 · 待修复</option>
               </select></label
             >
           </div>
@@ -1103,9 +1118,21 @@
             </article>
           </div>
           <p class="note">
-            待验证：完整分析事件与 Cookie 同意管理；既有 CSP nonce hydration
-            和首页 fetchPriority 提示；跨 Safari / Firefox
-            的遮罩交互；生产部署后的页面、编码与
+            分析与 Cookie 同意管理验收未通过：拒绝分析后 GA4
+            仍发送页面浏览事件，
+            <a
+              href="qa/2026-11-03-analytics-consent.md"
+              target="_blank"
+              rel="noopener"
+              >查看实测依据 ↗</a
+            >。
+            <a
+              href="plans/2026-11-03-analytics-consent-fix.md"
+              target="_blank"
+              rel="noopener"
+              >修复方案待确认 ↗</a
+            >。 其他待验证项：既有 CSP nonce hydration 和首页 fetchPriority
+            提示；跨 Safari / Firefox 的遮罩交互；生产部署后的页面、编码与
             SEO。按现有要求保留店铺密码，暂不进行完整结账验证。
           </p>
         </section>
@@ -1171,8 +1198,8 @@
           id: 4,
           title: '本地配置与验收',
           short: '本地验收',
-          label: '代表流程已验证',
-          note: '完整分析流程仍待验证',
+          label: '分析同意验收未通过',
+          note: '拒绝后仍发送 GA4 · 待修复',
           description:
             '补齐获准的本地运行配置，检查桌面、手机、商品选择和购物车，并保留已知缺口。',
           tasks: ['T07', 'T08', 'T09', 'T10'],
@@ -1306,20 +1333,21 @@
         {
           id: 'T10',
           title: '完整分析与同意管理验收',
-          status: 'pending',
+          status: 'blocked',
           date: null,
-          scope: '验证缺口',
-          body: '配置报错消失不代表分析事件与 Cookie 同意管理全部正常。目前未完成全流程验证。',
-          check: '待确认可用验证范围并记录事件、同意选择与实际行为。',
-          next: '在后续专项验证中检查，不据此宣称已上线或已完成归因追踪。',
-          source: qa,
+          scope: '当前节点 · 本地验收失败',
+          body: '2026-11-03 在独立测试会话拒绝分析并刷新：Shopify 返回不允许分析，GA4 仍发送 page_view，网络返回 204。前台现有 GA4 初始化没有同步拒绝选择。',
+          check:
+            'Privacy API 加载、拒绝写入及刷新保留已验证；GA4 响应拒绝未通过。不是仅凭脚本标签推断发送。未修改前台或生产。',
+          next: '先确认全站分析与 Cookie 入口修复方案；实施并复验通过后再更新完成状态。方案见验收记录中的链接。',
+          source: 'qa/2026-11-03-analytics-consent.md',
         },
         {
           id: 'T11',
           title: '审查本次待上传改动',
           status: 'awaiting',
           date: null,
-          scope: '当前节点',
+          scope: '等待阶段四修复',
           body: '本地已有规则与修复提交，远程仓库尚未收到这些改动。本次内部进度页也只在本地。',
           check:
             '推送前列出明确提交、文件及验证结果，取得针对该批次的用户批准。',
@@ -1363,6 +1391,12 @@
       const events = [
         {
           date: '2026-11-03',
+          title: '分析同意验收失败，回到修复节点',
+          body: '独立会话拒绝分析并刷新后，Shopify 已禁止分析，GA4 仍发送 page_view（204）。T10 保持未完成，修复方案待确认。',
+          source: 'qa/2026-11-03-analytics-consent.md',
+        },
+        {
+          date: '2026-11-03',
           title: '内部交互路线图完成本地验证',
           body: '按指定参考制作内部网页，阶段切换、任务展开、搜索筛选及手机布局已验证。进度仍是手动维护的快照。',
           source: 'project-progress.md',
@@ -1390,6 +1424,7 @@
         verified: '本地已验证',
         awaiting: '等待授权',
         pending: '待开始',
+        blocked: '受阻 · 待修复',
       };
       const byId = new Map(tasks.map((task) => [task.id, task]));
       const escapeHtml = (value) =>
@@ -1404,7 +1439,8 @@
               "'": '&#39;',
             })[character],
         );
-      let selectedStage = 5;
+      const currentStage = 4;
+      let selectedStage = currentStage;
       let selectedTask = null;
       function taskMarkup(task, open = false) {
         return `<details class="task" data-task="${task.id}" ${open ? 'open' : ''}><summary><span class="task-id">${task.id}</span><span class="task-title">${escapeHtml(task.title)}<span class="task-sub">${escapeHtml(task.scope)} · ${task.date || '日期待定'}</span></span><span class="badge ${task.status}">${labels[task.status]}</span><span class="chevron" aria-hidden="true">+</span></summary><div class="task-body"><p>${escapeHtml(task.body)}</p><dl class="fact-grid"><dt>验收依据</dt><dd>${escapeHtml(task.check)}</dd><dt>下一步</dt><dd>${escapeHtml(task.next)}</dd><dt>来源记录</dt><dd><a href="${escapeHtml(task.source)}" target="_blank" rel="noopener">查看原始记录 ↗</a></dd></dl></div></details>`;
@@ -1415,7 +1451,7 @@
             const done = stage.tasks.filter(
               (id) => byId.get(id).status === 'verified',
             ).length;
-            return `<article class="phase ${stage.id === 5 ? 'current' : ''}"><div class="phase-kicker">阶段 ${String(stage.id).padStart(2, '0')} / ${stage.id < 5 ? '本地工作' : '发布流程'}</div><h3 class="phase-title"><a href="#stage-${stage.id}">${stage.title}</a></h3><div class="phase-meta"><b>${stage.label}</b><span class="mono">${done} / ${stage.tasks.length} 已验证</span></div><div class="rail"><span class="rail-start" aria-hidden="true"></span>${stage.id === 5 ? '<span class="you-are-here">▼ 当前在这里</span>' : ''}${stage.tasks
+            return `<article class="phase ${stage.id === currentStage ? 'current' : ''}"><div class="phase-kicker">阶段 ${String(stage.id).padStart(2, '0')} / ${stage.id < 5 ? '本地工作' : '发布流程'}</div><h3 class="phase-title"><a href="#stage-${stage.id}">${stage.title}</a></h3><div class="phase-meta"><b>${stage.label}</b><span class="mono">${done} / ${stage.tasks.length} 已验证</span></div><div class="rail"><span class="rail-start" aria-hidden="true"></span>${stage.id === currentStage ? '<span class="you-are-here">▼ 当前在这里</span>' : ''}${stage.tasks
               .map((id) => {
                 const task = byId.get(id);
                 return `<a class="task-square ${task.status} ${id === selectedTask ? 'selected' : ''}" href="#task-${id}" title="${escapeHtml(task.title)} · ${labels[task.status]}" aria-label="${id} ${escapeHtml(task.title)}，${labels[task.status]}"><span class="tile" aria-hidden="true">${id.slice(1)}</span></a>`;

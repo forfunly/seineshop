@@ -10,6 +10,8 @@ const documents = [
   'qa/2026-11-02-remote-alignment.md',
   'qa/2026-11-02-local-check-fixes.md',
   'qa/2026-11-03-project-progress-web.md',
+  'qa/2026-11-03-analytics-consent.md',
+  'plans/2026-11-03-analytics-consent-fix.md',
 ];
 const routes = new Map(
   documents.map((name) => [
