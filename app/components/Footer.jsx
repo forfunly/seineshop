@@ -1,6 +1,7 @@
 import {MarketSelector} from '~/components/MarketSelector';
 import {useLocale} from '~/lib/i18n';
 import {Link} from 'react-router';
+import {CookiePreferences} from '~/components/CookiePreferences';
 export function Footer() {
   const {t, localize} = useLocale();
   return (
@@ -45,6 +46,7 @@ export function Footer() {
           <Link to={localize('/support#returns')}>
             {t('Returns & refunds')}
           </Link>
+          <CookiePreferences />
           <div className="footer-shopping-preferences"><MarketSelector /></div>
         </nav>
       </div>

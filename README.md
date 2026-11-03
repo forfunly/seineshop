@@ -67,6 +67,12 @@ The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.j
 - Public product specifications use `custom.technical_specifications` JSON. Private sourcing/procurement records must remain inaccessible to the Storefront API.
 - Wholesale tiers currently request quotes; no automatic tier discount is promised. OEM/ODM inquiries prepare an email draft for `steven@seineshop.com`.
 - Checkout is Shopify-hosted. Payment availability and shipping/taxes are determined at checkout.
-- GA4 is configured globally with measurement ID `G-BKLZMJ9EP7`.
+- GA4 uses measurement ID `G-BKLZMJ9EP7` and follows Shopify's analytics consent decision.
+
+## Analytics consent
+
+`ConsentAnalytics` inside `Analytics.Provider` synchronizes Shopify Customer Privacy with `app/lib/google-analytics-consent.js`. Until the API permits analytics, GA is neither loaded nor initialized. Revocation sets the GA opt-out flag before updating consent; delayed script loading checks the current decision again. Advertising purposes remain denied. Repeated provider updates reuse a single tag and configuration.
+
+The footer's `CookiePreferences` opens Shopify's official preferences in the storefront language (EN/JA/DE). Banner display follows the store's configured region rules. This change requires no new environment variables or dependencies. Run `node --test tests/analytics-consent.test.mjs` for the controlled consent and delayed-load cases; browser/network evidence and remaining production/attribution checks are in [consent QA](docs/qa/2026-11-03-analytics-consent.md).
 
 See [RELEASE-NOTES.md](RELEASE-NOTES.md) for the complete iteration summary and validation record.

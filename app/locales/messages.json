@@ -2946,5 +2946,13 @@
   "Best Sellers": {
     "ja": "人気商品",
     "de": "Bestseller"
+  },
+  "Cookie settings": {
+    "ja": "Cookie設定",
+    "de": "Cookie-Einstellungen"
+  },
+  "Cookie settings are loading": {
+    "ja": "Cookie設定を読み込み中",
+    "de": "Cookie-Einstellungen werden geladen"
   }
 }

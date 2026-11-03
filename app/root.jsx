@@ -21,6 +21,7 @@ import mobileStyles from '~/styles/mobile.css?url';
 import brandStyles from '~/styles/brand.css?url';
 import cartStyles from '~/styles/cart.css?url';
 import {PageLayout} from './components/PageLayout';
+import {ConsentAnalytics} from './components/ConsentAnalytics';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -96,7 +97,7 @@ export async function loader(args) {
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-      withPrivacyBanner: false,
+      withPrivacyBanner: true,
       // localize the privacy banner
       country: args.context.storefront.i18n.country,
       language: args.context.storefront.i18n.language,
@@ -165,23 +166,6 @@ export function Layout({children}) {
     <html lang={locale.code}>
       <head>
         <meta charSet="utf-8" />
-        {/* Google tag (gtag.js): initialize once in the shared document head. */}
-        <script
-          async
-          nonce={nonce}
-          src="https://www.googletagmanager.com/gtag/js?id=G-BKLZMJ9EP7"
-        />
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-BKLZMJ9EP7');
-          `,
-          }}
-        />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
@@ -214,6 +198,7 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
+      <ConsentAnalytics />
       <PageLayout {...data}>
         <Outlet />
       </PageLayout>
