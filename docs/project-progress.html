@@ -987,7 +987,7 @@
       <div class="next">
         <span class="next-label"
           ><i class="dot" aria-hidden="true"></i>当前节点</span
-        ><a href="#task-T11">本地修复已复验 · 下一步审查待上传改动</a
+        ><a href="#task-T12">上传审查完成 · 等待批准本次推送</a
         ><small>线上原店铺已运行 · 本轮改动未发布</small>
       </div>
       <nav class="nav" aria-label="进度视图">
@@ -1355,25 +1355,25 @@
         {
           id: 'T11',
           title: '审查本次待上传改动',
-          status: 'awaiting',
-          date: null,
-          scope: '当前节点 · 待上传审查',
-          body: '本地已有规则与修复提交，远程仓库尚未收到这些改动。本次内部进度页也只在本地。',
+          status: 'verified',
+          date: '2026-11-03',
+          scope: '本地审查完成 · 尚未上传',
+          body: '已核对 8 个既有提交及本次审查记录提交，合计 9 个提交、48 个文件；远程无新提交。规则、弹窗、同意管理和内部进度资料均列入明确清单。',
           check:
-            '推送前列出明确提交、文件及验证结果，取得针对该批次的用户批准。',
-          next: '先完成可审查的文件清单；没有单次授权不执行 push。',
-          source: 'project-state.md',
+            '35 测试通过，lint 0 错误/2 既有警告，集合筛选和来源审计通过。依赖、环境与 CI/CD 无改动；外部自动发布关联未实时复核。',
+          next: 'T12 取得用户针对该批次到 origin/main 的明确批准后才可推送。',
+          source: 'qa/2026-11-03-upload-review.md',
         },
         {
           id: 'T12',
           title: '获准后上传并核对远程 main',
-          status: 'pending',
+          status: 'awaiting',
           date: null,
-          scope: 'Git 远程',
+          scope: '当前节点 · 等待本次推送授权',
           body: '推送目标为 origin/main。上传前再次检查远程并评估并发改动，禁止擅自 rebase、强推或覆盖。',
           check: '推送后核对远程 main 哈希，确认提交已到远程。',
-          next: '依赖 T11 的本次明确批准。',
-          source: 'project-progress.md',
+          next: '本批 9 个提交、48 个文件待批准；需要针对该批次的明确推送授权。生产部署另行确认。',
+          source: 'qa/2026-11-03-upload-review.md',
         },
         {
           id: 'T13',
@@ -1399,6 +1399,12 @@
         },
       ];
       const events = [
+        {
+          date: '2026-11-03',
+          title: '上传批次审查完成，等待本次批准',
+          body: '远程无新提交；已整理 9 个提交、48 文件范围。35 测试、lint、集合筛选和来源审计复跑通过。T11 完成，T12 等待本次 push 授权；尚未推送或部署。',
+          source: 'qa/2026-11-03-upload-review.md',
+        },
         {
           date: '2026-11-03',
           title: '分析同意修复完成本地复验',
