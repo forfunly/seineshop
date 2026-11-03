@@ -13,6 +13,7 @@ const documents = [
   'qa/2026-11-03-analytics-consent.md',
   'qa/2026-11-03-upload-review.md',
   'plans/2026-11-03-analytics-consent-fix.md',
+  'plans/2026-11-03-oxygen-production-release.md',
 ];
 const routes = new Map(
   documents.map((name) => [

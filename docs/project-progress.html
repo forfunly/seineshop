@@ -618,9 +618,20 @@
         border-top: 1px solid var(--line);
       }
       .feed time {
+        display: block;
         font: 13px var(--mono);
+        line-height: 1.6;
         color: var(--muted);
         padding-top: 5px;
+      }
+      .feed time strong {
+        display: block;
+        font-size: 20px;
+        color: var(--ink);
+      }
+      .feed time small {
+        display: block;
+        font-size: 11px;
       }
       .feed h3 {
         font-size: 17px;
@@ -979,7 +990,11 @@
         <div class="stamp">
           <div>
             <span class="stamp-label">最近更新 · 北京时间</span
-            ><strong>2026-11-03</strong>
+            ><strong
+              ><time datetime="2026-11-03T15:29:48+08:00"
+                >2026-11-03 15:29</time
+              ></strong
+            >
           </div>
           <span class="snapshot">手动维护的进度快照</span>
         </div>
@@ -987,7 +1002,7 @@
       <div class="next">
         <span class="next-label"
           ><i class="dot" aria-hidden="true"></i>当前节点</span
-        ><a href="#task-T13">代码已上传 · 等待生产部署授权</a
+        ><a href="#task-T13">保留线上 GA4 · 发布范围待调整</a
         ><small>线上原店铺已运行 · 本轮改动未发布</small>
       </div>
       <nav class="nav" aria-label="进度视图">
@@ -1060,9 +1075,13 @@
         >
           <div class="view-heading">
             <h2 id="activity-title">近期动态</h2>
-            <p class="hint">按工作记录排列，不是实时操作日志</p>
+            <p class="hint">北京时间 · 历史条目为记录时间</p>
           </div>
           <ol class="feed" id="feed"></ol>
+          <p class="note">
+            历史条目按对应 Git
+            提交记录补齐时间，不代表操作开始或完成的精确时刻；无可靠依据时显示“时间未记录”。
+          </p>
         </section>
         <section
           id="evidence"
@@ -1228,7 +1247,7 @@
           id: 6,
           title: '生产发布与复验',
           short: '生产验收',
-          label: '等待部署授权',
+          label: '待调整发布范围',
           note: '本批未部署 · 现有线上店铺已运行',
           description:
             '本轮改动的生产部署须另获批准。发布后检查真实域名上的响应、交互、编码和 SEO。',
@@ -1379,13 +1398,14 @@
         {
           id: 'T13',
           title: '获准后部署本轮改动至 Oxygen',
-          status: 'awaiting',
+          status: 'blocked',
           date: null,
-          scope: '当前节点 · 等待单独部署授权',
-          body: '现有 www.seineshop.com 已在运行；本节点只指本轮本地改动的发布，不代表店铺尚未上线。',
-          check: '核对目标环境和生产配置，单独取得部署批准后执行。',
-          next: '代码上传已完成。核对本批发布范围、目标及生产配置，再取得部署单独批准；不将 Git 上传当作已上线。',
-          source: 'project-state.md',
+          scope: '当前节点 · 待排除 GA4 发布改动',
+          body: '用户最新要求先保留线上 GA4，原整包发布候选停止。当前 main 仍含同意门控修复，不能直接整包部署。店铺继续运行，本次未修改生产。',
+          check:
+            'CLI 核对 Production 为 production/main/www.seineshop.com。线上仍有旧 GA4 脚本；尚未取得准确回滚部署信息，也未执行部署。',
+          next: '先准备排除 GA4 改动的新发布候选并验证，再明确发布范围及单独取得生产批准。内部时间显示改动仅在本地。',
+          source: 'plans/2026-11-03-oxygen-production-release.md',
         },
         {
           id: 'T14',
@@ -1402,48 +1422,80 @@
       const events = [
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T15:29:48+08:00',
+          timeBasis: '本次范围调整记录时间',
+          title: '保留线上 GA4，原发布候选停止',
+          body: '按用户最新要求，不部署 GA4 同意门控改动。当前 main 包含该修复，原整包发布候选停止；先修订范围，线上未改。时间展示已通过桌面和手机检查。',
+          source: 'plans/2026-11-03-oxygen-production-release.md',
+        },
+        {
+          date: '2026-11-03',
+          recordedAt: '2026-11-03T15:20:53+08:00',
+          timeBasis: '本次状态更新记录时间',
+          title: '进度页补充小时与分钟',
+          body: '顶部最近更新和动态条目显示北京时间；历史条目依据对应提交时间补齐并标明记录时间，刷新不会改变时间。阶段六仍等待部署单独授权。',
+          source: 'project-progress.md',
+        },
+        {
+          date: '2026-11-03',
+          recordedAt: '2026-11-03T15:02:56+08:00',
+          timeBasis: 'Git 提交记录 87d7e15，不是操作精确发生时间',
           title: '获准批次已上传，远程哈希核对通过',
           body: '9 个提交、48 个文件已推送到 origin/main，远程提交头 56ffe2e 已读回。T12 完成，进入阶段六；未执行生产部署。本次状态更新仅在本地保存。',
           source: 'qa/2026-11-03-upload-review.md',
         },
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T14:30:11+08:00',
+          timeBasis: 'Git 提交记录 56ffe2e，不是操作精确发生时间',
           title: '上传批次审查完成，等待本次批准',
           body: '远程无新提交；已整理 9 个提交、48 文件范围。35 测试、lint、集合筛选和来源审计复跑通过。T11 完成，T12 等待本次 push 授权；尚未推送或部署。',
           source: 'qa/2026-11-03-upload-review.md',
         },
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T14:15:23+08:00',
+          timeBasis: 'Git 提交记录 c7f6650，不是操作精确发生时间',
           title: '分析同意修复完成本地复验',
           body: '拒绝刷新后 GA 脚本及请求为 0，接受后单次初始化，撤回后停发。35 测试、lint、构建及来源审计通过；进入阶段五审查，尚未上传或部署。',
           source: 'qa/2026-11-03-analytics-consent.md',
         },
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T12:00:48+08:00',
+          timeBasis: 'Git 提交记录 48160f8，不是操作精确发生时间',
           title: '分析同意验收失败，回到修复节点',
           body: '修复前独立会话拒绝分析并刷新后 GA4 仍发送 page_view（204）。当时回到修复节点，后经用户批准修复并复验；原始失败证据保留。',
           source: 'qa/2026-11-03-analytics-consent.md',
         },
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T11:18:20+08:00',
+          timeBasis: 'Git 提交记录 e6a54bc，不是操作精确发生时间',
           title: '内部交互路线图完成本地验证',
           body: '按指定参考制作内部网页，阶段切换、任务展开、搜索筛选及手机布局已验证。进度仍是手动维护的快照。',
           source: 'project-progress.md',
         },
         {
           date: '2026-11-03',
+          recordedAt: '2026-11-03T10:38:25+08:00',
+          timeBasis: 'Git 提交记录 275ba45，不是操作精确发生时间',
           title: '本地缺少结账域名的报错消失',
           body: '单项授权后补齐本地配置并在浏览器复验，未改生产环境，也未进行完整结账。',
           source: qa,
         },
         {
           date: '2026-11-02',
+          recordedAt: '2026-11-02T23:01:54+08:00',
+          timeBasis: 'Git 提交记录 23e143b，不是操作精确发生时间',
           title: '代码修复完成本地验证',
           body: 'lint 0 错误，30 项测试通过；完成构建、手机和桌面弹窗、购物车代表交互检查，保留已知缺口。',
           source: qa,
         },
         {
           date: '2026-11-02',
+          recordedAt: '2026-11-02T21:28:27+08:00',
+          timeBasis: 'Git 提交记录 17cc94f，不是操作精确发生时间',
           title: '回到远程工程基线',
           body: '原目录完成源码对齐及规则合并，没有迁入旧前台，没有另开工作树。',
           source: alignment,
@@ -1614,7 +1666,7 @@
       document.querySelector('#feed').innerHTML = events
         .map(
           (event) =>
-            `<li><time datetime="${event.date}">${event.date}</time><div><h3>${event.title}</h3><p>${event.body}</p><a href="${event.source}" target="_blank" rel="noopener">查看记录 ↗</a></div></li>`,
+            `<li><time datetime="${event.recordedAt || event.date}" title="${escapeHtml(event.timeBasis || '北京时间记录时间')}">${escapeHtml(event.date)}<strong>${event.recordedAt ? event.recordedAt.slice(11, 16) : '时间未记录'}</strong><small>北京时间 · 记录时间</small></time><div><h3>${event.title}</h3><p>${event.body}</p><a href="${event.source}" target="_blank" rel="noopener">查看记录 ↗</a></div></li>`,
         )
         .join('');
       document.querySelector('#search').addEventListener('input', renderTasks);
