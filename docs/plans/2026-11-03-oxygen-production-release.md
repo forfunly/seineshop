@@ -1,6 +1,36 @@
 # Oxygen 生产发布准备
 
-日期：2026-11-03（北京时间）。状态：原发布候选暂停，待修订范围。用户最新要求保留线上 GA4 配置，本次不发布 GA4 同意门控修复；没有执行部署。当前 main 仍含该修复，禁止按下方原候选命令直接整包上线。
+最近记录：2026-11-04 15:28（北京时间）。状态：保留原 GA4 的新候选已完成本地复验；用户已明确授权本批推送 origin/main 及部署 Production。当前还未执行本批推送或生产部署，后台安全验证待用户本人完成。
+
+## 当前批次（覆盖下方旧候选记录）
+
+- 用户本次指令：“除了 GA4，其他的你都给我推送上线部署”。此为当前已说明修复、规则和进度文档的本次 push/生产部署授权，不延伸到后续业务改动或生产变量修改。
+- 目标：origin/main；Shopify 店铺 ps83if-c4.myshopify.com / SeineShop storefront 1000183956 / Production handle production / https://www.seineshop.com。
+- 客户可见内容：商品图片及询盘弹窗的焦点、键盘操作修复，表单错误去重与稳定 key；其余为 lint 清理及检查配置。保留仓库原有框架、依赖、商品和交易行为。
+- app/root.jsx、Footer.jsx、brand.css、messages.json 已恢复至 407eeab 中的原内容，逐文件比对通过：原测量 ID、共享 head 单次初始化、nonce 与线上既有接入方式保持一致。停用同意门控与新 Cookie 入口；已存在的相关源文件和测试保留，但客户端构建中不含门控标记。
+- 内部规则、README、方案及流程图随代码保存到 Git；它们不发布为客户网站页面。本地 .env、.shopify、依赖、缓存、生成物不提交；声明文件仅有换行变化，不形成提交内容。
+- 2026-11-04 本轮检查：lint 0 错误/2 既有警告；35 测试通过（其中 5 项只覆盖停用的 helper）；codegen、build、集合筛选、构建来源审计通过。Toolkit 对 root/Footer 的隔离类型校验无法解析 Hydrogen/React JSX，未声称通过；既有 analyzer 缺失 metafile 与框架兼容提示保留。
+- 浏览器：原 GA 脚本 1 个、config 1 次、collect 返回 204；桌面图片/询盘弹窗初始焦点、Tab/Shift+Tab 及 Escape 返回触发按钮通过。390px 手机无横向溢出，两种弹窗在视口内。白色款 2 件 $38，调整 3 件刷新后 $57 且保留。未发送询盘、未进入结账、未下单。
+- 当前 CLI 已再次读回 production/main/www.seineshop.com；后台打开后出现连接安全验证，已请用户本人完成。准确当前部署与回滚目标尚未读回，仍按既定发布前检查处理。
+
+拟执行（本次授权已覆盖；需先完成远程/提交及回滚检查）：
+
+```powershell
+git push origin main
+$env:SHOPIFY_CLI_NO_ANALYTICS='1'
+node_modules/.bin/shopify.cmd hydrogen deploy --env production --no-json-output --metadata-description "Product dialog and lint fixes; preserve existing GA4"
+```
+
+部署会上传前台构建并切换 Production 当前版本；不传 --env-file，不用本地 .env 覆盖远程变量，不使用 force、no-verify、认证绕过或公开客户端源码映射选项。部署后分别核对实际部署标识、GA4、商品/购物车和 SEO/编码代表响应，再更新 T13/T14。下面为此前候选和当时授权状态的历史，不是本次可执行范围。
+
+## 已批准的新候选准备
+
+- 按用户“保留线上 GA4，只准备弹窗/键盘和 lint 修复”及随后“ok”的确认执行本地代码调整。
+- 精确恢复同意门控提交之前的 `app/root.jsx`、`app/components/Footer.jsx`、`app/styles/brand.css`、`app/locales/messages.json`；实施前核对这四个文件的差异只涉及此前的 GA4/Cookie 改动，避免覆盖其他成果。
+- 恢复既有 head 中的单次 GA4 脚本与原测量 ID、原 nonce，不挂载 ConsentAnalytics、不启用新 Cookie 设置入口与横幅；其余弹窗/键盘与 lint 修复保留。
+- 新增的同意管理组件、辅助模块及其测试先保留在源码中但不接入运行入口，不删除文件或历史；README 明确它们当前停用，构建与浏览器验证确认不进入前台运行链。
+- 验证旧版 GA4 初始化与当前线上一致、实际页面浏览请求仍发送；核对商品弹窗焦点、键盘、变体及购物车代表流程。只在本地隔离会话测试，不改生产或用户原会话。
+- 核对 Oxygen 当前成功部署与回滚入口；准备新的明确文件/提交和发布范围。每次 push 及生产部署分别取得针对本次的明确批准。
 
 ## 最新范围约束（覆盖下方原候选）
 

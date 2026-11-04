@@ -41,7 +41,7 @@ The source-exposure audit is a release gate for application sources and compiled
 Configure the matching store/environment using Shopify CLI and merchant-owned credentials. The production environment is mapped to the `main` branch. Pushing this repository alone does not configure automatic Oxygen deployment.
 
 ```sh
-npx shopify hydrogen deploy --env-branch main --env-file .env.production
+node_modules/.bin/shopify.cmd hydrogen deploy --env production --no-json-output
 ```
 
 The production environment requires the variables listed in `.env.example`; set `PUBLIC_SITE_URL=https://www.seineshop.com`, `PUBLIC_INDEXABLE=true`, `PUBLIC_JOURNAL_INDEXABLE=true`, and `PUBLIC_CATALOG_PREVIEW=false` only for the intended production environment. Verify the public domain after publishing; propagation can lag deployment completion.
@@ -67,12 +67,12 @@ The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.j
 - Public product specifications use `custom.technical_specifications` JSON. Private sourcing/procurement records must remain inaccessible to the Storefront API.
 - Wholesale tiers currently request quotes; no automatic tier discount is promised. OEM/ODM inquiries prepare an email draft for `steven@seineshop.com`.
 - Checkout is Shopify-hosted. Payment availability and shipping/taxes are determined at checkout.
-- GA4 uses measurement ID `G-BKLZMJ9EP7` and follows Shopify's analytics consent decision.
+- GA4 retains the existing shared-head initialization and measurement ID `G-BKLZMJ9EP7` for the current release candidate, as requested by the merchant.
 
 ## Analytics consent
 
-`ConsentAnalytics` inside `Analytics.Provider` synchronizes Shopify Customer Privacy with `app/lib/google-analytics-consent.js`. Until the API permits analytics, GA is neither loaded nor initialized. Revocation sets the GA opt-out flag before updating consent; delayed script loading checks the current decision again. Advertising purposes remain denied. Repeated provider updates reuse a single tag and configuration.
+The consent-gated implementation is retained in source but is currently disconnected from the application: `ConsentAnalytics`, `CookiePreferences`, `app/lib/google-analytics-consent.js`, and their controlled tests are dormant. The root and footer do not import or render these components, and the new privacy banner is not enabled. The active release candidate preserves the previous GA4 behavior; it does not claim that GA4 now stops after refusal.
 
-The footer's `CookiePreferences` opens Shopify's official preferences in the storefront language (EN/JA/DE). Banner display follows the store's configured region rules. This change requires no new environment variables or dependencies. Run `node --test tests/analytics-consent.test.mjs` for the controlled consent and delayed-load cases; browser/network evidence and remaining production/attribution checks are in [consent QA](docs/qa/2026-11-03-analytics-consent.md).
+`node --test tests/analytics-consent.test.mjs` verifies only the dormant helper. Earlier browser evidence describes that earlier candidate, not the active release candidate. See [earlier consent QA](docs/qa/2026-11-03-analytics-consent.md) and [revised release scope](docs/plans/2026-11-03-oxygen-production-release.md) for the merchant's later decision and deployment boundaries. No environment variables or dependencies are added by this scope change.
 
 See [RELEASE-NOTES.md](RELEASE-NOTES.md) for the complete iteration summary and validation record.

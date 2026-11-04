@@ -17,6 +17,8 @@
 - `docs/plans/`：开发方案，按 `YYYY-MM-DD-topic.md` 命名；保留决策与验收记录。
 - `docs/project-progress.md`：项目进度事实与入口；`docs/project-progress.html`：内部交互展示，单文件 HTML/CSS/JavaScript，无外部依赖，不导入前台、不放 `public/`、不加入 sitemap。`scripts/serve-project-progress.mjs` 仅在本机提供该页面及明确列出的验收 Markdown，响应声明 UTF-8；不读取 `.env`。进度数据与事实记录同步更新，保留历史验证日期，未知时间不编造。页面只是更新时的快照，不执行推送、部署或店铺写入；不自动清理文件。
 - 进度页顶部最近更新与近期动态显示北京时间（UTC+08:00），至少精确到分钟；刷新页面不改变记录时间。历史条目可依据对应 Git 提交补充“记录时间”，须说明它不等于操作精确发生时间；无可靠时间依据时标明“时间未记录”。
+- 进度图沿用用户指定的 [交互路线图参考](https://claude.ai/artifact/SmRXGvGVFSzJK4hfAHa9Sq#overview)：按阶段/依赖展示线路，每格一项任务，用颜色和文字区分状态并标出当前位置；支持阶段切换、任务详情/验收依据、当前任务和近期动态。Markdown 保留事实记录与展示入口，简单 Mermaid 不替代交互网页。阶段、工期和 KPI 使用本项目真实信息，未确定则标待定；区分本地完成、已验证、待发布和已发布，不声称自动实时同步。
+- 长期规则放根 AGENTS.md 和 `docs/rules/`；连接与授权事实放 `docs/project-state.md`，进度与下一步放进度文档。状态文档顶部仅保留带核验时间的最新摘要，历史按日期归档并标明不代表当前状态；旧验收失败保留在历史，不能与已解决的当前状态混写。根规范不重复维护版本、提交哈希和当轮发布状态。
 - `docs/rules/`：按主题拆分的项目详细规范，英文 kebab-case 命名；由根 AGENTS.md 指定必读条件，保留原有重要规则，不自动清理。`docs/project-state.md` 保存当前连接状态、已有授权范围与历史接入事实；它不替代根规范中的操作红线。
 - `app/`：React Router 页面、组件、样式、服务端数据接入与会话；沿用官方模板命名。
 - `public/`：可公开的静态资源；不得包含环境变量或后台数据导出。
@@ -36,27 +38,36 @@
 ## 实施规则
 
 - 先更新规范，再调整目录或工程实践；大改动先提交方案，用户确认后实施。
+- 大改动包括架构或框架迁移、跨模块公共接口/数据流重构、依赖主版本升级，以及批量商品/业务行为调整；不单以文件数或行数判断。普通局部修复和已确认范围的规则整理按既定目标实施，命中根规范红线仍须先授权。需要方案时先用 Plan Mode 进行只读调查、列明范围/风险/验收，经确认后动手；客户端无法切换模式时先提交方案等待确认，不直接实施。
 - 优先采用 Shopify 官方 Hydrogen；先确认实际版本，依照该版本文档开发，禁止混用新旧 API。
 - `tests/` 当前使用 Node 内置 `node:test` 与 `node:assert/strict`，ESLint 测试配置必须匹配实际框架，不套用需要 Jest 运行时的规则；不得为修复检查配置而引入无关测试框架或跳过测试检查。
 - 使用 Shopify 托管结账；只实现已经验证可用的功能。
 - 不通过注释错误、忽略类型检查或加入绕过标记处理故障。
 - 密钥、token、密码不得进入代码、commit 或日志；不要求用户在聊天发送验证码。
 
-## 必须单独获得用户授权的操作
+## 项目记忆与授权入口
 
-- 删除文件、目录或 Git 历史。
-- 超出授权范围的 `.env`、密钥、token、CI/CD 配置操作；已授权复用现有 Storefront 凭据、创建 SeineShop AI Manager 并取得和本地保存管理凭据。不允许轮换其他现有 token。
-- 数据库 schema 变更或数据迁移。
-- **每一次 `git push`**，包括本项目 `origin/main` 的普通推送及文档推送；必须先说明本次提交并获得用户明确同意，先前免确认约定已撤销。`git rebase`、`git reset --hard` 或强制推送也必须先问。按根 AGENTS.md 和 Git 工作流执行。
-- 安装新的全局依赖或修改系统配置。
-- 公开发布，包括生产部署、发布文章或 `npm publish`。
-- 登录、多因素验证和安全挑战由用户本人完成。
+- 修改前台功能前读取 `README.md`、`RELEASE-NOTES.md` 和本规范。仓库内的 [商品规范](catalog.md) 保存参考策略、消费者可见内容限制及商业规则；实施相关任务时必读。
+- 若项目根目录的上一级存在 `DEVELOPMENT-MEMORY.md`，额外读取它作为内部补充，不复制到公开资源或构建输入；不存在时不猜测、不重建未知内容。本项目关键长期约束必须在仓库内规范中完整可用，不能只放在该外部文件。
+- 所有受限操作以[根规范的授权边界](../../AGENTS.md#授权边界)为准；Git 具体流程见 [Git 工作流](git-workflow.md)，已有接入与凭据保存授权见 [项目状态](../project-state.md#管理-app-连接与授权范围)。本文件不另维护一份红线清单，不改变任何现有授权。
 
 ## 验证与交付
 
-- 工程验证以远程工程实际配置为准：2026-11-02 package.json 提供 `npm run lint`、`npm run codegen`、`npm run build`；运行与变更相关的 tests/ 测试。旧本地工程曾使用 `npm run typecheck`、`npm run test:admin` 与 `npm run admin:check`，仅作为历史工具记录，在获准迁入并验证前不得当作远程已有命令。
+- 执行前核对 package.json、锁文件和测试配置。当前命令入口为 `npm run lint`、`npm run codegen`、`npm run build`，测试使用 `node --test tests/*.test.mjs`。`codegen` 只生成 GraphQL/路由类型，不是全项目类型检查；未提供 `typecheck`、`test:admin` 或 `admin:check` 时不得假设存在。历史检查结果保存在 QA 记录，不作为本次通过依据。
+- `npm ci` 用于首次准备或锁文件变化后的依赖安装，不是每次编辑必跑的检查；已安装且适用的依赖可复用。新增全局依赖及系统配置仍遵守授权红线。
 - 本地启动使用远程工程 `npm run dev`，核对该版本 CLI 的监听选项并仅监听本机；旧本地 Vite 的 `--host 127.0.0.1` 不能直接照搬到 Hydrogen CLI。不主动建立公开隧道。
-- 当前可执行：`npm ci`、`node --test tests/*.test.mjs`、`npm run lint`、`npm run codegen`、`npm run build`、`node scripts/check-collection-filters.mjs`、构建后 `node scripts/audit-source-exposure.mjs --built`。`codegen` 生成 GraphQL/路由类型，不等于全项目类型检查；远程没有独立 `typecheck` 命令。2026-11-02 已修复 lint 配置及代码错误，检查为 0 错误、2 条脚本成功输出警告，见 [修复验收](../qa/2026-11-02-local-check-fixes.md)；不通过忽略规则绕过。
-- 改动后主动执行适用验证，并在浏览器检查桌面和手机布局、商品选择、购物车及结账跳转。
+
+下表是最低验证范围，混合任务合并执行受影响行；出现新失败或风险时补充相关验证，不以无关检查替代行为验收。
+
+| 改动类型 | 必须执行的验证 | 完成依据 |
+| --- | --- | --- |
+| 纯 Markdown / 规则文档 | `git diff --check`；检查 UTF-8、路径/相对链接、规则保留情况和状态一致性；核对文中命令确实存在 | 规则无遗漏/冲突，链接可定位，当前与历史分开；不为纯文档改动强制跑前台构建 |
+| 内部进度 HTML / 数据 | 文档检查；提取内联脚本检查语法和任务 ID/阶段引用、数量、状态、日期；用本机进度服务检查响应及浏览器相关视图 | Markdown/HTML 的当前位置、数量、最新动态、依据与下一步一致；内容变化检查中文，布局变化检查桌面与手机 |
+| 业务逻辑 / 本地工具 / 测试 | `npm run lint`；运行受影响的 `node --test tests/<name>.test.mjs`，共用逻辑或影响不明时运行全量测试；工具检查实际输入输出 | 对应行为已验证，无新增检查失败，不使用绕过标记；工具变更补 README |
+| 前台页面 / 组件 / 路由 / 多语言 / GraphQL | lint、相关测试、`npm run codegen`、`npm run build`；涉及集合筛选时加 `node scripts/check-collection-filters.mjs` | 桌面/手机、相关键盘操作、受影响商品选择/购物车/结账跳转和 SEO 代表页检查；按既有边界不进行完整结账 |
+| 生产发布候选 | 全量测试、lint、codegen、build、集合筛选和 `node scripts/audit-source-exposure.mjs --built`；审查 diff、敏感内容、目标环境及实际发布范围 | 本地检查有新鲜证据、缺口明确，分别取得 push/生产发布授权；候选变更后重跑受影响验证 |
+| 已获准的生产发布之后 | 按 SEO 规范检查真实域名、状态码、页面与购物车；实测文本 Content-Type 的 `charset=utf-8` 并用浏览器检查多语言/特殊符号 | 记录实际部署标识、线上结果与缺口；Git 哈希/构建结果不能代替生产验收 |
+
+- 完成前审查本次 diff，确认没有无关改动、业务回归或敏感信息。报告本次实际执行的命令、结果和未验证项；失败先回到修复节点，不能沿用历史通过记录或把未执行的检查标为通过。
 - 真实店铺尚未接通时，明确标记演示数据与尚未验证的交易功能。
 - `robots.txt`、`llms.txt`、`agents.md`、CSV 等文本资源采用 UTF-8；上线后检查实际 Content-Type 的 `charset=utf-8` 并通过浏览器验证多语言及特殊符号显示，不能只依据 HTTP 200 或构建结果。

@@ -283,11 +283,3 @@ body {background:#fff;color:var(--brand-ink)}
  .pdp-spec-table th {width:36%}
  .pdp-details>div {margin-bottom:28px}
 }
-
-/* Customer privacy preferences use the existing footer typography. */
-.footer-columns .cookie-settings { align-self: flex-start; min-height: 44px; padding: 8px 0; border: 0; background: transparent; color: #51634c; font: inherit; font-size: 12px; text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.cookie-settings:focus-visible { outline: 2px solid #294b38; outline-offset: 4px; }
-.cookie-settings:disabled { cursor: wait; opacity: .65; }
-/* Shopify's option copy uses full width plus checkbox padding. */
-#shopify-pc__prefs__dialog .shopify-pc__prefs__option p { box-sizing: border-box; }
-#shopify-pc__prefs__dialog h2 { box-sizing: border-box; }
