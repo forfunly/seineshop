@@ -76,3 +76,19 @@ The consent-gated implementation is retained in source but is currently disconne
 `node --test tests/analytics-consent.test.mjs` verifies only the dormant helper. Earlier browser evidence describes that earlier candidate, not the active release candidate. See [earlier consent QA](docs/qa/2026-11-03-analytics-consent.md) and [revised release scope](docs/plans/2026-11-03-oxygen-production-release.md) for the merchant's later decision and deployment boundaries. No environment variables or dependencies are added by this scope change.
 
 See [RELEASE-NOTES.md](RELEASE-NOTES.md) for the complete iteration summary and validation record.
+
+## Browser catalog import tools
+
+These local tools prepare and audit authorized Shopify catalog imports; they do not send API mutations. Browser capture uses the active browser tool session and rendered DOM only. No TVCMALL API key is needed.
+
+- `scripts/tvcmall-browser-capture.mjs`: capture a listing product and its visible SKU options with `captureGroup(tab, root, listingItem, index)`. Save successful group records to `groups.json`; raw records go to `products/<SKU>.json`. A group is complete only when every displayed option has a verified SKU record.
+- `scripts/prepare-tvcmall-import.py`: prepare ProductSet JSONL from complete groups. Requires `groups.json`, `products/`, `shopify-existing-1.json`; also reads the baseline `shopify-all-skus.jsonl`, completed `imported-products.json`, and reviewed `handle-qualifiers.json` when present. Existing SKUs/handles are excluded. Outputs `<name>.jsonl` and `<name>-review.json`; inspect rejections before authorized writes.
+- `scripts/audit-tvcmall-import.py`: compare a fresh Shopify `final-catalog-audit.jsonl` readback with captures. Checks complete SKU membership, uniqueness, ordinary prices, private source URLs/tier prices, ready variant images and three configured publication channels. When `snapshot-audit.jsonl` exists, also reconstructs private snapshot parts and compares every raw SKU record. Outputs `final-audit-summary.json`, exits nonzero on differences. The audit query shape is documented in the task QA record.
+
+```sh
+python3 scripts/prepare-tvcmall-import.py --root .cache/catalog/iphone-duo-2026-11-11 --output next-batch
+python3 scripts/audit-tvcmall-import.py --root .cache/catalog/iphone-duo-2026-11-11
+node --test tests/tvcmall-import.test.mjs
+```
+
+This batch uses the user's explicit ×1 ordinary USD price instruction. Wholesale intervals, MOQ, source URLs and complete raw parameter records remain private. Large snapshots are split below 120,000 UTF-8 bytes into `custom.source_snapshot_part_01` onward, with a manifest in `custom.source_snapshot`; define every part as Product/json with Storefront NONE before writing. Never truncate source records to fit a field. Reconcile successful API results before preparing another batch, retain existing handles, and verify images/prices before publication. Generated data and credentials remain ignored under `.cache/` and existing local CLI configuration.

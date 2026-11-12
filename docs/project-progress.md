@@ -1,6 +1,22 @@
 # SeineShop 项目进度
 
-更新时间：2026-11-04 15:28（北京时间，UTC+08:00）。这是本次检查后的状态快照；本文件仅供内部使用，不作为公开页面或构建输入。随阶段切换、遇阻、验收和发布更新，保留完成依据。
+## iPhone Duo 商品上架完成（2026-11-12 11:49 北京时间）
+
+已通过当前浏览器完整采集原始 906 组及次日新增 2 组，共 908 组 / 3,643 个 SKU。Shopify 新增 895 组 / 3,611 SKU，更新既有 13 组（现 32 SKU，补入 19 个颜色变体）；全部 ACTIVE，并发布到 Online Store、Headless、Hydrogen。新建自动集合 `iphone-duo`，API 读回 908 组，前台集合和 21 款式商品切换已验证。
+
+普通售价逐 SKU 等于采集时来源主报价（USD ×1），批发阶梯价仅存后台。`custom.source_urls` 保存原链接，`custom.source_snapshot` 保存完整参数，较大记录由 `custom.source_snapshot_part_01` 至 `_03` 分段并索引；`custom.sourcing_record` 保存逐 SKU 原价、阶梯价、MOQ 和来源映射。上述字段及采集时间/状态均为 Storefront NONE。全量读回 SKU、价格、来源、阶梯价、变体主图及三个渠道校验零差异。
+
+图库补传已完成，唯有同一商品的 2 张来源图片持续返回 HTTP 404；其原始 URL 和原因保存在私有快照中，其他图片与各变体主图可用。来源库存未验证，不虚构供货库存；既有库存未改动，新商品采用不跟踪库存。前台图库组件现有显示数量上限未改动，完整采集图库保存在 Shopify 和私有记录。
+
+证据位于被忽略的 `.cache/catalog/iphone-duo-2026-11-11/`，详细记录见 [验收](qa/2026-11-12-iphone-duo-import.md)和[计划](plans/2026-11-11-iphone-duo-import.md)。本轮未推送 Git、未部署前台代码、未安装折扣应用、未改变店铺密码或执行完整结账。
+
+更新时间：2026-11-11 17:08（北京时间，UTC+08:00）。这是本次检查后的状态快照；本文件仅供内部使用，不作为公开页面或构建输入。随阶段切换、遇阻、验收和发布更新，保留完成依据。
+
+## 本机连接已完成（2026-11-11 17:08 北京时间）
+
+本机项目 `/Users/rivengao/Desktop/seine/seineshop` 已通过 Shopify CLI 关联 `ps83if-c4.myshopify.com` 的 SeineShop（storefront `1000183956`）。`hydrogen env list` 读回 Production（production / main / https://www.seineshop.com）和 Preview（preview）；`.shopify/project.json` 已确认被 Git 忽略。本次未拉取 `.env`、未接通管理 API、未推送或部署。生产实际提交未核验；既有发布任务仍保留 T13，历史 13/15 数量不作为本机重新验收结果。下一步按具体开发需求准备本机运行环境。
+
+以下为发布任务历史快照，本次未推进发布节点。
 
 ## 当前发布节点（2026-11-04 15:28）
 
