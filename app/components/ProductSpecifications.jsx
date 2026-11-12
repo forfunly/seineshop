@@ -81,7 +81,7 @@ export function getSpecificationRows(metafield) {
   return rows;
 }
 
-const packagingLabel = /weight|dimension|length|width|height|package size|packaging|packagequantity|carton/i;
+const packagingLabel = /weight|dimension|length|width|height|package size|packaging|packagequantity|carton|loading container/i;
 const labels = {PackageLength: 'Carton length', PackageWidth: 'Carton width', PackageHeight: 'Carton height', PackageQuantity: 'Quantity per carton'};
 
 /** @param {{metafield?: {value?: string}, extraRows?: Array<[string, string]>}} props */
@@ -94,9 +94,9 @@ export function ProductSpecifications({metafield, extraRows = []}) {
   if (!rows.length) return null;
   /** @type {Array<[string, Array<[string, string]>]>} */
   const groups = [
-    ['General', rows.filter(([label]) => !packagingLabel.test(label) && label !== 'Package contents')],
+    ['General', rows.filter(([label]) => !packagingLabel.test(label) && !['Package contents', 'Package included'].includes(label))],
     ['Packaging & dimensions', rows.filter(([label]) => packagingLabel.test(label))],
-    ['Package contents', rows.filter(([label]) => label === 'Package contents')],
+    ['Package contents', rows.filter(([label]) => ['Package contents', 'Package included'].includes(label))],
   ];
   return <section className="product-specifications" aria-labelledby="technical-specifications">
     <h2 id="technical-specifications">{t('Technical specifications')}</h2>

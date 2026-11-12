@@ -1,4 +1,4 @@
-import {Money} from '@shopify/hydrogen';
+import {Image, Money} from '@shopify/hydrogen';
 import {WholesaleTiers} from './ProductBusiness';
 import {MAX_PURCHASE_QUANTITY, validPurchaseQuantity} from '~/lib/wholesale';
 import {useLocale} from '~/lib/i18n';
@@ -10,12 +10,13 @@ import {useAside} from './Aside';
 /**
  * @param {{
  *   productOptions: MappedProductOptions[];
+ *   optionImages?: Record<string, any>;
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  *   quantity: string;
  *   setQuantity: (quantity: string) => void;
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, quantity, setQuantity}) {
+export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}}) {
   const {t, localize} = useLocale();
   const navigate = useNavigate();
   const {open} = useAside();
@@ -56,6 +57,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
                     <Link
                       className="product-options-item"
                       key={option.name + name}
+                      aria-label={t(name)}
                       prefetch="intent"
                       preventScrollReset
                       replace
@@ -67,7 +69,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
                         opacity: available ? 1 : 0.3,
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} variantImage={optionImages[`${option.name}:${name}`]} />
                     </Link>
                   );
                 } else {
@@ -81,6 +83,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
                       type="button"
                       className={`product-options-item${exists && !selected ? ' link' : ''}`}
                       key={option.name + name}
+                      aria-label={t(name)}
                       style={{
                         border: selected
                           ? '1px solid black'
@@ -98,7 +101,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} variantImage={optionImages[`${option.name}:${name}`]} />
                     </button>
                   );
                 }
@@ -146,10 +149,12 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
  * @param {{
  *   swatch?: Maybe<ProductOptionValueSwatch> | undefined;
  *   name: string;
+ *   variantImage?: any;
  * }}
  */
-function ProductOptionSwatch({swatch, name}) {
+function ProductOptionSwatch({swatch, name, variantImage}) {
   const {t} = useLocale();
+  if (variantImage) return <span className="pdp-option-photo"><Image data={variantImage} alt="" aria-hidden="true" sizes="64px" loading="lazy" /><span>{t(name)}</span></span>;
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
   if (!image && !color) return <span className="pdp-option-text">{['Black', 'White'].includes(name) && <span className={`pdp-color-dot ${name.toLowerCase()}`} aria-hidden="true" />}{t(name)}</span>;

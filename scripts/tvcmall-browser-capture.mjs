@@ -66,3 +66,17 @@ export async function captureGroup(tab, root, item, index) {
   if (skus.length !== Math.max(1, options.length)) throw new Error('Variant count mismatch');
   return {index, url: item.url, skus, expected: Math.max(1, options.length), capturedAt: new Date().toISOString()};
 }
+
+// Image src is populated after hydration; currentSrc can still be the placeholder.
+export async function captureDetailImages(tab, item) {
+  if (await tab.url() !== item.url) await tab.goto(item.url);
+  await tab.playwright.getByRole('cell', {name: 'Gross Weight', exact: true}).waitFor({state: 'attached', timeoutMs: 5000});
+  await tab.playwright.locator('.tabContent img[src$="/pl.svg"]').first().waitFor({state: 'detached', timeoutMs: 7000});
+  const result = await tab.playwright.evaluate(() => ({
+    url: location.href,
+    title: document.querySelector('h1')?.textContent,
+    images: [...document.querySelectorAll('.tabContent img')].map((image) => ({src: image.src, alt: image.alt})),
+  }));
+  if (result.images.some((image) => image.src.endsWith('/pl.svg'))) throw new Error('Unloaded detail images');
+  return {...result, groupIndex: item.index, capturedAt: new Date().toISOString()};
+}

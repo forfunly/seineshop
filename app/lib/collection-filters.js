@@ -25,9 +25,28 @@ export function parseCollectionFilters(search) {
   // Preserve existing category bookmarks.
   if (search.get('type')) filters.push({productType: search.get('type').slice(0,255)});
   const sort = ['featured','best-selling','newest','price-asc','price-desc'].includes(search.get('sort')) ? search.get('sort') : 'featured';
-  return {filters, selected: selected.map(x=>JSON.stringify(x)), min:price.min ?? '',max:price.max ?? '',sort, q:(search.get('q') || '').trim().slice(0,120),size:[24,40,80].includes(Number(search.get('size'))) ? Number(search.get('size')) : 40,view:search.get('view') === 'list' ? 'list' : 'grid'};
+  return {filters, selected: selected.map(x=>JSON.stringify(x)), min:price.min ?? '',max:price.max ?? '',sort, q:(search.get('q') || '').trim().slice(0,120),size:[24,40,60,80].includes(Number(search.get('size'))) ? Number(search.get('size')) : 40,view:search.get('view') === 'list' ? 'list' : 'grid'};
 }
-export function collectionSearchQuery(q) {
+export function collectionSearchQuery(q, handle = 'best-sellers', categories = []) {
   const terms = q.replace(/[\\:"(){}\[\]*<>]/g,' ').split(/\s+/).filter(Boolean).map(term=>`"${term}"`).join(' ');
-  return `tag:seineshop-best-sellers${terms ? ' AND ('+terms+')' : ''}`;
+  const tag = handle === 'iphone-duo' ? 'tag:"iPhone Duo"' : 'tag:seineshop-best-sellers';
+  const types = categories.map((value) => `product_type:${JSON.stringify(value)}`).join(' OR ');
+  return `${tag}${types ? ` AND (${types})` : ''}${terms ? ' AND ('+terms+')' : ''}`;
+}
+
+/** Paginate a category from the collection itself, independent of search indexing. */
+export function paginateCategoryProducts(products, categories, size, search) {
+  const matching = products.filter((product) => categories.includes(product.productType));
+  const cursor = /^category:(\d+)$/.exec(search.get('cursor') || '');
+  const boundary = cursor ? Number(cursor[1]) : 0;
+  const requested = search.get('direction') === 'previous' ? boundary - size : boundary;
+  const lastOffset = Math.max(0, Math.floor((matching.length - 1) / size) * size);
+  const offset = Math.min(Math.max(0, requested), lastOffset);
+  const nodes = matching.slice(offset, offset + size);
+  return {nodes, totalCount: matching.length, pageInfo: {
+    hasPreviousPage: offset > 0,
+    hasNextPage: offset + nodes.length < matching.length,
+    startCursor: `category:${offset}`,
+    endCursor: `category:${offset + nodes.length}`,
+  }};
 }

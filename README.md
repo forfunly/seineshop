@@ -98,3 +98,13 @@ This batch uses the user's explicit ×1 ordinary USD price instruction. Wholesal
 `/llms.txt` is an optional plain-text guide to public shopping, support and sitemap URLs. It is not a Google requirement, an inventory feed, or a guarantee of AI inclusion. Its loader uses the same production-origin gate as SEO resources and returns UTF-8 with noindex on previews. Do not publish repository AGENTS.md, source snapshots, procurement data or credentials in this resource.
 
 Collection JSON-LD describes the products rendered on the current page, with localized links and a self-canonical pagination URL. Product breadcrumbs match the visible navigation. Validate these with `node --test tests/seo.test.mjs tests/site-guide.test.mjs`, then build and inspect the actual HTML, sitemap and crawler responses before deployment.
+
+### 完整 SKU 参数与详情图库
+
+`ProductGallery` 保留全部 Shopify 图片、按 SKU 文件名切换橱窗图，并单独展示详情说明图。商品路由连续读取图片分页；规格优先读取 `PRODUCTVARIANT custom.technical_specifications`（JSON、PUBLIC_READ），回退到商品字段。`PRODUCT custom.source_scene_images`（JSON、Storefront NONE）只保存原始来源与图片核查记录，不进入前台。来源商家的经销授权书仅保存在内部记录中。
+
+- `captureDetailImages(tab, item)` 位于 `scripts/tvcmall-browser-capture.mjs`，由已授权的浏览器工具调用，等待真实图片 `src` 替换占位图后读取；不使用仍可能指向占位图的 `currentSrc`。
+- `python3 scripts/prepare-variant-specifications.py --inventory <inventory.jsonl> --captures <products-directory> --output <metafields.jsonl>`：从逐 SKU 采集证据准备公开参数，不发起写入。
+- `python3 scripts/prepare-detail-images.py --catalog <admin-catalog.jsonl> --groups <groups.json> --scenes <scene-images.jsonl> --output <existing-output-directory>`：准备新增媒体及私有来源元字段的 JSONL，校验来源、去重及媒体数量上限，不发起写入。输出目录沿用被忽略的 `.cache/catalog/`。
+
+集合分类浏览从真实集合连续读取商品后筛选并分页，避免未配置商品类型筛选或搜索索引延迟造成漏项；关键词搜索使用限定集合标签的 Shopify 搜索。分页与图片分组选用 `node --test tests/product-gallery.test.mjs` 验证。

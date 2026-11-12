@@ -27,7 +27,7 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
   const currency = localization.country.currency.isoCode;
   const connection = collection.products || {nodes: []};
   const facets = (connection.filters || []).filter(
-    (f) => f.type !== 'PRICE_RANGE' && f.values.length,
+    (f) => f.type !== 'PRICE_RANGE' && f.values.length && !(collection.handle === 'iphone-duo' && ['filter.p.m.custom.category_group', 'filter.p.m.custom.lead_time', 'filter.p.m.custom.color', 'filter.p.m.custom.customizable'].includes(f.id)),
   );
   const labels = {
     'filter.p.product_type': 'Product categories',
@@ -39,6 +39,11 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
     'filter.p.m.custom.compatible_models': 'Compatible models',
     'filter.p.m.custom.customizable': 'Customization',
   };
+  if (collection.handle === 'iphone-duo' && !facets.some((facet) => facet.id === 'filter.p.product_type')) {
+    facets.unshift({id: 'filter.p.product_type', label: 'Product categories', type: 'LIST', values: ['iPhone Duo Cases', 'iPhone Duo Screen Protectors', 'iPhone Duo Camera Lens Protectors', 'iPhone Duo Back Protectors', 'Phone Pouches'].map((label) => ({id: label, label, input: JSON.stringify({productType: label})}))});
+  }
+  const availability = connection.filters?.find((facet) => facet.id === 'filter.v.availability');
+  const resultCount = collection.searchTotal ?? (availability ? availability.values.reduce((sum, value) => sum + value.count, 0) : undefined);
   const clearUrl = searchMode
     ? `${localize('/search')}?q=${encodeURIComponent(browse.q)}`
     : localize(`/collections/${collection.handle}`);
@@ -67,21 +72,16 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
       })),
   );
   return (
-    <main className="browse-page">
+    <div className={`browse-page ${collection.handle === 'iphone-duo' ? 'browse-page--catalog' : ''}`}>
       <nav className="browse-breadcrumb" aria-label={t('Breadcrumb')}>
         <Link to={localize('/')}>{t('Home')}</Link>
         <span>/</span>
         <span>{t(collection.title)}</span>
       </nav>
-      <header className="browse-heading">
-        <div>
-          <p className="eyebrow">
-            {searchMode ? t('SEARCH SEINESHOP') : 'SEINESHOP COLLECTION'}
-          </p>
-          <h1>{t(collection.title)}</h1>
-          <p>{t(collection.description)}</p>
-        </div>
-      </header>
+      {facets.find((facet) => facet.id === 'filter.p.product_type') && <nav className="browse-category-links" aria-label={t('Product categories')}>
+        <Link to={clearUrl}>{t('All products')}</Link>
+        {facets.find((facet) => facet.id === 'filter.p.product_type').values.map((value) => <Link key={value.id} to={href({filter: value.input})}>{t(value.label)} {value.count !== undefined && <small>({value.count})</small>}</Link>)}
+      </nav>}
       <Form
         method="get"
         key={location.search}
@@ -166,8 +166,18 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
           </div>
         </details>
         <section className="browse-results" aria-label={t('Products')}>
+      <header className="browse-heading">
+        <div>
+          <p className="eyebrow">
+            {searchMode ? t('SEARCH SEINESHOP') : 'SEINE SHOP COLLECTION'}
+          </p>
+          <h1>{t(collection.title)} {resultCount !== undefined && <small>({resultCount} {t('products')})</small>}</h1>
+          <p>{t(collection.description)}</p>
+        </div>
+      </header>
+
           <div className="browse-toolbar">
-            {(searchMode || collection.handle === 'best-sellers') && (
+            {(searchMode || ['best-sellers', 'iphone-duo'].includes(collection.handle)) && (
               <div className="browse-search">
                 <label className="sr-only" htmlFor="browse-query">
                   {t(searchMode ? 'Search products' : 'Search this collection')}
@@ -190,7 +200,7 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
                 defaultValue={browse.size}
                 onChange={(e) => submit(e.currentTarget.form)}
               >
-                {[24, 40, 80].map((n) => (
+                {[24, 40, 60, 80].map((n) => (
                   <option key={n}>{n}</option>
                 ))}
               </select>
@@ -213,6 +223,9 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
             </div>
             <input type="hidden" name="view" value={browse.view} />
           </div>
+          <nav className="browse-sort-tabs" aria-label={t('Sort products')}>
+            {[["featured", (browse.q || collection.usesSearch) ? "Relevance" : "Featured"], ["price-asc", "Price: low to high"], ["price-desc", "Price: high to low"], ...(!(browse.q || collection.usesSearch) ? [["newest", "Newest"], ["best-selling", "Best selling"]] : [])].map(([value, label]) => <Link key={value} to={href({sort: value})} aria-current={browse.sort === value ? 'true' : undefined}>{t(label)}</Link>)}
+          </nav>
           <div className="browse-sort">
             <label>
               {t('Sort by')}
@@ -222,9 +235,9 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
                 onChange={(e) => submit(e.currentTarget.form)}
               >
                 <option value="featured">
-                  {browse.q ? t('Relevance') : t('Featured')}
+                  {(browse.q || collection.usesSearch) ? t('Relevance') : t('Featured')}
                 </option>
-                {!browse.q && (
+                {!(browse.q || collection.usesSearch) && (
                   <>
                     <option value="best-selling">{t('Best selling')}</option>
                     <option value="newest">{t('Newest')}</option>
@@ -299,6 +312,6 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
           </nav>
         </section>
       </Form>
-    </main>
+    </div>
   );
 }

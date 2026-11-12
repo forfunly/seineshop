@@ -1,3 +1,5 @@
+import {Image} from '@shopify/hydrogen';
+import {productGallery} from '~/lib/product-gallery';
 import {prepareProductDetails} from '~/lib/product-details';
 import {BusinessInquiry, SalesContact} from '~/components/ProductBusiness';
 import {useState} from 'react';
@@ -75,6 +77,15 @@ async function loadCriticalData({context, params, request}) {
     });
   }
 
+  while (product.images.pageInfo.hasNextPage) {
+    const {product: next} = await storefront.query(PRODUCT_IMAGES_QUERY, {
+      variables: {handle, after: product.images.pageInfo.endCursor},
+    });
+    if (!next || next.images.pageInfo.endCursor === product.images.pageInfo.endCursor) throw new Error('Unable to load complete product gallery');
+    product.images.nodes.push(...next.images.nodes);
+    product.images.pageInfo = next.images.pageInfo;
+  }
+
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {
     handle,
@@ -120,6 +131,8 @@ export default function Product() {
   });
   const {title, descriptionHtml} = product;
   const details = prepareProductDetails(descriptionHtml);
+  const gallery = productGallery(product.images.nodes, selectedVariant?.image, selectedVariant?.sku);
+  const detailImages = gallery.details.length ? gallery.details : gallery.selected;
   return (
     <div className="pdp-page">
       <nav className="pdp-breadcrumbs" aria-label={t('Breadcrumb')}>
@@ -127,7 +140,7 @@ export default function Product() {
         <Link to={localize('/collections/all')}>{t('Shop')}</Link><span aria-hidden="true">/</span><span>{t(title)}</span>
       </nav>
       <div className="pdp-layout">
-        <div className="pdp-visual-column"><ProductGallery key={selectedVariant?.id} images={product.images.nodes} selectedImage={selectedVariant?.image} title={t(title)} /><SalesContact/></div>
+        <div className="pdp-visual-column"><ProductGallery key={selectedVariant?.id} images={product.images.nodes} selectedImage={selectedVariant?.image} sku={selectedVariant?.sku} title={t(title)} /><SalesContact/></div>
         <div className="pdp-summary">
           <p className="pdp-eyebrow">SEINESHOP / {t('Everyday essentials')}</p>
           <h1>{t(title)}</h1>
@@ -145,7 +158,7 @@ export default function Product() {
             <p className="pdp-compatibility">{t('For Qi-compatible phones, wireless-charging earbuds and compatible Samsung Galaxy Watches. Check your device before ordering. Power adapter not included.')}</p>
           </>}
           <div id="product-purchase">
-            <ProductForm key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
+            <ProductForm optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
           </div>
           <div className="pdp-payment-methods" role="group" aria-label={t('Payment options')}>
             {[['shop-pay', 'Shop Pay'], ['visa', 'Visa'], ['mastercard', 'Mastercard'], ['paypal', 'PayPal']].map(([key, name]) => (
@@ -171,18 +184,24 @@ export default function Product() {
       </div>
       <nav className="pdp-section-nav" aria-label={t('Explore this product')}>
         {hasBuyingGuide && <><a href="#product-features">{t('Features')}</a><a href="#product-compatibility">{t('Compatibility')}</a></>}
+        <a href="#product-photos">{t('More images')}</a>
         <a href="#business-inquiry">{t('Wholesale & customization')}</a>
         <a href="#product-specs">{t('Details & specifications')}</a>
         {hasBuyingGuide && <a href="#product-faq">{t('Questions & answers')}</a>}
       </nav>
-      <BusinessInquiry key={product.id} product={product} variant={selectedVariant} quantity={quantity}/>
       {hasBuyingGuide && <ProductBuyingGuide />}
       <section className="pdp-details" id="product-specs" aria-label={t('Product details')}>
         <div><p className="pdp-eyebrow">{t('A closer look')}</p><h2>{t('Description')}</h2>
           <div className="pdp-description" dangerouslySetInnerHTML={{__html: details.description}} />
         </div>
-        <ProductSpecifications metafield={product.technicalSpecifications} extraRows={details.rows} />
+        <ProductSpecifications metafield={selectedVariant?.technicalSpecifications || product.technicalSpecifications} extraRows={details.rows} />
       </section>
+      <section className="pdp-more-images" id="product-photos" aria-labelledby="product-photos-heading">
+        <h2 id="product-photos-heading">{t('More images')}</h2>
+        <p>{selectedVariant?.title === 'Default Title' ? t(title) : selectedVariant?.title}</p>
+        <div>{detailImages.map((image) => <Image key={image.url} data={image} alt={image.altText || title} loading="lazy" sizes="(min-width: 900px) 700px, 100vw" />)}</div>
+      </section>
+      <BusinessInquiry key={product.id} product={product} variant={selectedVariant} quantity={quantity}/>
       <ProductStickyBar title={title} variant={selectedVariant} quantity={quantity} />
       <Analytics.ProductView
         data={{
@@ -230,6 +249,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       name
       value
     }
+    technicalSpecifications: metafield(namespace: "custom", key: "technical_specifications") { value }
     sku
     title
     unitPrice {
@@ -245,8 +265,9 @@ const PRODUCT_FRAGMENT = `#graphql
     vendor
     handle
     descriptionHtml
-    images(first: 20) {
+    images(first: 250) {
       nodes { id url altText width height }
+      pageInfo { hasNextPage endCursor }
     }
     technicalSpecifications: metafield(namespace: "custom", key: "technical_specifications") {
       value
@@ -300,3 +321,14 @@ const PRODUCT_QUERY = `#graphql
 
 /** @typedef {import('./+types/products.$handle').Route} Route */
 /** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */
+
+const PRODUCT_IMAGES_QUERY = `#graphql
+  query ProductGalleryImages($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+    product(handle: $handle) {
+      images(first: 250, after: $after) {
+        nodes { id url altText width height }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  }
+`;
