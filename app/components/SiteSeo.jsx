@@ -50,12 +50,12 @@ export function SiteSeo() {
     '/cart': 'Your Shopping Bag',
     '/policies': 'Store Policies',
     '/support': 'Support & Product Help',
-    '/order-tracking': 'Order Tracking',
+    '/page/order-tracking': 'Order Tracking',
     '/blogs': 'Journal',
     '/discover/b20a': 'B-20A 3-in-1 Wireless Charging Station',
   };
   const descriptions = {
-    '/order-tracking': 'Track your Seineshop delivery with your shipment tracking number. View carrier updates with 17TRACK and get help with your package.',
+    '/page/order-tracking': 'Track your Seineshop delivery with your shipment tracking number. View carrier updates with 17TRACK and get help with your package.',
     '/': 'Shop phone cases, screen protectors, chargers and mobile accessories at SeineShop. Order online or request wholesale pricing and OEM/ODM customization.',
     '/support':
       'Get help with SeineShop product compatibility, orders, delivery and store policies. Contact our team with your product or order questions.',
