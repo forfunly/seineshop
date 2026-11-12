@@ -1,5 +1,12 @@
 # 项目连接状态与授权记录
 
+## 库存已更新，SEO 代码待发布（2026-11-12）
+
+用户要求 iPhone Duo 全部 SKU 库存设为 100。已对 908 商品 / 3,643 SKU 启用库存跟踪，并在唯一线上履约地点设定可售 100，总计 364,300；全量读回通过。此记录取代下方上架时“不跟踪库存”的历史状态，不代表供应商现货确认。集合 SEO 标题与描述已更新到 Shopify。
+
+SEO 候选已补 CollectionPage/ItemList、商品面包屑、UTF-8 HTML 和可选 llms.txt；42 项测试、lint、构建、筛选与来源暴露审计通过。生产 sitemap 覆盖本批全部 909 URL，Googlebot/OAI-SearchBot 可读取。新增代码尚未推送或部署，线上仍使用原结构化模板、llms.txt 尚未上线。详见 [本轮验收与发布范围](qa/2026-11-12-inventory-seo.md)。
+
+
 ## iPhone Duo 商品上架完成（2026-11-12 11:49 北京时间）
 
 已通过当前浏览器完整采集原始 906 组及次日新增 2 组，共 908 组 / 3,643 个 SKU。Shopify 新增 895 组 / 3,611 SKU，更新既有 13 组（现 32 SKU，补入 19 个颜色变体）；全部 ACTIVE，并发布到 Online Store、Headless、Hydrogen。新建自动集合 `iphone-duo`，API 读回 908 组，前台集合和 21 款式商品切换已验证。

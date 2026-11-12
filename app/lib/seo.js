@@ -87,3 +87,27 @@ export function commerceMetadata(content, kind) {
       : `Shop ${searchSnippet(name, 65)} at SeineShop. Compare prices, materials and compatibility. Order online or contact us for wholesale and customization inquiries.`,
   };
 }
+
+/** Describe only the products actually rendered on this collection page. */
+export function collectionSchema(collection, canonical, origin, localize = (path) => path) {
+  const items = (collection.products?.nodes || []).map((product, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: new URL(localize(`/products/${product.handle}`), origin).href,
+    name: product.title,
+  }));
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${canonical}#collection`,
+    url: canonical,
+    name: collection.title,
+    description: plainText(collection.description || ''),
+    mainEntity: {
+      '@type': 'ItemList',
+      '@id': `${canonical}#products`,
+      numberOfItems: items.length,
+      itemListElement: items,
+    },
+  };
+}

@@ -23,7 +23,7 @@ export function localizePath(path, locale) {
     path.startsWith('//')
   )
     return path;
-  if (/^\/(images|assets|sitemaps)(\/|$)|^\/sitemap|^\/robots\.txt/.test(path))
+  if (/^\/(images|assets|sitemaps)(\/|$)|^\/sitemap|^\/(robots|llms)\.txt/.test(path))
     return path;
   const clean = stripLocale(path);
   return `${locale.prefix}${clean === '/' ? '/' : clean}`;

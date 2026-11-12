@@ -92,3 +92,9 @@ node --test tests/tvcmall-import.test.mjs
 ```
 
 This batch uses the user's explicit ×1 ordinary USD price instruction. Wholesale intervals, MOQ, source URLs and complete raw parameter records remain private. Large snapshots are split below 120,000 UTF-8 bytes into `custom.source_snapshot_part_01` onward, with a manifest in `custom.source_snapshot`; define every part as Product/json with Storefront NONE before writing. Never truncate source records to fit a field. Reconcile successful API results before preparing another batch, retain existing handles, and verify images/prices before publication. Generated data and credentials remain ignored under `.cache/` and existing local CLI configuration.
+
+## Public crawler discovery
+
+`/llms.txt` is an optional plain-text guide to public shopping, support and sitemap URLs. It is not a Google requirement, an inventory feed, or a guarantee of AI inclusion. Its loader uses the same production-origin gate as SEO resources and returns UTF-8 with noindex on previews. Do not publish repository AGENTS.md, source snapshots, procurement data or credentials in this resource.
+
+Collection JSON-LD describes the products rendered on the current page, with localized links and a self-canonical pagination URL. Product breadcrumbs match the visible navigation. Validate these with `node --test tests/seo.test.mjs tests/site-guide.test.mjs`, then build and inspect the actual HTML, sitemap and crawler responses before deployment.

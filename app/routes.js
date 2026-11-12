@@ -6,7 +6,7 @@ const localizedIndexes = [];
 // Preserve route IDs for existing loader references and account nesting.
 // Resource endpoints and the registered OAuth callback remain at stable URLs.
 for (const route of routes) {
-  if (route.path && /^(sitemap|:sitemap\.xml$|robots|account\/authorize)/.test(route.path))
+  if (route.path && /^(sitemap|:sitemap\.xml$|robots|llms\.txt$|account\/authorize)/.test(route.path))
     continue;
   if (route.index && !route.path) {
     localizedIndexes.push({...route, id: `${route.id}-localized`, index: undefined, path: ':locale'});

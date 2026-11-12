@@ -14,6 +14,7 @@ import {
   pageTitle,
   searchSnippet,
   commerceMetadata,
+  collectionSchema,
   isJournalPath,
 } from '~/lib/seo';
 
@@ -147,20 +148,20 @@ export function SiteSeo() {
         },
       ],
     });
-    structured.push({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      itemListElement: (data.collection.products?.nodes || []).map((p, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        url: `${settings.origin}/products/${p.handle}`,
-        name: p.title,
-      })),
-    });
+    structured.push(collectionSchema(data.collection, canonical, settings.origin, localize));
   }
   if (!error && data.product && !data.preview) {
     const p = data.product,
       v = p.selectedOrFirstAvailableVariant;
+    structured.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {'@type': 'ListItem', position: 1, name: 'Home', item: settings.origin},
+        {'@type': 'ListItem', position: 2, name: 'Shop', item: `${settings.origin}/collections/all`},
+        {'@type': 'ListItem', position: 3, name: p.title, item: canonical},
+      ],
+    });
     structured.push({
       '@context': 'https://schema.org',
       '@type': 'Product',
