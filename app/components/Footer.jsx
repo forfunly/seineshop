@@ -33,6 +33,7 @@ export function Footer() {
         <nav aria-label={t('Footer support')}>
           <h2>{t('Customer support')}</h2>
           <Link to={localize('/support')}>{t('Support center')}</Link>
+          <Link to={localize('/order-tracking')}>{t('Order tracking')}</Link>
           <Link to={localize('/support#compatibility')}>
             {t('Product compatibility')}
           </Link>

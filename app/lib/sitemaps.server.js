@@ -17,7 +17,7 @@ const REMOTE_TYPES = {
   collections: 'COLLECTION',
   pages: 'PAGE',
 };
-const STATIC_PAGES = ['/', '/collections', '/support', '/discover/b20a'];
+const STATIC_PAGES = ['/', '/collections', '/support', '/order-tracking', '/discover/b20a'];
 export const escapeXml = (value) =>
   String(value)
     .replace(/&/g, '&amp;')

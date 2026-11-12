@@ -110,3 +110,9 @@ Collection JSON-LD describes the products rendered on the current page, with loc
 - `python3 scripts/prepare-detail-images.py --catalog <admin-catalog.jsonl> --groups <groups.json> --scenes <scene-images.jsonl> --output <existing-output-directory>`：准备新增媒体及私有来源元字段的 JSONL，校验来源、去重及媒体数量上限，不发起写入。输出目录沿用被忽略的 `.cache/catalog/`。
 
 集合分类浏览从真实集合连续读取商品后筛选并分页，避免未配置商品类型筛选或搜索索引延迟造成漏项；关键词搜索使用限定集合标签的 Shopify 搜索。分页与图片分组选用 `node --test tests/product-gallery.test.mjs` 验证。
+
+### Shipment tracking
+
+`/order-tracking` (also `/jp/order-tracking` and `/de/order-tracking`) embeds the official 17TRACK single-number widget after customer submission. `app/lib/tracking.js` validates a single identifier, shares a lazy script load with a 15-second timeout/retry, and generates the external fallback URL. No API key is needed. Tracking numbers remain in component memory and the provider iframe, not storefront URL parameters or custom analytics events. The provider owns tracking data, availability, branding and any widget advertising; this is not a custom tracking API integration. The CSP permits only the official script and iframe origins in addition to existing Shopify origins, including when arriving by client navigation.
+
+Official integration: https://www.17track.net/en/widget. Hydrogen CSP guidance: https://shopify.dev/docs/storefronts/headless/legacy/hydrogen/content-security-policy.

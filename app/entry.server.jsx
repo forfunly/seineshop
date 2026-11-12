@@ -24,7 +24,10 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://shopify.com',
       'https://www.googletagmanager.com',
+      'https://www.17track.net',
     ],
+    // Required on all documents so client-side navigation can open the widget.
+    frameSrc: ["'self'", 'https://cdn.shopify.com', 'https://shopify.com', 'https://extcall.17track.net'],
     connectSrc: [
       'https://www.googletagmanager.com',
       'https://*.google-analytics.com',

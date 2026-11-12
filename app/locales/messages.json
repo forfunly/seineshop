@@ -2946,5 +2946,113 @@
   "Best Sellers": {
     "ja": "人気商品",
     "de": "Bestseller"
+  },
+  "Order tracking": {
+    "ja": "配送状況",
+    "de": "Sendungsverfolgung"
+  },
+  "Order Tracking": {
+    "ja": "配送状況",
+    "de": "Sendungsverfolgung"
+  },
+  "Follow your delivery": {
+    "ja": "お荷物の配送状況を確認",
+    "de": "Verfolge deine Lieferung"
+  },
+  "Enter the tracking number from your shipping confirmation to see the latest carrier updates.": {
+    "ja": "発送確認メールに記載の追跡番号を入力して、最新の配送状況をご確認ください。",
+    "de": "Gib die Sendungsnummer aus deiner Versandbestätigung ein, um aktuelle Versandmeldungen zu sehen."
+  },
+  "Where is my package?": {
+    "ja": "荷物は今どこに？",
+    "de": "Wo ist mein Paket?"
+  },
+  "Tracking number": {
+    "ja": "追跡番号",
+    "de": "Sendungsnummer"
+  },
+  "Enter your tracking number": {
+    "ja": "追跡番号を入力",
+    "de": "Sendungsnummer eingeben"
+  },
+  "Searching…": {
+    "ja": "検索中…",
+    "de": "Wird gesucht…"
+  },
+  "Track package": {
+    "ja": "荷物を追跡",
+    "de": "Paket verfolgen"
+  },
+  "Enter one tracking number using letters, numbers or hyphens (up to 50 characters).": {
+    "ja": "半角英数字またはハイフンで追跡番号を1つ入力してください（50文字以内）。",
+    "de": "Gib eine Sendungsnummer mit Buchstaben, Ziffern oder Bindestrichen ein (maximal 50 Zeichen)."
+  },
+  "Use your shipment tracking number, not your order number.": {
+    "ja": "注文番号ではなく、配送の追跡番号をご使用ください。",
+    "de": "Verwende deine Sendungsnummer, nicht deine Bestellnummer."
+  },
+  "Tracking is provided by 17TRACK. Your tracking number is sent to 17TRACK when you select Track package.": {
+    "ja": "追跡サービスは17TRACKが提供します。「荷物を追跡」を選ぶと追跡番号が17TRACKに送信されます。",
+    "de": "Die Sendungsverfolgung erfolgt über 17TRACK. Wenn du „Paket verfolgen“ wählst, wird deine Sendungsnummer an 17TRACK übermittelt."
+  },
+  "Open 17TRACK to track your package": {
+    "ja": "17TRACKで荷物を追跡",
+    "de": "Paket auf 17TRACK verfolgen"
+  },
+  "Shipment tracking results": {
+    "ja": "配送追跡結果",
+    "de": "Ergebnisse der Sendungsverfolgung"
+  },
+  "Connecting to the tracking service…": {
+    "ja": "追跡サービスに接続中…",
+    "de": "Verbindung zum Tracking-Dienst wird hergestellt…"
+  },
+  "The tracking service is taking longer than expected. Try again or open 17TRACK below.": {
+    "ja": "追跡サービスの応答に時間がかかっています。再試行するか、下の17TRACKリンクをご利用ください。",
+    "de": "Der Tracking-Dienst benötigt länger als erwartet. Versuche es erneut oder öffne 17TRACK unten."
+  },
+  "View tracking on 17TRACK": {
+    "ja": "17TRACKで追跡状況を見る",
+    "de": "Sendung auf 17TRACK ansehen"
+  },
+  "A little help along the way": {
+    "ja": "配送についてのよくある質問",
+    "de": "Hilfe rund um deine Lieferung"
+  },
+  "Where do I find my tracking number?": {
+    "ja": "追跡番号はどこにありますか？",
+    "de": "Wo finde ich meine Sendungsnummer?"
+  },
+  "Check your shipping confirmation email. If your order ships in separate parcels, track each parcel using its own tracking number.": {
+    "ja": "発送確認メールをご確認ください。複数の荷物で発送される場合は、それぞれの追跡番号でご確認ください。",
+    "de": "Sieh in deiner Versandbestätigung nach. Wird deine Bestellung in mehreren Paketen versandt, verfolge jedes Paket mit seiner eigenen Sendungsnummer."
+  },
+  "Why are there no updates yet?": {
+    "ja": "追跡情報が表示されないのはなぜですか？",
+    "de": "Warum gibt es noch keine Updates?"
+  },
+  "A new tracking number may not show events until the carrier scans the parcel. Check the number and try again later. Updates depend on the carrier.": {
+    "ja": "配送会社が荷物をスキャンするまで、新しい追跡番号の情報が表示されない場合があります。番号を確認し、時間をおいて再試行してください。更新は配送会社によって異なります。",
+    "de": "Neue Sendungsnummern zeigen möglicherweise erst nach dem ersten Scan durch den Versanddienstleister Ereignisse an. Prüfe die Nummer und versuche es später erneut. Aktualisierungen hängen vom Versanddienstleister ab."
+  },
+  "Need help with your delivery?": {
+    "ja": "配送についてお困りですか？",
+    "de": "Brauchst du Hilfe bei deiner Lieferung?"
+  },
+  "Contact Seineshop with your order number and tracking number so our team can help.": {
+    "ja": "注文番号と追跡番号を添えてSeineshopまでお問い合わせください。",
+    "de": "Kontaktiere Seineshop mit deiner Bestellnummer und Sendungsnummer, damit unser Team dir helfen kann."
+  },
+  "Contact support": {
+    "ja": "サポートに連絡",
+    "de": "Support kontaktieren"
+  },
+  "Track your Seineshop delivery with your shipment tracking number. View carrier updates with 17TRACK and get help with your package.": {
+    "ja": "追跡番号でSeineshopのお荷物の配送状況を確認。17TRACKの配送情報とサポートをご利用いただけます。",
+    "de": "Verfolge deine Seineshop-Lieferung mit deiner Sendungsnummer. Sieh Versandmeldungen über 17TRACK und erhalte Hilfe zu deinem Paket."
+  },
+  "iPhone Duo": {
+    "ja": "iPhone Duo",
+    "de": "iPhone Duo"
   }
 }

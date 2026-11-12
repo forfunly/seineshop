@@ -22,6 +22,7 @@ export default function Support() {
         </p>
       </section>
       <section id="orders">
+        <Link to={localize('/order-tracking')}>{t('Track package')} →</Link>
         <h2>{t('Orders & delivery')}</h2>
         <p>
           {t(
