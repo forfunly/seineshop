@@ -15,3 +15,18 @@
 - 按页面事实和 Google 支持的类型实现结构化数据，例如 Product、商品变体、Offer、BreadcrumbList 和 Organization；价格、币种、库存、图片、URL 与用户可见内容保持一致。不得虚构评价、评分、折扣、配送或售后信息；按适用的 Google 富媒体搜索要求验证。
 - 全站导航、分类和上下文内链帮助用户及爬虫发现重要页面，避免孤立页。商品描述、分类说明和其他内容真实、有用且与本站业务一致，不通过关键词堆砌、批量低价值页或隐藏内容获取排名。图片提供合适的 alt、尺寸及响应式资源，装饰图使用空 alt；重点检查移动端可用性、布局稳定性及 Core Web Vitals，避免关键内容被交互或资源加载阻断。
 - SEO 验收同时检查模板代表页和全站 URL 一致性：抓取与索引规则、初始 HTML、metadata、canonical/hreflang、内链、结构化数据、sitemap、状态码、重定向、实际 Content-Type 和多语言编码显示。上线后以真实生产域名复查，按可用权限结合 Search Console 和官方验证工具；本地构建通过不能替代线上验收。记录已验证项、缺口及证据，不把写入规范或 sitemap 提交描述为已收录、已获排名或已完成全站 SEO。
+
+
+## URL 变更与 sitemap 强制维护流程
+
+依据用户 2026-11-12 要求，每次新增页面、修改地址或更新页面内容，sitemap 同步是该任务的必做项，不能留到后续单独处理。此规则适用于商品、集合、文章、自定义页面及其真实多语言版本。它规定开发与验收流程，不代表已经新增自动化程序，也不改变生产发布和每次 Git push 的授权边界。
+
+1. **先列明变更 URL**：记录新增地址、旧地址与新地址映射、内容更新地址、语言版本及索引策略。只有公开、可索引、返回 200 的规范地址进入 sitemap；购物车、账户、搜索、私有查询结果、noindex、404/410 和重定向地址不加入。
+2. **同任务同步生成源**：沿用现有动态 sitemap 架构。`/sitemap.xml` 是索引入口，页面 URL 写入其指向的对应类型和语言子 sitemap，不把 URL 直接混入 sitemap index，不另造静态副本。自定义路由检查 `app/lib/sitemaps.server.js` 的 `STATIC_PAGES`；Shopify 动态资源核对实际发布状态、资源映射、分页和生成结果，不能仅以后台保存成功作为 sitemap 已更新的依据。
+3. **区分新增、改址与内容更新**：新增规范 URL 加入对应子 sitemap；改址时移除旧 URL、加入新 URL，并设置到最终地址的 301 或 308 永久重定向，避免跳转链。内容更新但 URL 未变时保留唯一条目，仅在有可信时间依据且发生实质更新时更新 `lastmod`。不要重复添加 URL，也不要把每次构建、访问或部署时间写成页面更新时间；无可信日期则省略该字段。
+4. **同步 SEO 与内链**：更新 canonical、真实语言版本的 hreflang、导航/页脚/正文链接和相关结构化数据 URL；确认 robots.txt 声明正式 sitemap 入口。保持正式 HTTPS 域名、UTF-8 XML、正确转义及去重；超过单文件 50,000 URL 或未压缩 50 MB 时正确分片并更新索引。
+5. **发布前验收**：运行 `node --test tests/sitemaps.test.mjs` 和受影响检查。对本批每个 URL 验证“应加入的已加入、应移除的已移除”，并检查状态码、重定向目标、canonical、语言前缀、索引许可及 XML 内容。新增资源类型、分页或过滤逻辑时补充有针对性的回归测试。涉及前台/发布的任务仍须执行工程规范规定的完整验证。
+6. **发布后复验**：直接读取正式 `/sitemap.xml` 及受影响子 sitemap，确认缓存已刷新并核对实际 URL 集合；检查新地址 200、自指 canonical、旧地址永久跳转和 UTF-8 响应。若尚未获准上线，记录为“本地通过、线上待验”，不能声称已完成正式 sitemap 更新。
+7. **记录与收录边界**：在该任务验收记录中列出 URL 映射、sitemap 分片、验证结果和日期。Search Console 提交状态与页面收录状态分别记录；不要求每次内容修改都重新提交相同 sitemap，不用重复提交代替生成与验证，不把 sitemap 更新描述为保证抓取或收录。
+
+官方依据（核对日期：2026-11-12）：[Google：构建和提交 sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)、[Google：使用 sitemap 索引管理分片](https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps)。后续实施涉及标准变化时重新核对官方文档。
