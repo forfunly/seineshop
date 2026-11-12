@@ -1,6 +1,10 @@
 # 项目连接状态与授权记录
 
-## Order tracking 已部署生产（2026-11-12）
+## Order tracking 正式路径已调整（2026-11-12）
+
+用户指定正式地址改为 https://www.seineshop.com/page/order-tracking 。已部署提交 `865d945`，部署标识 `01m775wvg0wbnsybxsa2as7agk-d7e83d6aec4307f1a21e`。旧 `/order-tracking` 返回 301 至新地址；日语、德语保留对应语言前缀并同样迁移。页脚、客服页、SEO 与 sitemap 已同步；正式三语言新页 200、UTF-8、自指 canonical、sitemap 仅包含新路径均验证通过。浏览器验证旧地址跳转及新路径内官方示例查询（Not Found）。48 项测试、lint、codegen、build、集合筛选及来源暴露检查通过。未推送 GitHub。
+
+## 历史：Order tracking 初始路径已部署生产（2026-11-12）
 
 用户明确要求“部署到线上”，已将 `17a5b3d` 发布到 Production，部署标识 `01m775bhyss7hz1ftchcb4q7m3-d7e83d6aec4307f1a21e`。正式地址 https://www.seineshop.com/order-tracking 。部署前重新通过 48 项测试、lint（0 错误、2 既有警告）、codegen、build、集合筛选及构建来源暴露检查。
 

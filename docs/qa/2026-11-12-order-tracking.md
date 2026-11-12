@@ -36,3 +36,8 @@ No valid live shipment number was supplied, so a real shipment event timeline ha
 - Official sample returns China Post / Not Found inside the production iframe. No real shipment status claimed.
 - Browser checks: 390px document width equals scroll width; Japanese text renders correctly; footer navigation opens tracking page. Existing cart contents and checkout link render; no checkout submitted.
 - Screenshot: `.cache/tooling/order-tracking-production.png`; HTTP checks: `.cache/tooling/order-tracking-live-checks.json` (both ignored local evidence).
+
+
+## Path migration (2026-11-12)
+
+User requested `/page/order-tracking`. Published `865d945` as deployment `01m775wvg0wbnsybxsa2as7agk-d7e83d6aec4307f1a21e`. Old routes redirect with 301 to matching-language new paths. Footer/support links, metadata and sitemap updated. All 48 tests and release checks passed. Live en/ja/de redirects, 200 pages, UTF-8, self canonicals and sitemap inclusion/exclusion verified. Browser followed the old URL to the new route and the provider returned Not Found for its public sample. Screenshot: `.cache/tooling/order-tracking-new-path.png`. No Git push.

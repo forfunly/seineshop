@@ -46,3 +46,5 @@ This release replaces the starter storefront with the current SeineShop headless
 - Added localized `/order-tracking` with official 17TRACK results, validation, delayed loading, retry and external fallback.
 - Added support/footer entry points, page metadata and sitemap discovery.
 - Verified 48 tests, lint, code generation, production build and source exposure audit. Local browser checks cover desktop/mobile, Japanese and provider Not Found response using its public sample number. Published to Production as `17a5b3d` after explicit approval; live tracking, localized metadata, sitemap and cart display verified. No Git push.
+
+- Tracking URL updated to `/page/order-tracking` with localized 301 redirects from prior routes; links, canonical metadata and sitemap synchronized and verified in production (2026-11-12).
