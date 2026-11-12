@@ -1,7 +1,7 @@
 // Internal release check. Never bundle this script with the storefront.
 import {readdir, readFile} from 'node:fs/promises';
 import path from 'node:path';
-const forbidden = /tvcmall/i;
+const forbidden = /tvc[\s_.-]*mall/i;
 const matches = [];
 async function scan(target) {
  const stat = await import('node:fs/promises').then(({stat})=>stat(target)).catch(()=>null);
@@ -10,7 +10,7 @@ async function scan(target) {
   for (const file of await readdir(target)) await scan(path.join(target,file));
  } else {
   const data=await readFile(target);
-  if (forbidden.test(data.toString('utf8'))) matches.push(target);
+  if (forbidden.test(data.toString('utf8').normalize('NFKC'))) matches.push(target);
  }
 }
 for (const target of ['app','public','server.js',...process.argv.includes('--built') ? ['dist/client','dist/server'] : []]) await scan(target);

@@ -101,6 +101,8 @@ Collection JSON-LD describes the products rendered on the current page, with loc
 
 ### 完整 SKU 参数与详情图库
 
+发布前运行 `node scripts/audit-source-exposure.mjs --built`，检查前台源码、公开资源及构建产物中的来源品牌；检查忽略大小写，并覆盖空格、连字符、点、下划线和全角变体。公开品牌替换统一使用 Seineshop，真实货源链接仅保存在后台私有记录中。
+
 `ProductGallery` 保留全部 Shopify 图片、按 SKU 文件名切换橱窗图，并单独展示详情说明图。商品路由连续读取图片分页；规格优先读取 `PRODUCTVARIANT custom.technical_specifications`（JSON、PUBLIC_READ），回退到商品字段。`PRODUCT custom.source_scene_images`（JSON、Storefront NONE）只保存原始来源与图片核查记录，不进入前台。来源商家的经销授权书仅保存在内部记录中。
 
 - `captureDetailImages(tab, item)` 位于 `scripts/tvcmall-browser-capture.mjs`，由已授权的浏览器工具调用，等待真实图片 `src` 替换占位图后读取；不使用仍可能指向占位图的 `currentSrc`。
