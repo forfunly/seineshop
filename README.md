@@ -17,11 +17,11 @@ npm run dev
 
 Open http://localhost:3000. Keep indexing disabled locally. Real environment files and deployment credentials are intentionally excluded from Git.
 
-## Internal project progress
+## Shared project rules
 
-Run `node scripts/serve-project-progress.mjs`, then open http://127.0.0.1:4174/ to view the interactive roadmap. Stop the server with Ctrl+C. It uses Node.js built-ins, binds to loopback only, and requires no credentials or additional dependencies. HTML and the explicitly allowed Markdown evidence are served with UTF-8; other project files are not exposed.
+Clone this repository into a local directory of your choice. Paths in the project rules are relative to the repository root and do not depend on an operating system, username or external memory file.
 
-The page source, styles, tasks and activity entries are in `docs/project-progress.html`. Keep its task facts and dates aligned with `docs/project-progress.md` and the linked QA records when project status changes. This is a manually maintained internal snapshot; viewing or filtering it does not modify Shopify, push Git commits or deploy the storefront. It is outside `app/` and `public/` and is not part of the customer site or sitemap. See [web validation](docs/qa/2026-11-03-project-progress-web.md).
+Start with [AGENTS.md](AGENTS.md), then read the task-specific files it lists in [docs/rules/](docs/rules/). Read the latest summary in [docs/project-state.md](docs/project-state.md) when taking over work or handling platform connections; historical records are not current authorization. Linked documents must be explicitly read as directed; a link does not automatically load their contents. Keep credentials in authorized, Git-ignored local configuration.
 
 ## Checks
 
