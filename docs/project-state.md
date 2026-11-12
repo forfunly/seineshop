@@ -1,5 +1,9 @@
 # 项目连接状态与授权记录
 
+## 近期 URL sitemap 全量核对（2026-11-12）
+
+正式 sitemap 索引及 108 个分片读取完成，22,011 个唯一条目无重复。近期 908 个商品与 6 个集合/页面地址，英日德共 2,742 个预期 URL 全部存在；旧物流路径已移除，新路径正确包含，商品 lastmod 均存在。11 项 sitemap 测试通过。此前动态 sitemap 更新已在生产生效，本轮没有发现遗漏，无需改代码或重新部署；没有推送 GitHub或重复提交 Search Console。详见 [验收记录](qa/2026-11-12-recent-sitemap.md)。
+
 ## Order tracking 正式路径已调整（2026-11-12）
 
 用户指定正式地址改为 https://www.seineshop.com/page/order-tracking 。已部署提交 `865d945`，部署标识 `01m775wvg0wbnsybxsa2as7agk-d7e83d6aec4307f1a21e`。旧 `/order-tracking` 返回 301 至新地址；日语、德语保留对应语言前缀并同样迁移。页脚、客服页、SEO 与 sitemap 已同步；正式三语言新页 200、UTF-8、自指 canonical、sitemap 仅包含新路径均验证通过。浏览器验证旧地址跳转及新路径内官方示例查询（Not Found）。48 项测试、lint、codegen、build、集合筛选及来源暴露检查通过。未推送 GitHub。
