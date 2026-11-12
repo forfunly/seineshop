@@ -27,3 +27,14 @@
 Shopify Toolkit 指定 Hydrogen 2026-04 运行；其组件校验返回没有可校验的 Polaris 组件，不能作为 Hydrogen 类型检查通过的证明。实际 GraphQL 使用项目 codegen，交互使用浏览器核验。本地开发有既有 hydration/缺少 PUBLIC_CHECKOUT_DOMAIN 的日志；等待 hydration 恢复后的变体、弹窗与分页交互通过，生产需独立复验。
 
 本记录创建时页面改动仍为本地候选；生产发布结果以项目状态顶部及后续发布记录为准。GitHub 推送尚未授权，未执行 git push。
+
+## Production 发布与复验
+
+- 2026-11-12 使用项目 Shopify CLI 将提交 b444fcd 发布到 Production（production/main/www.seineshop.com），没有执行 git push、覆盖远程变量或启用认证绕过。
+- 发布标识：`01m770yqrmdk52peqtkxqqxdzp-d7e83d6aec4307f1a21e`；CLI 验证 completed/routable，正式域名浏览器已显示新布局。
+- 正式集合页显示 908 商品，主导航含 iPhone Duo；商品完整图库 231 张、SKU B 切换、21 张公用场景图、放大/关闭与焦点返回通过。
+- 集合页与分页的 CollectionPage/BreadcrumbList、详情页 Product/BreadcrumbList、canonical 和 index/follow 正常。构建与线上响应没有采购来源字段或来源域名。
+- 31 个英文商品/集合 sitemap 分片覆盖本批 909 个 URL，无缺失。Googlebot、OAI-SearchBot 收到商品内容。
+- HTML、robots.txt、llms.txt 均返回 UTF-8；/jp、/de 集合页返回 200，日语页面实际字符正常。产品原文与尚未配置的界面译文仍回退英文，本次不声称全部商品已人工翻译。
+- 原 GA4 脚本仍为 1 个，未更改统计配置；未提交订单、发送询盘或修改生产凭据。
+- 线上截图：被忽略的 `.cache/catalog/iphone-duo-2026-11-12/production-collection-review.png`、`production-detail.png`。HTTP 证据：同目录 `published-seo-http-audit.json`。
