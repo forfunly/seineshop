@@ -1,6 +1,6 @@
 # Order tracking — 2026-11-12
 
-Status: local implementation only, not deployed or pushed.
+Status: deployed to Production on 2026-11-12 after explicit user approval; Git not pushed.
 
 ## Implementation
 
@@ -24,4 +24,15 @@ Status: local implementation only, not deployed or pushed.
 
 ## Limits
 
-No valid live shipment number was supplied, so a real shipment event timeline has not been verified. Actual status, carrier coverage, challenges and outages depend on 17TRACK. The free widget retains provider branding and can display advertisements. Production publication remains subject to explicit user approval under root AGENTS.md; no credentials, store data or live deployment changed.
+No valid live shipment number was supplied, so a real shipment event timeline has not been verified. Actual status, carrier coverage, challenges and outages depend on 17TRACK. The free widget retains provider branding and can display advertisements. No credentials or store product data changed. Production publication was explicitly approved in the subsequent user turn.
+
+
+## Production verification
+
+- Published commit `17a5b3d`, deployment `01m775bhyss7hz1ftchcb4q7m3-d7e83d6aec4307f1a21e`.
+- URL: https://www.seineshop.com/order-tracking
+- Re-ran all 48 tests, lint, codegen/build, collection filter check and built source exposure audit before deployment; all passed (two existing lint warnings).
+- English, Japanese and German pages: HTTP 200, UTF-8, self canonical, index. Their pages sitemaps each contain the tracking URL. Robots and llms text responses retain UTF-8.
+- Official sample returns China Post / Not Found inside the production iframe. No real shipment status claimed.
+- Browser checks: 390px document width equals scroll width; Japanese text renders correctly; footer navigation opens tracking page. Existing cart contents and checkout link render; no checkout submitted.
+- Screenshot: `.cache/tooling/order-tracking-production.png`; HTTP checks: `.cache/tooling/order-tracking-live-checks.json` (both ignored local evidence).

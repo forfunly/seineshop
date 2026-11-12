@@ -41,8 +41,8 @@ This release replaces the starter storefront with the current SeineShop headless
 - Some Shopify Toolkit isolated validations report pre-existing JavaScript/JSDoc and DOM iterable typing limitations. These are distinct from the passing application build and targeted lint checks.
 - This repository contains code, not a backup of Shopify products/orders/settings. Shopify configuration and actual inventory/fulfillment remain external.
 
-## Unreleased — order tracking (2026-11-12)
+## Published — order tracking (2026-11-12)
 
 - Added localized `/order-tracking` with official 17TRACK results, validation, delayed loading, retry and external fallback.
 - Added support/footer entry points, page metadata and sitemap discovery.
-- Verified 48 tests, lint, code generation, production build and source exposure audit. Local browser checks cover desktop/mobile, Japanese and provider Not Found response using its public sample number. No production deployment or Git push.
+- Verified 48 tests, lint, code generation, production build and source exposure audit. Local browser checks cover desktop/mobile, Japanese and provider Not Found response using its public sample number. Published to Production as `17a5b3d` after explicit approval; live tracking, localized metadata, sitemap and cart display verified. No Git push.

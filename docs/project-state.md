@@ -1,6 +1,12 @@
 # 项目连接状态与授权记录
 
-## Order tracking 本地开发完成（2026-11-12）
+## Order tracking 已部署生产（2026-11-12）
+
+用户明确要求“部署到线上”，已将 `17a5b3d` 发布到 Production，部署标识 `01m775bhyss7hz1ftchcb4q7m3-d7e83d6aec4307f1a21e`。正式地址 https://www.seineshop.com/order-tracking 。部署前重新通过 48 项测试、lint（0 错误、2 既有警告）、codegen、build、集合筛选及构建来源暴露检查。
+
+正式英/日/德页面均返回 200、UTF-8、自指 canonical 和 index；三种语言 sitemap 已包含对应物流页面。robots.txt、llms.txt 编码正常，购物车保留 noindex，浏览器确认购物车内容及结账入口正常（未结账）。正式页官方示例单号成功返回 China Post / Not Found；手机宽度无横向溢出、日语显示和页脚入口已验证。没有真实有效物流单号，真实包裹轨迹仍未核验。此次没有执行 git push。验收细节见下方记录及 QA 文档。
+
+## 历史：Order tracking 本地开发完成（2026-11-12）
 
 新增 `/order-tracking`，以及日语、德语版本，使用 17TRACK 官方单号查询组件，按提交加载，无需 API key。已加入页脚、客服页、SEO 标题描述及 sitemap。输入校验、15 秒脚本失败重试、服务延迟提示和外部备用查询已实现。单号不放入本站地址或自定义分析事件，不存储到本站后端。
 
