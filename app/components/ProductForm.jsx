@@ -1,5 +1,4 @@
 import {Image, Money} from '@shopify/hydrogen';
-import {WholesaleTiers} from './ProductBusiness';
 import {MAX_PURCHASE_QUANTITY, validPurchaseQuantity} from '~/lib/wholesale';
 import {useLocale} from '~/lib/i18n';
 import {Link, useNavigate, useFetcher, useFetchers, useNavigation} from 'react-router';
@@ -11,13 +10,12 @@ import {useAside} from './Aside';
  * @param {{
  *   productOptions: MappedProductOptions[];
  *   optionImages?: Record<string, any>;
- *   onRequestQuote?: (event: any) => void;
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  *   quantity: string;
  *   setQuantity: (quantity: string) => void;
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}, onRequestQuote}) {
+export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}}) {
   const {t, localize} = useLocale();
   const navigate = useNavigate();
   const {open} = useAside();
@@ -112,7 +110,6 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
           </div>
         );
       })}
-      <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} busy={busy} onRequestQuote={onRequestQuote}/>
       <div className="pdp-quantity-row">
         <label htmlFor={quantityId}>{t('Quantity')}</label>
         <div className="pdp-quantity">

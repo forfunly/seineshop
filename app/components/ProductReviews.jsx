@@ -51,6 +51,7 @@ export function ProductReviews({product, initialData}) {
   const [success, setSuccess] = useState(false);
   const [uncertain, setUncertain] = useState(false);
   const [files, setFiles] = useState([]);
+  const [rating, setRating] = useState(0);
   const pending = useRef(false);
   const uploads = useRef({tempId: '', files: new Map()});
   const sequence = useRef(0);
@@ -158,6 +159,7 @@ export function ProductReviews({product, initialData}) {
       return;
     }
     element.reset();
+    setRating(0);
     setFiles([]);
     setSuccess(true);
   };
@@ -170,8 +172,15 @@ export function ProductReviews({product, initialData}) {
     >
       <div className="product-reviews-heading">
         <div>
-          <p className="pdp-eyebrow">{t('From our customers')}</p>
-          <h2 id="product-reviews-heading">{t('Customer reviews')}</h2>
+          <h2 id="product-reviews-heading">
+            {t('Customer reviews')}
+            {data?.status === 'ready' && overallSummary && (
+              <span className="reviews-count">
+                {' '}
+                ({overallSummary.total_reviews})
+              </span>
+            )}
+          </h2>
           {data?.status === 'ready' && overallSummary?.total_reviews > 0 && (
             <ProductRating summary={overallSummary} />
           )}
@@ -179,7 +188,7 @@ export function ProductReviews({product, initialData}) {
         <button
           ref={triggerRef}
           type="button"
-          className="pdp-inquiry-button"
+          className="pdp-quote-entry"
           onClick={() => {
             void open();
           }}
@@ -371,17 +380,28 @@ export function ProductReviews({product, initialData}) {
                 className="business-form-fields"
               >
                 <legend className="sr-only">{t('Your review')}</legend>
-                <label>
-                  {t('Your rating')} *
-                  <select name="rating" required defaultValue="">
-                    <option value="">{t('Select a rating')}</option>
-                    {[5, 4, 3, 2, 1].map((value) => (
-                      <option key={value} value={value}>
-                        {value} / 5
-                      </option>
+                <fieldset className="review-rating-picker">
+                  <legend>{t('Your rating')} *</legend>
+                  <div>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <label
+                        key={value}
+                        className={value <= rating ? 'is-filled' : ''}
+                      >
+                        <input
+                          type="radio"
+                          name="rating"
+                          value={value}
+                          required
+                          checked={rating === value}
+                          onChange={() => setRating(value)}
+                        />
+                        <span aria-hidden="true">★</span>
+                        <span className="sr-only">{value} / 5</span>
+                      </label>
                     ))}
-                  </select>
-                </label>
+                  </div>
+                </fieldset>
                 <div className="pdp-inquiry-fields">
                   <label>
                     {t('Display name')}

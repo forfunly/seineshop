@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Money} from '@shopify/hydrogen';
+import {useFetchers, useNavigation} from 'react-router';
 import {ProductInquiryForm} from './ProductInquiryForm';
 import {useLocale} from '~/lib/i18n';
 import {useModalDialog} from '~/lib/use-modal-dialog';
@@ -12,11 +13,13 @@ export function SalesContact() {
   </div>;
 }
 
-export function WholesaleTiers({quantity, setQuantity, price, busy, onRequestQuote}) {
+export function WholesaleTiers({quantity, setQuantity, price}) {
   const {t} = useLocale();
+  const navigation = useNavigation();
+  const fetchers = useFetchers();
+  const busy = navigation.state !== 'idle' || fetchers.some((fetcher) => fetcher.state !== 'idle');
   const active = [...QUANTITY_TIERS].reverse().find((n) => Number(quantity) >= n);
   return <section className="pdp-wholesale" aria-label={t('Quantity options')}>
-    <div className="pdp-wholesale-heading"><strong>{t('Buy more for your business')}</strong><button type="button" className="business-text-button" onClick={onRequestQuote}>{t('Request a quote')} ↗</button></div>
     <div className="pdp-quantity-tiers">{QUANTITY_TIERS.map((minimum)=><button key={minimum} type="button" disabled={busy} aria-pressed={active === minimum} onClick={()=>setQuantity(String(minimum))}>
       <span>{minimum}+ {t('pieces')}</span><strong>{minimum === 1 && price ? <Money data={price}/> : t('Request quote')}</strong>
     </button>)}</div>
@@ -47,8 +50,11 @@ export function BusinessInquiry({product, variant, quantity, request, onRequest}
     </div>
     <dialog ref={dialogRef} className="pdp-inquiry-dialog" aria-labelledby="inquiry-title">
       <div className="pdp-inquiry-content"><div className="pdp-inquiry-heading"><h2 id="inquiry-title">{t('Request a quote')}</h2><button ref={closeButtonRef} type="button" aria-label={t('Close')} onClick={closeDialog}>×</button></div>
-      <p>{t(product.title)}</p><p className="pdp-inquiry-sku">SKU: {variant?.sku || '—'} · {t(variant?.title)}</p>
-      <ProductInquiryForm product={product} variant={variant} quantity={quantity} type={type} openRequest={request}/></div>
+      <div className="inquiry-product-summary">
+        {(variant?.image || product.images?.nodes?.[0]) && <img src={(variant?.image || product.images.nodes[0]).url} alt="" width="72" height="72"/>}
+        <div><p>{t(product.title)}</p><p className="pdp-inquiry-sku">SKU: {variant?.sku || '—'} · {t(variant?.title)}</p>{variant?.price && <p>{t('Current unit price')}: <strong><Money as="span" data={variant.price}/></strong></p>}</div>
+      </div>
+      <ProductInquiryForm product={product} variant={variant} quantity={quantity} type={type} openRequest={request} onCancel={closeDialog}/></div>
     </dialog>
   </section>;
 }

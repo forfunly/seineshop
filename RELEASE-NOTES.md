@@ -1,5 +1,7 @@
 # Local candidate — 2026-11-13
 
+- Quote entry moved beside the unit price with a visible outlined button; quantity tiers follow the price. Inquiry layout now uses a product summary, service selector, required requirements, paired contact fields, optional phone/sample link/destination, and persistent cancel/submit actions. Attachments use email because the app's public Headless contract provides no upload endpoint.
+- Reviews retain the details navigation/image-section placement, with a compact count heading, clear write button and native radio star selection. See [updated layout QA](docs/qa/2026-11-13-business-layout.md).
 - Customerssay product rating link below the title, published reviews after detail images, rating filters/pagination, and a review form with optional photos. Real zero-review and unavailable states are distinct; Product schema includes only actual published ratings.
 - Sectionly B2B online quote dialog shared by the first-screen, Wholesale, OEM and ODM buttons. Carries current SKU and quantity, supports additional variants, reads current MOQ/fields, checks ownership, and preserves an immutable request on retry.
 - English, Japanese and German UI, mobile layout and modal keyboard navigation. Server credentials, CSRF and private submission data stay out of public product HTML.

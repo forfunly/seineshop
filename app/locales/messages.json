@@ -3286,5 +3286,45 @@
   "Anonymous": {
     "ja": "匿名",
     "de": "Anonym"
+  },
+  "Current unit price": {
+    "ja": "現在の単価",
+    "de": "Aktueller Stückpreis"
+  },
+  "For wholesale and business inquiries.": {
+    "ja": "卸売・法人のお問い合わせ用です。",
+    "de": "Für Großhandels- und Geschäftsanfragen."
+  },
+  "Service type": {
+    "ja": "サービスの種類",
+    "de": "Art der Anfrage"
+  },
+  "Phone / WhatsApp (optional)": {
+    "ja": "電話番号 / WhatsApp（任意）",
+    "de": "Telefon / WhatsApp (optional)"
+  },
+  "Include country code": {
+    "ja": "国番号を含めて入力",
+    "de": "Mit Ländervorwahl"
+  },
+  "Sample link (optional)": {
+    "ja": "参考商品のリンク（任意）",
+    "de": "Musterlink (optional)"
+  },
+  "Delivery country / target market (optional)": {
+    "ja": "配送先の国 / 対象市場（任意）",
+    "de": "Lieferland / Zielmarkt (optional)"
+  },
+  "Screenshots or files": {
+    "ja": "スクリーンショット・ファイル",
+    "de": "Screenshots oder Dateien"
+  },
+  "Send attachments by email and include your inquiry reference after submitting.": {
+    "ja": "添付ファイルはメールでお送りください。お問い合わせ送信後に表示される受付番号を記載してください。",
+    "de": "Senden Sie Anhänge per E-Mail und geben Sie nach dem Absenden Ihre Anfragenummer an."
+  },
+  "Email attachments": {
+    "ja": "添付ファイルをメールで送る",
+    "de": "Anhänge per E-Mail senden"
   }
 }

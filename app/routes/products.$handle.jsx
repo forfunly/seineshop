@@ -4,7 +4,7 @@ import {ProductRating, ProductReviews} from '~/components/ProductReviews';
 import {Image} from '@shopify/hydrogen';
 import {productGallery} from '~/lib/product-gallery';
 import {prepareProductDetails} from '~/lib/product-details';
-import {BusinessInquiry, SalesContact} from '~/components/ProductBusiness';
+import {BusinessInquiry, SalesContact, WholesaleTiers} from '~/components/ProductBusiness';
 import {useEffect, useState} from 'react';
 import {ProductStickyBar} from '~/components/ProductStickyBar';
 import {ProductBuyingGuide} from '~/components/ProductBuyingGuide';
@@ -153,7 +153,11 @@ export default function Product() {
           <p className="pdp-eyebrow">SEINESHOP / {t('Everyday essentials')}</p>
           <h1>{t(title)}</h1>
           <ProductRating summary={reviews.status === 'ready' ? reviews.summary : reviews.status === 'unconfigured' ? productRating(product) : null}/>
-          <ProductPrice price={selectedVariant?.price} compareAtPrice={selectedVariant?.compareAtPrice} />
+          <div className="pdp-price-quote-row">
+            <ProductPrice price={selectedVariant?.price} compareAtPrice={selectedVariant?.compareAtPrice} />
+            <button type="button" className="pdp-quote-entry" onClick={(event) => requestInquiry('Wholesale', event.currentTarget)}>{t('Request a quote')} <span aria-hidden="true">↗</span></button>
+          </div>
+          <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} />
           <p className={`pdp-availability ${selectedVariant?.availableForSale ? 'is-available' : ''}`}>
             <span aria-hidden="true">●</span> {t(selectedVariant?.availableForSale ? 'Available to order' : 'Sold out')}
           </p>
@@ -167,7 +171,7 @@ export default function Product() {
             <p className="pdp-compatibility">{t('For Qi-compatible phones, wireless-charging earbuds and compatible Samsung Galaxy Watches. Check your device before ordering. Power adapter not included.')}</p>
           </>}
           <div id="product-purchase">
-            <ProductForm onRequestQuote={(event) => requestInquiry('Wholesale', event.currentTarget)} optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
+            <ProductForm optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
           </div>
           <div className="pdp-payment-methods" role="group" aria-label={t('Payment options')}>
             {[['shop-pay', 'Shop Pay'], ['visa', 'Visa'], ['mastercard', 'Mastercard'], ['paypal', 'PayPal']].map(([key, name]) => (

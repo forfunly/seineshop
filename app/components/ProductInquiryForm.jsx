@@ -35,6 +35,7 @@ export function ProductInquiryForm({
   quantity,
   type,
   openRequest,
+  onCancel,
 }) {
   const {t, localize} = useLocale();
   const [setup, setSetup] = useState(null);
@@ -46,6 +47,7 @@ export function ProductInquiryForm({
   const [variants, setVariants] = useState([]);
   const [cursor, setCursor] = useState(null);
   const [moreBusy, setMoreBusy] = useState(false);
+  const [serviceType, setServiceType] = useState(type);
   const attempt = useRef(null);
   const pending = useRef(false);
   const errorRef = useRef(null);
@@ -77,6 +79,7 @@ export function ProductInquiryForm({
     if (!openRequest || lastOpen.current === openRequest) return;
     lastOpen.current = openRequest;
     if (!attempt.current && !pending.current) {
+      setServiceType(openRequest.type || type);
       setLines(
         variant
           ? [
@@ -91,7 +94,7 @@ export function ProductInquiryForm({
       );
     }
     if (!attempt.current) void loadSetup();
-  }, [openRequest, variant, quantity, setup, loadSetup]);
+  }, [openRequest, variant, quantity, type, setup, loadSetup]);
 
   useEffect(() => {
     if (error && !loading) errorRef.current?.focus({preventScroll: true});
@@ -155,7 +158,13 @@ export function ProductInquiryForm({
           variantId: line.variantId,
           quantity: Number(line.quantity),
         })),
-        note: `${type}\n${t('Delivery country / target market')}: ${form.get('destination')}\n${form.get('requirements') || ''}`,
+        note: [
+          `Service type: ${serviceType}`,
+          `Requirements: ${String(form.get('requirements') || '').trim()}`,
+          `Phone / WhatsApp: ${String(form.get('phone') || '').trim()}`,
+          `Sample link: ${String(form.get('sampleLink') || '').trim()}`,
+          `Delivery country / target market: ${String(form.get('destination') || '').trim()}`,
+        ].join('\n'),
       };
       const invalid = validateInquiry(payload, setup.config);
       if (invalid) {
@@ -229,6 +238,9 @@ export function ProductInquiryForm({
         </div>
       )}
       {loading && <p role="status">{t('Loading inquiry options…')}</p>}
+      <p className="business-form-help">
+        {t('For wholesale and business inquiries.')}
+      </p>
       <fieldset disabled={locked || !setup} className="business-form-fields">
         <legend>{t('Product options and quantities')}</legend>
         {lines.map((line, index) => (
@@ -275,49 +287,53 @@ export function ProductInquiryForm({
         ))}
         {setup && (
           <>
-            <label>
-              {t('Add another option')}
-              <select
-                value=""
-                onChange={(event) => {
-                  const next = variants.find(
-                    (item) => item.id === event.target.value,
-                  );
-                  if (next)
-                    setLines((current) => [
-                      ...current,
-                      {
-                        variantId: next.id,
-                        title: next.title,
-                        sku: next.sku,
-                        quantity: '1',
-                      },
-                    ]);
-                }}
-              >
-                <option value="">{t('Select an option')}</option>
-                {variants
-                  .filter(
-                    (item) => !lines.some((line) => line.variantId === item.id),
-                  )
-                  .map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.title} {item.sku ? `· ${item.sku}` : ''}
-                    </option>
-                  ))}
-              </select>
-            </label>
-            {cursor && (
-              <button
-                type="button"
-                disabled={moreBusy}
-                onClick={() => {
-                  void loadMore();
-                }}
-              >
-                {t(moreBusy ? 'Loading…' : 'Load more options')}
-              </button>
-            )}
+            <details className="inquiry-extra-options">
+              <summary>{t('Add another option')}</summary>
+              <label>
+                <span className="sr-only">{t('Add another option')}</span>
+                <select
+                  value=""
+                  onChange={(event) => {
+                    const next = variants.find(
+                      (item) => item.id === event.target.value,
+                    );
+                    if (next)
+                      setLines((current) => [
+                        ...current,
+                        {
+                          variantId: next.id,
+                          title: next.title,
+                          sku: next.sku,
+                          quantity: '1',
+                        },
+                      ]);
+                  }}
+                >
+                  <option value="">{t('Select an option')}</option>
+                  {variants
+                    .filter(
+                      (item) =>
+                        !lines.some((line) => line.variantId === item.id),
+                    )
+                    .map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.title} {item.sku ? `· ${item.sku}` : ''}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              {cursor && (
+                <button
+                  type="button"
+                  disabled={moreBusy}
+                  onClick={() => {
+                    void loadMore();
+                  }}
+                >
+                  {t(moreBusy ? 'Loading…' : 'Load more options')}
+                </button>
+              )}
+            </details>
             <p className="business-form-help">
               {t('Minimum total quantity')}: {setup.config.moq} ·{' '}
               {t('Selected total')}:{' '}
@@ -328,16 +344,34 @@ export function ProductInquiryForm({
             </p>
           </>
         )}
+        <label>
+          {t('Service type')} *
+          <select
+            name="serviceType"
+            required
+            value={serviceType}
+            onChange={(event) => setServiceType(event.target.value)}
+          >
+            {['Wholesale', 'OEM', 'ODM'].map((mode) => (
+              <option value={mode} key={mode}>
+                {t(mode)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          {t('Your requirements')} *
+          <textarea
+            name="requirements"
+            rows={3}
+            required
+            maxLength={1500}
+            placeholder={t(
+              'Quantity by variant, logo, packaging, specifications and preferred delivery date…',
+            )}
+          />
+        </label>
         <div className="pdp-inquiry-fields">
-          <label>
-            {t('Your name')} *
-            <input
-              name="customerName"
-              autoComplete="name"
-              required
-              maxLength={150}
-            />
-          </label>
           <label>
             {t('Email address')} *
             <input
@@ -348,25 +382,53 @@ export function ProductInquiryForm({
               maxLength={254}
             />
           </label>
+          <label>
+            {t('Phone / WhatsApp (optional)')}
+            <input
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              maxLength={60}
+              placeholder={t('Include country code')}
+            />
+          </label>
+          <label>
+            {t('Your name')} *
+            <input
+              name="customerName"
+              autoComplete="name"
+              required
+              maxLength={150}
+            />
+          </label>
+          <label>
+            {t('Company name')} *
+            <input
+              name="company"
+              autoComplete="organization"
+              required
+              maxLength={500}
+            />
+          </label>
+          <label>
+            {t('Sample link (optional)')}
+            <input
+              name="sampleLink"
+              type="url"
+              pattern="https?://.+"
+              maxLength={1000}
+              placeholder="https://"
+            />
+          </label>
+          <label>
+            {t('Delivery country / target market (optional)')}
+            <input
+              name="destination"
+              autoComplete="country-name"
+              maxLength={120}
+            />
+          </label>
         </div>
-        <label>
-          {t('Company name')} *
-          <input
-            name="company"
-            autoComplete="organization"
-            required
-            maxLength={500}
-          />
-        </label>
-        <label>
-          {t('Delivery country / target market')} *
-          <input
-            name="destination"
-            autoComplete="country-name"
-            required
-            maxLength={120}
-          />
-        </label>
         {setup?.config.fields
           .filter((field) => !field.kind)
           .map((field) => (
@@ -400,36 +462,43 @@ export function ProductInquiryForm({
               )}
             </label>
           ))}
-        <label>
-          {t('Your requirements')}
-          <textarea
-            name="requirements"
-            rows={3}
-            maxLength={1500}
-            placeholder={t(
-              'Quantity by variant, logo, packaging, specifications and preferred delivery date…',
-            )}
-          />
-        </label>
+        <div className="inquiry-attachment-help">
+          <strong>{t('Screenshots or files')}</strong>
+          <p>
+            {t(
+              'Send attachments by email and include your inquiry reference after submitting.',
+            )}{' '}
+            <a href={`mailto:${SALES_EMAIL}`}>{t('Email attachments')} ↗</a>
+          </p>
+        </div>
       </fieldset>
       <p className="pdp-business-note">
         {t(
           'Submit your requirements online. Prices, customization and delivery will be confirmed in our quotation.',
         )}
       </p>
-      <button
-        className="pdp-inquiry-button"
-        disabled={!setup || busy}
-        type="submit"
-      >
-        {t(
-          busy
-            ? 'Submitting…'
-            : attempt.current
-              ? 'Retry original inquiry'
-              : 'Submit inquiry',
-        )}
-      </button>
+      <div className="business-form-actions">
+        <button
+          type="button"
+          className="business-cancel-button"
+          onClick={onCancel}
+        >
+          {t('Cancel')}
+        </button>
+        <button
+          className="pdp-inquiry-button"
+          disabled={!setup || busy}
+          type="submit"
+        >
+          {t(
+            busy
+              ? 'Submitting…'
+              : attempt.current
+                ? 'Retry original inquiry'
+                : 'Submit inquiry',
+          )}
+        </button>
+      </div>
       {!setup && !loading && (
         <button
           type="button"
