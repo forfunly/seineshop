@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 
 const focusableSelector = [
   'a[href]',
@@ -56,11 +56,11 @@ export function useModalDialog({lightDismiss = false} = {}) {
     };
   }, [lightDismiss]);
 
-  const openDialog = () => {
+  const openDialog = useCallback(() => {
     if (!dialogRef.current.open) dialogRef.current.showModal();
     closeButtonRef.current?.focus({preventScroll: true});
-  };
-  const closeDialog = () => dialogRef.current?.close();
+  }, []);
+  const closeDialog = useCallback(() => dialogRef.current?.close(), []);
 
   return {dialogRef, triggerRef, closeButtonRef, openDialog, closeDialog};
 }

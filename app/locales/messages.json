@@ -3054,5 +3054,237 @@
   "iPhone Duo": {
     "ja": "iPhone Duo",
     "de": "iPhone Duo"
+  },
+  "Customer reviews": {
+    "ja": "カスタマーレビュー",
+    "de": "Kundenbewertungen"
+  },
+  "reviews": {
+    "ja": "件のレビュー",
+    "de": "Bewertungen"
+  },
+  "No reviews yet": {
+    "ja": "まだレビューはありません",
+    "de": "Noch keine Bewertungen"
+  },
+  "No reviews match this rating.": {
+    "ja": "この評価のレビューはありません。",
+    "de": "Keine Bewertungen mit dieser Sternezahl."
+  },
+  "From our customers": {
+    "ja": "お客様の声",
+    "de": "Stimmen unserer Kunden"
+  },
+  "Write a review": {
+    "ja": "レビューを書く",
+    "de": "Bewertung schreiben"
+  },
+  "Filter by rating": {
+    "ja": "評価で絞り込む",
+    "de": "Nach Sternen filtern"
+  },
+  "All ratings": {
+    "ja": "すべての評価",
+    "de": "Alle Bewertungen"
+  },
+  "Share your experience with this product.": {
+    "ja": "この商品の使用感をお聞かせください。",
+    "de": "Teilen Sie Ihre Erfahrungen mit diesem Produkt."
+  },
+  "Reviews are temporarily unavailable. Please try again later.": {
+    "ja": "現在レビューを表示できません。しばらくしてからお試しください。",
+    "de": "Bewertungen sind vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
+  },
+  "Customer photo": {
+    "ja": "お客様の写真",
+    "de": "Kundenfoto"
+  },
+  "Review pages": {
+    "ja": "レビューページ",
+    "de": "Bewertungsseiten"
+  },
+  "Previous": {
+    "ja": "前へ",
+    "de": "Zurück"
+  },
+  "Next": {
+    "ja": "次へ",
+    "de": "Weiter"
+  },
+  "Thank you for your review.": {
+    "ja": "レビューをありがとうございます。",
+    "de": "Vielen Dank für Ihre Bewertung."
+  },
+  "Your review has been received. It will appear according to our review approval settings.": {
+    "ja": "レビューを受け付けました。承認設定に従って公開されます。",
+    "de": "Ihre Bewertung ist eingegangen. Sie wird gemäß unseren Freigabeeinstellungen veröffentlicht."
+  },
+  "Loading review form…": {
+    "ja": "レビューフォームを読み込み中…",
+    "de": "Bewertungsformular wird geladen…"
+  },
+  "Your review": {
+    "ja": "レビュー内容",
+    "de": "Ihre Bewertung"
+  },
+  "Your rating": {
+    "ja": "評価",
+    "de": "Ihre Sternebewertung"
+  },
+  "Select a rating": {
+    "ja": "評価を選択",
+    "de": "Sternezahl wählen"
+  },
+  "Display name": {
+    "ja": "表示名",
+    "de": "Anzeigename"
+  },
+  "Email address": {
+    "ja": "メールアドレス",
+    "de": "E-Mail-Adresse"
+  },
+  "Your email address will not be displayed publicly.": {
+    "ja": "メールアドレスは公開されません。",
+    "de": "Ihre E-Mail-Adresse wird nicht öffentlich angezeigt."
+  },
+  "Review title": {
+    "ja": "レビューのタイトル",
+    "de": "Titel der Bewertung"
+  },
+  "Photos (optional)": {
+    "ja": "写真（任意）",
+    "de": "Fotos (optional)"
+  },
+  "Up to 6 images, 2 MB each.": {
+    "ja": "画像は6枚まで、1枚あたり2 MBまで。",
+    "de": "Bis zu 6 Bilder, jeweils maximal 2 MB."
+  },
+  "Submit review": {
+    "ja": "レビューを送信",
+    "de": "Bewertung absenden"
+  },
+  "Submitting…": {
+    "ja": "送信中…",
+    "de": "Wird gesendet…"
+  },
+  "Try again": {
+    "ja": "再試行",
+    "de": "Erneut versuchen"
+  },
+  "Add another option": {
+    "ja": "別の仕様を追加",
+    "de": "Weitere Variante hinzufügen"
+  },
+  "Select an option": {
+    "ja": "仕様を選択",
+    "de": "Variante wählen"
+  },
+  "Remove option": {
+    "ja": "仕様を削除",
+    "de": "Variante entfernen"
+  },
+  "Load more options": {
+    "ja": "仕様をさらに表示",
+    "de": "Weitere Varianten laden"
+  },
+  "Minimum total quantity": {
+    "ja": "最低合計数量",
+    "de": "Mindestgesamtmenge"
+  },
+  "Selected total": {
+    "ja": "選択した合計数量",
+    "de": "Ausgewählte Gesamtmenge"
+  },
+  "Product options and quantities": {
+    "ja": "商品の仕様と数量",
+    "de": "Produktvarianten und Mengen"
+  },
+  "Your name": {
+    "ja": "お名前",
+    "de": "Ihr Name"
+  },
+  "Company name": {
+    "ja": "会社名",
+    "de": "Firmenname"
+  },
+  "Please select": {
+    "ja": "選択してください",
+    "de": "Bitte auswählen"
+  },
+  "Or contact Steven": {
+    "ja": "または Steven にお問い合わせください",
+    "de": "Oder kontaktieren Sie Steven"
+  },
+  "Loading inquiry options…": {
+    "ja": "お問い合わせ項目を読み込み中…",
+    "de": "Anfrageoptionen werden geladen…"
+  },
+  "Your inquiry has been received.": {
+    "ja": "お問い合わせを受け付けました。",
+    "de": "Ihre Anfrage ist eingegangen."
+  },
+  "Inquiry reference": {
+    "ja": "お問い合わせ番号",
+    "de": "Anfragenummer"
+  },
+  "We will review your requirements and contact you with a quotation. This is not a confirmed order.": {
+    "ja": "ご要望を確認し、お見積もりをご案内します。これは注文の確定ではありません。",
+    "de": "Wir prüfen Ihre Anforderungen und kontaktieren Sie mit einem Angebot. Dies ist keine bestätigte Bestellung."
+  },
+  "Submit your requirements online. Prices, customization and delivery will be confirmed in our quotation.": {
+    "ja": "ご要望をオンラインで送信してください。価格、カスタマイズ、配送はお見積もりで確認します。",
+    "de": "Senden Sie Ihre Anforderungen online. Preise, Anpassungen und Lieferung bestätigen wir im Angebot."
+  },
+  "Submit inquiry": {
+    "ja": "お問い合わせを送信",
+    "de": "Anfrage senden"
+  },
+  "Retry original inquiry": {
+    "ja": "元のお問い合わせを再送信",
+    "de": "Ursprüngliche Anfrage erneut senden"
+  },
+  "Your original inquiry is saved in this open form. Retry without changing its contents.": {
+    "ja": "元のお問い合わせはこのフォームに保持されています。内容を変更せずに再試行してください。",
+    "de": "Ihre ursprüngliche Anfrage bleibt in diesem geöffneten Formular gespeichert. Versuchen Sie es ohne Änderungen erneut."
+  },
+  "This service is temporarily unavailable. Please try again or contact Steven.": {
+    "ja": "現在このサービスをご利用いただけません。再試行するか Steven にお問い合わせください。",
+    "de": "Dieser Dienst ist vorübergehend nicht verfügbar. Bitte versuchen Sie es erneut oder kontaktieren Sie Steven."
+  },
+  "Online submission is not available yet. Please contact Steven by email.": {
+    "ja": "オンライン送信は現在準備中です。Steven にメールでお問い合わせください。",
+    "de": "Die Online-Übermittlung ist noch nicht verfügbar. Bitte kontaktieren Sie Steven per E-Mail."
+  },
+  "Please check the required fields, selected options and quantities.": {
+    "ja": "必須項目、選択した仕様、数量をご確認ください。",
+    "de": "Bitte prüfen Sie die Pflichtfelder, gewählten Varianten und Mengen."
+  },
+  "Your form session has expired. Close and reopen the form, then try again.": {
+    "ja": "フォームの有効期限が切れました。一度閉じて再度開いてください。",
+    "de": "Ihre Formularsitzung ist abgelaufen. Schließen und öffnen Sie das Formular erneut."
+  },
+  "Too many requests. Please wait before trying again.": {
+    "ja": "リクエストが多すぎます。しばらくしてからお試しください。",
+    "de": "Zu viele Anfragen. Bitte warten Sie vor einem erneuten Versuch."
+  },
+  "This inquiry may already have been received. Retry the original submission or contact Steven.": {
+    "ja": "すでに受け付けられた可能性があります。元の送信を再試行するか Steven にお問い合わせください。",
+    "de": "Diese Anfrage ist möglicherweise bereits eingegangen. Wiederholen Sie die ursprüngliche Übermittlung oder kontaktieren Sie Steven."
+  },
+  "The result could not be confirmed. Please check before submitting again.": {
+    "ja": "送信結果を確認できません。再送信する前にご確認ください。",
+    "de": "Das Ergebnis konnte nicht bestätigt werden. Bitte prüfen Sie den Status vor einer erneuten Übermittlung."
+  },
+  "Choose up to 6 JPG, PNG, WebP or GIF images, each no larger than 2 MB.": {
+    "ja": "JPG、PNG、WebP、GIF 形式の画像を6枚まで、各2 MB以下で選択してください。",
+    "de": "Wählen Sie bis zu 6 JPG-, PNG-, WebP- oder GIF-Bilder mit jeweils maximal 2 MB."
+  },
+  "The total quantity must meet the minimum order quantity.": {
+    "ja": "合計数量が最低注文数量を満たしている必要があります。",
+    "de": "Die Gesamtmenge muss die Mindestbestellmenge erreichen."
+  },
+  "Anonymous": {
+    "ja": "匿名",
+    "de": "Anonym"
   }
 }

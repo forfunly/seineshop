@@ -11,12 +11,13 @@ import {useAside} from './Aside';
  * @param {{
  *   productOptions: MappedProductOptions[];
  *   optionImages?: Record<string, any>;
+ *   onRequestQuote?: (event: any) => void;
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  *   quantity: string;
  *   setQuantity: (quantity: string) => void;
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}}) {
+export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}, onRequestQuote}) {
   const {t, localize} = useLocale();
   const navigate = useNavigate();
   const {open} = useAside();
@@ -111,7 +112,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
           </div>
         );
       })}
-      <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} busy={busy}/>
+      <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} busy={busy} onRequestQuote={onRequestQuote}/>
       <div className="pdp-quantity-row">
         <label htmlFor={quantityId}>{t('Quantity')}</label>
         <div className="pdp-quantity">

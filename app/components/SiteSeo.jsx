@@ -1,3 +1,4 @@
+import {reviewSchema} from '~/lib/business-tools';
 import {useLocale} from '~/lib/i18n';
 import {stripLocale, localizePath, LOCALES} from '~/lib/locale';
 import {
@@ -167,6 +168,7 @@ export function SiteSeo() {
     structured.push({
       '@context': 'https://schema.org',
       '@type': 'Product',
+      ...reviewSchema(data.reviews),
       name: p.title,
       description: plainText(p.description),
       ...(image ? {image: [image]} : {}),

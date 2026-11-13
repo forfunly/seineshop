@@ -1,3 +1,10 @@
+# Local candidate — 2026-11-13
+
+- Customerssay product rating link below the title, published reviews after detail images, rating filters/pagination, and a review form with optional photos. Real zero-review and unavailable states are distinct; Product schema includes only actual published ratings.
+- Sectionly B2B online quote dialog shared by the first-screen, Wholesale, OEM and ODM buttons. Carries current SKU and quantity, supports additional variants, reads current MOQ/fields, checks ownership, and preserves an immutable request on retry.
+- English, Japanese and German UI, mobile layout and modal keyboard navigation. Server credentials, CSRF and private submission data stay out of public product HTML.
+- Local read-only app integration verified. Real review/photo submissions, inquiries/draft orders/notifications, production credentials, push and deployment remain unverified or unauthorized. See [QA](docs/qa/2026-11-13-reviews-b2b-integration.md).
+
 # SeineShop update — 2026-11-01
 
 This release replaces the starter storefront with the current SeineShop headless shopping experience. All existing application source and assets are included; credentials, dependencies, compiled output, deployment logs and private procurement archives are excluded.

@@ -1,8 +1,11 @@
+import {readProductReviews} from '~/lib/business-tools.server';
+import {productRating} from '~/lib/business-tools';
+import {ProductRating, ProductReviews} from '~/components/ProductReviews';
 import {Image} from '@shopify/hydrogen';
 import {productGallery} from '~/lib/product-gallery';
 import {prepareProductDetails} from '~/lib/product-details';
 import {BusinessInquiry, SalesContact} from '~/components/ProductBusiness';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ProductStickyBar} from '~/components/ProductStickyBar';
 import {ProductBuyingGuide} from '~/components/ProductBuyingGuide';
 import {useLocale} from '~/lib/i18n';
@@ -45,7 +48,9 @@ export async function loader(args) {
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
+  const reviews = await readProductReviews(args.context, args.request, criticalData.product.id);
   return {
+    reviews,
     ...deferredData,
     ...criticalData,
   };
@@ -110,8 +115,11 @@ function loadDeferredData() {
 export default function Product() {
   const {t, localize} = useLocale();
   /** @type {LoaderReturnData} */
-  const {product} = useLoaderData();
+  const {product, reviews} = useLoaderData();
   const [quantity, setQuantity] = useState('1');
+  const [inquiryRequest, setInquiryRequest] = useState(null);
+  useEffect(() => {setInquiryRequest(null);}, [product.id]);
+  const requestInquiry = (type, trigger) => setInquiryRequest({type, trigger, productId: product.id});
   const hasBuyingGuide = product.handle === 'b-20a-3-in-1-foldable-wireless-charging-station';
 
   // Optimistically selects a variant with given available variant information
@@ -144,6 +152,7 @@ export default function Product() {
         <div className="pdp-summary">
           <p className="pdp-eyebrow">SEINESHOP / {t('Everyday essentials')}</p>
           <h1>{t(title)}</h1>
+          <ProductRating summary={reviews.status === 'ready' ? reviews.summary : reviews.status === 'unconfigured' ? productRating(product) : null}/>
           <ProductPrice price={selectedVariant?.price} compareAtPrice={selectedVariant?.compareAtPrice} />
           <p className={`pdp-availability ${selectedVariant?.availableForSale ? 'is-available' : ''}`}>
             <span aria-hidden="true">●</span> {t(selectedVariant?.availableForSale ? 'Available to order' : 'Sold out')}
@@ -158,7 +167,7 @@ export default function Product() {
             <p className="pdp-compatibility">{t('For Qi-compatible phones, wireless-charging earbuds and compatible Samsung Galaxy Watches. Check your device before ordering. Power adapter not included.')}</p>
           </>}
           <div id="product-purchase">
-            <ProductForm optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
+            <ProductForm onRequestQuote={(event) => requestInquiry('Wholesale', event.currentTarget)} optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
           </div>
           <div className="pdp-payment-methods" role="group" aria-label={t('Payment options')}>
             {[['shop-pay', 'Shop Pay'], ['visa', 'Visa'], ['mastercard', 'Mastercard'], ['paypal', 'PayPal']].map(([key, name]) => (
@@ -185,6 +194,7 @@ export default function Product() {
       <nav className="pdp-section-nav" aria-label={t('Explore this product')}>
         {hasBuyingGuide && <><a href="#product-features">{t('Features')}</a><a href="#product-compatibility">{t('Compatibility')}</a></>}
         <a href="#product-photos">{t('More images')}</a>
+        <a href="#product-reviews">{t('Customer reviews')}</a>
         <a href="#business-inquiry">{t('Wholesale & customization')}</a>
         <a href="#product-specs">{t('Details & specifications')}</a>
         {hasBuyingGuide && <a href="#product-faq">{t('Questions & answers')}</a>}
@@ -201,7 +211,8 @@ export default function Product() {
         <p>{selectedVariant?.title === 'Default Title' ? t(title) : selectedVariant?.title}</p>
         <div>{detailImages.map((image) => <Image key={image.url} data={image} alt={image.altText || title} loading="lazy" sizes="(min-width: 900px) 700px, 100vw" />)}</div>
       </section>
-      <BusinessInquiry key={product.id} product={product} variant={selectedVariant} quantity={quantity}/>
+      <ProductReviews key={`reviews-${product.id}`} product={product} initialData={reviews}/>
+      <BusinessInquiry key={product.id} product={product} variant={selectedVariant} quantity={quantity} request={inquiryRequest?.productId === product.id ? inquiryRequest : null} onRequest={requestInquiry}/>
       <ProductStickyBar title={title} variant={selectedVariant} quantity={quantity} />
       <Analytics.ProductView
         data={{
@@ -265,6 +276,9 @@ const PRODUCT_FRAGMENT = `#graphql
     vendor
     handle
     descriptionHtml
+    rating: metafield(namespace: "reviews", key: "rating") { value }
+    ratingCount: metafield(namespace: "reviews", key: "rating_count") { value }
+    reviewsSummary: metafield(namespace: "customerssay", key: "reviews_summary") { value }
     images(first: 250) {
       nodes { id url altText width height }
       pageInfo { hasNextPage endCursor }
