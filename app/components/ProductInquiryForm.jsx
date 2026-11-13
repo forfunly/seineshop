@@ -148,6 +148,7 @@ export function ProductInquiryForm({
         }),
       );
       customFields['Company Name'] = String(form.get('company') || '').trim();
+      customFields['Phone / WhatsApp'] = String(form.get('phone') || '').trim();
       payload = {
         customerName: String(form.get('customerName') || ''),
         customerEmail: String(form.get('customerEmail') || ''),
@@ -383,11 +384,12 @@ export function ProductInquiryForm({
             />
           </label>
           <label>
-            {t('Phone / WhatsApp (optional)')}
+            {t('Phone / WhatsApp')} *
             <input
               name="phone"
               type="tel"
               autoComplete="tel"
+              required
               maxLength={60}
               placeholder={t('Include country code')}
             />

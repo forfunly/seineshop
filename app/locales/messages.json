@@ -3326,5 +3326,13 @@
   "Email attachments": {
     "ja": "添付ファイルをメールで送る",
     "de": "Anhänge per E-Mail senden"
+  },
+  "Phone / WhatsApp": {
+    "ja": "電話番号 / WhatsApp",
+    "de": "Telefon / WhatsApp"
+  },
+  "Enter a valid phone or WhatsApp number, including the country code.": {
+    "ja": "国番号を含む有効な電話番号またはWhatsApp番号を入力してください。",
+    "de": "Geben Sie eine gültige Telefon- oder WhatsApp-Nummer mit Ländervorwahl ein."
   }
 }

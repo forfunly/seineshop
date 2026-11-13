@@ -74,7 +74,11 @@ const payload = () => ({
   productId: product.id,
   productHandle: product.handle,
   lineItems: [{variantId: 'gid://shopify/ProductVariant/456', quantity: 10}],
-  customFields: {'Company Name': 'Example', 'Intended use': 'Retail'},
+  customFields: {
+    'Company Name': 'Example',
+    'Intended use': 'Retail',
+    'Phone / WhatsApp': '+44 20 7946 0123',
+  },
   note: 'Wholesale',
 });
 const request = (path, body, headers = {}) =>
@@ -178,6 +182,38 @@ test('inquiry validation enforces configured fields, MOQ, unique variants and in
   assert.throws(() => quoteFields([{label: 'Upload', fieldType: 'file'}]));
 });
 
+test('missing or invalid contact phone is rejected on the server before any inquiry write', async (t) => {
+  let writes = 0;
+  t.mock.method(globalThis, 'fetch', async (url) => {
+    if (url.endsWith('/inquiry')) {
+      writes++;
+      throw new Error('Invalid contact must not be submitted');
+    }
+    return mockConfig(url);
+  });
+  for (const phone of [
+    undefined,
+    '',
+    '   ',
+    'not a phone',
+    '123',
+    '+1234567890123456',
+  ]) {
+    const p = payload();
+    p.customFields['Phone / WhatsApp'] = phone;
+    const res = await inquiryAction({
+      request: request('business-inquiry', {
+        operationId: crypto.randomUUID(),
+        payload: p,
+      }),
+      context: context(),
+    });
+    assert.equal(res.status, 400);
+    assert.equal((await res.json()).code, 'phone');
+  }
+  assert.equal(writes, 0);
+});
+
 test('setup reads real app configuration and product membership, with private no-store response', async (t) => {
   const seen = [];
   t.mock.method(globalThis, 'fetch', async (url, options) => {
@@ -243,6 +279,7 @@ test('server checks variant ownership and does not relay client prices or titles
   assert.equal(res.status, 201);
   assert.equal(outgoing.price, undefined);
   assert.equal(outgoing.productTitle, undefined);
+  assert.equal(outgoing.customFields['Phone / WhatsApp'], '+44 20 7946 0123');
   outgoing = null;
   ctx.storefront.query = async (query) =>
     query.includes('BusinessVariantOwners')

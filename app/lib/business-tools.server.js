@@ -329,6 +329,8 @@ export async function inquiryAction({request, context}) {
     customFields['Company Name'] = String(payload.customFields['Company Name'])
       .trim()
       .slice(0, 500);
+    customFields['Phone / WhatsApp'] =
+      payload.customFields['Phone / WhatsApp'].trim();
     const outgoing = {
       customerName: payload.customerName.trim(),
       customerEmail: payload.customerEmail.trim(),

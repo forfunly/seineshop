@@ -14,6 +14,7 @@ export const BUSINESS_ERRORS = {
   media:
     'Choose up to 6 JPG, PNG, WebP or GIF images, each no larger than 2 MB.',
   moq: 'The total quantity must meet the minimum order quantity.',
+  phone: 'Enter a valid phone or WhatsApp number, including the country code.',
 };
 
 export function numericId(value, kind = 'Product') {
@@ -122,6 +123,15 @@ export function validateInquiry(payload, config) {
     payload.note.length > 5000
   )
     return 'invalid';
+  const phone = payload.customFields['Phone / WhatsApp'];
+  if (
+    typeof phone !== 'string' ||
+    phone.length > 60 ||
+    !/^\+?[0-9\s().-]+$/.test(phone.trim()) ||
+    phone.replace(/\D/g, '').length < 7 ||
+    phone.replace(/\D/g, '').length > 15
+  )
+    return 'phone';
   const seen = new Set();
   let total = 0;
   for (const item of payload.lineItems) {
