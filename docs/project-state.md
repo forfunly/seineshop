@@ -1,5 +1,13 @@
 # 项目连接状态与授权记录
 
+## 本地 main 同步与业务工具开发准备（2026-11-13，北京时间）
+
+- 用户要求拉取远程修改，并将本地必要规则合并到 main；本轮从 `a07e30e` 快进至已获取的 `origin/main` `46182bd`，纳入 12 个提交、51 个文件的远程改动。本轮首次 fetch 25 秒超时；有界重试后 fetch 成功，重新核对远程仍为 `46182bd`，同步后的双向提交日志为空。
+- 原有已跟踪文档改动已保存到 Git stash（说明 `seineshop-preserve-local-docs-before-main-sync-2026-11-13`），恢复时保留两边记录并处理状态/旧进度文件冲突；备份未删除。既有未跟踪截图与验收文件保留。旧进度文件仅做冲突恢复，没有增加本轮任务或维护流程图，不纳入本轮规则提交。
+- 根任务入口加载第三方业务工具规则，保留远程 sitemap 同步与来源保护要求；品牌按本会话提供的最新规则统一为 Seine Shop。下文的应用安装、商品和生产结果均为带日期的历史核验，本次未重新访问 Shopify 后台或发布生产。
+- 本轮验证：48 项 Node 测试全部通过；规则/方案及必要历史证据共 8 个 Markdown 的 UTF-8、44 个相对链接、冲突标记及凭据格式检查通过；`git diff --check` 通过。应用源码与同步后的远程基线无差异；没有为纯文档提交重新声明前台构建或线上验收。旧进度 HTML 内联脚本语法通过，原有发布方案改动与备份逐字节一致。
+- Customerssay 与 Sectionly B2B 尚未接入前台；开发候选范围见 [接入方案](plans/2026-11-13-reviews-b2b-integration.md)，须经用户确认后实施。未创建密钥、修改 `.env`、提交真实评价/询价、发送通知或部署。规则合并仅为本地 Git 工作，不包含 push 授权。
+
 ## 近期 URL sitemap 全量核对（2026-11-12）
 
 正式 sitemap 索引及 108 个分片读取完成，22,011 个唯一条目无重复。近期 908 个商品与 6 个集合/页面地址，英日德共 2,742 个预期 URL 全部存在；旧物流路径已移除，新路径正确包含，商品 lastmod 均存在。11 项 sitemap 测试通过。此前动态 sitemap 更新已在生产生效，本轮没有发现遗漏，无需改代码或重新部署；没有推送 GitHub或重复提交 Search Console。详见 [验收记录](qa/2026-11-12-recent-sitemap.md)。
@@ -57,11 +65,99 @@ SEO 候选已补 CollectionPage/ItemList、商品面包屑、UTF-8 HTML 和可�
 
 以下发布摘要为历史记录，不代表本次生产核验。
 
-## 当前发布摘要（2026-11-04 15:28）
+## 三款业务应用已安装（2026-11-12，北京时间）
 
-- 用户已明确授权本次除 GA4 外的既有修复推送 main 并部署 Production；不是后续 push 或环境变更的持续授权。
-- 本轮候选恢复原 GA4，本地命令及代表交互复验通过；本批尚未推送或部署。精确当前生产与回滚部署待后台读取，安全验证已请用户本人完成。
-- 详情及命令见[本轮发布准备](plans/2026-11-03-oxygen-production-release.md)。下方是上轮规则整理时摘要，授权和发布状态以本节及后续实测为准。
+- 目标实测为 Seine Shop / `ps83if-c4.myshopify.com`。用户分别确认 Customerssay 权限及 B2B、17TRACK 权限后，通过 Shopify 正式安装确认页完成；后台 Installed apps 列表已同时显示三款应用。
+- Customerssay.ai Reviews App：后台 Dashboard 正常打开，Manage Reviews、Collect Reviews、Headless 入口可见；当前显示 0 条评价。后台路径 `/store/ps83if-c4/apps/customers-say-ai/app`。
+- Sectionly：B2B Wholesale：通过官方 `https://b2b.sectionly.ai/` 填写本店域名进入 Shopify 授权，安装后 Welcome 页面正常打开；Inquiries、Quote Settings、Headless 可见，初始引导为 0/4。后台路径 `/store/ps83if-c4/apps/sectionly-b2b-wholesale/app`。
+- 17TRACK：正式应用为 `https://apps.shopify.com/17track`；Shopify 应用详情明确显示 Installed November 12, 2026。首次回调返回 Unauthorized；从后台 Open app 重新打开后正常进入中文欢迎引导，显示已获 50 次查件机会、引导 1/4。后台路径 `/store/ps83if-c4/apps/17track-order-tracking-free`。
+- 未选择付费订阅、未创建 Headless 密钥、未改 `.env`，未主动配置通知/邀评、MOQ 或隐藏价格，未创建测试评价、询价和草稿订单。Customerssay 与 B2B 的 Hydrogen 前台集成尚未实施；17TRACK 应用安装也不能代替既有物流查询组件的验收。
+- 本轮 fetch 已成功，发现 origin/main 为 `46182bd`、本地落后 12 个提交；已只读核对远程根规范与状态，远程另有 17TRACK 公共查询组件及 `/page/order-tracking` 上线记录。本次仅更新独立工具规则和追加安装事实，保留本地已有成果，未合并源码、提交、推送或部署；后续源码工作须先处理本地与远程同步。
+- 长期加载入口为根 AGENTS.md 的任务必读表 → [第三方业务工具](rules/business-tools.md)。下节为安装前历史，浏览器限制已由用户指定的远程调试连接解决；不再作为当前阻碍。
+
+## 历史：业务工具选用与待安装（2026-11-12，北京时间）
+
+- 用户在当前会话明确要求将 Customerssay.ai Reviews、Sectionly B2B Wholesale 和 17TRACK 安装到 Seine Shop，并将后续使用入口写入项目规则；目标店铺为 `ps83if-c4.myshopify.com`。长期入口见 [第三方业务工具](rules/business-tools.md)，根 AGENTS.md 已增加对应任务必读条件。
+- 公开资料已核对：Reviews Headless 文档对应 Customerssay；B2B Headless 文档对应独立的 Sectionly B2B Wholesale；17TRACK 所给链接是 Track Your Parcel 物流说明页，正式 Shopify 应用入口及收费仍待核对。
+- **安装尚未完成，现有安装状态未核实**：浏览器工具返回 `Local browser use is disabled in Work settings`，本轮无法打开 Shopify 后台与安装确认页。需用户在 Work 设置启用浏览器访问后继续；未绕过该限制获取会话或调用安装接口。
+- 未创建应用密钥、未修改 `.env`、未发送邀评/物流通知、未创建询价或草稿订单、未改前台或生产部署。付费方案和实际权限尚未核验，不把安装请求扩大为订阅或数据写入批准。
+- 本轮修改前已检查 main 与缓存的 origin/main，无提交差；远程 fetch 的有界重试 25 秒超时，未确认最新远程状态。保留已有未提交文件，仅追加本次规则与状态；未提交或推送，后续提交/上传前须重新 fetch 核对。
+
+## 商品管理 API 已接通（2026-11-05 16:58 北京时间）
+
+- 用户在本会话明确要求“自己去生成、自己去配置”，并本人完成 Shopify 浏览器授权。授权范围为本机商品管理连接，不代表已批准具体商品变更或发布。
+- 使用已安装 Shopify CLI 的 `store auth --store ps83if-c4.myshopify.com --scopes read_products,write_products` 完成认证，由 CLI 管理本地 online access token；未复制到 .env、源码或文档，未打印 token，未轮换旧管理 App 凭据。
+- Admin GraphQL 2026-10 只读请求真实成功：店铺 Seine Shop / ps83if-c4.myshopify.com；当前调用 App 为 **Shopify CLI Connector App**；实际 scopes 为 read_products、write_products。
+- 首个商品读回：gid://shopify/Product/9764421861635，B-20A 3-in-1 Foldable Wireless Charging Station。验证查询已通过 Shopify Toolkit Admin schema 校验，要求 read_products。未运行 mutation，未修改商品、库存或生产前台。
+- 后续商品 API 可通过项目本地 CLI 的 store execute 使用该会话；它不是原 SeineShop AI Manager 的 offline token 恢复。旧主 App/组织记录保留，当前可用连接以本节为准。online 会话可能过期，届时通过 store auth 重新授权，不承诺永久无人值守访问。
+- 本轮 git fetch 成功，HEAD..origin/main 和 origin/main..HEAD 均无提交差；保留此前未提交资料。未 push、未部署、未增加全局依赖、不维护进度图。
+- 详细证据与复用命令见 [商品 API 接入验收](qa/2026-11-05-product-admin-api.md)。
+
+
+## 当前接手摘要（2026-11-05 16:46 北京时间）
+
+- 本机开发连接已验证；商品管理 API 尚未接通。主 App SeineShop AI Manager（441790234625 / 组织 234051952）本轮后台可见已安装；本机无 SHOPIFY_ADMIN_* 配置，不从旧 offline token/scopes 记录推断本机权限。
+- 用户已要求连接商品管理 API，该任务保留；下一步确认主 App 的安全凭据来源与授权流程。尚未执行新授权、token 迁移、商品读取或写入。
+- 外部项目记忆已补在 `/Users/a1234/Documents/DEVELOPMENT-MEMORY.md`，只保存 SeineShop 已知事实、用户决定、缺口与证据；无凭据，不自动上传。它不授予新权限。
+- 用户最新要求默认聊天汇报；历史进度图保留，不自动维护。
+- 本轮仅修正规则与记忆。官方文档访问失败（开发者站 403，Learn 超时），未完成官方正文逐项核对；远程 fetch 30 秒超时，未确认远程是否前进。保留本地修改，未提交/推送/部署，未改 .env、token 或平台权限。
+
+以下为此前各次核验的历史记录；“当前”仅指各条记录当时，不自动延续到本次。
+
+
+## 本机开发配置授权与验证（2026-11-05 16:31 北京时间）
+
+用户明确回复“允许创建本地开发配置”。仅从既有 SeineShop storefront 的 Preview 环境读取并创建本机 `.env`；保留已取得的 SESSION_SECRET，补齐本地结账域名，明确设置 PUBLIC_INDEXABLE=false 与 PUBLIC_JOURNAL_INDEXABLE=false。文件权限 0600，Git 忽略检查通过，未输出凭据值、未修改线上配置。
+
+`npm run dev -- --env preview --port 3000` 启动成功，实测只监听 127.0.0.1:3000；首页 200 且 robots meta 为 noindex, follow，robots.txt 为 200、text/plain; charset=utf-8 且禁止全部抓取。仅完成本地运行与配置验证，不代表完整购买流程或 Admin API 已接通。GA4 资源归属与连接器认证仍未解决。本轮 fetch 长时间无响应后已停止，未确认新的远程状态；未 push 或部署。按用户最新规则，不继续维护进度图。
+
+
+## Mac 权限接手（2026-11-05 16:27 北京时间）
+
+- 当前节点：阶段七 T16，进行中；GA4 分支受阻。
+- GitHub HTTPS 源码与 main 基线、Shopify 后台及本机关联、GSC 浏览器与现有连接器只读均已验证。GA4 正确资源未匹配，用户不清楚拥有者；独立 Analytics 连接器缺 ADC。
+- 本机 `/Users/a1234/Documents/seineshop`；origin 使用同仓库 HTTPS，main 与 origin/main 为 f3bb1ea。SSH 主机验证未配置，不修改系统 SSH 设置。
+- Shopify 本机关联读回店铺 ps83if-c4.myshopify.com、storefront 1000183956；后台 Production / f3bb1ea / Ready / Current，资源 5612588。未重新部署。
+- GSC siteId 12：2026-10-29 至 11-03 搜索报表返回 6 行，合计 4 点击、24 展示；不需要平台管理权限即可读取。当前浏览器账号不是验证所有者，未变更用户权限。
+- 使用应用自带 Node 24.22.1、项目内 npm 11.6.2；npm ci 成功（824 包），未修改全局依赖、package.json 或锁文件。Shopify Toolkit 仅项目缓存使用。
+- 最新交接证据经对比合并；原 15 项里程碑为历史限定范围，新接手任务增加 T16，不将旧验收计为本机运行验证。
+- 下一步：确认本地 .env 配置授权；GA4 需确认 G-BKLZMJ9EP7 的资源拥有者，再授予 Viewer 并配置连接器认证。
+- 本次未写 .env、未 push、未部署、未提交 sitemap；Admin API token 尚未迁移，未验证管理 API。
+
+```mermaid
+flowchart LR
+  A[读取交接规范：已验证] --> B[GitHub 源码：已验证]
+  B --> C[Shopify 后台与本机关联：已验证]
+  C --> D[本地环境：等待授权]
+  B --> E[GSC 浏览器和接口：已验证]
+  E --> F[GA4 归属与认证：受阻]
+```
+
+以下保留交接及历史记录，当前本机接入以本节为准。
+
+
+最近更新：2026-11-05 13:40（北京时间，UTC+08:00，内部交接整理记录）。内部手动状态快照；网站生产验收日期仍为 2026-11-04。
+
+## 当前接手与连接补充（2026-11-05 13:40）
+
+- 本次 fetch 后 HEAD 与 origin/main 同为 `f3bb1ea6ce3ddd2f853a1ff9c1b297598cd4078c`；保留未提交的最新生产记录、进度和截图，不覆盖、不推送。
+- 已整理内部交接指南与原文快照，输出到 `.cache/handoffs/`，不含真实凭据、浏览器会话、依赖或构建。用途为交给另一个 GPT 理解背景；不自动转移登录或平台权限。核验与边界见 [交接记录](qa/2026-11-05-project-handoff.md)。
+- 本次浏览器只读确认 GSC `sc-domain:seineshop.com` 可访问，已提交 sitemap 列表为空；当前账号不是经过验证的所有者，用户权限页要求 Owner，具体 Full/Restricted 角色未核实。未提交 sitemap 或修改权限。
+- GA4 测量 ID `G-BKLZMJ9EP7` 已知，对应数值 property/stream 与拥有者未匹配；当前 Google Analytics 连接器缺 ADC，SEO 平台管理接口缺 platform admin。浏览器 GSC 可读不等于 API 可用，不引用其他站点属性代替。
+- 本次没有复核 Shopify 后台 Current、重新进行生产全量验收或变更任何平台配置；下节是最近一次生产记录，15/15 范围保持不变，原 GA4 保留要求继续有效。
+
+## 当前发布摘要（2026-11-04 16:14）
+
+- 当前代码及 origin/main：`f3bb1ea6ce3ddd2f853a1ff9c1b297598cd4078c`；本次没有修改应用源码或再次推送。
+- 用户单项授权后，仅在 Oxygen **Production** 新增 `PUBLIC_SITE_URL=https://www.seineshop.com`、`PUBLIC_INDEXABLE=true`、`PUBLIC_JOURNAL_INDEXABLE=true`；逐项保存并确认作用环境，Preview 未添加这些配置，GA4、其他既有变量及店铺密码未改。
+- 后台 Redeploy environments 复用原 #5996467 的当前代码；新部署 **#5996658**（后台资源 `5612588`），2026-11-04 **16:10 GMT+8**，Production / main / f3bb1ea，**Ready / Current**。地址：`https://01m6jsqae4w5e18awmxf6cyk78-d7e83d6aec4307f1a21e.myshopify.dev`。
+- T14 已完成本次代表线上验收：首页、日/德语首页、集合、商品和 Journal 返回 200，正确 canonical，`index, follow`；购物车及搜索保持 `noindex, follow`。robots 不再全站禁止抓取，并指向正式 sitemap。
+- sitemap index 含 **96** 个子文件；全部子文件返回 200、有效 UTF-8 XML 及 `charset=utf-8`，合计 **19,320** 个不重复页面 URL。此为 sitemap 文件检查，没有逐一访问全部页面或验证 Google 收录。
+- 浏览器检查中文、日本語、Deutsch 和特殊字符正常；原 GA4 单脚本、单次 config，collect 204。新部署后购物车仍为 White / 3 件 / $57；此前本批桌面/手机弹窗及键盘检查证据保留。
+- 本次仅环境配置及同代码重新部署，未重跑未受影响的全量测试；来源暴露审计重新通过，应用源码与 f3bb1ea 无差异。保留既有构建警告、Toolkit 隔离类型解析、完整结账、GA4 后台商业归因及 Search Console 验证缺口。
+- **15/15 项已验证**，阶段六 T13 已发布、T14 代表复验完成；不等于全站所有页面、所有浏览器或商业结果已验收。结果文档和截图仅本地更新，后续 push 仍需单项批准。
+
+依据：[发布及复验记录](plans/2026-11-03-oxygen-production-release.md)。
 
 ## 2026-11-03 摘要（历史）
 
