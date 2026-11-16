@@ -213,3 +213,25 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 - 用同一成功请求的operationId和逐字相同payload在网页资源接口显式重放，仍201/同一询价ID；不再次手动建草稿。公开评价仍0条/平均0，内部测试评价不进入商品公开HTML或AggregateRating。
 - 修复后99/99全量测试、lint 0错误/2既有警告、codegen/build、集合筛选、构建来源审计通过。Toolkit2026-04独立源码检查报告17条通用类型诊断；对修复前HEAD同一模块执行基线检查，诊断逐项相同（JS类属性/默认选项推断、FormData联合类型、Node duplex与DOM类型差异），本轮没有新增诊断。不把该检查记为通过，也没有添加忽略或扩大为全模块类型重构。
 - 推送前只读检查Oxygen deployments：当前仍显示Connect GitHub，未连接自动部署仓库；没有GitHub Actions目录。生产Current仍865d945/物流路径迁移，本轮不部署、不连接仓库。正式通知/付款及测试评价公开发布均未执行，不以这次内部测试宣称完整代发/定制交易已完成。
+
+## Oxygen Production 发布验收（2026-11-16）
+
+- 用户批准12个既有提交推送及主站部署；推送前fetch无并发提交，push后`ls-remote`确认`origin/main=1aa4e07ad772dda9a93bdab95d1fb31902ab66d5`。保留原未提交发布方案、进度文档及旧截图，没有纳入本次提交。发布候选重新通过99/99测试、lint（0错误/2既有警告）、codegen/build、集合筛选、构建来源暴露审计、diff检查；213个候选及构建文件针对本机实际敏感值扫描0匹配，Markdown严格UTF-8解码通过。保留原构建弃用/分析器提示，不宣称全项目类型检查或控制台全清。
+- 用户另行批准两项现有服务端密钥配置到Oxygen Production。`CUSTOMERSSAY_SECRET_KEY`与`SECTIONLY_B2B_PRIVATE_KEY`均设Secret，最终仅Production；没有上传整份.env或代发测试配置，不记录密钥值。Oxygen仓库设置仍未连接GitHub自动部署；本次使用现有官方CLI手动部署。
+- 命令为`shopify hydrogen deploy --env production --no-json-output --force --metadata-description "Reviews, B2B inquiries, purchase modes, bulk buying and shipping estimates; source 1aa4e07"`；`--force`仅允许保留既有不参与构建的文档/截图改动，不是强推或跳过平台验证。没有使用`--env-file`、`--no-verify`或客户端源码映射。官方CLI完成上传、部署与可路由验证并退出0。
+- 后台[部署详情](https://admin.shopify.com/store/ps83if-c4/hydrogen/1000183956/deployments/5746750)：Deployment ID `6129563`，2026-11-16 18:37 GMT+8，Production/main/`1aa4e07`，Ready/Current，bundle 1.49 MB，worker startup 5 ms。实际部署URL为`https://01m7hyxfx2bgyeg4hnzhd8hzdk-d7e83d6aec4307f1a21e.myshopify.dev`。以下检查直接使用正式域名`https://www.seineshop.com`。
+
+| 范围 | 正式站实测 | 边界 |
+| --- | --- | --- |
+| 评价 | 公开读取200/ready、0条/平均0；设置200；写评价弹窗正常加载、照片控件存在；公开页面无Internal QA | 上节真实上传/未发布评价证据保留，本轮不重复创建或公开测试评分 |
+| 询价 | 配置200/MOQ=1；实际弹窗加载完成，需求、邮箱、电话、姓名、公司均required；Escape关闭 | 上节真实保存/异步草稿及幂等证据保留，本轮不额外造单 |
+| Bulk Buy | 前台黑2/白3加购；正式购物车读回两行、5件、USD38+57=95；结账链接为本店myshopify.com | 未点击付款、未创建订单；验收记录不保存购物车密钥或结账私有URL |
+| Estimate shipping | 真实API查询黑1、美国公开示例地址；200，Standard USD12/Fast USD18，private/no-store；之后购物车仍5件 | 仅Shopify现有固定报价，不是承运商实时报价 |
+| 三模式/多语言 | 英文三模式；日语390px切换Dropshipping出现带原商品参数的工作台入口；德语390px切换Customization显示7步、询价/样品按钮；无横向溢出 | 自动阶梯价和完整定制生产流程未完成 |
+| 私有工作台 | 英/jp/de均200/private/no-store/noindex；未登录显示登录入口、导入按钮禁用；无CSRF的POST为403/forbidden | 仅页面代码上线，正式环境未接本机Node服务/测试店凭据；外部OAuth与订单业务未开放 |
+| 17TRACK | 既有`/page/order-tracking`200，手机无溢出；空输入真实点击显示校验，未请求供应商 | 无真实履约运单，未验证实际运输事件或承运商结果 |
+| SEO/编码 | 英/jp/de自指canonical、en/ja/de/x-default正确；robots/llms/sitemap/static XML的真实Content-Type含charset=utf-8；全部114分片200，23967规范URL快照，无工作台/API；浏览器sitemap管理页中文/日本語/Deutsch与特殊符号、llms原文正常 | 动态商品数量是当时快照，不代表搜索引擎已收录；未伪造lastmod |
+
+- 截图：[正式询价弹窗](2026-11-16-oxygen-inquiry-desktop.jpg)、[正式评价入口](2026-11-16-oxygen-reviews-desktop.jpg)、[正式德语手机定制模式](2026-11-16-oxygen-customization-de-mobile.jpg)。均已打开图片核对；询价截图等待配置加载完成，不使用瞬时Loading画面作为最终证据。
+- 正式站原有Shopify Analytics/consent组件报告`PUBLIC_CHECKOUT_DOMAIN`缺失；生产原无此变量，根源码读取未在本批修改。已请求明确授权仅Production补`ps83if-c4.myshopify.com`并重部署，当前待回复；其余现有错误/警告不据此掩盖。未付款、发货、公开测试评价或部署独立测试应用。
+- 本次验收记录与三张截图为发布后的新本地成果，未包含于已批准的12提交；推送仍需针对新增范围确认。没有新工作副本、没有删除文件。

@@ -1,6 +1,15 @@
 # 项目连接状态与授权记录
 
-## 当前：真实评价/询价补验完成，自主测试规则已调整（2026-11-16，17:45 北京时间）
+## 当前：功能提交已推送，Oxygen Production 已发布（2026-11-16，18:49 北京时间）
+
+- 用户明确批准本次12个候选提交推送及主站Oxygen生产部署；`origin/main`已读回完整哈希`1aa4e07ad772dda9a93bdab95d1fb31902ab66d5`。发布前再次通过99/99测试、lint（0错误/2既有警告）、codegen/build、集合筛选及构建来源审计；213个候选/构建文件的本机实际敏感值扫描0匹配。原无关发布方案、旧进度资料和截图保留。
+- 用户另行明确批准将现有`CUSTOMERSSAY_SECRET_KEY`、`SECTIONLY_B2B_PRIVATE_KEY`配置到Oxygen Production；两项均设为Secret，最终读回仅Production。未上传整份.env、代发测试凭据或本机服务地址，没有修改其他密钥。生产评价读取与设置、B2B询价表单读取均200，公开评价仍0，内部测试未公开。
+- 官方CLI部署成功并完成可路由验证；后台资源`5746750`，Deployment ID `6129563`，18:37 GMT+8，Production/main/`1aa4e07`，Ready/Current。部署地址`https://01m7hyxfx2bgyeg4hnzhd8hzdk-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名`https://www.seineshop.com`。应用源码与远程一致；使用`--force`仅允许保留不参与构建的旧文档工作区，未跳过部署验证、未覆盖远程环境。
+- 正式站实测Bulk Buy黑2/白3、5件/USD95与Shopify购物车一致；独立运费报价Standard USD12/Fast USD18，之后购物车仍5件。询价联系字段必填，评价弹窗/图片控件可用；英/日/德商品canonical及手机布局检查通过。114个sitemap分片/23967 URL快照均200/UTF-8，未包含私有工作台/API；文本响应charset、浏览器中文/日文/德文及特殊符号正常。详见[原QA的生产验收](qa/2026-11-13-business-layout.md#oxygen-production-发布验收2026-11-16)。
+- `/dropshipping`页面已随主站发布，明确显示Development preview；未登录不可导入，private/no-store/noindex，未部署本机独立代发服务，正式环境没有测试店凭据。外部客户OAuth、订单采购/仓库履约/运单回传、自动阶梯价、站内私有附件仍未完成。17TRACK原入口与空输入校验复查正常，未用虚构运单作运输验收。
+- 发现正式环境既有`PUBLIC_CHECKOUT_DOMAIN`缺失，Shopify Analytics/consent组件报配置错误；源码原有读取未变。已另请用户确认仅Production补充本店公开结账域名并重新部署，截至此摘要尚待回复；不把该项记录为已解决。本次发布记录/截图是新本地资料，尚未另获推送授权，不包含在前述12提交中。
+
+## 历史：真实评价/询价补验完成，自主测试规则已调整（2026-11-16，17:45 北京时间）
 
 - 用户明确允许两项真实内部测试，并要求以后常规测试不逐项等待批准。已先同步根规则、工程/Git/业务工具规范、原接入方案及README：最小内部QA可直接执行，已有批准范围不重复申请；保留每次push、生产发布、删除、凭据/.env/权限/数据定义及其他明确红线。
 - 新构建网页真实上传一张Internal QA图片并提交3星测试评价，各200；后台1条Unpublished，正文和图片读回成功，公开列表仍0/平均0，商品HTML无测试正文或AggregateRating。真实签名图片代理200/image/png/private,no-store/15377字节，SHA256与原图一致。本机原Worker直连CDN超时，命令级使用现有代理后通过；未改.env/系统配置/生产策略。
