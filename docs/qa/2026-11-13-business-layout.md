@@ -136,3 +136,5 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 - **SEO**：商品地址未改，复用现有动态 sitemap 源，不伪造 lastmod。local `/sitemap.xml` 200/UTF-8、索引关闭时为空；生产索引 200/UTF-8，英日德 `products-1` 中代表商品规范地址各 1 次，未含 shipping API。线上核对只证明原地址保留，不代表功能发布。
 
 本机截图：[运费入口桌面](2026-11-16-shipping-entry-desktop.jpg)、[真实费用弹窗桌面](2026-11-16-shipping-desktop.jpg)、[手机表单](2026-11-16-shipping-mobile.jpg)、[手机费用结果](2026-11-16-shipping-mobile-results.jpg)。后台含密钥页面不截图。未 push/部署，完整代发、阶梯价及私有附件仍待实施。
+
+用户要求圈出入口后，新增[运费入口红圈放大图](2026-11-16-shipping-entry-annotated.png)：从上述桌面原图裁切放大，红圈和箭头指向绿色 Buy now 按钮下方右侧的 More Shipping Options。已视觉检查按钮、入口和红圈对应，保留未标注原图；此图为本地预览，不代表正式站已上线。仅改文档与标注图，验证 UTF-8、相对链接与 `git diff --check`，不重复运行前台构建。

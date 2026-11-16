@@ -204,3 +204,14 @@
 - PRODUCT 元字段定义已完整读回，hasNextPage=false。现有 `custom.technical_specifications` 为 json/PUBLIC_READ，`custom.sourcing_record`、`custom.source_snapshot` 及其分段、`custom.source_urls` 均为 NONE；评价已有 Customerssay 汇总与 Shopify 标准评分定义。本轮不重复创建这些字段，也不开放来源字段。
 - 拟新增的内部关系使用 app-owned 元对象：店铺连接、SKU 映射、订单关联、询价状态；每类均保存归属店铺/商家标识、稳定外部 ID、状态与版本，关闭 Storefront 访问。公开商品资料维持现有 merchant-owned `custom` 定义，便于店面与实际管理工具共同读取。实际字段名、类型及权限清单在操作前锁定，本轮尚未创建。
 - 官方 [Functions 可用性](https://shopify.dev/docs/apps/build/functions)明确：所有套餐可使用包含 Functions 的公开分发应用；包含 Functions 的自定义分发应用只支持 Plus。因此不能给 Basic 店铺部署单店自定义 Function 并宣称批发折扣已生效。继续核对现有应用/原生 B2B 的具体适用能力；若采用公开应用的折扣能力，先核实费用、SKU 阶梯和 Headless/结账一致性。需要新增付费应用或公开发布自有应用时另行确认。
+
+### 免费代发测试店（2026-11-16）
+
+用户表示没有测试店并明确要求代为创建。通过已登录的专用 Chrome for Testing → Dev Dashboard → Stores → Create store，创建 **Seine Shop Dropship Test**；选择 Basic 模拟功能环境，Generate test data 和 feature preview 均未选。列表刷新读回 Dev / Basic，组织 My Store（233393793），店铺 ID 99029909777，域名 `seine-shop-dropship-test.myshopify.com`；后台 Domains 读回同一主域名 Connected。没有选择付费套餐/试用、购买域名、安装应用、创建密钥或订单。
+
+- [测试店后台](https://admin.shopify.com/store/seine-shop-dropship-test)：模拟代发客户的店铺，保存后续经授权的测试上架商品和模拟订单。
+- [开发店详情](https://dev.shopify.com/dashboard/233393793/stores/99029909777)：当前创建所在组织，与此前供货店管理应用的组织标识分别记录，不视为同一应用或自动具备跨店权限。
+- 供货与仓库仍为 `ps83if-c4.myshopify.com`，测试店不会替代正式店。下一步核对开发应用分发、两端授权和最小权限，按既有方案实现映射/采购/履约；本次创建不构成密钥、生产业务写入或发布授权。
+- [Shopify 官方开发店说明](https://shopify.dev/docs/apps/build/stores/development-stores)：开发店仅用于开发测试，不能真实交易、不能转交客户，始终保留密码保护。后续使用测试支付，不使用真实收款；尚未创建测试订单。
+
+本机 Shopify CLI 3.93.2 的帮助确认不存在 `store create dev`，因此通过官方后台完成，没有升级/安装全局依赖或改系统配置。此处完成的是联调环境准备，自动同步与运单回传仍待实现和验收。
