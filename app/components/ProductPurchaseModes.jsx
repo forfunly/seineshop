@@ -1,4 +1,5 @@
 import {useId} from 'react';
+import {Link} from 'react-router';
 import {useLocale} from '~/lib/i18n';
 import {PURCHASE_MODES} from '~/lib/wholesale';
 import {AddToCartButton} from './AddToCartButton';
@@ -18,8 +19,8 @@ export function ProductPurchaseModes({mode, onChange, disabled}) {
 
 const customizationSteps = ['Share your requirements', 'Receive a quotation', 'Review a sample', 'Confirm your order', 'Production & quality review', 'Shipping', 'After-sales support'];
 
-export function ProductModeRequest({mode, onRequest, variant, busy}) {
-  const {t} = useLocale();
+export function ProductModeRequest({mode, onRequest, variant, busy, handle}) {
+  const {t, localize} = useLocale();
   const {open} = useAside();
   const custom = mode === 'Customization';
   return <section className="pdp-mode-details" aria-label={t(mode)}>
@@ -30,10 +31,11 @@ export function ProductModeRequest({mode, onRequest, variant, busy}) {
       <p className="pdp-mode-note">{t('Customization availability, minimum order quantity, sample costs and lead times are confirmed by quotation.')}</p>
     </> : <>
       <p>{t('Tell us about your store, destination countries and expected order volume. We will review product availability, shipping and fulfillment requirements with you.')}</p>
-      <p className="pdp-mode-note">{t('Request a consultation before placing a dropshipping order. Product and order synchronization with your Shopify store is not currently available.')}</p>
+      <p className="pdp-mode-note">{t('Open your workspace to check store connections and product imports. Order synchronization is not yet available.')}</p>
     </>}
     <div className="pdp-mode-actions">
-      <button type="button" className="pdp-inquiry-button" disabled={busy} onClick={(event) => onRequest(mode, event.currentTarget)}>{t(custom ? 'Create a custom request' : 'Request dropshipping')} <span aria-hidden="true">↗</span></button>
+      {!custom && <Link className="pdp-inquiry-button" to={`${localize('/dropshipping')}${handle ? `?product=${encodeURIComponent(handle)}` : ''}`}>{t('Open dropshipping workspace')} <span aria-hidden="true">↗</span></Link>}
+      <button type="button" className={`pdp-inquiry-button${custom ? '' : ' pdp-mode-consult'}`} disabled={busy} onClick={(event) => onRequest(mode, event.currentTarget)}>{t(custom ? 'Create a custom request' : 'Request dropshipping')} <span aria-hidden="true">↗</span></button>
       {custom && <AddToCartButton disabled={busy || !variant?.availableForSale} onClick={() => open('cart')} lines={variant ? [{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}] : []}>{t(variant?.availableForSale ? 'Buy sample' : 'Sold out')}</AddToCartButton>}
     </div>
     {custom && <p className="pdp-mode-note">{t('Buy sample adds one standard item to your cart. Customized samples and their costs must be agreed by quotation.')}</p>}

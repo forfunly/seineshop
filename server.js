@@ -1,4 +1,4 @@
-import {localeFromPath, localizePath} from '~/lib/locale';
+import {localizedRedirectPath} from '~/lib/locale';
 import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
@@ -42,9 +42,9 @@ export default {
       if (destination?.startsWith('/') && !destination.startsWith('//') && !requestUrl.pathname.endsWith('/localization')) {
         response.headers.set(
           'Location',
-          localizePath(
+          localizedRedirectPath(
             destination,
-            localeFromPath(new URL(request.url).pathname),
+            requestUrl.pathname,
           ),
         );
       }

@@ -19,6 +19,14 @@ scopes = "read_products,write_products,read_metaobjects,write_metaobjects,read_m
 [auth]
 redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
 
+[shop.metafields.app.connection_vault]
+name = "Seine Shop encrypted connections"
+type = "json"
+
+[shop.metafields.app.order_ledger]
+name = "Seine Shop operation ledger"
+type = "json"
+
 [product.metafields.app.source_id]
 name = "Seine Shop source product"
 type = "id"

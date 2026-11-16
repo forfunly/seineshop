@@ -155,3 +155,17 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 新截图（均非正式站发布）：[英文桌面原图](2026-11-16-shipping-estimate-entry-desktop.jpg)、[红圈放大图](2026-11-16-shipping-estimate-entry-annotated.png)、[英文手机](2026-11-16-shipping-estimate-entry-mobile.jpg)、[日语手机](2026-11-16-shipping-estimate-entry-jp.jpg)、[德语手机](2026-11-16-shipping-estimate-entry-de.jpg)、[测试店草稿后台](2026-11-16-dropship-draft-admin.jpg)。旧命名截图保留为历史证据。
 
 完整目标仍未完成：独立客户店连接与网站工作台、订单采购/履约运单回传、自动阶梯价、私有询价附件需继续。没有push/生产部署；无关发布方案、进度文件及旧截图保持原状，没有新增工作副本或删除任何文件。
+
+## 代发工作台与私有服务（2026-11-16）
+
+- **入口与页面**：商品页 Dropshipping 模式新增绿色 Open dropshipping workspace，咨询保留为次入口；账户菜单也可进入。当前商品带到工作台，表单填写本站商品链接，不要求客户理解商品handle。连接/商品/订单三个区域，未登录不能导入；订单区域明确尚未同步。英文桌面1440×1000、日德手机390×844检查，均无横向溢出，按钮/输入框至少44px；修复全局form最大400px及input盒模型对新页面的影响。截图为真实未登录状态，不含演示订单或伪造连接。
+- **访问与恢复**：Customer Account服务端读取自己的ID；浏览器tenant/token被忽略。登录返回白名单仅允许本地化工作台及商品参数，修复稳定授权回调丢失日德前缀的问题。服务桥请求签名覆盖租户、时间、nonce、方法、路径和原始body；测试拒绝篡改/重放/过期/Host重绑定，限制请求大小。会话按租户/店铺加密，断开后不可再用；刷新令牌不能重新激活已断开的连接。显式重试查询现有草稿，防重复并发和旧任务覆盖新任务状态。
+- **授权与实际平台读回**：用户明确同意本次两定义及本机地址。现有app dev预览自动应用SHOP connection_vault/order_ledger，真实只读API返回json/NONE，值尚未写入。CLI配置校验valid=true/issues=[]。本机仅新增DROPSHIP_SERVICE_URL，原.env字节保留、0600/Git忽略。Node3460只监听127.0.0.1；签名只读请求返回200/空连接与任务，没有记录受控测试身份。原B20A草稿再次--verify通过（2规格/2READY图片/0库存/DRAFT），未进行本轮商品写入。
+- **订单基础**：纯函数与查询准备完成，检查PAID/未取消、完整分页、稳定规格映射、未发数量、币种和订单快照；仓库资格必须另外核对本站采购已付、关联ID与数量，已部分履约采购也不自动再次放行。3组行为测试覆盖拒绝场景。没有启用订单读取权限或实际采购、仓库任务、履约操作，不能据此宣称订单同步已完成。
+- **登录联调缺口**：开发工具账号过期后用户已重新登录。Customer Account的localhost3006回调被拒（redirect_uri mismatch），本机dev3000显示官方需customer-account-push/临时HTTPS测试地址。已单独请求官方临时测试链接授权，尚未获回复；未开启公开通道，也未修改正式店后台回调。真实客户登录、连接保存和网页导入写入待继续，SDK begin/callback cookie保护仅在本机行为测试完成。
+- **检查**：98/98全量测试；lint0错误/2既有脚本警告；codegen/build、集合筛选及来源暴露审计通过。新增Admin/Customer GraphQL按2026-04校验；Hydrogen组件工具报告无适用Shopify组件，不把此输出当作全项目类型检查。构建保留envFile/future flags/Rolldown分析器提示。
+- **键盘与浏览器提示**：商品页工作台链接具有可见焦点，Enter可进入并保留商品参数；本机dev控制台仍有已有的根文档script nonce hydration提示，未通过忽略标记掩盖，不将开发模式控制台记为全清。工作台所需真实登录联调仍按上项限制处理。
+- **提交前审查**：源码/文档及客户端和服务端构建共390文件，针对本机6项实际敏感值精确扫描，0匹配；7个相关Markdown的UTF-8和90个相对链接检查通过。无关旧发布方案、进度与旧截图保留在工作区，不纳入本轮提交。
+- **SEO与响应**：工作台文档、数据/API均private/no-store/noindex；实际本机文档头为private,no-store/noindex,nofollow，三语言正文正常，canonical不带商品参数。工作台不加入既有STATIC_PAGES；启用索引的sitemap行为测试明确排除工作台/API。本机/sitemap.xml为200/UTF-8/禁索引0子图，pages分图404与当前索引关闭一致。没有新增可索引地址、路径迁移或伪造lastmod，没有发布线上。
+
+新证据：[商品页原图](2026-11-16-dropship-workspace-entry-desktop.jpg)、[入口红圈](2026-11-16-dropship-workspace-entry-annotated.png)、[工作台桌面](2026-11-16-dropship-workspace-desktop.jpg)、[日语手机](2026-11-16-dropship-workspace-ja-mobile.jpg)、[德语手机](2026-11-16-dropship-workspace-de-mobile.jpg)。原图保留，圈图只增加标记。外部客户OAuth、真实订单/履约、自动阶梯价及私有附件仍未完成；未push/部署。

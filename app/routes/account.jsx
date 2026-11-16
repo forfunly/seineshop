@@ -78,6 +78,9 @@ function AccountMenu() {
       <NavLink to={localize('/account/addresses')} style={isActiveStyle}>
         {t('Addresses')}
       </NavLink>
+      <NavLink to={localize('/dropshipping')} style={isActiveStyle}>
+        {t('Dropshipping workspace')}
+      </NavLink>
       <Logout />
     </nav>
   );

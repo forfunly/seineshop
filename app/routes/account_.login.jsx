@@ -1,3 +1,4 @@
+import {dropshipReturnPath} from '~/lib/dropshipping';
 /**
  * @param {Route.LoaderArgs}
  */
@@ -8,6 +9,9 @@ export async function loader({request, context}) {
   const loginHintMode = url.searchParams.get('login_hint_mode') || undefined;
   const locale = context.storefront.i18n.language.toLowerCase();
   context.session.set('storefrontLocale', locale === 'ja' ? 'jp' : locale);
+  const returnTo = dropshipReturnPath(url.searchParams.get('returnTo'));
+  if (returnTo) context.session.set('accountReturnTo', returnTo);
+  else context.session.unset('accountReturnTo');
 
   return context.customerAccount.login({
     countryCode: context.storefront.i18n.country,

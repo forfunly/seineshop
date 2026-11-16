@@ -227,3 +227,17 @@
 用户已明确回复「允许测试应用、配置和映射定义」。官方 CLI 已在 `apps/dropshipping/seine-shop-dropshipping-dev/` 初始化测试应用，并仅在该测试店启用开发预览；此目录仅保存独立应用及英文 kebab-case 模块，凭据/依赖/生成物不提交，不自动清理。已按授权新增本机配置 `DROPSHIP_APP_CLIENT_ID`、`DROPSHIP_APP_CLIENT_SECRET`、`DROPSHIP_TOKEN_ENCRYPTION_KEY`，不改其他环境项、不将管理 token 放进 Cookie 或前台。首次商品导入仅限一个 B20A 草稿，用于规格、图片、价格及重复导入验证。
 
 映射定义全部关闭 Storefront 访问：Product 的 app.source_id 使用 Shopify `id` 类型，供 `productByIdentifier(customId)` 查询和唯一约束；Variant 的 app.source_id 使用 single_line_text_field；应用自有 product_mapping 元对象保存源店铺/商品、目标商品引用、规格映射、币种和快照哈希。实测单行文本的 uniqueValues 并不满足 customId 查询要求，按[官方自定义 ID 指引](https://shopify.dev/docs/apps/build/metafields/working-with-custom-ids)修正空定义类型后再写商品。源商品读取复用已有服务端 Storefront 凭据；官方服务端 SDK 使用私有 token 请求头，不可误传 public token。没有生产授权、没有订单或履约写入。
+
+### 继续实施：商家工作台、授权与订单处理（2026-11-16）
+
+用户要求继续完成剩余开发，沿用已经批准的完整目标，不重复请求总方案确认。首先把本地导入器接入网站工作台：商品页代发模式 → `/dropshipping`（英/日/德、noindex/private）→ Seine Shop 客户登录 → 店铺连接/商品导入/订单区域。客户身份由 Hydrogen Customer Account 服务端校验，浏览器不能指定 tenant；商品上下文只传真实 handle，不带 token。工作台不在 sitemap，既有商品规范路径保留；统一 SEO 与站内入口同步。
+
+独立应用 `src/` 增加英文 kebab-case 服务模块；保留当前 Node 官方 SDK，不改变 Hydrogen 版本。Hydrogen 通过仅服务端的签名请求调用本机代发服务：方法、路径、原始请求体、客户 ID、时间、随机请求 ID 一起签名；校验来源、时限、重放和体积，分目的派生签名/加密子密钥，不能直接把管理 token 或 vault 返回网页。独立应用仅监听 loopback，配置的服务地址严格限制本机 HTTP 或明确配置的 HTTPS；不开放隧道。
+
+拟在测试店 SHOP 新增应用自有 JSON 字段 `connection_vault` 和 `order_ledger`（均 Storefront NONE）：前者按客户/目标店隔离加密 SDK Session，后者保存幂等操作、事件版本与处理状态，不存完整地址/正文。用 `metafieldsSet(compareDigest)` 比较更新，遇到冲突重新读；首次写 compareDigest=null，限制记录数和字节容量，超限停止而非覆盖。初期单进程本机服务，不将内存任务或 waitUntil 视为持久队列，生产多实例/定时执行需进一步部署设计。定义创建、本机新增 `DROPSHIP_SERVICE_URL` 需单独授权，未经授权只开发代码，不改正在运行的 TOML 定义。
+
+用户本轮已明确回复「允许这项测试配置」：仅测试店新增上述两个 SHOP 应用私有 JSON 定义，且只在本机新增 `DROPSHIP_SERVICE_URL=http://127.0.0.1:3460`；复用既有密钥，不改正式店、不创建订单、不公开服务。定义和本机配置实施后分别读回验证，不能将此授权扩大为订单/履约权限或生产发布。
+
+店铺连接使用官方 OAuth begin/callback，校验 HMAC/state、租户绑定、目标域名及授予权限。使用 expiring offline token 并保存/刷新其元数据；卸载验签后停用该连接，不执行删除。开发阶段仅允许已有测试店；正式外部客户店分发、HTTPS 回调注册与生产启用另获授权，未配置时界面明确不可用。开发店可用既有同组织 grant 验证连接/导入业务，必须显式标识测试连接，不冒充客户 OAuth 已验。
+
+订单代码同时准备：以客户店原订单 ID/行 ID 与本站 variant 映射生成采购清单；只有实际已付款、未取消/未全退且仍需发货的对应行可采购。币种、数量、版本、重复事件及部分发货均检查，忽略客户端报价。客户消费者已付与向本站采购已付分开记录；后者未确认不得发仓库任务。运单以仓库实际 Fulfillment 为源，按对应未履约数量回传，重放不重复发货。真实订单/客户/库存/履约权限、新订单关联定义或另一测试店另列清单授权；此阶段只用受控测试替身验收，不对正式店写订单。

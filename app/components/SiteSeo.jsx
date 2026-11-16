@@ -52,10 +52,12 @@ export function SiteSeo() {
     '/policies': 'Store Policies',
     '/support': 'Support & Product Help',
     '/page/order-tracking': 'Order Tracking',
+    '/dropshipping': 'Dropshipping workspace',
     '/blogs': 'Journal',
     '/discover/b20a': 'B-20A 3-in-1 Wireless Charging Station',
   };
   const descriptions = {
+    '/dropshipping': 'Manage your store connection and product imports with Seine Shop.',
     '/page/order-tracking': 'Track your Seineshop delivery with your shipment tracking number. View carrier updates with 17TRACK and get help with your package.',
     '/': 'Shop phone cases, screen protectors, chargers and mobile accessories at SeineShop. Order online or request wholesale pricing and OEM/ODM customization.',
     '/support':
@@ -95,7 +97,7 @@ export function SiteSeo() {
     location.search,
   );
   const params = new URLSearchParams(location.search);
-  const utility = /^\/(account|cart|search|preview)(\/|$)/.test(pathname);
+  const utility = /^\/(account|cart|search|preview|dropshipping)(\/|$)/.test(pathname);
   const filtered =
     [
       'q',

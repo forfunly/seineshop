@@ -67,7 +67,7 @@ export async function importDraftProduct({source, admin}, handle, {apply = false
     if (previousFields.source_shop !== SOURCE_SHOP || previousFields.source_product_id !== product.id ||
       previousFields.target_product !== imported.id || previousFields.variant_map !== JSON.stringify(variants))
       throw new ImportError('mapping-mismatch');
-    return {status: 'reused', sourceProductId: product.id, targetProductId: imported.id, variants: variants.length};
+    return {status: 'reused', title: product.title, sourceProductId: product.id, targetProductId: imported.id, variants: variants.length};
   }
   const fields = {source_shop: SOURCE_SHOP, source_product_id: product.id, target_product: imported.id,
     variant_map: JSON.stringify(variants), currency: plan.currency, snapshot_hash: reused ? 'recovered-unverified-snapshot' : plan.hash};
@@ -77,5 +77,5 @@ export async function importDraftProduct({source, admin}, handle, {apply = false
   const check = await admin(MAPPING_QUERY, {handle: mappingHandle});
   const readback = Object.fromEntries((check.metaobjectByHandle?.fields || []).map(({key, value}) => [key, value]));
   if (Object.entries(fields).some(([key, value]) => readback[key] !== value)) throw new ImportError('mapping-pending');
-  return {status: reused ? 'recovered' : 'created', sourceProductId: product.id, targetProductId: imported.id, variants: variants.length};
+  return {status: reused ? 'recovered' : 'created', title: product.title, sourceProductId: product.id, targetProductId: imported.id, variants: variants.length};
 }

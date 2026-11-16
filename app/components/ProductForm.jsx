@@ -146,7 +146,7 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
       </div>
       <p className="pdp-checkout-note">{t('Secure checkout by Shopify. Shipping and taxes calculated at checkout.')}</p>
       <ProductShippingOptions key={selectedVariant?.id} variant={selectedVariant} quantity={quantity} disabled={unavailable}/>
-      </> : <ProductModeRequest mode={purchaseMode} onRequest={onRequest} variant={selectedVariant} busy={busy}/>}
+      </> : <ProductModeRequest mode={purchaseMode} onRequest={onRequest} variant={selectedVariant} busy={busy} handle={product.handle}/>}
     </div>
   );
 }

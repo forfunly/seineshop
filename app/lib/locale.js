@@ -28,3 +28,8 @@ export function localizePath(path, locale) {
   const clean = stripLocale(path);
   return `${locale.prefix}${clean === '/' ? '/' : clean}`;
 }
+
+export function localizedRedirectPath(destination, requestPathname) {
+  // Explicit locale destinations (including the stable account callback) retain their language.
+  return localeFromPath(destination).prefix ? destination : localizePath(destination, localeFromPath(requestPathname));
+}

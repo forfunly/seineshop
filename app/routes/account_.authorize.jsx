@@ -1,3 +1,4 @@
+import {dropshipReturnPath} from '~/lib/dropshipping';
 /**
  * @param {Route.LoaderArgs}
  */
@@ -15,7 +16,10 @@ export async function loader({context}) {
     }
   }
   const locale = context.session.get('storefrontLocale');
-  if (['jp', 'de'].includes(locale))
+  const returnTo = dropshipReturnPath(context.session.get('accountReturnTo'));
+  context.session.unset('accountReturnTo');
+  if (returnTo) response.headers.set('Location', returnTo);
+  else if (['jp', 'de'].includes(locale))
     response.headers.set('Location', `/${locale}/account/orders`);
   return response;
 }

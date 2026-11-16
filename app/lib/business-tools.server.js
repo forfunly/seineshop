@@ -15,7 +15,7 @@ const NO_STORE = {
 };
 const buckets = new Map();
 
-class ServiceError extends Error {
+export class ServiceError extends Error {
   constructor(code = 'unavailable', status = 503, retryAfter = null) {
     super(code);
     this.code = code;

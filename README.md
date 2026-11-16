@@ -124,7 +124,7 @@ Official integration: https://www.17track.net/en/widget. Hydrogen CSP guidance: 
 
 The CLI-scaffolded application in [apps/dropshipping/seine-shop-dropshipping-dev](apps/dropshipping/seine-shop-dropshipping-dev/README.md) reads explicitly selected public Storefront product fields and imports one DRAFT into the fixed development shop. Product/variant identifiers and mappings are app-owned, with Storefront access disabled. Repeated imports reuse verified IDs instead of overwriting merchant edits. No channel publication, inventory quantities or orders are written.
 
-The root ignored environment requires the separately authorized `DROPSHIP_APP_CLIENT_ID`, `DROPSHIP_APP_CLIENT_SECRET`, `DROPSHIP_TOKEN_ENCRYPTION_KEY`, plus the existing `PUBLIC_STORE_DOMAIN` and server-only `PRIVATE_STOREFRONT_API_TOKEN`. The official server SDK requires the private Storefront token. The encryption key is reserved for future customer-shop token storage; the current same-organization development grant stores its temporary token only in memory. This is not a customer-facing connection flow.
+The root ignored environment requires the separately authorized `DROPSHIP_APP_CLIENT_ID`, `DROPSHIP_APP_CLIENT_SECRET`, `DROPSHIP_TOKEN_ENCRYPTION_KEY`, plus the existing `PUBLIC_STORE_DOMAIN` and server-only `PRIVATE_STOREFRONT_API_TOKEN`. The official server SDK requires the private Storefront token. The development client-credentials grant caches its temporary token in memory; the website workspace encrypts stored connection sessions with purpose-separated AES-GCM keys.
 
 From the repository root, after installing the independent application's locked local dependencies and enabling its development preview/definitions:
 
@@ -138,6 +138,23 @@ node --test tests/dropship-import.test.mjs
 ```
 
 Default output is a read-only plan. Write/verify output contains only IDs, counts, status and stable error codes. `--verify` exits unsuccessfully for changed or incomplete data and never repairs it automatically. Website workspaces, independent-shop OAuth and order/fulfillment synchronization remain unfinished.
+
+## Dropshipping workspace and development service
+
+`/dropshipping` (also `/jp/dropshipping` and `/de/dropshipping`) is private/no-store/noindex and excluded from sitemaps. Enter from a product's Dropshipping mode or the customer account menu. The current product link is carried into the import form. A Seine Shop customer login is required: the server obtains the customer ID from the Customer Account API and ignores browser-supplied tenant IDs or credentials. Login returns are restricted to the workspace and retain the chosen language.
+
+After separately authorizing the configuration, set `DROPSHIP_SERVICE_URL=http://127.0.0.1:3460` locally and start the independent Node service from the repository root:
+
+```sh
+node --env-file=.env apps/dropshipping/seine-shop-dropshipping-dev/src/service-server.mjs
+node --test tests/dropship*.test.mjs
+```
+
+The service binds only to 127.0.0.1, checks its Host header, and accepts signed internal requests with tenant/body/method/path/time/nonce binding. Two app-owned SHOP JSON definitions (`connection_vault`, `order_ledger`) must be present with Storefront NONE. They hold encrypted connections and recoverable task states, updated with Shopify compareDigest CAS. This bounded test registry allows 20 connections and 50 tasks/100 KB per field; capacity or conflicting state stops writes. Nothing is automatically deleted. Explicit retries recheck the unique source ID and reuse existing drafts.
+
+The development connection is limited to the designated test shop. Official OAuth begin/callback and expiring-offline-token refresh code are present, but external customer authorization requires separately approved app distribution, registered HTTPS callbacks, hosting and configuration. It is disabled while these are absent. Local Customer Account authentication requires the official Hydrogen development flow; a temporary public test link requires explicit approval under the project rules. Shopify admin/CLI login does not authenticate a storefront customer.
+
+`order-plan.mjs` validates server-read paid order snapshots, stable variant mappings, outstanding quantities and separate supplier payment before warehouse eligibility. Its query and functions are prepared and tested, but not wired to the live service. No order/fulfillment scopes or operations are enabled. Order synchronization, actual procurement, fulfillment/tracking writeback, private inquiry attachments and automatic tier pricing remain unfinished. This code has not been released to production.
 
 ## Product reviews and business inquiries
 

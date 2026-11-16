@@ -1,6 +1,16 @@
 # 项目连接状态与授权记录
 
-## 当前：测试店草稿导入已连通，运费入口更名（2026-11-16，北京时间）
+## 当前：代发工作台与私有服务已开发，客户登录联调待临时 HTTPS 授权（2026-11-16，北京时间）
+
+- 沿用已批准的完整方案，新增 `/dropshipping`（英/日/德）：商品 Dropshipping 模式绿色入口、账户菜单、登录返回、连接/商品/订单区域、商品链接导入、任务记录和显式重试。网页不接受浏览器提供的租户/凭据；独立 Node 服务仅监听 127.0.0.1:3460，校验签名、时间、nonce、Host；会话 AES-GCM 加密并绑定租户/店铺。尚未完成真实客户登录→连接→网页导入的端到端验收，不将未登录截图当作已接通客户账户。
+- 用户本轮明确回复「允许这项测试配置」，仅测试店新增 SHOP 应用私有 JSON 定义 `connection_vault` / `order_ledger`，均已真实 API 读回 type=json、Storefront NONE；CLI 配置校验 valid=true/issues=[]。本机 `.env` 只追加 `DROPSHIP_SERVICE_URL=http://127.0.0.1:3460`，原有字节保留、0600、Git 忽略。使用原密钥，无新增密钥或正式店配置变更。
+- Shopify CAS 私有存储限制20连接、50任务、每字段100 KB，冲突重读，超限停止、不删除。受控测试身份发送的签名只读 workspace 请求200，连接/任务数均0；未存储测试身份或客户授权值。原 B20A 草稿再做只读核对：DRAFT/未发布、2规格、2图片READY、库存0，未修改商品。
+- 98/98测试、lint（0错误/2既有脚本警告）、codegen/build、集合筛选与构建来源审计通过。Admin/Customer GraphQL 2026-04校验和官方 SDK OAuth cookie 保护测试通过；Hydrogen组件校验未发现适用的Shopify组件，不能当作完整TypeScript验收。保留现有React Router未来选项、envFile弃用及构建分析器提示。桌面、390px日德手机、UTF-8、实际private/no-store/noindex/nofollow响应头和商品上下文已检查；见[既有布局 QA 的本轮记录](qa/2026-11-13-business-layout.md#代发工作台与私有服务2026-11-16)。
+- CLI登录过期后用户已完成重新登录，开发工具可用。网站客户登录是另一套身份：本地3006返回redirect_uri mismatch；官方本地dev3000明确要求`--customer-account-push`生成的HTTPS地址。已请求本次官方临时测试链接授权，**尚未收到回复，未开启公开通道、未改Customer Account后台回调配置**。本机3000/3006与Node3460仍仅回环可达。
+- `order-plan.mjs`已准备订单快照读取与纯代码校验：付款/取消、完整行数据、稳定规格映射、未履约数量、币种、订单变化、单独采购收款及数量核对；未接到运行中的订单处理。没有新增订单/客户/履约权限、创建订单、付款或发通知。外部客户OAuth、真实采购/仓库履约与运单回传、自动阶梯价、私有询价附件仍待实施。
+- 本次fetch直连两次超时后，使用系统已有本机代理做单次命令级请求成功，origin/main没有新增，本地原有8提交保留，未修改系统或持久Git配置。复用主目录，保留无关发布方案/旧进度/旧截图，不维护进度图，不删除文件。未push、未部署。
+
+## 历史：测试店草稿导入已连通，运费入口更名（2026-11-16，北京时间）
 
 - 用户本轮明确批准「允许测试应用、配置和映射定义」。官方 CLI 创建 **Seine Shop Dropshipping Dev**（App ID 447811256321，组织 233393793），仅在免费开发店 `seine-shop-dropship-test.myshopify.com` 启用开发预览。配置和源码保存在 `apps/dropshipping/seine-shop-dropshipping-dev/`，没有发布应用新正式版本或选择不可逆分发方式。
 - 本机 `.env` 仅新增获准的 `DROPSHIP_APP_CLIENT_ID`、`DROPSHIP_APP_CLIENT_SECRET`、`DROPSHIP_TOKEN_ENCRYPTION_KEY`，文件 0600/Git 忽略，不记录值。官方 client credentials grant 只用于同组织开发店，管理 token 仅内存缓存并按需重新获取；不是独立客户店 OAuth。加密密钥为后续授权存储预留，本轮尚未存储客户店 token。
