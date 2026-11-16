@@ -9,7 +9,7 @@ import {useEffect, useState} from 'react';
 import {ProductStickyBar} from '~/components/ProductStickyBar';
 import {ProductBuyingGuide} from '~/components/ProductBuyingGuide';
 import {useLocale} from '~/lib/i18n';
-import {Link, useLoaderData} from 'react-router';
+import {Link, useLoaderData, useFetchers, useNavigation} from 'react-router';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -22,6 +22,7 @@ import {ProductSpecifications} from '~/components/ProductSpecifications';
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductGallery} from '~/components/ProductGallery';
 import {ProductForm} from '~/components/ProductForm';
+import {ProductPurchaseModes} from '~/components/ProductPurchaseModes';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
 /**
@@ -117,8 +118,12 @@ export default function Product() {
   /** @type {LoaderReturnData} */
   const {product, reviews} = useLoaderData();
   const [quantity, setQuantity] = useState('1');
+  const [purchaseMode, setPurchaseMode] = useState('Wholesale');
   const [inquiryRequest, setInquiryRequest] = useState(null);
-  useEffect(() => {setInquiryRequest(null);}, [product.id]);
+  const navigation = useNavigation();
+  const fetchers = useFetchers();
+  const busy = navigation.state !== 'idle' || fetchers.some((fetcher) => fetcher.state !== 'idle');
+  useEffect(() => {setInquiryRequest(null); setPurchaseMode('Wholesale'); setQuantity('1');}, [product.id]);
   const requestInquiry = (type, trigger) => setInquiryRequest({type, trigger, productId: product.id});
   const hasBuyingGuide = product.handle === 'b-20a-3-in-1-foldable-wireless-charging-station';
 
@@ -150,18 +155,20 @@ export default function Product() {
       <div className="pdp-layout">
         <div className="pdp-visual-column"><ProductGallery key={selectedVariant?.id} images={product.images.nodes} selectedImage={selectedVariant?.image} sku={selectedVariant?.sku} title={t(title)} /><SalesContact/></div>
         <div className="pdp-summary">
+          <ProductPurchaseModes mode={purchaseMode} onChange={setPurchaseMode} disabled={busy}/>
           <p className="pdp-eyebrow">SEINESHOP / {t('Everyday essentials')}</p>
           <h1>{t(title)}</h1>
           <ProductRating summary={reviews.status === 'ready' ? reviews.summary : reviews.status === 'unconfigured' ? productRating(product) : null}/>
           <div className="pdp-price-quote-row">
             <ProductPrice price={selectedVariant?.price} compareAtPrice={selectedVariant?.compareAtPrice} />
-            <button type="button" className="pdp-quote-entry" onClick={(event) => requestInquiry('Wholesale', event.currentTarget)}>{t('Request a quote')} <span aria-hidden="true">↗</span></button>
+            <button type="button" className="pdp-quote-entry" disabled={busy} onClick={(event) => requestInquiry(purchaseMode, event.currentTarget)}>{t('Request a quote')} <span aria-hidden="true">↗</span></button>
           </div>
-          <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} />
+          {purchaseMode === 'Wholesale' && <WholesaleTiers quantity={quantity} setQuantity={setQuantity} price={selectedVariant?.price} />}
+          {purchaseMode === 'Customization' && <p className="pdp-mode-note">{t('Reference unit price. Customized products are quoted separately.')}</p>}
           <p className={`pdp-availability ${selectedVariant?.availableForSale ? 'is-available' : ''}`}>
             <span aria-hidden="true">●</span> {t(selectedVariant?.availableForSale ? 'Available to order' : 'Sold out')}
           </p>
-          {hasBuyingGuide && <>
+          {hasBuyingGuide && purchaseMode === 'Wholesale' && <>
             <p className="pdp-intro">{t('One compact home for your daily charging routine. Fold it down, take it along, and keep your essentials together.')}</p>
             <div className="pdp-highlights">
               <span><b>3-in-1</b>{t('Phone · earbuds · watch')}</span>
@@ -170,17 +177,17 @@ export default function Product() {
             </div>
             <p className="pdp-compatibility">{t('For Qi-compatible phones, wireless-charging earbuds and compatible Samsung Galaxy Watches. Check your device before ordering. Power adapter not included.')}</p>
           </>}
-          <div id="product-purchase">
-            <ProductForm optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} />
+          <div id="product-purchase" tabIndex={-1}>
+            <ProductForm product={product} optionImages={Object.fromEntries(product.options.flatMap((option) => option.optionValues.map((value) => [`${option.name}:${value.name}`, value.firstSelectableVariant?.image])))} key={product.id} productOptions={productOptions} selectedVariant={selectedVariant} quantity={quantity} setQuantity={setQuantity} purchaseMode={purchaseMode} onRequest={requestInquiry} />
           </div>
-          <div className="pdp-payment-methods" role="group" aria-label={t('Payment options')}>
+          {purchaseMode === 'Wholesale' && <><div className="pdp-payment-methods" role="group" aria-label={t('Payment options')}>
             {[['shop-pay', 'Shop Pay'], ['visa', 'Visa'], ['mastercard', 'Mastercard'], ['paypal', 'PayPal']].map(([key, name]) => (
               <span className={`pdp-payment-logo pdp-payment-logo--${key}`} key={key}>
                 <img src={`/images/payments/${key}.svg`} alt={name} width="60" height="38" loading="lazy" />
               </span>
             ))}
           </div>
-          <p className="pdp-payment-availability">{t('Available payment options are shown at checkout for your location and device.')}</p>
+          <p className="pdp-payment-availability">{t('Available payment options are shown at checkout for your location and device.')}</p></>}
           <div className="pdp-service-links">
             <Link to={localize('/support#orders')}>{t('Orders & delivery')} ↗</Link>
             <Link to={localize('/support#returns')}>{t('Returns & refunds')} ↗</Link>
@@ -217,7 +224,7 @@ export default function Product() {
       </section>
       <ProductReviews key={`reviews-${product.id}`} product={product} initialData={reviews}/>
       <BusinessInquiry key={product.id} product={product} variant={selectedVariant} quantity={quantity} request={inquiryRequest?.productId === product.id ? inquiryRequest : null} onRequest={requestInquiry}/>
-      <ProductStickyBar title={title} variant={selectedVariant} quantity={quantity} />
+      <ProductStickyBar title={title} variant={selectedVariant} quantity={quantity} purchaseMode={purchaseMode} onRequest={requestInquiry}/>
       <Analytics.ProductView
         data={{
           products: [

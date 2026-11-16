@@ -5,17 +5,23 @@ import {Link, useNavigate, useFetcher, useFetchers, useNavigation} from 'react-r
 import {useId} from 'react';
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
+import {ProductModeRequest} from './ProductPurchaseModes';
+import {ProductBulkBuy} from './ProductBulkBuy';
+import {ProductShippingOptions} from './ProductShippingOptions';
 
 /**
  * @param {{
  *   productOptions: MappedProductOptions[];
+ *   product: ProductFragment;
  *   optionImages?: Record<string, any>;
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  *   quantity: string;
  *   setQuantity: (quantity: string) => void;
+ *   purchaseMode?: string;
+ *   onRequest?: (mode: string, trigger: HTMLButtonElement) => void;
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, quantity, setQuantity, optionImages = {}}) {
+export function ProductForm({product, productOptions, selectedVariant, quantity, setQuantity, optionImages = {}, purchaseMode = 'Wholesale', onRequest}) {
   const {t, localize} = useLocale();
   const navigate = useNavigate();
   const {open} = useAside();
@@ -27,6 +33,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
   const validQuantity = validPurchaseQuantity(quantity);
   const busy = navigation.state !== 'idle' || fetchers.some((fetcher) => fetcher.state !== 'idle');
   const unavailable = !selectedVariant?.availableForSale || !validQuantity || busy;
+  const bulkOption = productOptions.find((option) => option.optionValues.length > 1)?.name;
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -34,7 +41,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
         if (option.optionValues.length === 1) return null;
         return (
           <div className="product-options" key={option.name}>
-            <h5>{t(option.name)} <span className="pdp-option-selected">{t(option.optionValues.find((value) => value.selected)?.name)}</span></h5>
+            <div className="product-options-heading"><h5>{t(option.name)} <span className="pdp-option-selected">{t(option.optionValues.find((value) => value.selected)?.name)}</span></h5>{purchaseMode === 'Wholesale' && option.name === bulkOption && <ProductBulkBuy handle={product.handle} title={product.title} disabled={busy}/>}</div>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {
@@ -110,7 +117,7 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
           </div>
         );
       })}
-      <div className="pdp-quantity-row">
+      {purchaseMode === 'Wholesale' ? <><div className="pdp-quantity-row">
         <label htmlFor={quantityId}>{t('Quantity')}</label>
         <div className="pdp-quantity">
           <button type="button" aria-label={t('Decrease quantity')} disabled={busy || Number(quantity) <= 1} onClick={() => setQuantity(String(Math.max(1, Number(quantity) - 1)))}>−</button>
@@ -138,7 +145,8 @@ export function ProductForm({productOptions, selectedVariant, quantity, setQuant
         </checkout.Form>
       </div>
       <p className="pdp-checkout-note">{t('Secure checkout by Shopify. Shipping and taxes calculated at checkout.')}</p>
-
+      <ProductShippingOptions key={selectedVariant?.id} variant={selectedVariant} quantity={quantity} disabled={unavailable}/>
+      </> : <ProductModeRequest mode={purchaseMode} onRequest={onRequest} variant={selectedVariant} busy={busy}/>}
     </div>
   );
 }

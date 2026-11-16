@@ -34,7 +34,7 @@ export function BusinessInquiry({product, variant, quantity, request, onRequest}
   const {dialogRef, triggerRef, closeButtonRef, openDialog, closeDialog} = useModalDialog({lightDismiss: true});
   useEffect(() => {
     if (!request) return;
-    setType(request.type);
+    if (['Wholesale', 'OEM', 'ODM'].includes(request.type)) setType(request.type);
     triggerRef.current = request.trigger;
     openDialog();
   }, [request, openDialog, triggerRef]);
@@ -54,7 +54,7 @@ export function BusinessInquiry({product, variant, quantity, request, onRequest}
         {(variant?.image || product.images?.nodes?.[0]) && <img src={(variant?.image || product.images.nodes[0]).url} alt="" width="72" height="72"/>}
         <div><p>{t(product.title)}</p><p className="pdp-inquiry-sku">SKU: {variant?.sku || '—'} · {t(variant?.title)}</p>{variant?.price && <p>{t('Current unit price')}: <strong><Money as="span" data={variant.price}/></strong></p>}</div>
       </div>
-      <ProductInquiryForm product={product} variant={variant} quantity={quantity} type={type} openRequest={request} onCancel={closeDialog}/></div>
+      <ProductInquiryForm product={product} variant={variant} quantity={quantity} type={request?.type || type} openRequest={request} onCancel={closeDialog}/></div>
     </dialog>
   </section>;
 }

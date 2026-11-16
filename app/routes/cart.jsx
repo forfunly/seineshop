@@ -2,6 +2,7 @@ import {useLocale} from '~/lib/i18n';
 import {useLoaderData, data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {CartMain} from '~/components/CartMain';
+import {addPurchaseLines} from '~/lib/bulk-buy';
 
 /**
  * @type {Route.MetaFunction}
@@ -33,7 +34,7 @@ export async function action({request, context}) {
   let result;
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
-      result = await cart.addLines(inputs.lines);
+      result = await addPurchaseLines(inputs.lines, cart);
       break;
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
@@ -74,7 +75,7 @@ export async function action({request, context}) {
   }
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
-  const {cart: cartResult, errors, warnings} = result;
+  const {cart: cartResult, errors, warnings, uncertain} = result;
   headers.set('Cache-Control', 'private, no-store');
   const redirectTo = formData.get('redirectTo') ?? null;
   if (
@@ -92,6 +93,7 @@ export async function action({request, context}) {
       cart: cartResult,
       errors,
       warnings,
+      uncertain,
       analytics: {
         cartId,
       },

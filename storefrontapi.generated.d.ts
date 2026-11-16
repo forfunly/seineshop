@@ -438,6 +438,89 @@ export type MarketLocalizationQuery = {
   };
 };
 
+export type BulkPurchaseVariantsQueryVariables = StorefrontAPI.Exact<{
+  handle: StorefrontAPI.Scalars['String']['input'];
+  after?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type BulkPurchaseVariantsQuery = {
+  product?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      variants: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.ProductVariant,
+            'id' | 'title' | 'sku' | 'availableForSale'
+          > & {
+            image?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+            >;
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+        pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage' | 'endCursor'>;
+      };
+    }
+  >;
+};
+
+export type ShippingQuoteCountriesQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type ShippingQuoteCountriesQuery = {
+  localization: {
+    availableCountries: Array<Pick<StorefrontAPI.Country, 'isoCode' | 'name'>>;
+  };
+};
+
+export type ProductShippingQuoteMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CartInput;
+  country: StorefrontAPI.CountryCode;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type ProductShippingQuoteMutation = {
+  cartCreate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<{
+      lines: {
+        nodes: Array<
+          | (Pick<StorefrontAPI.CartLine, 'quantity'> & {
+              merchandise: Pick<
+                StorefrontAPI.ProductVariant,
+                'id' | 'requiresShipping'
+              >;
+            })
+          | (Pick<StorefrontAPI.ComponentizableCartLine, 'quantity'> & {
+              merchandise: Pick<
+                StorefrontAPI.ProductVariant,
+                'id' | 'requiresShipping'
+              >;
+            })
+        >;
+      };
+      deliveryGroups: {
+        nodes: Array<{
+          deliveryOptions: Array<
+            Pick<StorefrontAPI.CartDeliveryOption, 'title' | 'description'> & {
+              estimatedCost: Pick<
+                StorefrontAPI.MoneyV2,
+                'amount' | 'currencyCode'
+              >;
+            }
+          >;
+        }>;
+        pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage'>;
+      };
+    }>;
+    userErrors: Array<Pick<StorefrontAPI.CartUserError, 'code'>>;
+    warnings: Array<Pick<StorefrontAPI.CartWarning, 'code'>>;
+  }>;
+};
+
 export type SeineSitemapCountsQueryVariables = StorefrontAPI.Exact<{
   [key: string]: never;
 }>;
@@ -1519,6 +1602,14 @@ interface GeneratedQueryTypes {
     return: MarketLocalizationQuery;
     variables: MarketLocalizationQueryVariables;
   };
+  '#graphql\n  query BulkPurchaseVariants($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id title handle\n      variants(first: 50, after: $after) {\n        nodes {\n          id title sku availableForSale\n          image { url altText width height }\n          price { amount currencyCode }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
+    return: BulkPurchaseVariantsQuery;
+    variables: BulkPurchaseVariantsQueryVariables;
+  };
+  '#graphql\n  query ShippingQuoteCountries($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    localization { availableCountries { isoCode name } }\n  }\n': {
+    return: ShippingQuoteCountriesQuery;
+    variables: ShippingQuoteCountriesQueryVariables;
+  };
   '#graphql\n  query SeineSitemapCounts {\n    products: sitemap(type: PRODUCT) { pagesCount { count } }\n    collections: sitemap(type: COLLECTION) { pagesCount { count } }\n    pages: sitemap(type: PAGE) { pagesCount { count } }\n  }\n': {
     return: SeineSitemapCountsQuery;
     variables: SeineSitemapCountsQueryVariables;
@@ -1593,7 +1684,12 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {}
+interface GeneratedMutationTypes {
+  '#graphql\n  mutation ProductShippingQuote($input: CartInput!, $country: CountryCode!, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        lines(first: 2) { nodes { quantity merchandise { ... on ProductVariant { id requiresShipping } } } }\n        deliveryGroups(first: 10) {\n          nodes { deliveryOptions { title description estimatedCost { amount currencyCode } } }\n          pageInfo { hasNextPage }\n        }\n      }\n      userErrors { code }\n      warnings { code }\n    }\n  }\n': {
+    return: ProductShippingQuoteMutation;
+    variables: ProductShippingQuoteMutationVariables;
+  };
+}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}

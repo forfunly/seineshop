@@ -171,6 +171,8 @@ function guard(request, context) {
   );
 }
 
+export {sessionValues as businessSessionValues, guard as guardBusinessRequest};
+
 export async function limitedBody(request, limit) {
   const length = request.headers.get('content-length');
   if (length && (!/^\d+$/.test(length) || Number(length) > limit))

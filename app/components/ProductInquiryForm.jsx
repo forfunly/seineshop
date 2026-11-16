@@ -4,7 +4,7 @@ import {
   fieldKind,
   validateInquiry,
 } from '~/lib/business-tools';
-import {SALES_EMAIL} from '~/lib/wholesale';
+import {INQUIRY_TYPES, SALES_EMAIL} from '~/lib/wholesale';
 import {useLocale} from '~/lib/i18n';
 
 export async function formRequest(url, options) {
@@ -353,7 +353,7 @@ export function ProductInquiryForm({
             value={serviceType}
             onChange={(event) => setServiceType(event.target.value)}
           >
-            {['Wholesale', 'OEM', 'ODM'].map((mode) => (
+            {INQUIRY_TYPES.map((mode) => (
               <option value={mode} key={mode}>
                 {t(mode)}
               </option>

@@ -1,4 +1,37 @@
 {
+  "Shipping estimate": {"ja": "送料の見積もり", "de": "Versandkostenschätzung"},
+  "More Shipping Options": {"ja": "配送方法を確認", "de": "Weitere Versandoptionen"},
+  "Check delivery options for this item and quantity.": {"ja": "この商品と数量の配送方法を確認できます。", "de": "Lieferoptionen für diesen Artikel und diese Menge prüfen."},
+  "Estimate for this item only. Other cart items, taxes and checkout adjustments are not included. Final delivery options and charges are confirmed at checkout.": {"ja": "この商品のみの概算です。カート内の他の商品、税金、決済時の調整は含まれません。最終的な配送方法と送料は決済時に確定します。", "de": "Schätzung nur für diesen Artikel. Andere Warenkorbartikel, Steuern und Anpassungen beim Checkout sind nicht enthalten. Die endgültigen Versandoptionen und Kosten werden beim Checkout bestätigt."},
+  "Country / region": {"ja": "国・地域", "de": "Land / Region"},
+  "State / province": {"ja": "都道府県・州", "de": "Bundesland / Provinz"},
+  "Select a state / province": {"ja": "都道府県・州を選択", "de": "Bundesland / Provinz auswählen"},
+  "Postal code": {"ja": "郵便番号", "de": "Postleitzahl"},
+  "Street address": {"ja": "町名・番地", "de": "Straße und Hausnummer"},
+  "Calculating…": {"ja": "計算中…", "de": "Wird berechnet…"},
+  "Calculate shipping": {"ja": "送料を計算", "de": "Versand berechnen"},
+  "Available delivery options": {"ja": "利用可能な配送方法", "de": "Verfügbare Versandoptionen"},
+  "Shipment": {"ja": "配送", "de": "Sendung"},
+  "The available quantity changed. Check the product quantity before requesting shipping again.": {"ja": "購入可能な数量が変更されました。商品の数量を確認してから送料を再計算してください。", "de": "Die verfügbare Menge hat sich geändert. Prüfen Sie die Artikelmenge, bevor Sie den Versand erneut berechnen."},
+  "Shipping estimates are temporarily unavailable. Try again or check delivery at checkout.": {"ja": "送料を一時的に確認できません。再試行するか、決済時にご確認ください。", "de": "Die Versandkostenschätzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder prüfen Sie den Versand beim Checkout."},
+  "No shipping options were returned for this address and quantity. Check your address or contact us before ordering.": {"ja": "この住所と数量で利用可能な配送方法が見つかりません。住所をご確認いただくか、ご注文前にお問い合わせください。", "de": "Für diese Adresse und Menge wurden keine Versandoptionen zurückgegeben. Prüfen Sie Ihre Adresse oder kontaktieren Sie uns vor der Bestellung."},
+  "This item does not require shipping.": {"ja": "この商品は配送不要です。", "de": "Dieser Artikel erfordert keinen Versand."},
+  "Bulk Buy": {"ja": "まとめ買い", "de": "Mehrere Varianten kaufen"},
+  "View cart": {"ja": "カートを見る", "de": "Warenkorb ansehen"},
+  "Choose quantities for multiple options": {"ja": "複数のバリエーションの数量を選択", "de": "Mengen für mehrere Varianten auswählen"},
+  "Current unit prices apply. Shipping, taxes and any discounts are confirmed in your cart and at checkout.": {"ja": "表示の単価が適用されます。送料・税金・割引はカートと決済時に確認できます。", "de": "Es gelten die aktuellen Stückpreise. Versand, Steuern und eventuelle Rabatte werden im Warenkorb und beim Checkout bestätigt."},
+  "Options and quantities": {"ja": "バリエーションと数量", "de": "Varianten und Mengen"},
+  "Unit price": {"ja": "単価", "de": "Stückpreis"},
+  "Loading options…": {"ja": "バリエーションを読み込み中…", "de": "Varianten werden geladen…"},
+  "Options could not be loaded. Your quantities have been kept.": {"ja": "バリエーションを読み込めませんでした。入力した数量は保持されています。", "de": "Die Varianten konnten nicht geladen werden. Ihre eingegebenen Mengen bleiben erhalten."},
+  "Load more options": {"ja": "さらにバリエーションを表示", "de": "Weitere Varianten laden"},
+  "No options available.": {"ja": "選択できるバリエーションはありません。", "de": "Keine Varianten verfügbar."},
+  "Choose a whole quantity from 0 to 9999 for each option.": {"ja": "各バリエーションの数量を0～9999の整数で入力してください。", "de": "Geben Sie für jede Variante eine ganze Zahl zwischen 0 und 9999 ein."},
+  "Choose up to 250 different options per purchase.": {"ja": "1回に選択できるバリエーションは250種類までです。", "de": "Wählen Sie höchstens 250 verschiedene Varianten pro Einkauf."},
+  "Choose up to 250 different options with quantities from 1 to 9999.": {"ja": "250種類までのバリエーションを選択し、数量は1～9999で入力してください。", "de": "Wählen Sie bis zu 250 verschiedene Varianten mit Mengen zwischen 1 und 9999."},
+  "We could not confirm your cart update. Check your cart before trying again.": {"ja": "カートの更新を確認できませんでした。再試行する前にカートを確認してください。", "de": "Die Aktualisierung konnte nicht bestätigt werden. Prüfen Sie vor einem erneuten Versuch Ihren Warenkorb."},
+  "Review your cart before adding these items again. Shopify may have adjusted quantities or availability.": {"ja": "再度追加する前にカートを確認してください。Shopifyにより数量や在庫状況が調整された可能性があります。", "de": "Prüfen Sie Ihren Warenkorb, bevor Sie diese Artikel erneut hinzufügen. Shopify hat Mengen oder Verfügbarkeit möglicherweise angepasst."},
+  "Total quantity": {"ja": "合計数量", "de": "Gesamtmenge"},
   "Home": {
     "ja": "ホーム",
     "de": "Startseite"
@@ -3334,5 +3367,61 @@
   "Enter a valid phone or WhatsApp number, including the country code.": {
     "ja": "国番号を含む有効な電話番号またはWhatsApp番号を入力してください。",
     "de": "Geben Sie eine gültige Telefon- oder WhatsApp-Nummer mit Ländervorwahl ein."
+  },
+  "Purchase mode": {
+    "ja": "購入方法",
+    "de": "Bestellart"
+  },
+  "Dropshipping": {
+    "ja": "ドロップシッピング",
+    "de": "Dropshipping"
+  },
+  "Customization": {
+    "ja": "カスタマイズ",
+    "de": "Individualisierung"
+  },
+  "7 steps to your custom product": {
+    "ja": "カスタム製品までの7ステップ",
+    "de": "In 7 Schritten zu Ihrem individuellen Produkt"
+  },
+  "Shipping": {
+    "ja": "配送",
+    "de": "Versand"
+  },
+  "After-sales support": {
+    "ja": "アフターサポート",
+    "de": "Kundenservice nach dem Kauf"
+  },
+  "Dropshipping for your business": {
+    "ja": "ビジネス向けドロップシッピング",
+    "de": "Dropshipping für Ihr Unternehmen"
+  },
+  "Tell us about your store, destination countries and expected order volume. We will review product availability, shipping and fulfillment requirements with you.": {
+    "ja": "店舗、配送先の国、想定注文数をお知らせください。商品の取扱状況、配送、出荷に関する要件を確認します。",
+    "de": "Teilen Sie uns Ihren Shop, die Zielländer und das erwartete Bestellvolumen mit. Wir prüfen mit Ihnen Produktverfügbarkeit, Versand und Anforderungen an die Auftragsabwicklung."
+  },
+  "Request a consultation before placing a dropshipping order. Product and order synchronization with your Shopify store is not currently available.": {
+    "ja": "ドロップシッピングのご注文前にご相談ください。現在、Shopifyストアとの商品・注文の同期には対応していません。",
+    "de": "Bitte fragen Sie vor einer Dropshipping-Bestellung an. Die Synchronisierung von Produkten und Bestellungen mit Ihrem Shopify-Shop ist derzeit nicht verfügbar."
+  },
+  "Create a custom request": {
+    "ja": "カスタマイズを依頼",
+    "de": "Individuelle Anfrage stellen"
+  },
+  "Request dropshipping": {
+    "ja": "ドロップシッピングの相談",
+    "de": "Dropshipping anfragen"
+  },
+  "Buy sample": {
+    "ja": "サンプルを購入",
+    "de": "Muster kaufen"
+  },
+  "Buy sample adds one standard item to your cart. Customized samples and their costs must be agreed by quotation.": {
+    "ja": "選択した通常商品を1点カートに追加します。カスタムサンプルとその費用は別途見積もりで確認します。",
+    "de": "Ein Standardartikel wird Ihrem Warenkorb hinzugefügt. Individuelle Muster und deren Kosten müssen separat per Angebot vereinbart werden."
+  },
+  "Reference unit price. Customized products are quoted separately.": {
+    "ja": "通常商品の参考単価です。カスタム製品は別途お見積もりします。",
+    "de": "Referenzstückpreis. Individuelle Produkte werden separat angeboten."
   }
 }
