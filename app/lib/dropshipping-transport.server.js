@@ -48,11 +48,15 @@ export async function unseal(secret, value, context) {
     return JSON.parse(new TextDecoder().decode(plaintext));
   } catch {throw new DropshipError('invalid-authorization', 401);}
 }
-export function serviceOrigin(value, requestUrl) {
+export function serviceOrigin(value, requestUrl, {development = false} = {}) {
   let url;
   try {url = new URL(value);} catch {throw new DropshipError('unconfigured');}
   const loopback = ['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname);
+  const source = new URL(requestUrl);
+  // Only Vite development builds may bridge the official HTTPS preview to a local service.
+  const developmentTunnel = development === true && source.protocol === 'https:' &&
+    /^[a-z0-9-]+\.tryhydrogen\.dev$/.test(source.hostname);
   if (url.username || url.password || url.pathname !== '/' || url.search || url.hash ||
-    (url.protocol !== 'https:' && !(url.protocol === 'http:' && loopback && new URL(requestUrl).protocol === 'http:'))) throw new DropshipError('unconfigured');
+    (url.protocol !== 'https:' && !(url.protocol === 'http:' && loopback && (source.protocol === 'http:' || developmentTunnel)))) throw new DropshipError('unconfigured');
   return url.origin;
 }

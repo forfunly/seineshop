@@ -76,6 +76,7 @@ export default function DropshippingWorkspace() {
         <a href="#dropship-orders">{t('Dropshipping orders')}</a>
       </nav>
     </header>
+    <p className="dropship-notice">{t('Development preview: only the designated test store is enabled. Products remain unpublished drafts.')}</p>
     {!authenticated && <section className="dropship-signin">
       <div><h2>{t('Sign in to your Seine Shop account')}</h2><p>{t('Your connections and import history are private to your account.')}</p></div>
       <Link className="dropship-primary" to={`${localize('/account/login')}?returnTo=${encodeURIComponent(returnTo)}`}>{t('Sign in to continue')} →</Link>
@@ -84,7 +85,6 @@ export default function DropshippingWorkspace() {
     <div role="status" aria-live="polite">{pending ? <p className="dropship-notice">{t('Processing…')}</p> : notice && <p className="dropship-notice" data-error={notice.error}>{t(notice.text)}</p>}</div>
     <section className="dropship-panel" id="store-connection" aria-busy={pending}>
       <div className="dropship-section-heading"><span aria-hidden="true">01</span><div><h2>{t('Store connection')}</h2><p>{t('Connect a Shopify store before importing products.')}</p></div></div>
-      {workspace && <p className="dropship-note">{t('Development preview: only the designated test store is enabled. Products remain unpublished drafts.')}</p>}
       {connections.map((connection) => <div className="dropship-connection" key={connection.id}>
         <div><strong>{connection.shop}</strong><p>{t(connection.status === 'active' ? 'Connected' : 'Disconnected')} · {t(connection.kind === 'development' ? 'Development connection' : 'Shopify authorization')}</p></div>
         {connection.status === 'active' && <button type="button" disabled={!ready} onClick={() => act('disconnect', {connectionId: connection.id})}>{t('Disconnect')}</button>}

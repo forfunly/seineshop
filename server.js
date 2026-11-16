@@ -2,6 +2,7 @@ import {localizedRedirectPath} from '~/lib/locale';
 import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
+import {developmentRequest} from '~/lib/development-request.server';
 
 /**
  * Export a fetch handler in module format.
@@ -15,6 +16,7 @@ export default {
    */
   async fetch(request, env, executionContext) {
     try {
+      request = developmentRequest(request, import.meta.env?.DEV === true);
       const requestUrl = new URL(request.url);
       if (['/jp', '/de'].includes(requestUrl.pathname)) {
         requestUrl.pathname += '/';

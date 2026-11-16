@@ -169,3 +169,14 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 - **SEO与响应**：工作台文档、数据/API均private/no-store/noindex；实际本机文档头为private,no-store/noindex,nofollow，三语言正文正常，canonical不带商品参数。工作台不加入既有STATIC_PAGES；启用索引的sitemap行为测试明确排除工作台/API。本机/sitemap.xml为200/UTF-8/禁索引0子图，pages分图404与当前索引关闭一致。没有新增可索引地址、路径迁移或伪造lastmod，没有发布线上。
 
 新证据：[商品页原图](2026-11-16-dropship-workspace-entry-desktop.jpg)、[入口红圈](2026-11-16-dropship-workspace-entry-annotated.png)、[工作台桌面](2026-11-16-dropship-workspace-desktop.jpg)、[日语手机](2026-11-16-dropship-workspace-ja-mobile.jpg)、[德语手机](2026-11-16-dropship-workspace-de-mobile.jpg)。原图保留，圈图只增加标记。外部客户OAuth、真实订单/履约、自动阶梯价及私有附件仍未完成；未push/部署。
+
+## 临时 HTTPS 客户登录联调（2026-11-16）
+
+- 用户明确允许本次官方临时测试链接；开发者登录与网站客户登录分开处理。第一次与命令级代理重试均在官方连接组件下载阶段超时；随后通过已有代理下载CLI指定的官方cloudflared 2024.8.2到忽略的 `.cache/tooling/cloudflared/`，不安装全局工具、不改系统配置、不删除文件。用CLI原生路径参数复用该组件，官方临时预览启动成功。
+- Vite原来只允许tryhydrogen域名，但官方重命名入口实际转发Host为trycloudflare；加入官方底层域名后实测工作台可打开。只在开发构建允许官方HTTPS预览调用本机HTTP回环代发服务；生产、伪装后缀和远程HTTP地址仍拒绝，行为测试覆盖。
+- 未登录页面已显示开发预览/仅指定测试店/草稿不发布提示，英文桌面1280px无横向溢出。真实点击登录进入「Sign in - Seine Shop」客户邮箱页；用户完成登录后实际返回含原商品参数的工作台，服务端客户身份读取成功。
+- 首次连接因403被阻止：受控诊断仅记录协议/域名与布尔校验结果，确认请求URL为HTTP而浏览器Origin为HTTPS，CSRF/访客均正确；诊断已移除。根因在官方代理终止TLS，本机请求仍HTTP。仅开发构建在精确官方域名且转发协议为HTTPS时，先规范化请求URL再创建会话/执行路由，保留完整同源与CSRF校验；新增请求体/方法/请求头保留和生产/伪造域名不生效测试。重载后真实连接指定测试店成功，页面显示Connected · Development connection。
+- 真实网页导入B20A成功、历史Completed；View imported products显示1商品/2规格/USD。私有字段真实读回1个加密连接与1个completed任务，结果reused/目标15524635443473，与原草稿一致。独立--verify再次通过，仍DRAFT、未发布、2规格、2READY图片、库存0；没有新商品/库存写入或真实订单。重载后连接/历史保留；[已连接桌面截图](2026-11-16-dropship-workspace-connected-desktop.jpg)仅截工作台，不含客户身份/凭据。日德390×844实际已登录页面无横向溢出；正文与已完成状态译文正常。
+- 已登录文档200/private,no-store/noindex,nofollow；只接受POST的API之GET返回405，无JSON正文符合实现。一次把GET当JSON的验收读取报错已纠正，没有修改API契约。错误CSRF的真实POST返回403/forbidden且不写入。最终生产包中请求规范化和桥接调用的开发参数均为false。
+- 最终全量99/99行为测试与lint（0错误、2既有脚本警告）、codegen/build、集合筛选与--built来源审计通过。Toolkit按Hydrogen2026-04检查页面，无适用Shopify组件，不能充当完整类型验收；既有nonce hydration、envFile/Router/Rolldown提示保留。本轮无GraphQL变更。256文件/6项实际敏感值精确扫描0匹配；不含私有状态值或客户ID。
+- 已正常终止本轮3007开发预览，对应监听及连接进程均消失；独立3460继续仅本机监听。官方授权端点相同临时回调在关闭前200、退出清理后400且redirect_uri mismatch，确认临时回调清理。未关闭用户浏览器或清除登录资料。无生产发布/外部店OAuth/订单同步验收，未push或部署。

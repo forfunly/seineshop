@@ -39,6 +39,7 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['.tryhydrogen.dev'],
+    // Shopify's official preview forwards through Cloudflare before rebranding its URL.
+    allowedHosts: ['.tryhydrogen.dev', '.trycloudflare.com'],
   },
 });

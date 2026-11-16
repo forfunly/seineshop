@@ -6,6 +6,7 @@ import {signedHeaders, verifyBridge, seal, unseal, serviceOrigin} from '../app/l
 import {dropshipReturnPath, dropshipProductHandle} from '../app/lib/dropshipping.js';
 import {localizedRedirectPath} from '../app/lib/locale.js';
 import {dropshippingLoader, dropshippingAction} from '../app/lib/dropshipping.server.js';
+import {developmentRequest} from '../app/lib/development-request.server.js';
 import {createPrivateStore, STORE_QUERY, STORE_MUTATION} from '../apps/dropshipping/seine-shop-dropshipping-dev/src/private-store.mjs';
 import {createMerchantService} from '../apps/dropshipping/seine-shop-dropshipping-dev/src/merchant-service.mjs';
 import {restoreSession} from '../apps/dropshipping/seine-shop-dropshipping-dev/src/app-sdk.mjs';
@@ -13,6 +14,25 @@ import {createServiceServer} from '../apps/dropshipping/seine-shop-dropshipping-
 import {TEST_SHOP, ImportError} from '../apps/dropshipping/seine-shop-dropshipping-dev/src/catalog-plan.mjs';
 
 const secret = 'ab'.repeat(32), tenant = 'gid://shopify/Customer/123', other = 'gid://shopify/Customer/456';
+test('official development proxy restores HTTPS without relaxing same-origin or CSRF protection', async () => {
+  const origin = 'https://seine-test.tryhydrogen.dev';
+  const request = new Request('http://seine-test.tryhydrogen.dev/api/dropshipping', {method: 'POST',
+    headers: {'x-forwarded-proto': 'https', Origin: origin, 'X-Seine-CSRF': 'csrf-test'}, body: '{"action":"workspace"}'});
+  const restored = developmentRequest(request, true);
+  assert.equal(new URL(restored.url).origin, origin);
+  assert.equal(restored.method, 'POST');
+  assert.equal(restored.headers.get('X-Seine-CSRF'), 'csrf-test');
+  assert.equal(restored.headers.get('Origin'), origin);
+  assert.equal(await restored.text(), '{"action":"workspace"}');
+  assert.equal(developmentRequest(request), request);
+  for (const enabled of [false, 'true']) assert.equal(developmentRequest(request, enabled), request);
+  for (const target of ['http://www.seineshop.com', 'http://seine-test.tryhydrogen.dev.evil.test', 'http://tryhydrogen.dev', 'http://seine-test.tryhydrogen.dev:3000']) {
+    const remote = new Request(target, {headers: {'x-forwarded-proto': 'https'}});
+    assert.equal(developmentRequest(remote, true), remote);
+  }
+  const plain = new Request('http://seine-test.tryhydrogen.dev');
+  assert.equal(developmentRequest(plain, true), plain);
+});
 const state = () => ({version: 1, entries: {}});
 function memoryStore() {
   const data = {vault: state(), ledger: state()};
@@ -58,6 +78,13 @@ test('service addresses and login returns refuse insecure or arbitrary destinati
   for (const value of ['http://remote.example', 'https://user:pass@example.com', 'https://example.com/path', 'https://example.com/?a=1'])
     assert.throws(() => serviceOrigin(value, 'https://www.seineshop.com'), /unconfigured/);
   assert.throws(() => serviceOrigin('http://127.0.0.1:3460', 'https://www.seineshop.com'), /unconfigured/);
+  const localService = 'http://127.0.0.1:3460', preview = 'https://seine-test.tryhydrogen.dev/dropshipping';
+  assert.equal(serviceOrigin(localService, preview, {development: true}), localService);
+  for (const options of [{}, {development: false}, {development: 'true'}])
+    assert.throws(() => serviceOrigin(localService, preview, options), /unconfigured/);
+  for (const source of ['https://www.seineshop.com', 'https://seine-test.tryhydrogen.dev.evil.test', 'https://tryhydrogen.dev', 'https://evil.test'])
+    assert.throws(() => serviceOrigin(localService, source, {development: true}), /unconfigured/);
+  assert.throws(() => serviceOrigin('http://remote.example:3460', preview, {development: true}), /unconfigured/);
   for (const value of ['/dropshipping', '/de/dropshipping?product=test-item', '/jp/dropshipping']) assert.equal(dropshipReturnPath(value), value);
   for (const value of ['//evil.test', '/dropshipping?returnTo=https://evil.test', '/dropshipping/../account', '/dropshipping#x', '/dropshipping?product=x&other=y']) assert.equal(dropshipReturnPath(value), null);
   assert.equal(localizedRedirectPath('/de/dropshipping?product=test-item', '/account/authorize'), '/de/dropshipping?product=test-item');

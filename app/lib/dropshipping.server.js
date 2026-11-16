@@ -9,7 +9,7 @@ export async function dropshipCustomer(context) {
   return result.data.customer.id;
 }
 async function callService(context, request, tenant, input) {
-  const origin = serviceOrigin(context.env.DROPSHIP_SERVICE_URL, request.url);
+  const origin = serviceOrigin(context.env.DROPSHIP_SERVICE_URL, request.url, {development: import.meta.env?.DEV === true});
   const pathname = '/internal/merchant', body = JSON.stringify(input);
   const headers = await signedHeaders(context.env.DROPSHIP_TOKEN_ENCRYPTION_KEY, tenant, 'POST', pathname, body);
   try {
