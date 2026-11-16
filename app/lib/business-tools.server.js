@@ -337,6 +337,7 @@ export async function inquiryAction({request, context}) {
       customerName: payload.customerName.trim(),
       customerEmail: payload.customerEmail.trim(),
       productId: product.id,
+      productTitle: product.title,
       productHandle: product.handle,
       lineItems: payload.lineItems.map((line) => ({
         variantId: `gid://shopify/ProductVariant/${numericId(line.variantId, 'ProductVariant')}`,

@@ -260,11 +260,13 @@ test('cross-site and missing-CSRF submissions fail before calling the app', asyn
   assert.equal(calls, 0);
 });
 
-test('server checks variant ownership and does not relay client prices or titles', async (t) => {
+test('server checks variant ownership and supplies the required canonical title without trusting client prices or titles', async (t) => {
   let outgoing;
   t.mock.method(globalThis, 'fetch', async (url, options) => {
     if (!url.endsWith('/inquiry')) return mockConfig(url);
     outgoing = JSON.parse(options.body);
+    if (!outgoing.productTitle)
+      return json({success: false, error: 'Product title is required'}, 400);
     return json({success: true, inquiryId: 'test-inquiry'}, 201);
   });
   const ctx = context();
@@ -278,7 +280,7 @@ test('server checks variant ownership and does not relay client prices or titles
   });
   assert.equal(res.status, 201);
   assert.equal(outgoing.price, undefined);
-  assert.equal(outgoing.productTitle, undefined);
+  assert.equal(outgoing.productTitle, product.title);
   assert.equal(outgoing.customFields['Phone / WhatsApp'], '+44 20 7946 0123');
   outgoing = null;
   ctx.storefront.query = async (query) =>
