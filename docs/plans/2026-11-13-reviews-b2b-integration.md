@@ -215,3 +215,15 @@
 - [Shopify 官方开发店说明](https://shopify.dev/docs/apps/build/stores/development-stores)：开发店仅用于开发测试，不能真实交易、不能转交客户，始终保留密码保护。后续使用测试支付，不使用真实收款；尚未创建测试订单。
 
 本机 Shopify CLI 3.93.2 的帮助确认不存在 `store create dev`，因此通过官方后台完成，没有升级/安装全局依赖或改系统配置。此处完成的是联调环境准备，自动同步与运单回传仍待实现和验收。
+
+### 继续实施：运费命名与代发商品同步准备（2026-11-16）
+
+用户要求继续剩余开发，并指出运费入口命名。改为 **Estimate shipping**（日语「送料を見積もる」、德语「Versandkosten berechnen」），明确动作是填写目的地并估算运费；不将固定运费查询称为更多配送服务。沿用原位置、弹窗、URL、接口及 sitemap 生成源，不改 lastmod。
+
+下一阶段先打通测试店的商品导入，再继续订单/履约。源数据只读取本站 Storefront 公开商品，显式挑选标题、描述、选项、规格、图片和售价；不读取内部来源字段，不复制来源记录。目标先创建 DRAFT，不自动发布销售渠道、不复制或编造可售库存。按本店商品/变体稳定 ID 保存映射，重复任务按映射核对，不按同名/SKU猜配，也不在失去响应时盲目重建。运费与实际可发库存留待采购/仓库流程确认。
+
+测试连接拟用新应用 **Seine Shop Dropshipping Dev**，组织 My Store（233393793），仅安装到 `seine-shop-dropship-test.myshopify.com`。初始最小范围为读写商品及应用自有元对象，用于草稿导入和私有映射；订单/客户/履约权限后续按实现分别确认。暂不选择不可逆公开分发、不改正式店、不部署、不创建订单或付费资源。
+
+用户已明确回复「允许测试应用、配置和映射定义」。官方 CLI 已在 `apps/dropshipping/seine-shop-dropshipping-dev/` 初始化测试应用，并仅在该测试店启用开发预览；此目录仅保存独立应用及英文 kebab-case 模块，凭据/依赖/生成物不提交，不自动清理。已按授权新增本机配置 `DROPSHIP_APP_CLIENT_ID`、`DROPSHIP_APP_CLIENT_SECRET`、`DROPSHIP_TOKEN_ENCRYPTION_KEY`，不改其他环境项、不将管理 token 放进 Cookie 或前台。首次商品导入仅限一个 B20A 草稿，用于规格、图片、价格及重复导入验证。
+
+映射定义全部关闭 Storefront 访问：Product 的 app.source_id 使用 Shopify `id` 类型，供 `productByIdentifier(customId)` 查询和唯一约束；Variant 的 app.source_id 使用 single_line_text_field；应用自有 product_mapping 元对象保存源店铺/商品、目标商品引用、规格映射、币种和快照哈希。实测单行文本的 uniqueValues 并不满足 customId 查询要求，按[官方自定义 ID 指引](https://shopify.dev/docs/apps/build/metafields/working-with-custom-ids)修正空定义类型后再写商品。源商品读取复用已有服务端 Storefront 凭据；官方服务端 SDK 使用私有 token 请求头，不可误传 public token。没有生产授权、没有订单或履约写入。

@@ -1,0 +1,63 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "bd08b0aeab9c1b981720fe0c5c34370b"
+name = "Seine Shop Dropshipping Dev"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = false
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2026-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,write_products,read_metaobjects,write_metaobjects,read_metaobject_definitions"
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+
+[product.metafields.app.source_id]
+name = "Seine Shop source product"
+type = "id"
+capabilities.unique_values = true
+
+[variant.metafields.app.source_id]
+name = "Seine Shop source variant"
+type = "single_line_text_field"
+
+[metaobjects.app.product_mapping]
+name = "Seine Shop product mapping"
+display_name_field = "source_product_id"
+
+[metaobjects.app.product_mapping.fields.source_shop]
+name = "Source shop"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.product_mapping.fields.source_product_id]
+name = "Source product ID"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.product_mapping.fields.target_product]
+name = "Imported product"
+type = "product_reference"
+required = true
+
+[metaobjects.app.product_mapping.fields.variant_map]
+name = "Variant mapping"
+type = "json"
+required = true
+
+[metaobjects.app.product_mapping.fields.currency]
+name = "Price currency"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.product_mapping.fields.snapshot_hash]
+name = "Imported snapshot hash"
+type = "single_line_text_field"
+required = true

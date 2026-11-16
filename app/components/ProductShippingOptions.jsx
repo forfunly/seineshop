@@ -48,7 +48,7 @@ export function ProductShippingOptions({variant, quantity, disabled}) {
         setAddress((value) => ({...value, countryCode: value.countryCode || data.country}));
       }
     } catch (failure) {
-      if (!active.signal.aborted || active.signal.reason === 'timeout') setError(failure.message === 'stock' ? 'stock' : 'unavailable');
+      if (!active.signal.aborted || active.signal.reason === 'timeout') setError(failure instanceof Error && failure.message === 'stock' ? 'stock' : 'unavailable');
     } finally {
       clearTimeout(timer);
       if (controller.current === active) setBusy(false);
@@ -62,7 +62,7 @@ export function ProductShippingOptions({variant, quantity, disabled}) {
   const fields = [['city', 'City', 100], ['zip', 'Postal code', 32], ['address1', 'Street address', 255]];
   const regions = SHIPPING_REGIONS[address.countryCode];
   return <section className="pdp-shipping" aria-label={t('Shipping estimate')}>
-    <div className="pdp-shipping-entry"><span>{t('Shipping estimate')}</span><button ref={triggerRef} type="button" disabled={disabled} onClick={() => {setQuote(null); openDialog(); if (!config && !busy) void readQuote();}}>{t('More Shipping Options')} <span aria-hidden="true">↗</span></button></div>
+    <div className="pdp-shipping-entry"><span>{t('Shipping estimate')}</span><button ref={triggerRef} type="button" disabled={disabled} onClick={() => {setQuote(null); openDialog(); if (!config && !busy) void readQuote(null);}}>{t('Estimate shipping')} <span aria-hidden="true">↗</span></button></div>
     <p>{t('Check delivery options for this item and quantity.')}</p>
     <dialog ref={dialogRef} className="pdp-inquiry-dialog pdp-shipping-dialog" aria-labelledby={`${id}-title`}>
       <div className="pdp-inquiry-content">
@@ -74,12 +74,12 @@ export function ProductShippingOptions({variant, quantity, disabled}) {
           {regions && <div><label htmlFor={`${id}-province`}>{t('State / province')} <span aria-hidden="true">*</span></label><select id={`${id}-province`} required value={address.provinceCode} onChange={(event) => change('provinceCode', event.target.value)}><option value="">{t('Select a state / province')}</option>{regions.map(({code, name}) => <option key={code} value={code}>{name}</option>)}</select></div>}
           {fields.map(([name, label, max]) => <div className={name === 'address1' ? 'pdp-shipping-wide' : undefined} key={name}>
             <label htmlFor={`${id}-${name}`}>{t(label)} <span aria-hidden="true">*</span></label>
-            <input id={`${id}-${name}`} value={address[name]} maxLength={max} required autoComplete="off" onChange={(event) => change(name, event.target.value)}/>
+            <input id={`${id}-${name}`} value={address[name]} maxLength={Number(max)} required autoComplete="off" onChange={(event) => change(name, event.target.value)}/>
           </div>)}
           <button className="pdp-inquiry-button pdp-shipping-wide" type="submit" disabled={busy}>{t(busy ? 'Calculating…' : 'Calculate shipping')}</button>
         </form>}
         {!config && busy && <p role="status">{t('Loading…')}</p>}
-        {error && <div role="alert" className="pdp-purchase-error"><p>{t(error === 'stock' ? 'The available quantity changed. Check the product quantity before requesting shipping again.' : 'Shipping estimates are temporarily unavailable. Try again or check delivery at checkout.')}</p>{!config && <button type="button" onClick={() => void readQuote()} disabled={busy}>{t('Try again')}</button>}</div>}
+        {error && <div role="alert" className="pdp-purchase-error"><p>{t(error === 'stock' ? 'The available quantity changed. Check the product quantity before requesting shipping again.' : 'Shipping estimates are temporarily unavailable. Try again or check delivery at checkout.')}</p>{!config && <button type="button" onClick={() => void readQuote(null)} disabled={busy}>{t('Try again')}</button>}</div>}
         {quote && <div className="pdp-shipping-results" role="status">
           {quote.status === 'no-rates' ? <p>{t('No shipping options were returned for this address and quantity. Check your address or contact us before ordering.')}</p> : quote.status === 'not-required' ? <p>{t('This item does not require shipping.')}</p> : <>
             <h3>{t('Available delivery options')}</h3>

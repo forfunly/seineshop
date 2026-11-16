@@ -51,6 +51,7 @@ The production environment requires the variables listed in `.env.example`; set 
 - `app/components/`: shared storefront, cart, product, search, blog and localization UI.
 - `app/routes/`: page routes, cart actions, checkout, localization, sitemap and robots endpoints.
 - `app/lib/`: Shopify context, market/cart logic, SEO, catalog filters and data helpers.
+- `apps/dropshipping/seine-shop-dropshipping-dev/`: independent, test-only Shopify application and server-side draft importer; not part of the storefront bundle.
 - `app/styles/`: shared layout, green visual theme, mobile, cart, search and editorial styles.
 - `app/locales/`: English-keyed Japanese/German translations; localized URLs use `/jp/` and `/de/`.
 - `app/data/`: editorial/navigation content and sanitized development-preview catalog data.
@@ -67,7 +68,7 @@ The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.j
 - Public product specifications use `custom.technical_specifications` JSON. Private sourcing/procurement records must remain inaccessible to the Storefront API.
 - Wholesale tiers currently request quotes; no automatic tier discount is promised. Wholesale/OEM/ODM requests use the Sectionly online inquiry form with an email fallback for `steven@seineshop.com`.
 - The product option area includes **Bulk Buy** for selecting several variants in one cart action. `app/lib/product-variants.server.js` reads public, localized variant data in pages of 50 without Sectionly credentials; `app/lib/bulk-buy.js` validates at most 250 distinct lines and strips client pricing before Shopify. Stock warnings or an uncertain response direct the buyer to review the cart before retrying. Run `node --test tests/bulk-buy.test.mjs tests/checkout.test.mjs` for purchase validation checks.
-- **More Shipping Options** below the wholesale purchase buttons estimates the current SKU/quantity using Shopify's configured fixed delivery rates. `app/lib/shipping-quote.server.js` creates a separate estimate cart, validates the returned quantity, and returns only delivery names/descriptions/costs. It never changes the shopper's saved cart or creates an order. `/api/shipping-quote` and localized equivalents use private/no-store/noindex responses and CSRF protection; addresses stay in POST bodies and component memory. The form lists supported Shopify markets and region selectors from `app/lib/shipping-regions.js`. No new credentials are required. Run `node --test tests/shipping-quote.test.mjs` for privacy, validation, stock and error handling. Estimates cover this item only; carrier-calculated rates and delivery-date guarantees are outside the current integration.
+- **Estimate shipping** below the wholesale purchase buttons estimates the current SKU/quantity using Shopify's configured fixed delivery rates. `app/lib/shipping-quote.server.js` creates a separate estimate cart, validates the returned quantity, and returns only delivery names/descriptions/costs. It never changes the shopper's saved cart or creates an order. `/api/shipping-quote` and localized equivalents use private/no-store/noindex responses and CSRF protection; addresses stay in POST bodies and component memory. The form lists supported Shopify markets and region selectors from `app/lib/shipping-regions.js`. No new credentials are required. Run `node --test tests/shipping-quote.test.mjs` for privacy, validation, stock and error handling. Estimates cover this item only; carrier-calculated rates and delivery-date guarantees are outside the current integration.
 - Checkout is Shopify-hosted. Payment availability and shipping/taxes are determined at checkout.
 - GA4 retains the existing shared-head initialization and measurement ID `G-BKLZMJ9EP7` for the current release candidate, as requested by the merchant.
 
@@ -118,6 +119,25 @@ Collection JSON-LD describes the products rendered on the current page, with loc
 `/page/order-tracking` (also `/jp/page/order-tracking` and `/de/page/order-tracking`) embeds the official 17TRACK single-number widget after customer submission. `app/lib/tracking.js` validates a single identifier, shares a lazy script load with a 15-second timeout/retry, and generates the external fallback URL. No API key is needed. Tracking numbers remain in component memory and the provider iframe, not storefront URL parameters or custom analytics events. The provider owns tracking data, availability, branding and any widget advertising; this is not a custom tracking API integration. The CSP permits only the official script and iframe origins in addition to existing Shopify origins, including when arriving by client navigation.
 
 Official integration: https://www.17track.net/en/widget. Hydrogen CSP guidance: https://shopify.dev/docs/storefronts/headless/legacy/hydrogen/content-security-policy.
+
+## Test-store dropshipping draft import
+
+The CLI-scaffolded application in [apps/dropshipping/seine-shop-dropshipping-dev](apps/dropshipping/seine-shop-dropshipping-dev/README.md) reads explicitly selected public Storefront product fields and imports one DRAFT into the fixed development shop. Product/variant identifiers and mappings are app-owned, with Storefront access disabled. Repeated imports reuse verified IDs instead of overwriting merchant edits. No channel publication, inventory quantities or orders are written.
+
+The root ignored environment requires the separately authorized `DROPSHIP_APP_CLIENT_ID`, `DROPSHIP_APP_CLIENT_SECRET`, `DROPSHIP_TOKEN_ENCRYPTION_KEY`, plus the existing `PUBLIC_STORE_DOMAIN` and server-only `PRIVATE_STOREFRONT_API_TOKEN`. The official server SDK requires the private Storefront token. The encryption key is reserved for future customer-shop token storage; the current same-organization development grant stores its temporary token only in memory. This is not a customer-facing connection flow.
+
+From the repository root, after installing the independent application's locked local dependencies and enabling its development preview/definitions:
+
+```sh
+node --env-file=.env apps/dropshipping/seine-shop-dropshipping-dev/src/run-import.mjs b-20a-3-in-1-foldable-wireless-charging-station
+# Write one development-store draft only when explicitly authorized:
+node --env-file=.env apps/dropshipping/seine-shop-dropshipping-dev/src/run-import.mjs b-20a-3-in-1-foldable-wireless-charging-station --apply
+# Read back prices, options, images, zero stock, draft status and private mappings:
+node --env-file=.env apps/dropshipping/seine-shop-dropshipping-dev/src/run-import.mjs b-20a-3-in-1-foldable-wireless-charging-station --verify
+node --test tests/dropship-import.test.mjs
+```
+
+Default output is a read-only plan. Write/verify output contains only IDs, counts, status and stable error codes. `--verify` exits unsuccessfully for changed or incomplete data and never repairs it automatically. Website workspaces, independent-shop OAuth and order/fulfillment synchronization remain unfinished.
 
 ## Product reviews and business inquiries
 

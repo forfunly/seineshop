@@ -138,3 +138,20 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 本机截图：[运费入口桌面](2026-11-16-shipping-entry-desktop.jpg)、[真实费用弹窗桌面](2026-11-16-shipping-desktop.jpg)、[手机表单](2026-11-16-shipping-mobile.jpg)、[手机费用结果](2026-11-16-shipping-mobile-results.jpg)。后台含密钥页面不截图。未 push/部署，完整代发、阶梯价及私有附件仍待实施。
 
 用户要求圈出入口后，新增[运费入口红圈放大图](2026-11-16-shipping-entry-annotated.png)：从上述桌面原图裁切放大，红圈和箭头指向绿色 Buy now 按钮下方右侧的 More Shipping Options。已视觉检查按钮、入口和红圈对应，保留未标注原图；此图为本地预览，不代表正式站已上线。仅改文档与标注图，验证 UTF-8、相对链接与 `git diff --check`，不重复运行前台构建。
+
+## 运费命名更新与开发店草稿导入（2026-11-16）
+
+用户认为原运费命名不准确并要求继续开发，随后明确批准测试应用、本机配置及私有映射定义。本轮沿用主目录和既有方案；只写开发测试店的一个草稿，不发布商品，不创建订单，不改正式店业务数据。
+
+- **运费入口**：更名 Estimate shipping；日语「送料を見積もる」、德语「Versandkosten berechnen」。保留在批发购买按钮下，动作与填写目的地后估算运费一致。顺带修正未知异常类型的安全处理，配置读取明确传 null、长度上限显式转数值；2026-04 Hydrogen 校验成功。首次默认版本校验选错 2026-10、第二次暴露静态类型问题均留在本机日志，最终以指定版本修复后的成功结果为准。
+- **最终浏览器验收**：新构建、本机 loopback3005、专用 Chrome for Testing 隔离会话；英文桌面 1440×1100、英日德手机 390×844 无横向溢出和控制台 error/warn。实际重新打开表单，使用此前美国公开市政示例地址，黑色 1 件返回 Standard USD12 / Fast USD18，购物车仍 0 件；Escape 关闭并恢复焦点到 Estimate shipping。没有结账或真实个人资料。
+- **测试应用**：CLI 初始化独立应用，官方 SDK 15.1.1；dev preview 仅装测试店，client credentials grant 自动取得临时管理 token、仅内存保存。已授权的三个本机环境项不进入提交，未轮换其他项；Secret 剪贴板已清空。这里只支持同组织开发店，没有客户店 OAuth，也没有网站代发工作台。
+- **定义→写入→读回**：TOML 定义 Product app.source_id（id/unique）、Variant app.source_id（单行文本）、私有 product_mapping 元对象。三者 Storefront NONE 已读回。实测 unique 单行文本不能用于 customId，修正空定义为官方 id 类型后查询及创建成功；源公开目录读取改用既有服务端私有 Storefront token，与官方 SDK 的请求头一致，没有创建或修改源凭据。
+- **真实商品链路**：B20A 源 9764421861635 → 测试店草稿 15524635443473。黑/白两个规格均 USD19，SKU/选项/对应图片核对一致，两张媒体 READY。库存合计0、各规格0、tracked=true/DENY，状态 DRAFT、publishedAt=null；后台明确 This product is not published anywhere。私有映射字段完整读回。同一工具再次 --apply 返回 reused/同一商品 ID，没有第二次建品或更新商品。--verify 返回 verified=true/failures=[]。
+- **恢复与边界**：默认只读计划，写入必须 --apply，核对必须单独 --verify。只挑公开字段，不复制内部来源/标签/库存数量；币种不符、分页不全、重复规格/选项、非 Shopify HTTPS 图片均拒绝。创建丢失响应不自动重试，显式重试先查唯一 ID；映射保存失败可恢复；冲突或商家改价/改状态只报告，不覆盖。
+- **检查**：最终全量82/82 Node测试通过，lint 0错误/2既有脚本警告，codegen/build exit0，集合筛选与构建来源审计通过；配置 validate 成功，全部生成 GraphQL（含核对查询）通过2026-04 schema校验。源码、文档及客户端/服务端构建共294文件针对7项实际密钥/凭据值精确扫描，0匹配；.env 0600/Git忽略，依赖与CLI本地会话忽略。既有 envFile/React Router future flags/Rolldown 分析提示保留，没有绕过检查。
+- **SEO**：没有新增公开路由，既有 sitemap 生成源与 canonical 商品路径不改。local /sitemap.xml 200/UTF-8、禁索引时0子图；生产索引200/UTF-8，英日德 products 子图代表商品地址各1次，没有 shipping API/代发私有地址。不伪造lastmod，生产读取仅证明原地址保留，不代表新功能已发布。
+
+新截图（均非正式站发布）：[英文桌面原图](2026-11-16-shipping-estimate-entry-desktop.jpg)、[红圈放大图](2026-11-16-shipping-estimate-entry-annotated.png)、[英文手机](2026-11-16-shipping-estimate-entry-mobile.jpg)、[日语手机](2026-11-16-shipping-estimate-entry-jp.jpg)、[德语手机](2026-11-16-shipping-estimate-entry-de.jpg)、[测试店草稿后台](2026-11-16-dropship-draft-admin.jpg)。旧命名截图保留为历史证据。
+
+完整目标仍未完成：独立客户店连接与网站工作台、订单采购/履约运单回传、自动阶梯价、私有询价附件需继续。没有push/生产部署；无关发布方案、进度文件及旧截图保持原状，没有新增工作副本或删除任何文件。

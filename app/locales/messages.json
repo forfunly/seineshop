@@ -1,6 +1,6 @@
 {
   "Shipping estimate": {"ja": "送料の見積もり", "de": "Versandkostenschätzung"},
-  "More Shipping Options": {"ja": "配送方法を確認", "de": "Weitere Versandoptionen"},
+  "Estimate shipping": {"ja": "送料を見積もる", "de": "Versandkosten berechnen"},
   "Check delivery options for this item and quantity.": {"ja": "この商品と数量の配送方法を確認できます。", "de": "Lieferoptionen für diesen Artikel und diese Menge prüfen."},
   "Estimate for this item only. Other cart items, taxes and checkout adjustments are not included. Final delivery options and charges are confirmed at checkout.": {"ja": "この商品のみの概算です。カート内の他の商品、税金、決済時の調整は含まれません。最終的な配送方法と送料は決済時に確定します。", "de": "Schätzung nur für diesen Artikel. Andere Warenkorbartikel, Steuern und Anpassungen beim Checkout sind nicht enthalten. Die endgültigen Versandoptionen und Kosten werden beim Checkout bestätigt."},
   "Country / region": {"ja": "国・地域", "de": "Land / Region"},

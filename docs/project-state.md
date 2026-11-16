@@ -1,6 +1,15 @@
 # 项目连接状态与授权记录
 
-## 当前：免费代发测试店、后台恢复与运费查询（2026-11-16，北京时间）
+## 当前：测试店草稿导入已连通，运费入口更名（2026-11-16，北京时间）
+
+- 用户本轮明确批准「允许测试应用、配置和映射定义」。官方 CLI 创建 **Seine Shop Dropshipping Dev**（App ID 447811256321，组织 233393793），仅在免费开发店 `seine-shop-dropship-test.myshopify.com` 启用开发预览。配置和源码保存在 `apps/dropshipping/seine-shop-dropshipping-dev/`，没有发布应用新正式版本或选择不可逆分发方式。
+- 本机 `.env` 仅新增获准的 `DROPSHIP_APP_CLIENT_ID`、`DROPSHIP_APP_CLIENT_SECRET`、`DROPSHIP_TOKEN_ENCRYPTION_KEY`，文件 0600/Git 忽略，不记录值。官方 client credentials grant 只用于同组织开发店，管理 token 仅内存缓存并按需重新获取；不是独立客户店 OAuth。加密密钥为后续授权存储预留，本轮尚未存储客户店 token。
+- 已建并读回三类应用私有定义，均 Storefront NONE：Product app.source_id（`id`/unique）、Variant app.source_id（单行文本）、product_mapping 元对象（源店铺/商品、目标商品引用、规格映射、币种和快照哈希）。实测 customId 查询要求 `id` 类型，原空单行定义已修正；源公开商品只读复用现有 PRIVATE_STOREFRONT_API_TOKEN，未改正式店凭据。
+- 实际导入一个 **B-20A 3-in-1 Foldable Wireless Charging Station** 草稿：源商品 9764421861635 → 测试商品 **15524635443473**。两个规格、两张图片 READY，逐规格售价/选项/SKU/图片关联及私有映射读回通过；库存保持 0、tracked/DENY、DRAFT、publishedAt=null。再次运行返回 reused/相同目标 ID，没有第二次建品或覆盖商家编辑。可用 `run-import.mjs <handle> --verify` 重做只读核对，证据位于忽略的 `.cache/dropship-import-readback-2026-11-16.json`。
+- 运费入口改为 **Estimate shipping**，日语「送料を見積もる」、德语「Versandkosten berechnen」，保持在批发购买按钮下。新构建桌面/英日德手机、真实USD12/18报价、Escape焦点与购物车不变已验；[红圈截图](qa/2026-11-16-shipping-estimate-entry-annotated.png)和[完整 QA](qa/2026-11-13-business-layout.md#运费命名更新与开发店草稿导入2026-11-16)已补齐。82/82测试、lint 0错误/2既有警告、codegen/build、集合筛选与构建来源审计均通过，真实密钥扫描0匹配；独立App配置与GraphQL 2026-04校验通过。没有新增公开 URL；保留现有 sitemap 源和商品条目，不伪造 lastmod。
+- 当前完成的是本地服务端商品导入链路，网站代发工作台、独立客户店授权、订单采购/履约运单回传、自动阶梯价和私有询价附件仍待开发。没有测试订单、真实交易、正式店商品/库存写入、push 或生产部署。本轮只复用主目录，保留原有无关修改；官方初始化生成的空 Git 元数据已移动保存到 `.cache/tooling/dropshipping-scaffold-git-2026-11-16`，未删除。
+
+## 历史：免费代发测试店、后台恢复与运费查询（2026-11-16，北京时间）
 
 - 用户明确要求创建免费的代发开发测试店；已通过专用浏览器的 Dev Dashboard 创建 **Seine Shop Dropship Test**，域名 `seine-shop-dropship-test.myshopify.com`，后台入口 https://admin.shopify.com/store/seine-shop-dropship-test 。刷新开发店列表读回 **Dev / Basic**，组织 My Store（233393793）、店铺 ID 99029909777；后台域名页再次读回该主域名 Connected。未选择付费试用、购买套餐/域名、生成示例数据或开启 feature preview；没有安装应用、创建凭据或测试订单。Basic 是开发店模拟功能环境，不是新购付费套餐。
 - 测试店用于模拟代发客户店，与供货店 `ps83if-c4.myshopify.com` 分开。官方开发店限制为测试用途、密码保护、不能处理真实交易或转交客户；后续授权应用、商品映射、采购与履约回传尚未完成。见[现有方案的测试店记录](plans/2026-11-13-reviews-b2b-integration.md#免费代发测试店2026-11-16)。
