@@ -232,6 +232,6 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 | 17TRACK | 既有`/page/order-tracking`200，手机无溢出；空输入真实点击显示校验，未请求供应商 | 无真实履约运单，未验证实际运输事件或承运商结果 |
 | SEO/编码 | 英/jp/de自指canonical、en/ja/de/x-default正确；robots/llms/sitemap/static XML的真实Content-Type含charset=utf-8；全部114分片200，23967规范URL快照，无工作台/API；浏览器sitemap管理页中文/日本語/Deutsch与特殊符号、llms原文正常 | 动态商品数量是当时快照，不代表搜索引擎已收录；未伪造lastmod |
 
-- 截图：[正式询价弹窗](2026-11-16-oxygen-inquiry-desktop.jpg)、[正式评价入口](2026-11-16-oxygen-reviews-desktop.jpg)、[正式德语手机定制模式](2026-11-16-oxygen-customization-de-mobile.jpg)。均已打开图片核对；询价截图等待配置加载完成，不使用瞬时Loading画面作为最终证据。
-- 正式站原有Shopify Analytics/consent组件报告`PUBLIC_CHECKOUT_DOMAIN`缺失；生产原无此变量，根源码读取未在本批修改。已请求明确授权仅Production补`ps83if-c4.myshopify.com`并重部署，当前待回复；其余现有错误/警告不据此掩盖。未付款、发货、公开测试评价或部署独立测试应用。
-- 本次验收记录与三张截图为发布后的新本地成果，未包含于已批准的12提交；推送仍需针对新增范围确认。没有新工作副本、没有删除文件。
+- 正式询价弹窗、正式评价入口、正式德语手机定制模式三张截图均已打开核对；询价截图等待配置加载完成，不使用瞬时Loading画面作为最终证据。用户随后要求撤回这三张图片，已改为仅在本机留存；本记录保留文字验收结果，图片不作为后续视觉风格的规范。
+- 正式站原有Shopify Analytics/consent组件报告`PUBLIC_CHECKOUT_DOMAIN`缺失；生产原无此变量，根源码读取未在本批修改。用户随后明确确认仅Production补`ps83if-c4.myshopify.com`并重部署，变量已保存并读回仅Production。再次部署退出0、后台资源5749637、Production/main/813e4b6、Ready/Current；新地址为`https://01m7jd1bn3nq8ea83btyj00ttb-d7e83d6aec4307f1a21e.myshopify.dev`。业务源码与1aa4e07一致，没有上传本机.env或修改其他配置。22:46北京时间，正式商品页强刷后控制台无error/warn，customerPrivacy API存在；评价/询价/运费均200，robots/llms/sitemap/static XML均200/charset=utf-8。重新执行99/99测试及构建来源审计通过；不以此声称已验证统计平台入库或转化归因。未付款、发货、公开测试评价或部署独立测试应用。
+- 发布后的验收记录与三张截图经用户确认保存为813e4b6并推送；用户随后明确要求撤回三张图片。本次以新提交从仓库当前版本取消跟踪，本机文件保留，不改写历史。同步移除图片链接，保留文字验收记录。没有新工作副本。
