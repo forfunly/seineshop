@@ -1,5 +1,6 @@
 import {useLocale} from '~/lib/i18n';
 import {CartForm} from '@shopify/hydrogen';
+import {CartAnalyticsInput} from './CommerceAnalytics';
 
 /**
  * @param {{
@@ -28,6 +29,7 @@ export function AddToCartButton({
     >
       {(fetcher) => (
         <>
+          <CartAnalyticsInput />
           <input
             name="analytics"
             type="hidden"

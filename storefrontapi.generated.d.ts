@@ -175,6 +175,7 @@ export type CartApiQueryFragment = Pick<
     >;
   };
   lines: {
+    pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage'>;
     nodes: Array<
       | (Pick<StorefrontAPI.CartLine, 'id' | 'quantity'> & {
           attributes: Array<Pick<StorefrontAPI.Attribute, 'key' | 'value'>>;

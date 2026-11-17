@@ -138,6 +138,9 @@ export const CART_QUERY_FRAGMENT = `#graphql
       phone
     }
     lines(first: $numCartLines) {
+      pageInfo {
+        hasNextPage
+      }
       nodes {
         ...CartLine
       }

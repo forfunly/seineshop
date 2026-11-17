@@ -2,7 +2,7 @@ import {useLocale} from '~/lib/i18n';
 import {useLoaderData, data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {CartMain} from '~/components/CartMain';
-import {addPurchaseLines} from '~/lib/bulk-buy';
+import {addCartLinesWithAnalytics} from '~/lib/ga4-cart.server';
 
 /**
  * @type {Route.MetaFunction}
@@ -34,7 +34,7 @@ export async function action({request, context}) {
   let result;
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
-      result = await addPurchaseLines(inputs.lines, cart);
+      result = await addCartLinesWithAnalytics(inputs.lines, cart, formData.get('ga4') === '1');
       break;
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
@@ -96,6 +96,7 @@ export async function action({request, context}) {
       uncertain,
       analytics: {
         cartId,
+        ...(result.ga4 ? {ga4: result.ga4} : {}),
       },
     },
     {

@@ -1,5 +1,53 @@
 # 分析与 Cookie 同意管理：历史失败与本地修复复验
 
+## GA4 六事件本地候选验收（2026-11-17）
+
+范围：当前会话用户已确认六事件方案；复用主目录 main，开工远程核对 `483164b`，原两张未跟踪截图保留。没有新依赖、凭据/.env、CI/CD、schema、商品/价格/库存变更、push 或主站发布。新建的后台像素只是未连接草稿，不能当作线上已接通。
+
+### 实现与验收依据
+
+| 事件 | 归属与本轮证据 |
+| --- | --- |
+| `session_start` | 沿用 GA4 自动会话，不手工发送。现有测量 ID 不变；不声称已核对正确 GA4 后台资源中的入库。 |
+| `view_item` | 实际本地商品页发送 USD19/1件/黑色，规格 ID 与 Shopify 一致；德国拒绝分析时无电商事件，允许后发送德文商品/规格。日语手机页同时复核语言和布局。 |
+| `add_to_cart` | 普通加购 USD19/1件；Bulk Buy 黑1+白1 上报 USD38/2件，购物车旧数量不重复计入；样品加购 USD19/1件。复用的吸底按钮走同一已验收服务端动作；未另外增加业务测试数据验证吸底点击。 |
+| `begin_checkout` | 原始像素在隔离浏览器执行，模拟 `checkout_started` 到本机接收器成功。前台不在按钮点击时发送。真实手机购物车键盘 Enter 跳转 Shopify，5件/小计 USD95 与保存的购物车一致。 |
+| `add_payment_info` | 模拟 `payment_info_submitted` 到本机接收器成功；没有提交真实支付信息或扣款。 |
+| `purchase` | 模拟 `checkout_completed` → `purchase`，商品净额36、税3、运费12，订单ID独立，重复完整流程仍只有一条购买。不是实际 Shopify 支付或正式 GA4 收入验收。 |
+
+- 服务端以加购前后完整快照比较真实数量，支持库存调整警告、网络不确定、币种及价格校验，不因分析失败重复写入或阻塞购买。最多250行完整快照；超出时保守跳过加购分析，不编造数量。超过200项的加购按 GA4 上限拆分；结账购买保留单笔完整金额、前200项商品，不拆成虚构订单。
+- 本机浏览器真实读取 GA client/session 标识（只记录可用性，不保存真实值）。购物车结账后读回三个匿名属性存在；拒绝分析后再次请求结账，旧匿名属性确已清空，购物车仍保留。Buy now 单独1件/USD19结账，返回后原购物车仍5件。
+- 修复外部结账后浏览器返回缓存恢复时的 fetcher 悬挂：使用当前 React Router 7.16 的 `reset()`，手机后退后 Buy now 恢复可用。普通加购、批量加购、样品、购物车结账都在隔离浏览器会话中；过程中一次移动设备切换刷新中断了样品响应，未据此推定客户端上报，随后独立复测。最终测试购物车黑4/白1，共5件/USD95；没有订单、通知、付款或发货。
+- 390px手机商品/购物车按钮无横向溢出，checkout按钮宽350px、键盘聚焦及Enter可用；英语、德语、日语页面正常，语言前缀的checkout action保留。外部评价读取在本机出现过不可用提示，不作为本轮评价功能验收；未改相关接入。
+- 内部浏览器接收器 `node scripts/preview-ga4-pixel.mjs` 仅监听127.0.0.1:3010；原始像素的Google脚本传输在测试页替换成本机接收器。最新代码执行完整流程两次只收到 `begin_checkout`、`add_payment_info`、`purchase` 各1条，金额均36/USD，浏览器外部资源请求0；页面UTF-8中文正常。模拟订单ID不进入生产GA4。
+
+### Shopify 草稿与启用边界
+
+- 用户本人完成 Shopify 身份验证后，在 `ps83if-c4.myshopify.com` 创建 **Seine Shop GA4 Checkout**（自定义像素174522627）；代码保存并刷新读回，界面仍提供 Connect，未执行连接。Required只勾Analytics，Marketing/Preferences不勾；未修改17TRACK或全局隐私设置，未改数据出售设置。
+- [后台草稿](https://admin.shopify.com/store/ps83if-c4/settings/customer_events/pixels/custom/174522627)与仓库 `scripts/ga4-checkout-pixel.js` 去除末尾换行后的SHA256同为 `af3789003f2f557e44a5faf77a56181da0dc346825e2ab8f0583058f07e915db`。编辑器保存时仅移除末尾换行，非业务差异。
+- Shopify静态发现要求订阅事件名称为字面量。最初动态循环触发后台未订阅提示，已改成三处显式 `analytics.subscribe`，刷新读回后提示消失，并新增回归保护。
+- 生产仍使用原版主站，结账像素未连接。后续分别确认push、主站部署、连接此草稿，再核对Pixel Helper/实际GA4请求及正确数据流。不要另接同ID的重复Google像素。真实测试店支付、跨域GA4归因和后台入库尚未闭环；页面未加载、拦截器或浏览器中断仍可能丢失客户端事件，本轮没有订单Webhook对账。
+- 沿用历史决定：基础GA4初始化和停用同意修复不在本轮发布调整范围。新增电商事件遵循Shopify分析许可，不能据此宣称旧基础page_view已改为同意门控。
+
+### 检查与资料
+
+本次提交清单（27文件，目标 `origin/main`，尚未获准推送）：
+
+- 组件：`app/components/AddToCartButton.jsx`、`CartSummary.jsx`、`ProductBulkBuy.jsx`、`ProductForm.jsx`、`CheckoutForm.jsx`、`CommerceAnalytics.jsx`。
+- 公共/服务端逻辑：`app/lib/checkout.server.js`、`fragments.js`、`ga4-cart.server.js`、`ga4-client.js`、`ga4-commerce.js`。
+- 接入与样式：`app/root.jsx`、`app/routes/cart.jsx`、`app/routes/checkout.jsx`、`app/routes/products.$handle.jsx`、`app/styles/cart.css`。
+- 已跟踪查询类型同步：`storefrontapi.generated.d.ts`。
+- 像素与测试：`scripts/ga4-checkout-pixel.js`、`scripts/preview-ga4-pixel.mjs`、`tests/ga4-checkout-pixel.test.mjs`、`tests/ga4-commerce.test.mjs`。
+- 文档：`README.md`、`RELEASE-NOTES.md`、`docs/rules/engineering.md`、`docs/plans/2026-11-03-analytics-consent-fix.md`、本QA、`docs/project-state.md`。两张原有未跟踪截图不在提交内。
+
+- 交付前最新检查：118/118测试、lint（0错误/2项原有脚本警告）、codegen、build、集合筛选、构建来源审计、差异空白检查均通过。27个候选文件与dist合计118个文件扫描6项本机实际敏感值，0匹配。保留原envFile弃用、React Router未来选项和构建分析器缺少metafile提示；构建退出0，不以此声称全项目类型通过。6份Markdown严格UTF-8解码、62个相对链接检查通过。
+- 官方 Toolkit 2026-04 对含 `pageInfo.hasNextPage` 的真实购物车查询校验通过，保留原CartCost税费字段弃用提示。CheckoutForm源码校验无通用错误，但工具没有可验证的Polaris组件；CommerceAnalytics两处返回null的JSX被独立工具报隐式any，JSDoc注释也未被该工具识别。没有添加忽略或绕过，不将其记为全项目类型通过；本项目没有全项目typecheck命令，codegen/build与真实浏览器结果分别记录。
+- 无公开URL或可索引正文变更；现有sitemap生成源和lastmod保持，sitemap测试包含在全量测试中。内部测试接收器不是站点路由，不加入sitemap。
+- 本次浏览器验收记录原有页面，已关闭本任务9/10/11/15四个标签；原空白页5及另一个任务的页面16保留，专用浏览器仍供其他任务使用。原58/59在浏览器重新连接前已不存在，未按旧ID操作。日语手机购买区截图视觉检查正常，未新增仓库截图。已停止本次3009开发服务和3010隔离接收器，缓存及原有截图不删除。
+- 官方依据：[Shopify checkout_started](https://shopify.dev/docs/api/web-pixels-api/standard-events/checkout_started)、[payment_info_submitted](https://shopify.dev/docs/api/web-pixels-api/standard-events/payment_info_submitted)、[checkout_completed及数据结构](https://shopify.dev/docs/api/web-pixels-api/standard-events/checkout_completed)、[customerPrivacy](https://shopify.dev/docs/api/web-pixels-api/standard-api/customerprivacy)、[Google GA4 ecommerce](https://developers.google.com/analytics/devguides/collection/ga4/ecommerce)。
+
+以下保留11月3日历史证据，不代表本次或当前生产状态。
+
 检查日期：2026-11-03（Asia/Shanghai）。范围：本地 Hydrogen 2026.4.7 / React 18；没有改动前台代码、环境变量、生产配置或 Shopify 商品数据。未进入结账。
 
 ## 已完成的检查与实际结果

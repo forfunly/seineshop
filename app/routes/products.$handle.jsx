@@ -9,6 +9,7 @@ import {useEffect, useState} from 'react';
 import {ProductStickyBar} from '~/components/ProductStickyBar';
 import {ProductBuyingGuide} from '~/components/ProductBuyingGuide';
 import {useLocale} from '~/lib/i18n';
+import {ProductCommerceView} from '~/components/CommerceAnalytics';
 import {Link, useLoaderData, useFetchers, useNavigation} from 'react-router';
 import {
   getSelectedProductOptions,
@@ -240,6 +241,7 @@ export default function Product() {
           ],
         }}
       />
+      <ProductCommerceView product={product} variant={selectedVariant}/>
     </div>
   );
 }

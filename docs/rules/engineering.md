@@ -60,6 +60,15 @@
 
 ## 验证与交付
 
+### GA4 电商事件归属（2026-11-17）
+
+- 沿用本店现有 GA4 测量 ID，不新增广告平台、凭据或依赖。`session_start` 由 GA4 自动生成；商品页负责 `view_item`，购物车成功响应负责 `add_to_cart`，Shopify 托管结账像素独占 `begin_checkout`、`add_payment_info`、`purchase`，避免前台按钮与结账回调双报。
+- 公共事件映射与发送逻辑放在 `app/lib/`，React 接入放在 `app/components/`；结账自定义像素原文放在 `scripts/ga4-checkout-pixel.js`，仅用于后台配置，不导入前台、不自动执行或连接生产。测试放在 `tests/`；沿用现有分析方案与 QA 文档记录，不另建同用途资料。
+- 新增电商事件遵循 Shopify 分析许可，失败操作不报成功；金额、币种与实际商品数据一致，GA4 商品数组超过 200 项时拆分加购事件。结账只携带经校验的匿名 GA client/session 标识，使用购物车属性传递，不放入 URL，不发送邮箱、电话、地址、结账 token 或支付信息。像素按订单号去重购买事件，发送到 GA 队列不等于后台已入库。
+- 当前任务的方案确认只授权代码、配置准备及内部验证；不自动启用生产像素，不扩大历史同意门控的发布范围。生产像素连接、Git push 和部署分别确认；测试事件使用隔离的本地接收器，避免伪造生产购买收入。真实测试店支付验收与正式 GA4 入库证据单独记录。
+
+### 通用验收
+
 - 执行前核对 package.json、锁文件和测试配置。当前命令入口为 `npm run lint`、`npm run codegen`、`npm run build`，测试使用 `node --test tests/*.test.mjs`。`codegen` 只生成 GraphQL/路由类型，不是全项目类型检查；未提供 `typecheck`、`test:admin` 或 `admin:check` 时不得假设存在。历史检查结果保存在 QA 记录，不作为本次通过依据。
 - `npm ci` 用于首次准备或锁文件变化后的依赖安装，不是每次编辑必跑的检查；已安装且适用的依赖可复用。新增全局依赖及系统配置仍遵守授权红线。
 - 本地启动使用远程工程 `npm run dev`，核对该版本 CLI 的监听选项并仅监听本机；旧本地 Vite 的 `--host 127.0.0.1` 不能直接照搬到 Hydrogen CLI。不主动建立公开隧道。

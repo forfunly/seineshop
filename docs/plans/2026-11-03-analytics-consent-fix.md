@@ -1,5 +1,17 @@
 # 全站分析与同意状态修复方案
 
+## GA4 六事件补齐（2026-11-17，已确认方案）
+
+用户在当前会话确认实施：继续使用 `G-BKLZMJ9EP7`；保留既有基础初始化与未发布的历史同意门控范围。`session_start` 由 GA4 自动生成，商品页发送 `view_item`，普通/吸底/批量/样品成功加购发送 `add_to_cart`；结账像素将 Shopify `checkout_started`、`payment_info_submitted`、`checkout_completed` 分别映射到 `begin_checkout`、`add_payment_info`、`purchase`。结账按钮本身不发送这些成功事件。
+
+- 沿用 `app/lib/`、`app/components/`、`scripts/`、`tests/`，职责见[工程规范](../rules/engineering.md#ga4-电商事件归属2026-11-17)。购物车读取实际前后数量及 Shopify 价格，不信任客户端价格；分析读取失败不得阻塞购买或自动重试业务写入。
+- 普通购物车结账和 Buy now 共用匿名 GA 标识采集；最多等待短暂的标识读取，广告拦截/拒绝分析时照常结账。服务端只接受限定格式字段，保留其他购物车属性；像素仅在分析允许时初始化，过期 session 不强制续接。
+- 购买使用订单 ID 作为 `transaction_id`，持久化有限去重记录并保留 GA4 原生订单去重；传输只用白名单商品/金额字段，不包含客户联系方式、结账 token、支付详情。购买表示 Shopify 的 checkout completed，不保证后续已结算或已发货。
+- 验证：Node 回归覆盖金额、真实数量增量、失败/警告、双击、跨域标识、像素隐私及重复事件；lint、codegen、build、来源审计；本地桌面/手机购买流程和隔离接收器核对请求。没有公开 URL/内容变更，不改 sitemap 条目或 lastmod，运行现有 sitemap 测试。
+- 当前只准备代码、结账像素及配置步骤，不启用生产，不修改 `.env` 或凭据。真实 Shopify 测试店 checkout completed、正式 GA4 后台入库及生产启用若未验证，必须如实保留缺口；push、生产像素连接及主站部署分别取得明确授权。
+
+以下为历史同意门控方案，不代表当前生产行为。
+
 日期：2026-11-03（Asia/Shanghai）。状态：用户回复“修复”批准后，本地实施与复验完成。原失败和修复后网络、测试及限制见 [验收记录](../qa/2026-11-03-analytics-consent.md)。本次完成的是本地同意门控修复，生产与 GA4 后台归因未验收。
 
 ## 目标行为

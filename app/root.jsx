@@ -21,6 +21,7 @@ import mobileStyles from '~/styles/mobile.css?url';
 import brandStyles from '~/styles/brand.css?url';
 import cartStyles from '~/styles/cart.css?url';
 import {PageLayout} from './components/PageLayout';
+import {CommerceAnalytics} from './components/CommerceAnalytics';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -214,6 +215,7 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
+      <CommerceAnalytics />
       <PageLayout {...data}>
         <Outlet />
       </PageLayout>

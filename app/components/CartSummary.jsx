@@ -1,7 +1,8 @@
 import {useLocale} from '~/lib/i18n';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
-import {useFetcher} from 'react-router';
+import {useFetcher, useFetchers} from 'react-router';
+import {CheckoutForm} from './CheckoutForm';
 
 /**
  * @param {CartSummaryProps}
@@ -54,19 +55,16 @@ export function CartSummary({cart, layout}) {
  * @param {{checkoutUrl?: string}}
  */
 function CartCheckoutActions({checkoutUrl}) {
-  const {locale, t} = useLocale();
+  const {t} = useLocale();
+  const checkout = useFetcher();
+  const updating = useFetchers().some((fetcher) => fetcher.state !== 'idle');
   if (!checkoutUrl) return null;
-  const localizedCheckoutUrl = new URL(checkoutUrl);
-  localizedCheckoutUrl.searchParams.set('locale', locale.code);
   return (
     <div>
-      <a
-        className="cart-checkout"
-        href={localizedCheckoutUrl.href}
-        target="_self"
-      >
-        <p>{t('Continue to Checkout \u2192')}</p>
-      </a>
+      <CheckoutForm fetcher={checkout} intent="cart">
+        <button type="submit" className="cart-checkout" disabled={updating}>{t('Continue to Checkout \u2192')}</button>
+      </CheckoutForm>
+      {checkout.data?.errors?.length > 0 && <p role="alert">{checkout.data.errors.map(({message}) => t(message)).join(' ')}</p>}
       <p className="cart-checkout-note">{t('Secure checkout by Shopify')}</p>
     </div>
   );

@@ -5,6 +5,7 @@ import {useLocale} from '~/lib/i18n';
 import {useModalDialog} from '~/lib/use-modal-dialog';
 import {BULK_QUANTITY_ERROR, MAX_CART_LINES, validBulkQuantity} from '~/lib/bulk-buy';
 import {useAside} from './Aside';
+import {CartAnalyticsInput} from './CommerceAnalytics';
 
 export function ProductBulkBuy({handle, title, disabled}) {
   const {t, localize} = useLocale();
@@ -111,6 +112,7 @@ export function ProductBulkBuy({handle, title, disabled}) {
           submitted.current = true;
         }}>
           <input type="hidden" name={CartForm.INPUT_NAME} value={JSON.stringify({action: CartForm.ACTIONS.LinesAdd, inputs: {lines}})}/>
+          <CartAnalyticsInput />
           <fieldset disabled={busy || mustCheckCart} className="pdp-bulk-options">
             <legend className="sr-only">{t('Options and quantities')}</legend>
             {variants.map((variant) => <div className="pdp-bulk-row" key={variant.id}>

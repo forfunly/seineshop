@@ -8,6 +8,7 @@ import {useAside} from './Aside';
 import {ProductModeRequest} from './ProductPurchaseModes';
 import {ProductBulkBuy} from './ProductBulkBuy';
 import {ProductShippingOptions} from './ProductShippingOptions';
+import {CheckoutForm} from './CheckoutForm';
 
 /**
  * @param {{
@@ -135,14 +136,14 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
         >
           {t(selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out')}
         </AddToCartButton>
-        <checkout.Form method="post" action={localize('/checkout')}>
+        <CheckoutForm fetcher={checkout}>
           <input type="hidden" name="merchandiseId" value={selectedVariant?.id || ''} />
           <input type="hidden" name="quantity" value={quantity} />
           <button className="pdp-buy-now" type="submit" disabled={unavailable}>
             {t(checkout.state !== 'idle' ? 'Opening checkout…' : 'Buy now')}
           </button>
           {checkoutErrors.length > 0 && <div className="pdp-purchase-error" role="alert">{checkoutErrors.map((message) => <p key={message}>{t(message)}</p>)}</div>}
-        </checkout.Form>
+        </CheckoutForm>
       </div>
       <p className="pdp-checkout-note">{t('Secure checkout by Shopify. Shipping and taxes calculated at checkout.')}</p>
       <ProductShippingOptions key={selectedVariant?.id} variant={selectedVariant} quantity={quantity} disabled={unavailable}/>
