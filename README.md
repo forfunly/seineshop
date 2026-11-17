@@ -65,6 +65,9 @@ The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.j
 
 ## Shopify configuration
 
+- Customer accounts use Shopify's email-code login and Customer Account API. `/account/profile` shows the authenticated email and current marketing state, saves names with a verified readback, and offers explicit subscribe/unsubscribe actions. Login and profile updates do not opt a customer into marketing. Pending confirmation is shown separately; uncertain writes require a refresh before retrying. Profile and address submissions enforce the storefront origin, and account responses are private/no-store/noindex.
+- Signed-in saved-cart checkout refreshes Shopify buyer identity from the server session and uses the resulting checkout URL; failed attachment prevents a silent guest checkout. Buy now uses Hydrogen's built-in session identity. Orders remain native Shopify checkout records, while B2B inquiries create separate draft orders. Real customer/profile/marketing and paid-order acceptance evidence is tracked in [customer account QA](docs/qa/2026-11-17-customer-account.md); code checks do not establish a completed payment.
+
 - Prices and currency conversions come from Shopify Markets. Base currency is USD; country selection updates cart buyer identity before refreshing prices.
 - Search uses Storefront predictive search and product filters configured in Search & Discovery.
 - Public product specifications use `custom.technical_specifications` JSON. Private sourcing/procurement records must remain inaccessible to the Storefront API.

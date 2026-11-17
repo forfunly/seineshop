@@ -73,6 +73,12 @@ export type CustomerFragment = Pick<
   CustomerAccountAPI.Customer,
   'id' | 'firstName' | 'lastName'
 > & {
+  emailAddress?: CustomerAccountAPI.Maybe<
+    Pick<
+      CustomerAccountAPI.CustomerEmailAddress,
+      'emailAddress' | 'marketingState'
+    >
+  >;
   defaultAddress?: CustomerAccountAPI.Maybe<
     Pick<
       CustomerAccountAPI.CustomerAddress,
@@ -136,6 +142,12 @@ export type CustomerDetailsQuery = {
     CustomerAccountAPI.Customer,
     'id' | 'firstName' | 'lastName'
   > & {
+    emailAddress?: CustomerAccountAPI.Maybe<
+      Pick<
+        CustomerAccountAPI.CustomerEmailAddress,
+        'emailAddress' | 'marketingState'
+      >
+    >;
     defaultAddress?: CustomerAccountAPI.Maybe<
       Pick<
         CustomerAccountAPI.CustomerAddress,
@@ -173,6 +185,46 @@ export type CustomerDetailsQuery = {
       >;
     };
   };
+};
+
+export type CustomerMarketingSubscribeMutationVariables =
+  CustomerAccountAPI.Exact<{[key: string]: never}>;
+
+export type CustomerMarketingSubscribeMutation = {
+  customerEmailMarketingSubscribe?: CustomerAccountAPI.Maybe<{
+    emailAddress?: CustomerAccountAPI.Maybe<
+      Pick<
+        CustomerAccountAPI.CustomerEmailAddress,
+        'emailAddress' | 'marketingState'
+      >
+    >;
+    userErrors: Array<
+      Pick<
+        CustomerAccountAPI.UserErrorsCustomerEmailMarketingUserErrors,
+        'code' | 'field' | 'message'
+      >
+    >;
+  }>;
+};
+
+export type CustomerMarketingUnsubscribeMutationVariables =
+  CustomerAccountAPI.Exact<{[key: string]: never}>;
+
+export type CustomerMarketingUnsubscribeMutation = {
+  customerEmailMarketingUnsubscribe?: CustomerAccountAPI.Maybe<{
+    emailAddress?: CustomerAccountAPI.Maybe<
+      Pick<
+        CustomerAccountAPI.CustomerEmailAddress,
+        'emailAddress' | 'marketingState'
+      >
+    >;
+    userErrors: Array<
+      Pick<
+        CustomerAccountAPI.UserErrorsCustomerEmailMarketingUserErrors,
+        'code' | 'field' | 'message'
+      >
+    >;
+  }>;
 };
 
 export type OrderMoneyFragment = Pick<
@@ -512,7 +564,7 @@ export type DropshipCustomerIdentityQuery = {
 };
 
 interface GeneratedQueryTypes {
-  '#graphql\n  query CustomerDetails($language: LanguageCode) @inContext(language: $language) {\n    customer {\n      ...Customer\n    }\n  }\n  #graphql\n  fragment Customer on Customer {\n    id\n    firstName\n    lastName\n    defaultAddress {\n      ...Address\n    }\n    addresses(first: 6) {\n      nodes {\n        ...Address\n      }\n    }\n  }\n  fragment Address on CustomerAddress {\n    id\n    formatted\n    firstName\n    lastName\n    company\n    address1\n    address2\n    territoryCode\n    zoneCode\n    city\n    zip\n    phoneNumber\n  }\n\n': {
+  '#graphql\n  query CustomerDetails($language: LanguageCode) @inContext(language: $language) {\n    customer {\n      ...Customer\n    }\n  }\n  #graphql\n  fragment Customer on Customer {\n    id\n    firstName\n    lastName\n    emailAddress {\n      emailAddress\n      marketingState\n    }\n    defaultAddress {\n      ...Address\n    }\n    addresses(first: 6) {\n      nodes {\n        ...Address\n      }\n    }\n  }\n  fragment Address on CustomerAddress {\n    id\n    formatted\n    firstName\n    lastName\n    company\n    address1\n    address2\n    territoryCode\n    zoneCode\n    city\n    zip\n    phoneNumber\n  }\n\n': {
     return: CustomerDetailsQuery;
     variables: CustomerDetailsQueryVariables;
   };
@@ -542,6 +594,14 @@ interface GeneratedMutationTypes {
   '#graphql\n  mutation customerAddressCreate(\n    $address: CustomerAddressInput!\n    $defaultAddress: Boolean\n    $language: LanguageCode\n  ) @inContext(language: $language) {\n    customerAddressCreate(\n      address: $address\n      defaultAddress: $defaultAddress\n    ) {\n      customerAddress {\n        id\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerAddressCreateMutation;
     variables: CustomerAddressCreateMutationVariables;
+  };
+  '#graphql\n  mutation CustomerMarketingSubscribe {\n    customerEmailMarketingSubscribe {\n      emailAddress { emailAddress marketingState }\n      userErrors { code field message }\n    }\n  }\n': {
+    return: CustomerMarketingSubscribeMutation;
+    variables: CustomerMarketingSubscribeMutationVariables;
+  };
+  '#graphql\n  mutation CustomerMarketingUnsubscribe {\n    customerEmailMarketingUnsubscribe {\n      emailAddress { emailAddress marketingState }\n      userErrors { code field message }\n    }\n  }\n': {
+    return: CustomerMarketingUnsubscribeMutation;
+    variables: CustomerMarketingUnsubscribeMutationVariables;
   };
   '#graphql\n  mutation customerUpdate(\n    $customer: CustomerUpdateInput!\n    $language: LanguageCode\n  ) @inContext(language: $language) {\n    customerUpdate(input: $customer) {\n      customer {\n        firstName\n        lastName\n        emailAddress {\n          emailAddress\n        }\n        phoneNumber {\n          phoneNumber\n        }\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerUpdateMutation;

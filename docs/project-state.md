@@ -1,5 +1,13 @@
 # 项目连接状态与授权记录
 
+## 当前：客户资料与营销偏好本地候选已真实补验，付款订单仍待验（2026-11-17）
+
+- 用户要求完善客户/订单剩余项，并明确批准本次官方临时HTTPS预览和配合测试登录。已完成真实姓名保存/恢复、地址保存、订阅/退订及后台Customers读回；初始空姓名和SUBSCRIBED已恢复。保留1条明确Internal QA / Do Not Ship测试地址，Shopify自动设为首个默认地址；不删除、不用于真实发货。
+- 账户页真实邮箱/营销状态、独立订阅/退订、姓名读回和错误反馈、英日德文案已补齐；资料保存不自动订阅。官方登录表单另带默认勾选的营销选项，已提示用户选择，未改正式设置。账户响应private/no-store/noindex，地址提交验证同源；订单详情区分404/503，结账刷新服务端客户身份，失败不静默继续访客购买。
+- 同一客户B20A黑色1件/USD19加购并实际进入托管结账，页面识别同一邮箱及Internal QA地址；未填写支付/提交订单，前后台订单仍为空。保留购物车，地址导致结账按加拿大市场显示CAD，未改商品价格或支付设置。付款后正式订单与账户列表归属仍待单独交易验收，不能以本轮进结账代替。
+- 日语/德语已登录账户页390px真实设备视口无横向溢出，桌面德语与手机日语截图人工检查通过；已登录资料页200/private,no-store。四份Customer API 2026-04操作Toolkit校验通过；145/145测试、lint0错误/2既有警告、codegen/独立router typegen、build、集合筛选及来源审计通过。独立JSX工具三次仍将Outlet上下文判断unknown，未计为通过；开发预览既有hydration提示保留，不声称控制台全无错误。
+- 命令级已有代理fetch成功，HEAD/origin/main均9b558a3，复用主目录保留原规则/分析QA/截图；本次标签已关闭，官方预览已正常终止，临时回调授权检查从200变为400/redirect_uri mismatch，3000监听消失，已确认清理。不改.env/密钥/数据定义/正式店支付设置，未push或部署。详见[客户账户验收](qa/2026-11-17-customer-account.md)。
+
 ## 当前：Clarity 已发布 Oxygen Production，GA4 服务端仍待权限（2026-11-17）
 
 - 用户明确批准本次24文件提交上传、仅Production新增 `PUBLIC_CLARITY_ENABLED=true` 及正式部署，并进一步确认目标为Shopify Oxygen。`origin/main`已实时读回 `0452ef40c56957f9d995dc7b87470e1a9b5a0620`；后台 Production/main/0452ef4 为Ready/Current，资源 `5760768`、Deployment ID `6143434`。部署地址为 `https://01m7m99ner133jd68tfvf5ecwy-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名仍为www.seineshop.com。

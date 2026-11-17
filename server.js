@@ -1,4 +1,4 @@
-import {localizedRedirectPath} from '~/lib/locale';
+import {localizedRedirectPath, stripLocale} from '~/lib/locale';
 import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
@@ -56,8 +56,12 @@ export default {
         );
       }
 
-      if (hydrogenContext.session.get('marketCountry')) {
+      const privatePath = stripLocale(requestUrl.pathname).replace(/\.data$/, '');
+      if (hydrogenContext.session.get('marketCountry') || privatePath === '/account' || privatePath.startsWith('/account/')) {
         response.headers.set('Cache-Control', 'private, no-store');
+      }
+      if (privatePath === '/account' || privatePath.startsWith('/account/')) {
+        response.headers.set('X-Robots-Tag', 'noindex, nofollow');
       }
 
       if (hydrogenContext.session.isPending) {

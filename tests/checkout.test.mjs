@@ -53,3 +53,32 @@ test('missing checkout, unsafe URL and network failure produce a recoverable err
   assert.ok(result.errors.length);
   assert.ok(!JSON.stringify(result).includes('secret server error'));
 });
+
+test('saved checkout reattaches the authenticated session and uses its fresh URL without client identity', async () => {
+  const {createSavedCartCheckout} = await import('../app/lib/checkout.server.js');
+  const values = form(); values.set('customerAccessToken', 'attacker'); values.set('email', 'attacker@example.com');
+  let attachments = 0;
+  const saved = {id: 'cart', totalQuantity: 2, checkoutUrl: 'https://shop.example/checkouts/old'};
+  const cart = {get: async () => saved, updateAttributes: async () => {}, updateBuyerIdentity: async (input) => {
+    attachments++; assert.deepEqual(input, {});
+    return {cart: {...saved, checkoutUrl: 'https://shop.example/checkouts/fresh'}};
+  }};
+  const result = await createSavedCartCheckout(values, cart, {}, {isLoggedIn: async () => true});
+  assert.equal(attachments, 1); assert.equal(result.checkoutUrl, 'https://shop.example/checkouts/fresh');
+  attachments = 0;
+  assert.equal((await createSavedCartCheckout(values, cart, {}, {isLoggedIn: async () => false})).checkoutUrl, saved.checkoutUrl);
+  assert.equal(attachments, 0);
+});
+
+test('failed identity attachment cannot silently send a signed-in buyer through a guest checkout', async () => {
+  const {createSavedCartCheckout} = await import('../app/lib/checkout.server.js');
+  for (const attached of [{errors: [{message: 'private'}]}, {warnings: [{message: 'private'}]}, {}]) {
+    const result = await createSavedCartCheckout(form(), {
+      get: async () => ({id: 'cart', totalQuantity: 1, checkoutUrl: 'https://shop.example/checkouts/old'}),
+      updateBuyerIdentity: async () => attached,
+      updateAttributes: () => assert.fail('Do not continue after failed identity attachment'),
+    }, {}, {isLoggedIn: async () => true});
+    assert.equal(result.checkoutUrl, undefined); assert.ok(result.errors.length);
+    assert.ok(!JSON.stringify(result).includes('private'));
+  }
+});

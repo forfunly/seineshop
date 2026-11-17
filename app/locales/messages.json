@@ -3481,5 +3481,25 @@
   "Reference unit price. Customized products are quoted separately.": {
     "ja": "通常商品の参考単価です。カスタム製品は別途お見積もりします。",
     "de": "Referenzstückpreis. Individuelle Produkte werden separat angeboten."
-  }
+  },
+  "Email preferences": {"ja": "メール配信設定", "de": "E-Mail-Einstellungen"},
+  "Subscription status": {"ja": "配信登録の状態", "de": "Abonnementstatus"},
+  "Awaiting email confirmation": {"ja": "メール確認待ち", "de": "E-Mail-Bestätigung ausstehend"},
+  "Subscribed": {"ja": "登録済み", "de": "Abonniert"},
+  "Not subscribed": {"ja": "未登録", "de": "Nicht abonniert"},
+  "Unavailable": {"ja": "利用できません", "de": "Nicht verfügbar"},
+  "Choose whether to receive product news and offers by email. You can change your preference here.": {"ja": "商品情報やお得な情報のメール配信を選択できます。設定はこちらで変更できます。", "de": "Wähle, ob du Produktneuigkeiten und Angebote per E-Mail erhalten möchtest. Du kannst deine Auswahl hier ändern."},
+  "Unsubscribe from marketing emails": {"ja": "マーケティングメールの配信を停止", "de": "Marketing-E-Mails abbestellen"},
+  "Subscribe to marketing emails": {"ja": "マーケティングメールを購読", "de": "Marketing-E-Mails abonnieren"},
+  "Email preferences are unavailable. Please try again later.": {"ja": "メール配信設定を利用できません。しばらくしてから再度お試しください。", "de": "Die E-Mail-Einstellungen sind nicht verfügbar. Bitte versuche es später erneut."},
+  "Please reload this page and try again.": {"ja": "ページを再読み込みして、もう一度お試しください。", "de": "Bitte lade diese Seite neu und versuche es erneut."},
+  "Please sign in again.": {"ja": "もう一度ログインしてください。", "de": "Bitte melde dich erneut an."},
+  "Enter a valid name of up to 255 characters.": {"ja": "255文字以内の有効な名前を入力してください。", "de": "Gib einen gültigen Namen mit bis zu 255 Zeichen ein."},
+  "Your changes could not be confirmed. Refresh this page to check before trying again.": {"ja": "変更を確認できませんでした。再試行する前にページを再読み込みして状態をご確認ください。", "de": "Deine Änderungen konnten nicht bestätigt werden. Lade die Seite neu und prüfe den Status, bevor du es erneut versuchst."},
+  "Your account could not be loaded. Please refresh this page and try again.": {"ja": "アカウントを読み込めませんでした。ページを再読み込みして、もう一度お試しください。", "de": "Dein Konto konnte nicht geladen werden. Bitte lade die Seite neu und versuche es erneut."},
+  "Your profile has been saved.": {"ja": "プロフィールを保存しました。", "de": "Dein Profil wurde gespeichert."},
+  "You have unsubscribed from marketing emails.": {"ja": "マーケティングメールの配信を停止しました。", "de": "Du hast Marketing-E-Mails abbestellt."},
+  "Your subscription is awaiting email confirmation.": {"ja": "配信登録はメールの確認待ちです。", "de": "Dein Abonnement wartet auf die E-Mail-Bestätigung."},
+  "You are subscribed to marketing emails.": {"ja": "マーケティングメールに登録されています。", "de": "Du hast Marketing-E-Mails abonniert."},
+  "Email": {"ja": "メールアドレス", "de": "E-Mail"}
 }

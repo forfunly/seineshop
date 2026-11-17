@@ -22,16 +22,21 @@ export async function loader({params, context}) {
   if (!params.id) {
     return redirect('/account/orders');
   }
-  const orderId = atob(params.id);
+  let orderId;
+  try {
+    orderId = atob(params.id);
+    if (!/^gid:\/\/shopify\/Order\/\d+$/.test(orderId)) throw new Error('Invalid order');
+  } catch {
+    throw new Response('Order not found', {status: 404});
+  }
   const {data, errors} = await customerAccount.query(CUSTOMER_ORDER_QUERY, {
     variables: {
       orderId,
       language: customerAccount.i18n.language,
     },
   });
-  if (errors?.length || !data?.order) {
-    throw new Error('Order not found');
-  }
+  if (errors?.length) throw new Response('Order temporarily unavailable', {status: 503});
+  if (!data?.order) throw new Response('Order not found', {status: 404});
   const {order} = data;
 
   // Extract line items directly from nodes array

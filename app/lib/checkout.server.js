@@ -28,11 +28,20 @@ export async function createBuyNowCheckout(formData, cart, env = {}) {
 }
 
 /** Resume the real saved cart, preserving all unrelated checkout attributes. */
-export async function createSavedCartCheckout(formData, cart, env = {}) {
+export async function createSavedCartCheckout(formData, cart, env = {}, customerAccount) {
   try {
     const saved = await cart.get();
     if (!saved?.id || !saved.totalQuantity || saved.errors?.length) throw new Error('Missing cart');
-    const url = new URL(saved.checkoutUrl);
+    let checkoutUrl = saved.checkoutUrl;
+    if (customerAccount && await customerAccount.isLoggedIn()) {
+      // Hydrogen obtains the identity from the server session, never from form fields.
+      const attached = await cart.updateBuyerIdentity({});
+      if (attached.errors?.length || attached.warnings?.length || !attached.cart?.checkoutUrl) {
+        throw new Error('Customer cart attachment unavailable');
+      }
+      checkoutUrl = attached.cart.checkoutUrl;
+    }
+    const url = new URL(checkoutUrl);
     if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid checkout');
     const attributes = [
       ...(saved.attributes || []).filter(({key}) => ![...GA4_CONTEXT_KEYS, SERVER_PROOF_KEY].includes(key)),

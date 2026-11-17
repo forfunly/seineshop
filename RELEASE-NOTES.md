@@ -1,3 +1,9 @@
+# 客户账户资料与邮件偏好（2026-11-17，本地候选）
+
+- 账户页读取真实邮箱与邮件营销状态，新增独立订阅/退订，支持待确认状态；修改姓名后从 Shopify 读回，不将登录或保存资料视为营销同意。单字姓名及清空可选姓名可保存，业务错误或结果不确定不会显示成功。
+- 账户页及数据响应 private/no-store/noindex；资料与地址提交验证同源，订单详情区分错误地址/不存在与接口故障。结账前重试已登录客户的购物车身份关联，失败时保留购物车并提示重试。
+- 未新增数据库、凭据或依赖，未修改支付配置；真实登录后姓名保存/恢复、地址保存、订阅/退订及后台读回通过；托管结账识别同一客户通过，未付款或进行正式订单验收。详见[客户账户 QA](docs/qa/2026-11-17-customer-account.md)。
+
 # Oxygen Production analytics release — 2026-11-17
 
 - Commit `0452ef4` is deployed to the existing Shopify Oxygen Production storefront at www.seineshop.com. Clarity project `zey8gxj9j0` is enabled only in Production, with consent gating, private-route exclusion and text masking. Live tag/SDK requests returned 200 and collection requests 204; refusal, refresh persistence, regrant and cart exclusion were checked. Dashboard recordings/heatmaps are still awaiting processing.

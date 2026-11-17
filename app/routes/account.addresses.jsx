@@ -36,6 +36,11 @@ export async function loader({context}) {
  */
 export async function action({request, context}) {
   const {customerAccount} = context;
+  if (request.headers.get('Origin') !== new URL(request.url).origin) {
+    return data({error: {form: 'Please reload this page and try again.'}}, {
+      status: 403, headers: {'Cache-Control': 'private, no-store'},
+    });
+  }
   try {
     const form = await request.formData();
     const addressId = form.has('addressId')

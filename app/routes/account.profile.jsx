@@ -1,157 +1,70 @@
 import {useLocale} from '~/lib/i18n';
-import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
-import {
-  data,
-  Form,
-  useActionData,
-  useNavigation,
-  useOutletContext,
-} from 'react-router';
+import {customerProfileAction} from '~/lib/customer-profile.server';
+import {Form, useActionData, useNavigation, useOutletContext} from 'react-router';
 
-/**
- * @type {Route.MetaFunction}
- */
-export const meta = () => {
-  return [
-    {
-      title: 'Profile',
-    },
-  ];
-};
+export const meta = () => [{title: 'My profile | Seine Shop'}];
+export const headers = () => ({'Cache-Control': 'private, no-store'});
 
-/**
- * @param {Route.LoaderArgs}
- */
 export async function loader({context}) {
   await context.customerAccount.handleAuthStatus();
   return {};
 }
 
-/**
- * @param {Route.ActionArgs}
- */
-export async function action({request, context}) {
-  const {customerAccount} = context;
-  if (request.method !== 'PUT') {
-    return data(
-      {
-        error: 'Method not allowed',
-      },
-      {
-        status: 405,
-      },
-    );
-  }
-  const form = await request.formData();
-  try {
-    const customer = {};
-    const validInputKeys = ['firstName', 'lastName'];
-    for (const [key, value] of form.entries()) {
-      if (!validInputKeys.includes(key)) {
-        continue;
-      }
-      if (typeof value === 'string' && value.length) {
-        customer[key] = value;
-      }
-    }
+export const action = customerProfileAction;
 
-    // update customer and possibly password
-    const {data, errors} = await customerAccount.mutate(
-      CUSTOMER_UPDATE_MUTATION,
-      {
-        variables: {
-          customer,
-          language: customerAccount.i18n.language,
-        },
-      },
-    );
-    if (errors?.length) {
-      throw new Error(errors[0].message);
-    }
-    if (!data?.customerUpdate?.customer) {
-      throw new Error('Customer profile update failed.');
-    }
-    return {
-      error: null,
-      customer: data?.customerUpdate?.customer,
-    };
-  } catch (error) {
-    return data(
-      {
-        error: error.message,
-        customer: null,
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-}
 export default function AccountProfile() {
   const {t} = useLocale();
-  const account = useOutletContext();
+  const account = /** @type {{customer: CustomerFragment}} */ (useOutletContext());
   const {state} = useNavigation();
-  /** @type {ActionReturnData} */
-  const action = useActionData();
-  const customer = action?.customer ?? account?.customer;
+  const result = /** @type {ProfileActionData | undefined} */ (useActionData());
+  const customer = result?.success && result.customer ? result.customer : account.customer;
+  const marketing = customer.emailAddress?.marketingState;
+  const statuses = {
+    SUBSCRIBED: 'Subscribed',
+    PENDING: 'Awaiting email confirmation',
+    NOT_SUBSCRIBED: 'Not subscribed',
+    UNSUBSCRIBED: 'Not subscribed',
+  };
+  const canChangeMarketing = Boolean(customer.emailAddress?.emailAddress && statuses[marketing]);
+  const subscribed = ['SUBSCRIBED', 'PENDING'].includes(marketing);
+  const busy = state !== 'idle';
   return (
     <div className="account-profile">
       <h2>{t('My profile')}</h2>
-      <br />
-      <Form method="PUT">
-        <legend>{t('Personal information')}</legend>
-        <fieldset>
+      <p>{t('Email')}: {customer.emailAddress?.emailAddress || t('Unavailable')}</p>
+      <Form method="POST" className="account-profile-form"
+        key={`${customer.id}:${customer.firstName}:${customer.lastName}`}>
+        <input type="hidden" name="intent" value="profile" />
+        <fieldset disabled={busy}>
+          <legend>{t('Personal information')}</legend>
           <label htmlFor="firstName">{t('First name')}</label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            autoComplete="given-name"
-            placeholder={t('First name')}
-            aria-label={t('First name')}
-            defaultValue={customer.firstName ?? ''}
-            minLength={2}
-          />
+          <input id="firstName" name="firstName" type="text" autoComplete="given-name"
+            defaultValue={customer.firstName ?? ''} maxLength={255} />
           <label htmlFor="lastName">{t('Last name')}</label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            autoComplete="family-name"
-            placeholder={t('Last name')}
-            aria-label={t('Last name')}
-            defaultValue={customer.lastName ?? ''}
-            minLength={2}
-          />
+          <input id="lastName" name="lastName" type="text" autoComplete="family-name"
+            defaultValue={customer.lastName ?? ''} maxLength={255} />
+          <button type="submit">{t(busy ? 'Updating' : 'Update')}</button>
         </fieldset>
-        {t(
-          action?.error ? (
-            <p>
-              <mark>
-                <small>{t(action.error)}</small>
-              </mark>
-            </p>
-          ) : (
-            <br />
-          ),
-        )}
-        <button type="submit" disabled={state !== 'idle'}>
-          {t(state !== 'idle' ? 'Updating' : 'Update')}
-        </button>
       </Form>
+      <section className="account-marketing" aria-labelledby="marketing-heading">
+        <h3 id="marketing-heading">{t('Email preferences')}</h3>
+        <p>{t('Subscription status')}: {t(statuses[marketing] || 'Unavailable')}</p>
+        <p>{t('Choose whether to receive product news and offers by email. You can change your preference here.')}</p>
+        {canChangeMarketing && (
+          <Form method="POST">
+            <input type="hidden" name="intent" value={subscribed ? 'unsubscribe' : 'subscribe'} />
+            <button type="submit" disabled={busy}>
+              {t(busy ? 'Updating' : subscribed ? 'Unsubscribe from marketing emails' : 'Subscribe to marketing emails')}
+            </button>
+          </Form>
+        )}
+        {!canChangeMarketing && <p>{t('Email preferences are unavailable. Please try again later.')}</p>}
+      </section>
+      {result?.error && <p role="alert">{t(result.error)}</p>}
+      {result?.success && <p role="status">{t(result.message)}</p>}
     </div>
   );
 }
 
-/**
- * @typedef {{
- *   error: string | null;
- *   customer: CustomerFragment | null;
- * }} ActionResponse
- */
-
 /** @typedef {import('customer-accountapi.generated').CustomerFragment} CustomerFragment */
-/** @typedef {import('@shopify/hydrogen/customer-account-api-types').CustomerUpdateInput} CustomerUpdateInput */
-/** @typedef {import('./+types/account.profile').Route} Route */
-/** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */
-/** @typedef {ReturnType<typeof useActionData<typeof action>>} ActionReturnData */
+/** @typedef {{success: boolean, customer?: CustomerFragment, error?: string, message?: string}} ProfileActionData */
