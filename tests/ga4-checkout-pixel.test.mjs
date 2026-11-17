@@ -11,13 +11,13 @@ test('Shopify can discover the checkout subscriptions without executing dynamic 
   assert.deepEqual(subscriptions, ['checkout_started', 'payment_info_submitted', 'checkout_completed']);
 });
 
-function harness({allowed = true, storage = new Map(), blockedStorage = false} = {}) {
+function harness({allowed = true, storage = new Map(), blockedStorage = false, fetcher = async () => {throw new Error('Unexpected network');}} = {}) {
   const subscriptions = {};
   const scripts = [];
   let changeConsent;
   const window = {};
   vm.runInNewContext(source, {
-    window, crypto: webcrypto, TextEncoder, Uint8Array, Date,
+    window, crypto: webcrypto, TextEncoder, Uint8Array, Date, fetch: fetcher,
     init: {customerPrivacy: {analyticsProcessingAllowed: allowed}},
     api: {customerPrivacy: {subscribe: (_event, callback) => {changeConsent = callback;}}},
     analytics: {subscribe: (name, callback) => {subscriptions[name] = callback;}},
@@ -34,6 +34,26 @@ function harness({allowed = true, storage = new Map(), blockedStorage = false} =
     commands: () => Array.from(window.dataLayer || [], (entry) => Array.from(entry)), scripts, storage,
   };
 }
+
+test('server-mode purchase sends only the signed consent receipt and never a browser purchase', async () => {
+  const requests = [];
+  const pixel = harness({fetcher: async (url, options) => {
+    requests.push({url, body: JSON.parse(options.body), credentials: options.credentials});
+    return {ok: false, status: 503};
+  }});
+  const data = event('checkout_completed', {attributes: [{key: 'seine_ga_server_proof', value: 'signed-proof'}]});
+  await pixel.send(data);
+  await pixel.send(data);
+  assert.equal(pixel.events().length, 0);
+  assert.equal(pixel.scripts.length, 0);
+  assert.equal(requests[0].url, 'https://www.seineshop.com/api/ga4-checkout');
+  assert.equal(requests[0].credentials, 'omit');
+  assert.deepEqual(requests[0].body, {orderId: '123', proof: 'signed-proof', analyticsAllowed: true});
+  assert.ok(!JSON.stringify(requests).includes('private'));
+  pixel.consent(false);
+  await pixel.send(data);
+  assert.equal(requests.length, 2);
+});
 
 function event(name, overrides = {}) {
   const now = Date.now();

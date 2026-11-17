@@ -101,6 +101,19 @@
     const result = payloadFor(event);
     if (!result) return;
     const checkout = event.data.checkout;
+    const proof = (checkout.attributes || []).find(({key}) => key === 'seine_ga_server_proof')?.value;
+    if (result.name === 'purchase' && proof) {
+      // Server verifies this proof against the actual paid Shopify order. No price,
+      // contact data, checkout token or arbitrary destination comes from the pixel.
+      // Never also send a browser purchase, including on an uncertain response.
+      if (allowed()) await fetch('https://www.seineshop.com/api/ga4-checkout', {
+        method: 'POST', credentials: 'omit',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({orderId: result.transactionId, proof, analyticsAllowed: true}),
+        keepalive: true,
+      });
+      return;
+    }
     const timestamp = Date.parse(event.timestamp);
     if (!Number.isFinite(timestamp)) return;
     const context = contextFor(checkout, timestamp);

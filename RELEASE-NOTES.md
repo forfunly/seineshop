@@ -1,5 +1,8 @@
 # Local analytics candidate — 2026-11-17
 
+- Extended the candidate with a consent-controlled Clarity loader and a merchant-owned project (`zey8gxj9j0`). Private routes, global privacy control, initial text masking and stop/regrant handling are covered. Production remains disabled.
+- Prepared GA4 Measurement Protocol cart delivery and a paid-order pipeline with signed final checkout consent, HMAC-verified notifications, authoritative presentment money and a private order CAS ledger. Browser/server event ownership is exclusive. Configuration, ledger definition/permissions, updated backend pixel, production connection and real GA4 ingestion remain separate pending work; no credentials or live order definitions were created.
+
 - Added GA4 product-view and successful cart-addition events, using Shopify permission, actual quantities/prices, and replay deduplication. Regular/sticky/sample/bulk entry points share the same action receipt. GA4 continues to generate session starts automatically.
 - Added anonymous session handoff for saved-cart checkout and Buy now, bounded tag reads, preserved business attributes/cart cookies, and recovery after returning from external checkout. Checkout is disabled during pending cart updates.
 - Prepared the checkout-only custom pixel for begin checkout, payment-info submission and purchase, with literal Shopify subscriptions, discounted merchandise value, separate tax/shipping and order-ID deduplication. **Seine Shop GA4 Checkout** is saved as an unconnected draft; production activation and deployment remain pending separate approval.

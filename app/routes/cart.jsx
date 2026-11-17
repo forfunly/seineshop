@@ -3,6 +3,7 @@ import {useLoaderData, data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {CartMain} from '~/components/CartMain';
 import {addCartLinesWithAnalytics} from '~/lib/ga4-cart.server';
+import {dispatchCartAnalytics} from '~/lib/ga4-server.server';
 
 /**
  * @type {Route.MetaFunction}
@@ -35,6 +36,7 @@ export async function action({request, context}) {
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
       result = await addCartLinesWithAnalytics(inputs.lines, cart, formData.get('ga4') === '1');
+      result = dispatchCartAnalytics(result, formData, context, fetch, request);
       break;
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);

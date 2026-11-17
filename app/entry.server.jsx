@@ -24,17 +24,21 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://shopify.com',
       'https://www.googletagmanager.com',
+      'https://*.clarity.ms',
       'https://www.17track.net',
     ],
     // Required on all documents so client-side navigation can open the widget.
     frameSrc: ["'self'", 'https://cdn.shopify.com', 'https://shopify.com', 'https://extcall.17track.net'],
     connectSrc: [
+      "'self'",
       'https://www.googletagmanager.com',
+      'https://*.clarity.ms',
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',
     ],
     imgSrc: [
       'https://www.googletagmanager.com',
+      'https://*.clarity.ms',
       'https://*.google-analytics.com',
 
       "'self'",

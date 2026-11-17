@@ -1,5 +1,19 @@
 # 项目连接状态与授权记录
 
+## 当前：Clarity 与 GA4 服务端代码候选，配置待授权（2026-11-17）
+
+- 用户要求继续后已完成发布候选复验：137/137测试、lint（0错误/2既有警告）、codegen及独立router typegen、build、集合筛选通过，准备本地提交。计划仅在Oxygen Production新增 `PUBLIC_CLARITY_ENABLED=true` 并发布Clarity；GA4服务端开关保持关闭，原测量ID不变，待解决原资源权限。提交上传目标origin/main、正式配置和生产部署仍须本次具体确认；不改本机.env、不连接结账像素。另一任务的六事件发布副本及QA补充保留。
+- **Clarity常用入口（用户要求在项目内保留）**：[Seine Shop分析后台](https://clarity.microsoft.com/projects/view/zey8gxj9j0/dashboard)，用于查看仪表板、访问录制和热图；[Shopify内Clarity管理](https://admin.shopify.com/store/ps83if-c4/apps/microsoft-clarity-prod/app)，用于检查店铺关联。项目为Seine Shop / `zey8gxj9j0`，管理员账号已在团队页核对为用户当前Google登录账号；不保存邮件确认链接或含临时认证参数的网址。
+- 用户点击邮件确认后，刷新Shopify读回 **Project link approved by admins ... zey8gxj9j0**；Clarity项目页显示已通过Shopify安装。关联已获批，取代下方此前等待批准状态。项目当前可能自动进入gettingstarted页；平台安装成功提示不等于Hydrogen主站已采集，仍以独立前台部署及实际线上请求为准。本轮仅记录入口与核对关联，未push或部署；fetch成功，HEAD/origin/main仍同为3945896。
+- 后续用户亲自点击安装并要求在Shopify后台继续操作。已读回正式店 `ps83if-c4` 的 **Microsoft Clarity** 应用，初始化选择 **Clarity only**，未启用Brand Agents。已向现有项目 `zey8gxj9j0` 提交关联请求，后台明确显示等待项目管理员批准，用户需点击确认邮件链接。主题Clarity JS未开启；本站为Hydrogen，主题脚本不能代替独立主站部署。原用户打开的Shopify后台与应用商店页保留，无本轮新建标签。
+- 本次后台操作期间重新fetch成功，HEAD与实时origin/main同为3945896；此前的连接失败已恢复。两份状态/QA更新UTF-8及diff空白检查通过，原代码和截图保留，未push。
+- 用户说明没有原GA4账号权限，当前不能创建原数据流回传密钥；尚未授权替换测量ID或新建GA4资源。此后续安装操作不扩大为GA4密钥、订单权限/.env、push或主站生产发布授权。
+- 用户明确选择“两项都继续接入”。Clarity已创建 **Seine Shop** 项目，公开ID `zey8gxj9j0`、域名www.seineshop.com；本地真实SDK0.8.77和collect请求已观察，撤回后停止新请求。默认开关关闭，公开页面白名单、敏感查询排除、GPC与全文字遮罩已实现。正式站尚未部署或启用。
+- 服务端加购与购买已实现本地候选：购买通过签名付款通知读取Admin真实订单，要求最终结账分析许可回执，私有订单JSON状态CAS避免并发双发；不确定结果不自动重试。代码仅准备配置，不创建凭据/权限/定义，不修改.env。原自定义像素174522627仍未连接、后台尚未升级本轮回执源码。
+- 137/137测试、lint0错误/2既有警告、codegen/router typegen、build、集合筛选及构建来源审计通过；末次拒绝签发保护13/13服务端测试及build复验通过。构建Worker沙箱CORS预检204通过；最新预览控制台0错误/警告。Toolkit Admin2026-04查询/写入schema通过，独立JSX工具限制保留。详见[本轮QA](qa/2026-11-03-analytics-consent.md#clarity-与-ga4-服务端候选验收2026-11-17)。没有真实服务端购买或GA4入库证据。
+- 当前Google账号可见资源尚未匹配本站G-BKLZMJ9EP7，已询问所属账号；连接器缺少默认认证。待明确批准正确数据流的API secret、专用正式店Admin应用和权限、付款通知签名配置、ORDER私有JSON定义及本机新增配置；生产配置/像素连接/部署另行确认。
+- 复用唯一主目录，六事件提交3945896已出现在缓存origin/main，保留全部本轮未提交代码及两张原截图；没有执行本轮push或生产发布。末次fetch遇HTTP/2连接失败，命令级HTTP/1.1重试仍超时；不能把缓存引用当作实时远程验证，下一次提交/推送前重新核对。
+
 ## 当前：GA4 六事件本地候选与未连接结账草稿（2026-11-17）
 
 - 用户在本会话确认实施六事件方案。沿用 `G-BKLZMJ9EP7` 和原共享head初始化，新增商品浏览、实际成功加购及匿名结账会话传递；Shopify结账像素独占开始结账、支付信息提交和购买完成事件，`session_start`仍由GA4自动生成。不扩大历史同意门控修复的发布范围。

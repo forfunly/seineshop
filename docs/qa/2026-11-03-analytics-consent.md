@@ -1,5 +1,35 @@
 # 分析与 Cookie 同意管理：历史失败与本地修复复验
 
+## Clarity 与 GA4 服务端候选验收（2026-11-17）
+
+用户要求继续后，基于实时origin/main=3945896完成新鲜复验：137/137全量测试、lint（0错误/2既有警告）、codegen/独立router typegen、build、集合筛选通过。拟以24个本任务文件准备本地提交，另一个任务的六事件发布准备段落留在工作区、不纳入本次提交。生产建议范围为仅新增 `PUBLIC_CLARITY_ENABLED=true` 并发布Clarity；GA4服务端保持关闭、原结账像素连接不包含在本次范围内。push、正式配置和部署待逐项授权，不修改本机.env。
+
+### 后续Shopify应用安装与关联
+
+用户确认邮件后再次实测：Shopify显示 **Project link approved by admins of Clarity project (ID: zey8gxj9j0)**，Clarity标题为Seine Shop、项目页显示已成功使用Shopify安装。已按用户要求把分析后台及Shopify管理永久入口登记到[项目状态](../project-state.md)。dashboard入口当前会自动导航到gettingstarted；没有把此安装提示当作正式Hydrogen采集验收。本次新建标签23检查后关闭，用户原标签18/19保留；两份文档UTF-8与diff空白检查通过，未改源码、未push/部署。
+
+用户亲自完成Microsoft Clarity应用安装并要求继续在Shopify后台操作。正式店后台已打开应用，选择Clarity only，未启用Brand Agents；现有项目ID `zey8gxj9j0` 已填入关联表单并提交。后台读回 **Project link request is sent ... pending project admins approval**，已请用户处理项目管理员确认邮件。原Shopify后台19及应用商店18为用户打开，保留；本轮未新建浏览器标签。
+
+官方[Shopify集成说明](https://learn.microsoft.com/en-us/clarity/third-party-integrations/shopify)要求预先存在项目经管理员邮件确认；新项目流程的主题Clarity JS开关用于Online Store主题。本站Hydrogen仍需发布此前准备的独立前台代码，未把应用安装当作主站采集上线。用户另明确没有原GA4账号权限，既有ID与服务端开关保持，未创建替代资源或密钥。仅更新状态记录，无应用源码/.env/主站发布变更。
+
+当前会话用户确认“两项都继续接入”。本轮复用主目录，保留六事件提交 `3945896` 及原两张未跟踪截图；当前本地与已缓存的 origin/main 都是该提交，结束前重新 fetch 首次 HTTP/2 失败，重试结果见项目状态。本轮没有 push、生产部署、真实付款、订单写入、凭据/.env、权限或元字段定义变更。
+
+- Clarity：用户完成登录后创建 **Seine Shop** 项目，域名 `https://www.seineshop.com`、公开安装 ID `zey8gxj9j0`，从官方手动安装代码读回。免费浏览器脚本直接接 Hydrogen，不需要 GTM 或 Clarity API token。`PUBLIC_CLARITY_ENABLED` 默认关闭，生产未部署。
+- 本地公开商品页通过已存在的 Vite 模块进行一次明确允许的 SDK 联调；观察到官方 tag、SDK `0.8.77` 及 `https://t.clarity.ms/collect` 请求，随后撤回并调用 stop，一秒缓冲后没有新 collect 请求。未据此声称 Clarity 后台已处理成回放。自动测试覆盖拒绝时零加载、重复允许、延迟加载期间撤回、重允、GPC及敏感路径/查询排除。页面初始 body 全文字遮罩；账户、购物车、搜索、代发及 API 不允许采集。
+- 最新构建预览 `localhost:3012`：商品标题正常、Shopify Privacy API可用、body遮罩为true、未启用时无Clarity脚本，控制台0错误/0警告。先前3011开发页发生过HMR/hydration错误，不以该页证明生产构建失败；重新构建并重启预览后没有复现。
+- GA4：成功加购可切换为唯一服务端发送方，未配置或缺匿名标识时保留浏览器；真实本地加购只观察到一条浏览器事件。购买要求合法订单签名通知、Admin真实已付金额、结账完成时允许分析回执及匹配的签名上下文；订单私有JSON状态通过CAS领取，重复/并发不重发，不确定结果留待核对。拒绝时即使残留匿名字段也不签发上下文。没有发送真实服务端购买事件。
+- 隔离测试覆盖HMAC、店铺/主题不匹配、伪造/过期上下文、未付款/测试/取消订单、折扣及含税金额、回执与付款先后顺序、并发、超大请求、私有定义缺失、客户端凭据刷新及错误信息不泄密。浏览器像素遇到服务端证明时仅提交回执，失败不改走浏览器purchase，避免双发。
+- 构建Worker真实OPTIONS `/api/ga4-checkout`，Origin:null返回204、Allow-Origin:*、POST/OPTIONS、Content-Type允许，private/no-store/noindex及UTF-8齐全。开发Vite会拦截OPTIONS，不能用其结果判断生产Worker CORS。GET通知入口405、未配置POST回执503；两入口不加入sitemap，既有sitemap回归通过。
+- 137/137全量测试、lint（0错误/2既有警告）、codegen及独立router typegen、build、集合筛选和构建来源审计通过；末次补充拒绝签发保护后13/13服务端测试及build再次通过。保留envFile弃用、React Router未来选项和构建分析器缺少metafile提示；不称全项目类型验收。
+- Shopify AI Toolkit Admin 2026-04分别验证订单查询与CAS写入操作通过。Storefront codegen与Admin schema分离；独立JSX验证对返回null/JSDoc存在工具限制，未添加忽略或绕过。
+- 当前Google登录可见6个资源，已读到其他网站或不同测量ID：Forfunly `G-HSZ3WC36N2`、piu `G-BECBNMPPSJ` / `G-ZPC6MZLYSJ`，另一个piuuu无数据流；原Forfunly仅显示forfunly.com，Meilan为其他网站。未核对到本站 `G-BKLZMJ9EP7`，已询问所属账号；Analytics连接器缺少默认认证，也未用于替代账户验证。未创建错误资源的secret。
+
+待具体授权后：匹配正确GA4数据流并创建API secret；专用正式店Admin应用及最小订单/商品权限、付款通知签名配置；ORDER JSON `seine_analytics.ga4_purchase`（Storefront NONE）；仅追加相应本机配置。原结账像素仍未连接且后台代码尚未升级本轮回执版本。生产配置、像素连接及部署分别授权，真实GA4入库和支付闭环仍待验。未收到最终允许回执或网络不确定仍可能少计，服务端回传不绕过隐私选择。
+
+本次候选文件归属：`app/components/ClarityAnalytics.jsx`、`CommerceAnalytics.jsx`；`app/lib/clarity-consent.js`、`ga4-server.server.js`、`ga4-orders.server.js`、`ga4-endpoints.server.js`、`checkout.server.js`；`app/routes/api.ga4-checkout.jsx`、`api.ga4-orders-paid.jsx`、`cart.jsx`、`checkout.jsx`；`app/root.jsx`、`app/entry.server.jsx`、`server.js`；`scripts/ga4-checkout-pixel.js`；三个分析测试文件；README、RELEASE-NOTES、工程规范、原分析方案、本QA及项目状态。原截图不在候选范围。
+
+24个候选文件与构建共117个文件扫描7项本机实际敏感值，0匹配；6份Markdown严格UTF-8读取、65个相对链接通过，diff空白检查通过。本任务12/13/14标签均已关闭，只剩原空白页7；3011开发和3012预览均已停止，没有删除缓存或截图。结束前fetch两次分别HTTP/2失败和HTTP/1.1超时，下次提交/推送前须再次核对远程。
+
 ## GA4 六事件本地候选验收（2026-11-17）
 
 范围：当前会话用户已确认六事件方案；复用主目录 main，开工远程核对 `483164b`，原两张未跟踪截图保留。没有新依赖、凭据/.env、CI/CD、schema、商品/价格/库存变更、push 或主站发布。新建的后台像素只是未连接草稿，不能当作线上已接通。

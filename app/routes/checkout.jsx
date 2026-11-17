@@ -9,8 +9,8 @@ export async function action({request, context}) {
   }
   const formData = await request.formData();
   const result = formData.get('intent') === 'cart'
-    ? await createSavedCartCheckout(formData, context.cart)
-    : await createBuyNowCheckout(formData, context.cart);
+    ? await createSavedCartCheckout(formData, context.cart, context.env)
+    : await createBuyNowCheckout(formData, context.cart, context.env);
   if (!result.checkoutUrl) return data(result, {status: 422, headers});
   const url = new URL(result.checkoutUrl);
   url.searchParams.set('locale', localeFromPath(new URL(request.url).pathname).code);

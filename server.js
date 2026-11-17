@@ -3,6 +3,7 @@ import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
 import {developmentRequest} from '~/lib/development-request.server';
+import {checkoutReceipt} from '~/lib/ga4-endpoints.server';
 
 /**
  * Export a fetch handler in module format.
@@ -18,6 +19,10 @@ export default {
     try {
       request = developmentRequest(request, import.meta.env?.DEV === true);
       const requestUrl = new URL(request.url);
+      // Shopify's pixel sandbox uses an opaque origin and a CORS preflight.
+      if (requestUrl.pathname === '/api/ga4-checkout' && request.method === 'OPTIONS') {
+        return checkoutReceipt(request, env);
+      }
       if (['/jp', '/de'].includes(requestUrl.pathname)) {
         requestUrl.pathname += '/';
         return Response.redirect(requestUrl.href, 301);

@@ -22,6 +22,7 @@ import brandStyles from '~/styles/brand.css?url';
 import cartStyles from '~/styles/cart.css?url';
 import {PageLayout} from './components/PageLayout';
 import {CommerceAnalytics} from './components/CommerceAnalytics';
+import {ClarityAnalytics} from './components/ClarityAnalytics';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -90,6 +91,7 @@ export async function loader(args) {
     ...criticalData,
     seoSettings: siteSettings(env, args.request.url),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+    clarityEnabled: env.PUBLIC_CLARITY_ENABLED === 'true',
     shop: getShopAnalytics({
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
@@ -192,7 +194,7 @@ export function Layout({children}) {
         <SiteSeo />
         <Links />
       </head>
-      <body>
+      <body data-clarity-mask="true">
         {children}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
@@ -216,6 +218,7 @@ export default function App() {
       consent={data.consent}
     >
       <CommerceAnalytics />
+      <ClarityAnalytics enabled={data.clarityEnabled} />
       <PageLayout {...data}>
         <Outlet />
       </PageLayout>

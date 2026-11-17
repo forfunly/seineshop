@@ -1,8 +1,8 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useFetchers, useLocation} from 'react-router';
 import {useAnalytics} from '@shopify/hydrogen';
 import {commerceBatches, commerceItem} from '~/lib/ga4-commerce';
-import {sendCartReceipt, sendCommerceEvent} from '~/lib/ga4-client';
+import {getCheckoutAnalytics, sendCartReceipt, sendCommerceEvent} from '~/lib/ga4-client';
 
 /** Observe successful action data, never optimistic cart contents or button clicks.
  * @returns {null}
@@ -17,7 +17,26 @@ export function CommerceAnalytics() {
 
 export function CartAnalyticsInput() {
   const {canTrack} = useAnalytics();
-  return <input type="hidden" name="ga4" value={canTrack() ? '1' : '0'}/>;
+  const allowed = canTrack();
+  const [identity, setIdentity] = useState(/** @type {{gaClientId?: string, gaSessionId?: string}} */ ({}));
+  useEffect(() => {
+    let active = true;
+    let timer;
+    let attempts = 0;
+    const readIdentity = async () => {
+      const value = await getCheckoutAnalytics();
+      if (!active) return;
+      if (value.gaClientId && value.gaSessionId) setIdentity(value);
+      else if (++attempts < 8) timer = setTimeout(readIdentity, 500);
+    };
+    if (allowed) void readIdentity();
+    return () => {active = false; clearTimeout(timer);};
+  }, [allowed]);
+  return <>
+    <input type="hidden" name="ga4" value={allowed ? '1' : '0'}/>
+    <input type="hidden" name="gaClientId" value={allowed ? identity.gaClientId || '' : ''}/>
+    <input type="hidden" name="gaSessionId" value={allowed ? identity.gaSessionId || '' : ''}/>
+  </>;
 }
 
 /** @returns {null} */
