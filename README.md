@@ -36,6 +36,8 @@ node scripts/audit-source-exposure.mjs --built
 
 The source-exposure audit is a release gate for application sources and compiled assets. Never import operational scripts or private sourcing records into browser bundles. The full scaffold lint configuration can also be run with `npm run lint`.
 
+The unused starter `ProductImage` and `MockShopNotice` components and the notice's exclusive CSS were removed on 2026-11-17. Application routing uses `react-router` directly; `react-router-dom`, `eslint-plugin-jest`, and the direct `graphql-tag` declaration are no longer needed. GraphQL tooling still installs `graphql-tag` transitively. Dormant consent code and development catalog previews remain available.
+
 ## Deploy to Shopify Oxygen
 
 Configure the matching store/environment using Shopify CLI and merchant-owned credentials. The production environment is mapped to the `main` branch. Pushing this repository alone does not configure automatic Oxygen deployment.

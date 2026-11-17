@@ -1,5 +1,12 @@
 # 项目连接状态与授权记录
 
+## 本地仓库第一批精简（2026-11-17）
+
+- 用户确认开始第一批清理：删除未使用的 `app/components/ProductImage.jsx`、`app/components/MockShopNotice.jsx` 及后者专属 CSS；移除 `graphql-tag`、`react-router-dom`、`eslint-plugin-jest` 三项直接依赖声明。GraphQL 工具仍间接使用 `graphql-tag`，保留对应锁定包；所有保留包版本与平台元数据不变。README 和 RELEASE-NOTES 同步说明。
+- 开工 fetch 后 main 与 origin/main 同为 `be226a9`，只有一个分支和工作副本；既有两张未跟踪截图保留。没有处理缓存、其他截图、停用分析同意实现、商品预览或旧进度脚本；没有修改凭据、CI/CD、商品或生产配置。
+- 本轮验证：99/99 测试、lint（0错误/2既有脚本警告）、codegen、build、集合筛选、构建来源暴露审计通过；`npm ci --dry-run --ignore-scripts --offline --no-audit --no-fund --cache .cache/npm` 退出0，锁文件与声明一致。Hydrogen 内部提示跳过 typegen 后，codegen 命令中的独立 `react-router typegen` 退出0；仍保留 envFile 弃用、React Router 未来选项和构建分析器提示，不视为全项目类型验收。
+- 无公开 URL、页面内容或 sitemap 生成源变化，已有 sitemap 测试包含在99项中；删除组件及样式无应用引用，因此本轮没有启动浏览器或复验线上。仅本地清理，尚未推送或生产部署。
+
 ## 文档清理（2026-11-17）
 
 用户明确要求删除此前列出的三份旧资料：`docs/plans/2026-11-03-oxygen-production-release.md`、`docs/project-progress.md`、`docs/project-progress.html`。仅清理文档及关联入口，不改网站源码、生产部署或 Git 历史；两张11月4日本机截图保留。历史连接与发布摘要继续保存在本文件，原验收记录保留并标注停用，旧进度服务不再启动。

@@ -1,3 +1,9 @@
+# Local cleanup — 2026-11-17
+
+- Removed unused starter `ProductImage` and `MockShopNotice` components and the notice's exclusive CSS. Removed unused direct declarations for `graphql-tag`, `react-router-dom`, and `eslint-plugin-jest`; GraphQL tooling retains its transitive `graphql-tag` dependency. Existing package versions and platform-specific lockfile metadata are preserved.
+- No public route, visible page content, indexing rule or sitemap entry changed. Dormant consent code, preview catalog data, historical screenshots and local caches are retained. Local changes only; no production deployment.
+- Verified 99 tests, lint (zero errors/two existing warnings), codegen, production build, collection filters, source-exposure audit and an offline dry-run clean install. Existing tool deprecation/future-option and bundle-analyzer warnings remain. No browser or production verification was performed for this unused-code cleanup.
+
 # Local candidate — 2026-11-13
 
 - 2026-11-16 live QA correction: inquiry submissions include the product title read from Shopify on the server, as required by Sectionly. Browser-supplied titles and prices remain untrusted. Internal QA may run with minimal unpublished/unpaid test records under the repository rules; push and production release still require separate approval.
