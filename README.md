@@ -76,7 +76,7 @@ The product photo and business inquiry dialogs share `app/lib/use-modal-dialog.j
 
 The consent-gated implementation is retained in source but is currently disconnected from the application: `ConsentAnalytics`, `CookiePreferences`, `app/lib/google-analytics-consent.js`, and their controlled tests are dormant. The root and footer do not import or render these components, and the new privacy banner is not enabled. The active release candidate preserves the previous GA4 behavior; it does not claim that GA4 now stops after refusal.
 
-`node --test tests/analytics-consent.test.mjs` verifies only the dormant helper. Earlier browser evidence describes that earlier candidate, not the active release candidate. See [earlier consent QA](docs/qa/2026-11-03-analytics-consent.md) and [revised release scope](docs/plans/2026-11-03-oxygen-production-release.md) for the merchant's later decision and deployment boundaries. No environment variables or dependencies are added by this scope change.
+`node --test tests/analytics-consent.test.mjs` verifies only the dormant helper. Earlier browser evidence describes that earlier candidate, not the active release candidate. See [earlier consent QA](docs/qa/2026-11-03-analytics-consent.md) and [release history](docs/project-state.md) for the merchant's later decision and deployment boundaries. No environment variables or dependencies are added by this scope change.
 
 See [RELEASE-NOTES.md](RELEASE-NOTES.md) for the complete iteration summary and validation record.
 
