@@ -235,3 +235,10 @@ URL、模式参数、商品元字段和sitemap生成源未改；全量测试包�
 - 正式询价弹窗、正式评价入口、正式德语手机定制模式三张截图均已打开核对；询价截图等待配置加载完成，不使用瞬时Loading画面作为最终证据。用户随后要求撤回这三张图片，已改为仅在本机留存；本记录保留文字验收结果，图片不作为后续视觉风格的规范。
 - 正式站原有Shopify Analytics/consent组件报告`PUBLIC_CHECKOUT_DOMAIN`缺失；生产原无此变量，根源码读取未在本批修改。用户随后明确确认仅Production补`ps83if-c4.myshopify.com`并重部署，变量已保存并读回仅Production。再次部署退出0、后台资源5749637、Production/main/813e4b6、Ready/Current；新地址为`https://01m7jd1bn3nq8ea83btyj00ttb-d7e83d6aec4307f1a21e.myshopify.dev`。业务源码与1aa4e07一致，没有上传本机.env或修改其他配置。22:46北京时间，正式商品页强刷后控制台无error/warn，customerPrivacy API存在；评价/询价/运费均200，robots/llms/sitemap/static XML均200/charset=utf-8。重新执行99/99测试及构建来源审计通过；不以此声称已验证统计平台入库或转化归因。未付款、发货、公开测试评价或部署独立测试应用。
 - 发布后的验收记录与三张截图经用户确认保存为813e4b6并推送；用户随后明确要求撤回三张图片。本次以新提交从仓库当前版本取消跟踪，本机文件保留，不改写历史。同步移除图片链接，保留文字验收记录。没有新工作副本。
+
+## 运费入口与命名规则核对（2026-11-17）
+
+- 专用 Chrome for Testing 直接检查正式 B-20A 与用户提供的 Garmin 充电线商品页（handle：`1m-charging-cable-for-garmin-fenix-6-6s-6x-5-5s-5x-forerunner-245-vivoactive-3-4-4s-venu-usb-c-smart-watch-charger-680900468a`，Color=As Shown）：Wholesale 模式均在 Buy now 下显示栏目 Shipping estimate、入口 Estimate shipping。即时截图仅在聊天展示，未保存或纳入提交。本轮未复现入口缺失，不推断为缓存问题，也不把两页结果泛化为全站所有功能通过。
+- 历史提交 c277f81（2026-11-16 13:32 北京时间）将入口从 More Shipping Options 改为 Estimate shipping；重新 fetch 后本地与 origin/main 均为 37d2300，813e4b6 到 origin/main 的 app/server/public/构建配置及依赖文件无差异。没有证据表明该改名漏发或随后回退。共享 ProductForm 仅在 Wholesale 分支渲染运费入口，并非仅针对示例商品。
+- 参考站实际商品 SKU 6762000010A 页面当前显示 Estimated Shipping Cost、More Shipping Options 以及目的地/配送方式/处理和运输时效。本站当前提供填写地址后的 Shopify 固定配送估算，不直接沿用参考站费用、承运商或时效承诺；当前按钮名称与参考站不同，本轮未改前台文案。
+- 用户要求今后功能命名统一参考 TVCMALL，已并入根规则及商品规范：实施前核对对应功能的真实用语与含义，同一功能全站一致，按本站已实现能力适配；同步纠正业务工具规范中的旧入口称呼。仅规则与文字记录修改，无新 URL、业务写入、前台变更或生产部署。
