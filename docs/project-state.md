@@ -1,6 +1,15 @@
 # 项目连接状态与授权记录
 
-## 当前：Clarity 与 GA4 服务端代码候选，配置待授权（2026-11-17）
+## 当前：Clarity 已发布 Oxygen Production，GA4 服务端仍待权限（2026-11-17）
+
+- 用户明确批准本次24文件提交上传、仅Production新增 `PUBLIC_CLARITY_ENABLED=true` 及正式部署，并进一步确认目标为Shopify Oxygen。`origin/main`已实时读回 `0452ef40c56957f9d995dc7b87470e1a9b5a0620`；后台 Production/main/0452ef4 为Ready/Current，资源 `5760768`、Deployment ID `6143434`。部署地址为 `https://01m7m99ner133jd68tfvf5ecwy-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名仍为www.seineshop.com。
+- Clarity变量最终读回仅Production、值true；首次保存界面同时带Preview，已在部署前移除Preview并重新保存，没有部署Preview。未改本机.env、现有密钥或其他正式变量。CLI首次非交互提示无法确认，随后交互确认Production并成功完成路由验证；`--force`仅允许原有不参与构建的QA工作区差异，没有跳过发布验证。
+- 正式商品页项目 `zey8gxj9j0` tag/SDK200、实际SDK0.8.80-beta、collect多次204；初始body全文字遮罩。隔离QA中撤回许可后停止且无新collect，刷新保持拒绝、脚本0；重允恢复，购物车链接触发停止，直接购物车页在允许分析时仍脚本0。Clarity后台仍为安装完成/等待数据处理，尚不宣称回放或热图已生成。
+- 英/日/德商品标题、语言及canonical正常，日德无横向溢出。正式内部隔离购物车测试仅黑色1件/USD19，购物车读回一致、add_to_cart仅1条，未结账/付款/创建订单；保留该购物车，不删除。结账像素未连接，GA4服务端开关未配置仍关闭；没有GA4后台入库或完整支付验收。
+- robots.txt/llms.txt/sitemap.xml均200且charset=utf-8；sitemap现有123分片索引及首尾两个子sitemap200/XML解析通过，新私有接口不在索引。浏览器日德文字和llms/sitemap显示无替换字符；发布后来源审计通过。Clarity的Bing Cookie同步图片被CSP拦截，未扩大广告域名许可；核心collect204，该控制台限制保留。
+- 当前代码已上传并部署；本轮验收补充在原QA和发布说明中。主目录原QA内其他任务段落、两张原截图及六事件发布副本保留；没有删除目录。详细证据见[正式发布验收](qa/2026-11-03-analytics-consent.md#clarity-oxygen-production-发布验收2026-11-17)。
+
+## 历史：Clarity 与 GA4 服务端代码候选及配置准备（2026-11-17）
 
 - 用户要求继续后已完成发布候选复验：137/137测试、lint（0错误/2既有警告）、codegen及独立router typegen、build、集合筛选通过，准备本地提交。计划仅在Oxygen Production新增 `PUBLIC_CLARITY_ENABLED=true` 并发布Clarity；GA4服务端开关保持关闭，原测量ID不变，待解决原资源权限。提交上传目标origin/main、正式配置和生产部署仍须本次具体确认；不改本机.env、不连接结账像素。另一任务的六事件发布副本及QA补充保留。
 - **Clarity常用入口（用户要求在项目内保留）**：[Seine Shop分析后台](https://clarity.microsoft.com/projects/view/zey8gxj9j0/dashboard)，用于查看仪表板、访问录制和热图；[Shopify内Clarity管理](https://admin.shopify.com/store/ps83if-c4/apps/microsoft-clarity-prod/app)，用于检查店铺关联。项目为Seine Shop / `zey8gxj9j0`，管理员账号已在团队页核对为用户当前Google登录账号；不保存邮件确认链接或含临时认证参数的网址。

@@ -1,5 +1,17 @@
 # 分析与 Cookie 同意管理：历史失败与本地修复复验
 
+## Clarity Oxygen Production 发布验收（2026-11-17）
+
+- 本次用户明确批准推送0452ef4、仅Production启用Clarity并发布，随后确认发布目标Shopify Oxygen。24文件提交已推到origin/main，实时远程哈希读回 `0452ef40c56957f9d995dc7b87470e1a9b5a0620`。没有上传本机.env或创建GA4密钥/订单定义；不连接结账像素。
+- 后台 `PUBLIC_CLARITY_ENABLED=true` 最终只有Production。初始保存时界面包含Preview，发现后在部署前移除并保存，仅部署Production；其他正式变量未改。CLI先因非交互确认退出，随后交互执行 `hydrogen deploy --env production --no-json-output --force` 成功，未跳过可路由验证。force只允许原QA等非构建输入差异，不包含其他应用改动。
+- Oxygen资源[5760768](https://admin.shopify.com/store/ps83if-c4/hydrogen/1000183956/deployments/5760768)、Deployment ID6143434、Production/main/0452ef4、Ready/Current。部署地址 `https://01m7m99ner133jd68tfvf5ecwy-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名 `https://www.seineshop.com`。当前代码包含已在main的GA4前台事件；GA4服务端配置缺权限而保持关闭，结账像素未连接。
+- 专用Chrome独立QA上下文 `clarity-production-qa-20261117`：公开商品页官方tag与SDK200，SDK0.8.80-beta，`s.clarity.ms/collect`多次204，body初始mask=true。拒绝通过Shopify官方Privacy API写入后active=false，缓冲后collect新增0；刷新analytics=false且Clarity脚本0。重允恢复；点击购物车链接时guard停止（本站该链接打开抽屉，不据此称发生路由切换），直接/cart在analytics=true时仍脚本0。
+- 英/日/德商品标题和canonical正常，日语lang=ja、德语lang=de；日德scrollWidth未超视口。实际生产最小加购验证：独立购物车黑色1件/USD19、抽屉和/cart一致，dataLayer仅1条add_to_cart且商品数量1/金额19/USD；没有点击结账、支付、订单、通知或发货，不删除QA购物车。
+- robots.txt与llms.txt为200/text/plain;charset=utf-8，sitemap.xml为200/application/xml;charset=utf-8，现有123分片索引可解析，首个en.products-1与末个de.policies-1均200/XML可解析/UTF-8；本次没有新公开URL或索引内容，未修改sitemap源。浏览器llms英文特殊标点及sitemap的ja/de条目无替换字符，日德商品字符正常。通知API GET405，未配置购买保持服务端关闭。
+- 生产控制台存在Clarity尝试请求c.bing.com/c.gif而被CSP拦截；未扩大广告Cookie同步许可。核心collect已204，不能据此声称控制台零错误或跨浏览器全覆盖。Clarity后台仍跳转gettingstarted并提示数据几小时后显示，尚未实际观察后台回放/热图，不把网络204当作回放生成证据。
+- 发布前137/137测试、lint0错误/2既有警告、codegen/独立router typegen、build、集合筛选及敏感扫描已通过；部署重新构建及发布后构建来源审计通过。原envFile/future flags/bundle analyzer工具提示保留。新增验收资料仅文档，按文档验证，无源码改动。
+- 本次24/26/27/28标签已关闭；用户原应用商店18、Shopify后台19及原空白页保留，专用浏览器继续开放。未创建新工作副本，原六事件发布副本及无关QA段落保留。三份验收文档UTF-8、47个相对链接及diff空白检查通过；资料独立准备本地提交，不再次部署业务代码。
+
 ## Clarity 与 GA4 服务端候选验收（2026-11-17）
 
 用户要求继续后，基于实时origin/main=3945896完成新鲜复验：137/137全量测试、lint（0错误/2既有警告）、codegen/独立router typegen、build、集合筛选通过。拟以24个本任务文件准备本地提交，另一个任务的六事件发布准备段落留在工作区、不纳入本次提交。生产建议范围为仅新增 `PUBLIC_CLARITY_ENABLED=true` 并发布Clarity；GA4服务端保持关闭、原结账像素连接不包含在本次范围内。push、正式配置和部署待逐项授权，不修改本机.env。

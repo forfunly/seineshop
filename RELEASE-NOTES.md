@@ -1,4 +1,10 @@
-# Local analytics candidate — 2026-11-17
+# Oxygen Production analytics release — 2026-11-17
+
+- Commit `0452ef4` is deployed to the existing Shopify Oxygen Production storefront at www.seineshop.com. Clarity project `zey8gxj9j0` is enabled only in Production, with consent gating, private-route exclusion and text masking. Live tag/SDK requests returned 200 and collection requests 204; refusal, refresh persistence, regrant and cart exclusion were checked. Dashboard recordings/heatmaps are still awaiting processing.
+- GA4 browser product-view/cart events are included. Server delivery remains disabled pending access to the original GA4 resource; the checkout pixel remains unconnected. One isolated production cart addition verified USD19/one item and one add_to_cart event, without checkout/payment/order creation. Optional Bing cookie synchronization remains blocked by CSP; the Clarity collection endpoint succeeds.
+- [Production evidence and remaining limits](docs/qa/2026-11-03-analytics-consent.md#clarity-oxygen-production-发布验收2026-11-17).
+
+# Historical local analytics candidate — 2026-11-17
 
 - Extended the candidate with a consent-controlled Clarity loader and a merchant-owned project (`zey8gxj9j0`). Private routes, global privacy control, initial text masking and stop/regrant handling are covered. Production remains disabled.
 - Prepared GA4 Measurement Protocol cart delivery and a paid-order pipeline with signed final checkout consent, HMAC-verified notifications, authoritative presentment money and a private order CAS ledger. Browser/server event ownership is exclusive. Configuration, ledger definition/permissions, updated backend pixel, production connection and real GA4 ingestion remain separate pending work; no credentials or live order definitions were created.
