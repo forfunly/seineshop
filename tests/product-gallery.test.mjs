@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {galleryStep, gallerySwipe, productGallery} from '../app/lib/product-gallery.js';
+import {galleryLens, galleryStep, gallerySwipe, productGallery} from '../app/lib/product-gallery.js';
 import {collectionSearchQuery, parseCollectionFilters} from '../app/lib/collection-filters.js';
 
 test('SKU gallery retains all photos and separates the selected color and detail photos', () => {
@@ -62,4 +62,15 @@ test('original SKU cover stays with newly appended numbered photos', () => {
   const extra = {url: 'https://cdn.shopify.com/files/800x800_6604026278A-2.webp?v=2'};
   const other = {url: 'https://cdn.shopify.com/files/800x800_6604026278B-1.webp'};
   assert.deepEqual(productGallery([cover, extra, other], null, '6604026278A').selected, [cover, extra]);
+});
+
+
+test('hover magnifier follows the image, clamps to edges, and excludes letterbox space', () => {
+  const frame = {left: 10, top: 20, width: 400, height: 400};
+  assert.equal(galleryLens(frame, 800, 400, 210, 100), null);
+  assert.deepEqual(galleryLens(frame, 800, 400, 210, 220),
+    {left: 160, top: 170, size: 100, positionX: 50, positionY: 50, ratio: 2});
+  assert.deepEqual(galleryLens(frame, 800, 400, 409, 319),
+    {left: 310, top: 220, size: 100, positionX: 100, positionY: 100, ratio: 2});
+  assert.equal(galleryLens(frame, 0, 0, 210, 220), null);
 });

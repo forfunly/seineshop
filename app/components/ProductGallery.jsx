@@ -1,6 +1,6 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {Image} from '@shopify/hydrogen';
-import {galleryStep, gallerySwipe, productGallery} from '~/lib/product-gallery';
+import {galleryLens, galleryStep, gallerySwipe, productGallery} from '~/lib/product-gallery';
 import {useLocale} from '~/lib/i18n';
 import {useModalDialog} from '~/lib/use-modal-dialog';
 
@@ -13,6 +13,8 @@ export function ProductGallery({images, selectedImage, sku, title}) {
   const [view, setView] = useState(initialView);
   const thumbnails = useRef(null);
   const touch = useRef(null);
+  const magnifierRef = useRef(null);
+  const lensRef = useRef(null);
   const swiped = useRef(false);
   const {dialogRef, triggerRef, closeButtonRef, openDialog, closeDialog} = useModalDialog();
   const dialogTitle = useId();
@@ -32,7 +34,40 @@ export function ProductGallery({images, selectedImage, sku, title}) {
     else if (item.bottom > visible.bottom) rail.scrollTop += item.bottom - visible.bottom;
   }, [index, count]);
 
+  useEffect(() => {
+    if (magnifierRef.current) magnifierRef.current.hidden = true;
+  }, [current?.url]);
+
+  function hideMagnifier() {
+    if (magnifierRef.current) magnifierRef.current.hidden = true;
+  }
+
+  function moveMagnifier(event) {
+    if (event.pointerType !== 'mouse' || !matchMedia('(min-width: 900px) and (any-hover: hover)').matches) return;
+    const trigger = event.currentTarget;
+    const image = trigger.querySelector('.pdp-photo-slide[aria-hidden="false"] img');
+    if (!image || !current) return;
+    const bounds = trigger.getBoundingClientRect();
+    const photo = image.getBoundingClientRect();
+    const lens = galleryLens({left: photo.left, top: photo.top, width: photo.width, height: photo.height},
+      image.naturalWidth, image.naturalHeight, event.clientX, event.clientY);
+    if (!lens) return hideMagnifier();
+    const panel = magnifierRef.current;
+    const width = Math.min(bounds.width, document.documentElement.clientWidth - bounds.right - 8);
+    const height = bounds.height;
+    const backgroundWidth = Math.max(width, height * lens.ratio) * 2.5;
+    lensRef.current.style.cssText = `left:${lens.left - bounds.left}px;top:${lens.top - bounds.top}px;width:${lens.size}px;height:${lens.size}px`;
+    Object.assign(panel.style, {
+      width: `${width}px`, height: `${height}px`,
+      backgroundImage: `url(${JSON.stringify(current.url)})`,
+      backgroundSize: `${backgroundWidth}px ${backgroundWidth / lens.ratio}px`,
+      backgroundPosition: `${lens.positionX}% ${lens.positionY}%`,
+    });
+    panel.hidden = false;
+  }
+
   function select(next) {
+    hideMagnifier();
     setActive(gallery[next]?.url ?? null);
     setView(initialView);
   }
@@ -42,6 +77,7 @@ export function ProductGallery({images, selectedImage, sku, title}) {
   }
 
   function changeScope(all) {
+    hideMagnifier();
     setShowAll(all);
     setActive(null);
     setView(initialView);
@@ -71,6 +107,7 @@ export function ProductGallery({images, selectedImage, sku, title}) {
       return;
     }
     setView(initialView);
+    hideMagnifier();
     openDialog();
   }
 
@@ -99,13 +136,15 @@ export function ProductGallery({images, selectedImage, sku, title}) {
       </div>}
       <div className="pdp-image-stage">
         {current ? <button ref={triggerRef} className="pdp-image-trigger" type="button" aria-label={t('Enlarge product photo')}
-          onClick={openPhoto} onKeyDown={(event) => navigateByKey(event, false)} onPointerDown={startTouch} onPointerUp={finishTouch} onPointerCancel={() => {touch.current = null;}}>
+          onClick={openPhoto} onPointerMove={moveMagnifier} onPointerLeave={hideMagnifier} onKeyDown={(event) => navigateByKey(event, false)} onPointerDown={startTouch} onPointerUp={finishTouch} onPointerCancel={() => {touch.current = null;}}>
           <span className="pdp-photo-track" style={{transform: `translateX(${-index * 100}%)`}}>
             {gallery.map((image, i) => <span className="pdp-photo-slide" key={image.url} aria-hidden={index !== i}>
               <Image data={image} alt={image.altText || title} sizes="(min-width: 900px) 48vw, 100vw" loading={index === i ? 'eager' : 'lazy'} draggable={false} />
             </span>)}
           </span>
+          <span ref={lensRef} className="pdp-magnifier-lens" aria-hidden="true" />
         </button> : <span>{t('Image unavailable')}</span>}
+        <div ref={magnifierRef} className="pdp-magnifier-panel" aria-hidden="true" hidden />
         {count > 1 && <>
           <button type="button" className="pdp-stage-arrow pdp-stage-previous" disabled={index === 0} aria-label={t('Previous photo')} onClick={() => step(-1)}>‹</button>
           <button type="button" className="pdp-stage-arrow pdp-stage-next" disabled={index === count - 1} aria-label={t('Next photo')} onClick={() => step(1)}>›</button>

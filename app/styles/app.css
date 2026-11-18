@@ -805,6 +805,15 @@ button.reset:hover:not(:has(> *)) {
 .pdp-option-photo img{width:60px;height:60px;object-fit:contain}
 .pdp-image-stage{background:white;border-radius:6px;padding:8px}
 .pdp-image-stage img{mix-blend-mode:normal}
+.pdp-magnifier-lens,.pdp-magnifier-panel{display:none;position:absolute;pointer-events:none}
+@media(min-width:900px) and (any-hover:hover){
+  .pdp-gallery:has(.pdp-magnifier-panel:not([hidden])){z-index:2}
+  .pdp-image-stage:has(.pdp-magnifier-panel:not([hidden])){overflow:visible}
+  .pdp-image-trigger{border-radius:inherit}
+  .pdp-image-stage:has(.pdp-magnifier-panel:not([hidden])) .pdp-image-trigger{cursor:move}
+  .pdp-image-stage:has(.pdp-magnifier-panel:not([hidden])) .pdp-magnifier-lens{display:block;background:#fff6}
+  .pdp-magnifier-panel:not([hidden]){display:block;top:0;left:100%;box-sizing:border-box;background:#fff no-repeat;border:1px solid #eee;box-shadow:10px 10px 10px #0000000f;z-index:2}
+}
 
 /* Customer profile and explicit email preferences share the existing account layout. */
 .account-profile{max-width:640px;padding-bottom:40px}
