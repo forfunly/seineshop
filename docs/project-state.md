@@ -1,6 +1,22 @@
 # 项目连接状态与授权记录
 
-## 当前：客户资料与营销偏好本地候选已真实补验，付款订单仍待验（2026-11-17）
+## 当前：正式账户补验通过，错误页修复待推送/部署（2026-11-18，北京时间）
+
+- 用户要求继续处理剩余项。重新fetch确认HEAD/origin/main均为7ecfcd5，生产仍为下方Deployment ID6155709；本轮未再次push或部署，未改凭据、环境或支付设置。
+- 正式域名已存在有效登录会话；姓名从本轮实际初始Internal QA / Do Not Ship改为带QA标记后恢复，前台重新请求及后台时间线均确认。营销从Subscribed退订至Unsubscribed，后台客户行读回，再订阅恢复Subscribed，前后台再次读回一致。未新增地址或正式订单。
+- 已登录账户资料/地址/空订单列表200、非法订单404，响应private/no-store/noindex；日德资料页390px无横向溢出。当前正式浏览器会话购物车为空；此前1件购物车是临时预览会话证据，不代表当前正式站购物车。现有默认Internal QA地址仍保留，删除与付款验收方式已单独向用户询问，未收到答复前不操作。
+- 错误页canonical根因是SiteSeo在根加载失败时回退localhost。现已在本地改为错误/无可信配置只输出标题和noindex；SSR回归覆盖根404、子404、配置缺失及正常多语言SEO。148/148测试、lint0错误/2既有警告、codegen含路由typegen、build、集合筛选和来源审计通过。本机 `/ja`、普通/德语不存在地址均404/noindex且无canonical/alternates/og:url/schema；正式sitemap索引123及英日德pages分片XML有效，错误路径均未收录，未改URL生成源或lastmod。
+- Toolkit对SiteSeo返回VALID，但明确没有可做TypeScript验证的Shopify组件，不视为全项目类型检查。测试打包时提示原翻译文件重复Load more options键；保留既有构建提示。本轮候选合并此前3份发布记录，具体文件与验收见[原QA](qa/2026-11-17-customer-account.md)。本轮不包含原分析QA并行补充和两张历史截图。
+
+## 发布事实：客户账户已发布 Oxygen Production（2026-11-18 10:03，北京时间）
+
+- 用户本会话分别批准21文件提交 `7ecfcd5b4f762ab59b216859b48f2604fd2cdabc` 推送和随后正式部署；普通推送与部署前实时远程main读回一致。未修改环境变量、密钥、CI/CD或支付设置。
+- 官方CLI完成部署及可路由验证；后台Production/main/7ecfcd5为Ready/Current，资源[5773163](https://admin.shopify.com/store/ps83if-c4/hydrogen/1000183956/deployments/5773163)、Deployment ID **6155709**，2026-11-18 10:01 GMT+8。部署地址 `https://01m7p66jdjndwcx8kyez66fgg3-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名 `https://www.seineshop.com`。force仅允许既有非构建QA差异，没有跳过发布验证。
+- 发布前145/145测试、lint（0错误/2既有警告）、codegen及独立路由typegen、build、集合筛选与来源审计通过，发布后来源审计再通过。生产首页、日德首页、代表商品、购物车200并加载本次CSS；语言/canonical正确。英/jp/de账户未登录302至对应登录页，页面和.data均private/no-store/noindex。
+- robots.txt、llms.txt、sitemap.xml实测200及charset=utf-8；123分片索引与代表子sitemap XML有效，检查的分片不含账户/购物车/结账私有地址；日德及llms/sitemap浏览器显示复核通过。未全量重爬所有分片。额外探测非本站语言地址 `/ja` 为404/noindex，但错误页canonical仍指localhost，保留为既有SEO待办；实际日语地址 `/jp/` 正常。
+- 真实客户操作证据来自此前临时预览，本次生产验证未重新登录或写客户数据。付款后正式订单归属仍待验；默认Internal QA地址与1件测试购物车保留，不用于真实发货。验收记录仅本地补充，后续push另行批准；保留原分析QA和两张历史截图。详见[客户账户验收](qa/2026-11-17-customer-account.md)。
+
+## 历史：客户资料与营销偏好本地候选已真实补验，付款订单仍待验（2026-11-17）
 
 - 用户要求完善客户/订单剩余项，并明确批准本次官方临时HTTPS预览和配合测试登录。已完成真实姓名保存/恢复、地址保存、订阅/退订及后台Customers读回；初始空姓名和SUBSCRIBED已恢复。保留1条明确Internal QA / Do Not Ship测试地址，Shopify自动设为首个默认地址；不删除、不用于真实发货。
 - 账户页真实邮箱/营销状态、独立订阅/退订、姓名读回和错误反馈、英日德文案已补齐；资料保存不自动订阅。官方登录表单另带默认勾选的营销选项，已提示用户选择，未改正式设置。账户响应private/no-store/noindex，地址提交验证同源；订单详情区分404/503，结账刷新服务端客户身份，失败不静默继续访客购买。

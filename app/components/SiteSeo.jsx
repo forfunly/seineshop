@@ -32,10 +32,7 @@ export function SiteSeo() {
   const nonce = useNonce();
   const root = Object(matches.find((m) => m.id === 'root')?.data);
   const data = Object([...matches].reverse().find((m) => m.data)?.data);
-  const settings = root?.seoSettings || {
-    origin: 'http://localhost:3000',
-    indexable: false,
-  };
+  const settings = root?.seoSettings;
   const content =
     data.product ||
     data.collection ||
@@ -80,6 +77,16 @@ export function SiteSeo() {
   const title = error
     ? `${isRouteErrorResponse(error) ? error.status : 'Error'} | SeineShop`
     : pageTitle(t(baseTitle), pageNumber);
+  // A failed root loader has no trusted site settings. Error pages must not
+  // advertise a guessed canonical, alternates or content structured data.
+  if (error || !settings) {
+    return (
+      <>
+        <title>{title}</title>
+        <meta name="robots" content="noindex, follow" />
+      </>
+    );
+  }
   const description = searchSnippet(
     t(
       commerce?.description || content?.seo?.description ||

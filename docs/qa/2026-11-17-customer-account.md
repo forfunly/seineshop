@@ -2,6 +2,23 @@
 
 日期：2026-11-17（北京时间）。范围：原生客户账户资料、邮件营销偏好及托管结账账户关联。本文件归属本功能验收，后续补验继续维护本文件；截图默认本机保留，不自动清理或提交。
 
+## 后续补验范围（2026-11-18）
+
+- 用户要求继续处理剩余项；本轮复用主目录，fetch确认HEAD/origin/main无差异，保留既有发布记录、分析QA及截图。
+- 正式站已有有效客户登录态。计划以当前页面实际姓名与营销状态为基线，最小修改标注QA的姓名后恢复、退订后恢复初始订阅，读回结果；只读取现有地址及订单，不新增地址、不删除测试数据，不付款、不发货、不改支付模式。可能产生Shopify客户时间线及专用测试邮箱订阅通知。
+- 错误页修复归属现有SiteSeo组件与SEO规则；错误响应和无根配置时仅输出错误标题/noindex，避免本机canonical。错误页不加入sitemap，不更改可索引URL或lastmod。修复与记录先本地验证，新的push和生产部署另行确认。
+
+### 本轮完成证据
+
+- 正式站复用现有登录态，实际初始姓名Internal QA / Do Not Ship、营销Subscribed。仅将末名改为Do Not Ship QA，前台成功提示及独立GET读回一致，再恢复Do Not Ship；Shopify客户时间线明确记录两次Hydrogen修改。该初始姓名与此前预览结束不同，以现场读回为基线，不擅自恢复为空。
+- 前台退订成功，独立GET读到Not subscribed，后台客户列表为Unsubscribed；随后重新订阅恢复Subscribed，独立GET及刷新后台客户列表一致。未另发业务邮件，未改正式托管登录表单。
+- 正式已登录 `/account/profile`、`/jp/account/profile`、`/de/account/profile`、`/account/addresses`、`/account/orders`均200，资料姓名/订阅一致、默认QA地址可读、订单列表为空；`/account/orders/invalid`返回404。上述账户响应private/no-store/noindex。日德账户资料页390px无横向溢出、无替换字符，操作按钮已本地化。本轮未新增或修改地址，未付款/发货。
+- 正式 `/cart` 现场为空；此前临时预览1件购物车仍为历史证据，未尝试删除其他会话购物车。已询问删除那1条默认Internal QA地址及付款测试方式，未获答复前不做这些操作。
+- 本机实际 `/ja`、`/missing-internal-qa-path`、`/de/missing-internal-qa-path`均404/noindex，不输出canonical、hreflang、og:url或JSON-LD。正常 `/jp/`仍200并保持本机自指canonical/noindex。服务仅监听 `[::1]:3000`，没有临时公开链接。
+- 新增真实SSR组件回归 `tests/site-seo-render.test.mjs`，通过React Router分别触发根/子加载失败、缺失配置及正常德语页面；全量148/148通过。lint0错误/2既有警告、codegen及独立路由typegen、build、集合筛选、构建来源审计通过；构建提示沿用此前记录。测试打包额外暴露原messages.json重复Load more options键，未修改翻译数据。Toolkit返回VALID但指出没有Shopify组件可做TypeScript验证，不能据此声称全项目类型检查通过。
+- 正式 `/sitemap.xml` 200/有效XML/123分片；英日德pages子sitemap均200/XML有效、均不含本轮错误路径。没有新增规范地址或lastmod，生成源无需变更。该证据不代表本轮错误页修复已上线，生产仍为7ecfcd5。
+- 待提交7文件：SiteSeo、SSR测试、README、RELEASE-NOTES、SEO规则、project-state及本QA，合并此前3份本地发布记录；排除分析QA并行补充及历史截图。新的推送与生产部署仍分别待用户确认。
+
 ## 基线与实施
 
 - 本轮通过现有本机代理执行命令级 fetch 成功，HEAD 与 origin/main 同为 `9b558a3`；无远程新增或本地独有提交。未改 Git 全局设置。直连 fetch 超时，不作为同步证据。
@@ -33,7 +50,7 @@
 - 已在本次获准的官方临时域名打开真实 Shopify 登录表单。该表单自带“Email me with news and offers”，现场默认勾选；已提醒用户本轮先取消勾选再用专用测试邮箱登录。客户账户代码本身不因登录或资料修改发起订阅，但不能将此表述为托管登录表单永远不收集营销同意。未修改正式店登录设置。
 - Toolkit独立JSX验证器三次将账户Outlet上下文判断为unknown；已添加与实际Outlet契约一致的JSDoc类型，仍未消除该独立工具诊断。GraphQL四份校验、项目构建和路由生成通过，不把该工具结果记为全项目类型通过。
 
-## 已授权真实登录补验（进行中）
+## 已授权真实登录补验（已完成本轮范围）
 
 - 用户已完成本次官方临时链接登录，实际账户页200并读到原有测试登录客户；初始姓名两项为空、营销状态SUBSCRIBED。仅记录状态，不公开邮箱/客户ID。将保存Internal QA标记姓名并后台读回，随后恢复初始姓名；退订后恢复原订阅状态。地址如创建，仅使用明确Internal QA/公开示例地址，不删除记录、不创建订单、不付款或发货。
 
@@ -56,9 +73,20 @@
 
 ## 本次提交候选范围
 
-客户账户与本会话此前补充的项目规则，共21文件；不包含原分析QA的并行补充或两张历史截图。候选目标origin/main；push与生产部署仍分别等待本次授权。
+客户账户与本会话此前补充的项目规则，共21文件；不包含原分析QA的并行补充或两张历史截图。候选目标origin/main；本节为提交前范围，后续授权与发布结果见下方。
 
 - 规则/记录：`AGENTS.md`、`README.md`、`RELEASE-NOTES.md`、`docs/rules/engineering.md`、`docs/rules/seo.md`、`docs/project-state.md`、本验收文档。
 - 客户：`app/graphql/customer-account/CustomerDetailsQuery.js`、`CustomerMarketingMutations.js`（同目录）、`app/lib/customer-profile.server.js`、`app/routes/account.profile.jsx`、`app/routes/account.addresses.jsx`、`customer-accountapi.generated.d.ts`。
 - 结账/订单：`app/lib/checkout.server.js`、`app/routes/checkout.jsx`、`app/routes/account.orders.$id.jsx`、`server.js`。
 - 文案/样式/测试：`app/locales/messages.json`、`app/styles/app.css`、`tests/customer-profile.test.mjs`、`tests/checkout.test.mjs`。
+
+## 推送与 Oxygen Production 验收（2026-11-18，北京时间）
+
+- 用户先批准21文件提交 `7ecfcd5b4f762ab59b216859b48f2604fd2cdabc` 普通推送至origin/main，远程完整哈希读回一致；随后明确批准Oxygen Production部署。部署前再次实时核实远程未前进，仅保留原分析QA和两张未跟踪截图，不纳入发布输入。
+- 发布前重跑145/145测试、lint（0错误/2既有警告）、codegen含独立路由typegen、build、集合筛选及来源暴露审计均通过。构建原envFile、未来选项和analyzer提示保留。CLI `hydrogen deploy --env production --no-json-output --force` 附本次发布说明，经交互确认Production完成构建、上传及可路由验证；force仅容许非构建QA工作区差异，没有跳过验证。
+- Shopify后台Production/main/7ecfcd5、Ready/Current；资源[5773163](https://admin.shopify.com/store/ps83if-c4/hydrogen/1000183956/deployments/5773163)，Deployment ID **6155709**，2026-11-18 10:01 GMT+8。部署域名 `https://01m7p66jdjndwcx8kyez66fgg3-d7e83d6aec4307f1a21e.myshopify.dev`，正式域名 `https://www.seineshop.com`。
+- 正式 `/`、`/jp/`、`/de/`、B20A商品、`/cart` 为200；日德语言、canonical及本次CSS `app-CyhLLojm.css` 正确。浏览器日德文字和特殊符号正常、无替换字符与页面横向溢出。未新增购物车或修改现有客户数据。
+- 未登录 `/account/profile`、`/jp/account/profile`、`/de/account/addresses`、`/account/orders/invalid` 为302至各自登录页，响应private/no-store/noindex；`/account/profile.data`为202且相同隐私头。本次未重新登录，不能把未登录重定向当作生产登录后操作通过。
+- `/robots.txt`、`/llms.txt`、`/sitemap.xml` 均200且charset=utf-8；索引123分片XML有效。代表 `/sitemap.en.products-1.xml`、`/sitemap.de.articles-1.xml`、末片`/sitemap.de.policies-1.xml`均200/XML有效，未含账户/购物车/结账/搜索私有路径；未全量爬取其余分片。本轮仅私有账户内容调整，不新增可索引URL或lastmod。浏览器llms/sitemap显示检查通过，发布后构建来源审计再次通过。
+- 额外检查发现 `/ja`（并非本站日语地址）404/noindex，但错误页canonical为 `http://localhost:3000/ja`，保留既有SEO缺口；实际 `/jp/` 正常。本轮未扩大为错误模板修复或再次发布。
+- 没有修改环境、凭据、支付或CI/CD；没有付款、发货或正式订单验收。此前默认Internal QA地址和1件测试购物车保留。发布证据在本地补充，未进行第二次push。任务标签11/12在验收后关闭，原有其他任务标签保留。

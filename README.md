@@ -137,6 +137,8 @@ This batch uses the user's explicit ×1 ordinary USD price instruction. Wholesal
 
 Collection JSON-LD describes the products rendered on the current page, with localized links and a self-canonical pagination URL. Product breadcrumbs match the visible navigation. Validate these with `node --test tests/seo.test.mjs tests/site-guide.test.mjs`, then build and inspect the actual HTML, sitemap and crawler responses before deployment.
 
+Error responses and missing root SEO settings render a title and `noindex` without canonical, language alternates, sharing URLs or content schema. `node --test tests/site-seo-render.test.mjs` renders the actual head through React Router to cover root/child loader errors and healthy localized pages; its ignored bundle is retained in `.cache/`.
+
 ### 完整 SKU 参数与详情图库
 
 发布前运行 `node scripts/audit-source-exposure.mjs --built`，检查前台源码、公开资源及构建产物中的来源品牌；检查忽略大小写，并覆盖空格、连字符、点、下划线和全角变体。公开品牌替换统一使用 Seineshop，真实货源链接仅保存在后台私有记录中。
