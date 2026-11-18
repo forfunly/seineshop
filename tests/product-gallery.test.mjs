@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {productGallery} from '../app/lib/product-gallery.js';
+import {galleryStep, gallerySwipe, productGallery} from '../app/lib/product-gallery.js';
 import {collectionSearchQuery, parseCollectionFilters} from '../app/lib/collection-filters.js';
 
 test('SKU gallery retains all photos and separates the selected color and detail photos', () => {
@@ -38,4 +38,28 @@ test('category paging keeps every matching product and round-trips previous page
   const previous = paginateCategoryProducts(products,['Screen Protectors'],80,new URLSearchParams({cursor:next.pageInfo.startCursor,direction:'previous'}));
   assert.deepEqual(previous.nodes,first.nodes);
   assert.equal(paginateCategoryProducts(products,['Other'],80,new URLSearchParams()).nodes.length,0);
+});
+
+
+test('gallery navigation clamps desktop controls and can loop touch and preview', () => {
+  assert.equal(galleryStep(0, -1, 7), 0);
+  assert.equal(galleryStep(6, 1, 7), 6);
+  assert.equal(galleryStep(0, -1, 7, true), 6);
+  assert.equal(galleryStep(6, 1, 7, true), 0);
+  assert.equal(galleryStep(0, -1, 0, true), 0);
+});
+
+test('gallery swipe distinguishes horizontal gestures from taps and page scrolling', () => {
+  assert.equal(gallerySwipe(-80, 18), 1);
+  assert.equal(gallerySwipe(54, 0), -1);
+  assert.equal(gallerySwipe(20, 1), 0);
+  assert.equal(gallerySwipe(49, 50), 0);
+});
+
+
+test('original SKU cover stays with newly appended numbered photos', () => {
+  const cover = {url: 'https://cdn.shopify.com/files/400x400_6604026278A.webp?v=1'};
+  const extra = {url: 'https://cdn.shopify.com/files/800x800_6604026278A-2.webp?v=2'};
+  const other = {url: 'https://cdn.shopify.com/files/800x800_6604026278B-1.webp'};
+  assert.deepEqual(productGallery([cover, extra, other], null, '6604026278A').selected, [cover, extra]);
 });

@@ -2530,6 +2530,11 @@
     "ja": "拡大",
     "de": "Vergrößern"
   },
+  "Zoom out": {"ja": "縮小", "de": "Verkleinern"},
+  "Zoom in": {"ja": "拡大", "de": "Vergrößern"},
+  "Rotate left": {"ja": "左に回転", "de": "Nach links drehen"},
+  "Rotate right": {"ja": "右に回転", "de": "Nach rechts drehen"},
+  "Reset photo view": {"ja": "表示をリセット", "de": "Bildansicht zurücksetzen"},
   "Close enlarged photo": {
     "ja": "拡大画像を閉じる",
     "de": "Vergrößertes Foto schließen"
