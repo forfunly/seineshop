@@ -1,3 +1,4 @@
+import {useEffect, useRef} from 'react';
 import {useLocale} from '~/lib/i18n';
 import {CartForm} from '@shopify/hydrogen';
 import {CartAnalyticsInput} from './CommerceAnalytics';
@@ -9,6 +10,7 @@ import {CartAnalyticsInput} from './CommerceAnalytics';
  *   disabled?: boolean;
  *   lines: Array<OptimisticCartLineInput>;
  *   onClick?: () => void;
+ *   onSuccess?: () => void;
  * }}
  */
 export function AddToCartButton({
@@ -17,6 +19,7 @@ export function AddToCartButton({
   disabled,
   lines,
   onClick,
+  onSuccess,
 }) {
   const {t, localize} = useLocale();
   return (
@@ -29,6 +32,9 @@ export function AddToCartButton({
     >
       {(fetcher) => (
         <>
+          {onSuccess && (
+            <CartAddCompletion fetcher={fetcher} onSuccess={onSuccess} />
+          )}
           <CartAnalyticsInput />
           <input
             name="analytics"
@@ -58,6 +64,26 @@ export function AddToCartButton({
       )}
     </CartForm>
   );
+}
+
+function CartAddCompletion({fetcher, onSuccess}) {
+  const previous = useRef(null);
+  useEffect(() => {
+    if (
+      fetcher.state !== 'idle' ||
+      !fetcher.data ||
+      fetcher.data === previous.current
+    )
+      return;
+    previous.current = fetcher.data;
+    if (
+      fetcher.data.cart &&
+      !fetcher.data.errors?.length &&
+      !fetcher.data.uncertain
+    )
+      onSuccess();
+  }, [fetcher.state, fetcher.data, onSuccess]);
+  return null;
 }
 
 /** @typedef {import('react-router').FetcherWithComponents} FetcherWithComponents */

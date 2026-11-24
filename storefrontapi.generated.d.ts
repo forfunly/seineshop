@@ -626,6 +626,88 @@ export type HomeFeaturedQuery = {
   }>;
 };
 
+export type CollectionPreviewVariantFragment = Pick<
+  StorefrontAPI.ProductVariant,
+  'id' | 'title' | 'sku' | 'availableForSale'
+> & {
+  selectedOptions: Array<Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>>;
+  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  image?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
+  >;
+  quantityRule: Pick<
+    StorefrontAPI.QuantityRule,
+    'minimum' | 'maximum' | 'increment'
+  >;
+};
+
+export type CollectionPreviewQueryVariables = StorefrontAPI.Exact<{
+  handle: StorefrontAPI.Scalars['String']['input'];
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type CollectionPreviewQuery = {
+  product?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'handle' | 'title'> & {
+      leadTime?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+      images: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+      };
+      selectedOrFirstAvailableVariant?: StorefrontAPI.Maybe<
+        Pick<
+          StorefrontAPI.ProductVariant,
+          'id' | 'title' | 'sku' | 'availableForSale'
+        > & {
+          selectedOptions: Array<
+            Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+          >;
+          price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          image?: StorefrontAPI.Maybe<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'url' | 'altText' | 'width' | 'height'
+            >
+          >;
+          quantityRule: Pick<
+            StorefrontAPI.QuantityRule,
+            'minimum' | 'maximum' | 'increment'
+          >;
+        }
+      >;
+      variants: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.ProductVariant,
+            'id' | 'title' | 'sku' | 'availableForSale'
+          > & {
+            selectedOptions: Array<
+              Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+            >;
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            image?: StorefrontAPI.Maybe<
+              Pick<
+                StorefrontAPI.Image,
+                'id' | 'url' | 'altText' | 'width' | 'height'
+              >
+            >;
+            quantityRule: Pick<
+              StorefrontAPI.QuantityRule,
+              'minimum' | 'maximum' | 'increment'
+            >;
+          }
+        >;
+        pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage'>;
+      };
+    }
+  >;
+};
+
 export type JournalLinkedProductQueryVariables = StorefrontAPI.Exact<{
   handle: StorefrontAPI.Scalars['String']['input'];
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
@@ -1630,6 +1712,10 @@ interface GeneratedQueryTypes {
   '#graphql\n query HomeFeatured($country: CountryCode, $language: LanguageCode)\n @inContext(country: $country, language: $language) {\n  collection(handle: "frontpage") {\n   products(first: 4) { nodes {\n    id title handle availableForSale\n    priceRange { minVariantPrice { amount currencyCode } }\n    featuredImage { id url altText width height }\n   } }\n  }\n }\n': {
     return: HomeFeaturedQuery;
     variables: HomeFeaturedQueryVariables;
+  };
+  '#graphql\n  fragment CollectionPreviewVariant on ProductVariant {\n    id title sku availableForSale\n    selectedOptions { name value }\n    price { amount currencyCode }\n    image { id url altText width height }\n    quantityRule { minimum maximum increment }\n  }\n  query CollectionPreview($handle: String!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      handle title\n      leadTime: metafield(namespace: "custom", key: "lead_time") { value }\n      images(first: 12) { nodes { id url altText width height } }\n      selectedOrFirstAvailableVariant { ...CollectionPreviewVariant }\n      variants(first: 100) { nodes { ...CollectionPreviewVariant } pageInfo { hasNextPage } }\n    }\n  }\n': {
+    return: CollectionPreviewQuery;
+    variables: CollectionPreviewQueryVariables;
   };
   '#graphql\n  query JournalLinkedProduct($handle: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id handle availableForSale\n      priceRange { minVariantPrice { amount currencyCode } }\n    }\n  }\n': {
     return: JournalLinkedProductQuery;
