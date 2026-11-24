@@ -1,13 +1,27 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Link, useFetcher} from 'react-router';
-import {Image, Money} from '@shopify/hydrogen';
+import {CartForm, Image, Money} from '@shopify/hydrogen';
 import {useLocale} from '~/lib/i18n';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
 import {CheckoutForm} from './CheckoutForm';
+import {CartAnalyticsInput} from './CommerceAnalytics';
 
 const icons = {
+  cart: (
+    <>
+      <path d="M2 3h3l3 12h11l3-8M9 19h.01M18 19h.01M12 8h6m-3-3v6" />
+      <circle cx="9" cy="20" r=".7" />
+      <circle cx="18" cy="20" r=".7" />
+    </>
+  ),
+  copy: (
+    <>
+      <path d="M8 4H4v12h4" />
+      <rect x="8" y="8" width="12" height="12" rx="1" />
+    </>
+  ),
   eye: (
     <>
       <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
@@ -83,18 +97,33 @@ export function BestSellerCard({
 }) {
   const {t, localize} = useLocale();
   const title = t(product.title);
+  const [requested, setRequested] = useState(false);
+  const {result, error} = usePreviewProduct(requested ? product.handle : null);
+  const [choice, setChoice] = useState(null);
+  const variant =
+    result?.variants.nodes.find(({id}) => id === choice) ||
+    result?.selectedOrFirstAvailableVariant;
+  const image =
+    choice && variant?.image ? variant.image : product.featuredImage;
+  const itemUrl = localize(`/products/${product.handle}`);
+  const options = new URLSearchParams(
+    variant?.selectedOptions.map(({name, value}) => [name, value]),
+  );
+  const detailUrl = choice && options.size ? `${itemUrl}?${options}` : itemUrl;
   return (
-    <article className="best-seller-card">
-      <Link
-        className="product-item"
-        to={localize(`/products/${product.handle}`)}
-        aria-label={title}
-      >
-        {product.featuredImage && (
+    <article
+      className="best-seller-card"
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setRequested(true);
+      }}
+      onFocus={() => setRequested(true)}
+    >
+      <Link className="product-item" to={detailUrl} aria-label={title}>
+        {image && (
           <Image
             aspectRatio="1/1"
-            data={product.featuredImage}
-            alt={product.featuredImage.altText || title}
+            data={image}
+            alt={image.altText || title}
             loading={loading}
             sizes="(max-width: 760px) 50vw, 25vw"
           />
@@ -102,7 +131,13 @@ export function BestSellerCard({
         <h3 title={title}>{title}</h3>
       </Link>
       <div className="best-seller-card-price">
-        <Money data={product.priceRange.minVariantPrice} />
+        <Money
+          data={
+            choice && variant?.price
+              ? variant.price
+              : product.priceRange.minVariantPrice
+          }
+        />
       </div>
       <div className="best-seller-card-tools">
         <button
@@ -124,28 +159,241 @@ export function BestSellerCard({
           <CatalogIcon name="eye" />
         </button>
       </div>
-      <button
-        className="best-seller-card-buy"
-        type="button"
-        onClick={onPreview}
-        aria-haspopup="dialog"
-        disabled={!product.availableForSale}
-      >
-        {t(product.availableForSale ? 'Add to Cart' : 'Sold out')}
-      </button>
+      <div className="best-seller-card-panel">
+        {variant ? (
+          <>
+            <HoverCart key={variant.id} variant={variant} product={product} />
+            {variant.sku && (
+              <HoverSku key={`sku-${variant.id}`} sku={variant.sku} />
+            )}
+            <div
+              className="best-seller-card-swatches"
+              aria-label={t('Options')}
+            >
+              {result.variants.nodes.map((option) => (
+                <button
+                  type="button"
+                  key={option.id}
+                  onClick={() => setChoice(option.id)}
+                  aria-pressed={option.id === variant.id}
+                  aria-label={t(option.title)}
+                  title={t(option.title)}
+                >
+                  {option.image || product.featuredImage ? (
+                    <Image
+                      data={option.image || product.featuredImage}
+                      alt=""
+                      aspectRatio="1/1"
+                      sizes="32px"
+                      loading="lazy"
+                    />
+                  ) : (
+                    t(option.title)
+                  )}
+                </button>
+              ))}
+              {result.variants.pageInfo.hasNextPage && (
+                <Link to={detailUrl}>{t('View full details')}</Link>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="best-seller-card-buy-row">
+              <input
+                type="number"
+                value="1"
+                readOnly
+                disabled
+                aria-label={t('Quantity')}
+              />
+              <button
+                type="button"
+                onClick={onPreview}
+                aria-haspopup="dialog"
+                aria-label={t('Quick View')}
+                title={t('Quick View')}
+              >
+                <CatalogIcon name="cart" />
+              </button>
+            </div>
+            {requested && (
+              <small role="status">
+                {t(error ? 'Quick View is unavailable.' : 'Loading...')}
+              </small>
+            )}
+          </>
+        )}
+      </div>
     </article>
   );
+}
+
+function HoverSku({sku}) {
+  const {t} = useLocale();
+  const [status, setStatus] = useState('');
+  return (
+    <div className="best-seller-card-sku">
+      <span>
+        {t('Item No.')}: <strong>{sku}</strong>
+      </span>
+      <button
+        type="button"
+        aria-label={t('Copy item number')}
+        title={t('Copy item number')}
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(sku);
+            setStatus(t('Copied'));
+          } catch {
+            setStatus(t('Could not copy'));
+          }
+        }}
+      >
+        <CatalogIcon name="copy" />
+      </button>
+      <small role="status">{status}</small>
+    </div>
+  );
+}
+
+function HoverCart({variant, product}) {
+  const {t, localize} = useLocale();
+  const {open} = useAside();
+  const fetcher = useFetcher();
+  const formId = useId();
+  const previous = useRef(null);
+  const min = variant.quantityRule?.minimum ?? 1;
+  const max = Math.min(9999, variant.quantityRule?.maximum ?? 9999);
+  const step = variant.quantityRule?.increment ?? 1;
+  const [quantity, setQuantity] = useState(min);
+  const number = Number(quantity);
+  const valid =
+    Number.isInteger(number) &&
+    number >= min &&
+    number <= max &&
+    (number - min) % step === 0;
+  const busy = fetcher.state !== 'idle';
+  useEffect(() => {
+    if (busy || !fetcher.data || previous.current === fetcher.data) return;
+    previous.current = fetcher.data;
+    if (
+      fetcher.data.cart &&
+      !fetcher.data.errors?.length &&
+      !fetcher.data.uncertain
+    )
+      open('cart');
+  }, [busy, fetcher.data, open]);
+  const action = {
+    action: CartForm.ACTIONS.LinesAdd,
+    inputs: {
+      lines: [
+        {
+          merchandiseId: variant.id,
+          quantity: number,
+          selectedVariant: {
+            ...variant,
+            product: {handle: product.handle, title: product.title},
+          },
+        },
+      ],
+    },
+  };
+  return (
+    <>
+      <div className="best-seller-card-buy-row" aria-busy={busy}>
+        <input
+          type="number"
+          inputMode="numeric"
+          form={formId}
+          min={min}
+          max={max}
+          step={step}
+          required
+          value={quantity}
+          onChange={(event) => setQuantity(event.currentTarget.value)}
+          aria-label={t('Quantity')}
+          disabled={busy || !variant.availableForSale}
+        />
+        <button
+          type="submit"
+          form={formId}
+          disabled={!valid || busy || !variant.availableForSale}
+          aria-label={t(variant.availableForSale ? 'Add to Cart' : 'Sold out')}
+          title={t(variant.availableForSale ? 'Add to Cart' : 'Sold out')}
+        >
+          <CatalogIcon name="cart" />
+        </button>
+      </div>
+      {createPortal(
+        <fetcher.Form
+          id={formId}
+          method="post"
+          action={localize('/cart')}
+          hidden
+          onSubmit={(event) => {
+            if (!valid || busy || !variant.availableForSale)
+              event.preventDefault();
+          }}
+        >
+          <input
+            type="hidden"
+            name={CartForm.INPUT_NAME}
+            value={JSON.stringify(action)}
+          />
+          <CartAnalyticsInput />
+        </fetcher.Form>,
+        document.body,
+      )}
+      {fetcher.data?.errors?.length > 0 && (
+        <small role="alert">
+          {fetcher.data.errors.map(({message}) => message).join(' ')}
+        </small>
+      )}
+      {fetcher.data?.warnings?.length > 0 && (
+        <small role="status">
+          {fetcher.data.warnings.map(({message}) => message).join(' ')}
+        </small>
+      )}
+    </>
+  );
+}
+
+function usePreviewProduct(handle) {
+  const {localize} = useLocale();
+  const url = handle
+    ? localize(`/api/collection-preview/${encodeURIComponent(handle)}`)
+    : null;
+  const [load, setLoad] = useState(null);
+  useEffect(() => {
+    if (!url) return;
+    const controller = new AbortController();
+    fetch(url, {
+      signal: controller.signal,
+      headers: {Accept: 'application/json'},
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('Product unavailable');
+        return response.json();
+      })
+      .then(({product}) => {
+        if (!controller.signal.aborted)
+          setLoad({url, result: product, error: !product});
+      })
+      .catch(() => {
+        if (!controller.signal.aborted)
+          setLoad({url, result: null, error: true});
+      });
+    return () => controller.abort();
+  }, [url]);
+  return load?.url === url ? load : {result: null, error: false};
 }
 
 export function BestSellerQuickView({product: card, onClose}) {
   const {t, localize} = useLocale();
   const dialog = useRef(null);
   const titleId = useId();
-  const url = localize(
-    `/api/collection-preview/${encodeURIComponent(card.handle)}`,
-  );
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(false);
+  const {result, error} = usePreviewProduct(card.handle);
   useEffect(() => {
     const element = dialog.current;
     const trigger = document.activeElement;
@@ -159,22 +407,6 @@ export function BestSellerQuickView({product: card, onClose}) {
         trigger.focus({preventScroll: true});
     };
   }, []);
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch(url, {
-      signal: controller.signal,
-      headers: {Accept: 'application/json'},
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Product unavailable');
-        return response.json();
-      })
-      .then(({product}) => setResult(product))
-      .catch(() => {
-        if (!controller.signal.aborted) setError(true);
-      });
-    return () => controller.abort();
-  }, [url]);
   const detailsUrl = localize(`/products/${card.handle}`);
   return createPortal(
     <dialog

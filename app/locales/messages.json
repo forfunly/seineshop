@@ -1,4 +1,7 @@
 {
+  "Copy item number": {"ja": "商品番号をコピー", "de": "Artikelnummer kopieren"},
+  "Copied": {"ja": "コピーしました", "de": "Kopiert"},
+  "Could not copy": {"ja": "コピーできませんでした", "de": "Kopieren fehlgeschlagen"},
   "Price Low to High": {"ja": "価格の安い順", "de": "Preis aufsteigend"},
   "Price High to Low": {"ja": "価格の高い順", "de": "Preis absteigend"},
   "Group Items": {"ja": "商品グループ", "de": "Produktgruppen"},
