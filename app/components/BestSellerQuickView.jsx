@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from 'react';
+import {createContext, useContext, useEffect, useId, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Link, useFetcher} from 'react-router';
 import {CartForm, Image, Money} from '@shopify/hydrogen';
@@ -59,42 +59,56 @@ export function CatalogIcon({name}) {
   );
 }
 
+// Keep the original key so saved items carry over to every collection.
 const favoritesKey = 'seine-best-seller-favorites';
-export function useBestSellerFavorites(enabled) {
-  const [favorites, setFavorites] = useState([]);
+const CollectionCardsContext = createContext(null);
+
+export function CollectionCardsProvider({children}) {
+  const [favorites, setFavorites] = useState(null);
+  const [quickProduct, setQuickProduct] = useState(null);
   useEffect(() => {
-    if (!enabled) return;
     try {
-      const stored = JSON.parse(
-        window.localStorage.getItem(favoritesKey) || '[]',
-      );
-      if (Array.isArray(stored))
-        setFavorites(stored.filter((value) => typeof value === 'string'));
+      const stored = JSON.parse(window.localStorage.getItem(favoritesKey) || '[]');
+      setFavorites(Array.isArray(stored) ? stored.filter((value) => typeof value === 'string') : []);
     } catch {
-      /* Retain in-memory state when storage is unavailable. */
+      setFavorites([]);
     }
-  }, [enabled]);
+  }, []);
+  useEffect(() => {
+    if (!favorites) return;
+    try {
+      window.localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+    } catch {
+      /* Continue to work in memory when storage is unavailable. */
+    }
+  }, [favorites]);
   const toggleFavorite = (handle) => {
-    const next = favorites.includes(handle)
-      ? favorites.filter((value) => value !== handle)
-      : [...favorites, handle];
-    setFavorites(next);
-    try {
-      window.localStorage.setItem(favoritesKey, JSON.stringify(next));
-    } catch {
-      /* Storage may be disabled. */
-    }
+    setFavorites((current) => {
+      const saved = current || [];
+      return saved.includes(handle)
+        ? saved.filter((value) => value !== handle)
+        : [...saved, handle];
+    });
   };
-  return {favorites, toggleFavorite};
+  return (
+    <CollectionCardsContext.Provider value={{favorites, toggleFavorite, setQuickProduct}}>
+      {children}
+      {quickProduct && (
+        <CollectionQuickView
+          key={quickProduct.id}
+          product={quickProduct}
+          onClose={() => setQuickProduct(null)}
+        />
+      )}
+    </CollectionCardsContext.Provider>
+  );
 }
 
-export function BestSellerCard({
-  product,
-  loading,
-  favorite,
-  onFavorite,
-  onPreview,
-}) {
+export function CollectionProductCard({product, loading}) {
+  const {favorites, toggleFavorite, setQuickProduct} = useContext(CollectionCardsContext);
+  const favorite = favorites?.includes(product.handle) ?? false;
+  const onFavorite = () => toggleFavorite(product.handle);
+  const onPreview = () => setQuickProduct(product);
   const {t, localize} = useLocale();
   const title = t(product.title);
   const [requested, setRequested] = useState(false);
@@ -112,7 +126,7 @@ export function BestSellerCard({
   const detailUrl = choice && options.size ? `${itemUrl}?${options}` : itemUrl;
   return (
     <article
-      className="best-seller-card"
+      className="collection-product-card"
       onPointerEnter={(event) => {
         if (event.pointerType === 'mouse') setRequested(true);
       }}
@@ -130,7 +144,7 @@ export function BestSellerCard({
         )}
         <h3 title={title}>{title}</h3>
       </Link>
-      <div className="best-seller-card-price">
+      <div className="collection-product-card-price">
         <Money
           data={
             choice && variant?.price
@@ -139,7 +153,7 @@ export function BestSellerCard({
           }
         />
       </div>
-      <div className="best-seller-card-tools">
+      <div className="collection-product-card-tools">
         <button
           type="button"
           onClick={onFavorite}
@@ -159,7 +173,7 @@ export function BestSellerCard({
           <CatalogIcon name="eye" />
         </button>
       </div>
-      <div className="best-seller-card-panel">
+      <div className="collection-product-card-panel">
         {variant ? (
           <>
             <HoverCart key={variant.id} variant={variant} product={product} />
@@ -167,7 +181,7 @@ export function BestSellerCard({
               <HoverSku key={`sku-${variant.id}`} sku={variant.sku} />
             )}
             <div
-              className="best-seller-card-swatches"
+              className="collection-product-card-swatches"
               aria-label={t('Options')}
             >
               {result.variants.nodes.map((option) => (
@@ -199,7 +213,7 @@ export function BestSellerCard({
           </>
         ) : (
           <>
-            <div className="best-seller-card-buy-row">
+            <div className="collection-product-card-buy-row">
               <input
                 type="number"
                 value="1"
@@ -233,7 +247,7 @@ function HoverSku({sku}) {
   const {t} = useLocale();
   const [status, setStatus] = useState('');
   return (
-    <div className="best-seller-card-sku">
+    <div className="collection-product-card-sku">
       <span>
         {t('Item No.')}: <strong>{sku}</strong>
       </span>
@@ -301,7 +315,7 @@ function HoverCart({variant, product}) {
   };
   return (
     <>
-      <div className="best-seller-card-buy-row" aria-busy={busy}>
+      <div className="collection-product-card-buy-row" aria-busy={busy}>
         <input
           type="number"
           inputMode="numeric"
@@ -389,7 +403,7 @@ function usePreviewProduct(handle) {
   return load?.url === url ? load : {result: null, error: false};
 }
 
-export function BestSellerQuickView({product: card, onClose}) {
+function CollectionQuickView({product: card, onClose}) {
   const {t, localize} = useLocale();
   const dialog = useRef(null);
   const titleId = useId();
@@ -411,16 +425,16 @@ export function BestSellerQuickView({product: card, onClose}) {
   return createPortal(
     <dialog
       ref={dialog}
-      className="best-seller-dialog"
+      className="collection-card-dialog"
       aria-labelledby={titleId}
       onCancel={(event) => {
         event.preventDefault();
         onClose();
       }}
     >
-      <div className="best-seller-dialog-content">
+      <div className="collection-card-dialog-content">
         <button
-          className="best-seller-dialog-close"
+          className="collection-card-dialog-close"
           type="button"
           onClick={onClose}
           aria-label={t('Close')}
@@ -438,7 +452,7 @@ export function BestSellerQuickView({product: card, onClose}) {
           detailsUrl={detailsUrl}
           title={card.title}
         />
-        <div className="best-seller-preview-details">
+        <div className="collection-card-preview-details">
           <h2 id={titleId}>{t(result?.title || card.title)}</h2>
           {error ? (
             <p role="alert">
@@ -466,8 +480,8 @@ function PreviewGallery({images, title, detailsUrl}) {
   const [index, setIndex] = useState(0);
   const active = images[index];
   return (
-    <div className="best-seller-preview-gallery">
-      <div className="best-seller-preview-thumbs">
+    <div className="collection-card-preview-gallery">
+      <div className="collection-card-preview-thumbs">
         {images.length > 1 &&
           images.map((image, i) => (
             <button
@@ -481,7 +495,7 @@ function PreviewGallery({images, title, detailsUrl}) {
             </button>
           ))}
       </div>
-      <div className="best-seller-preview-main-image">
+      <div className="collection-card-preview-main-image">
         {active && (
           <Image
             data={active}
@@ -491,7 +505,7 @@ function PreviewGallery({images, title, detailsUrl}) {
           />
         )}
         {images.length > 1 && (
-          <div className="best-seller-preview-nav">
+          <div className="collection-card-preview-nav">
             <button
               type="button"
               aria-label={t('Previous image')}
@@ -539,7 +553,7 @@ function PreviewPurchase({product, detailsUrl, onClose}) {
   const disabled = !variant?.availableForSale || !valid;
   return (
     <>
-      <div className="best-seller-preview-meta">
+      <div className="collection-card-preview-meta">
         {variant?.sku && (
           <span>
             {t('Item No.')}: {variant.sku}
@@ -552,12 +566,12 @@ function PreviewPurchase({product, detailsUrl, onClose}) {
         )}
       </div>
       {variant?.price && (
-        <div className="best-seller-preview-price">
+        <div className="collection-card-preview-price">
           <Money data={variant.price} />
         </div>
       )}
       {variants.length > 1 && (
-        <fieldset className="best-seller-preview-options">
+        <fieldset className="collection-card-preview-options">
           <legend>{t('Options')}</legend>
           {variants.map((choice) => (
             <button
@@ -586,7 +600,7 @@ function PreviewPurchase({product, detailsUrl, onClose}) {
           )}
         </fieldset>
       )}
-      <div className="best-seller-preview-quantity">
+      <div className="collection-card-preview-quantity">
         <button
           type="button"
           aria-label={t('Decrease quantity')}
@@ -615,7 +629,7 @@ function PreviewPurchase({product, detailsUrl, onClose}) {
         </button>
       </div>
       {variant?.price && valid && (
-        <div className="best-seller-preview-total">
+        <div className="collection-card-preview-total">
           {t('Total')}:{' '}
           <strong>
             <Money
@@ -627,12 +641,12 @@ function PreviewPurchase({product, detailsUrl, onClose}) {
           </strong>
         </div>
       )}
-      <div className="best-seller-preview-actions">
+      <div className="collection-card-preview-actions">
         <CheckoutForm fetcher={checkout}>
           <input type="hidden" name="merchandiseId" value={variant?.id || ''} />
           <input type="hidden" name="quantity" value={quantity} />
           <button
-            className="best-seller-preview-buy"
+            className="collection-card-preview-buy"
             type="submit"
             disabled={disabled}
           >

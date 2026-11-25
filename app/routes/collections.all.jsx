@@ -2,7 +2,7 @@ import {useLocale} from '~/lib/i18n';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {ProductItem} from '~/components/ProductItem';
+import {CollectionCardsProvider, CollectionProductCard} from '~/components/BestSellerQuickView';
 
 /**
  * @type {Route.MetaFunction}
@@ -66,21 +66,23 @@ export default function Collection() {
   /** @type {LoaderReturnData} */
   const {products} = useLoaderData();
   return (
-    <div className="collection">
-      <h1>{t('Products')}</h1>
-      <PaginatedResourceSection
-        connection={products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
-    </div>
+    <CollectionCardsProvider>
+      <div className="collection">
+        <h1>{t('Products')}</h1>
+        <PaginatedResourceSection
+          connection={products}
+          resourcesClassName="browse-grid browse-grid--grid collection-card-grid"
+        >
+          {({node: product, index}) => (
+            <CollectionProductCard
+              key={product.id}
+              product={product}
+              loading={index < 3 ? 'eager' : 'lazy'}
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
+    </CollectionCardsProvider>
   );
 }
 const COLLECTION_ITEM_FRAGMENT = `#graphql

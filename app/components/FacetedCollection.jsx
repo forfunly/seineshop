@@ -10,10 +10,9 @@ import {
 import {useLocale} from '~/lib/i18n';
 import {ProductItem} from './ProductItem';
 import {
-  BestSellerCard,
-  BestSellerQuickView,
   CatalogIcon,
-  useBestSellerFavorites,
+  CollectionCardsProvider,
+  CollectionProductCard,
 } from './BestSellerQuickView';
 
 const bestSellerFacetOrder = [
@@ -58,12 +57,20 @@ function orderedCategories(values) {
   return [...values].sort((a, b) => rank(a.label) - rank(b.label));
 }
 
-export function FacetedCollection({collection, browse, searchMode = false}) {
+export function FacetedCollection(props) {
+  return props.searchMode ? (
+    <FacetedCollectionContent {...props} />
+  ) : (
+    <CollectionCardsProvider key={props.collection.handle}>
+      <FacetedCollectionContent {...props} />
+    </CollectionCardsProvider>
+  );
+}
+
+function FacetedCollectionContent({collection, browse, searchMode = false}) {
   const {t, localize} = useLocale();
   const bestSellers = !searchMode && collection.handle === 'best-sellers';
   const [expandedFacets, setExpandedFacets] = useState({});
-  const [quickProduct, setQuickProduct] = useState(null);
-  const {favorites, toggleFavorite} = useBestSellerFavorites(bestSellers);
   const [filtersOpen, setFiltersOpen] = useState(true);
   useEffect(() => {
     const media = window.matchMedia('(max-width: 760px)');
@@ -520,16 +527,13 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
               )}
             </div>
           )}
-          <div className={`browse-grid browse-grid--${browse.view}`}>
+          <div className={`browse-grid browse-grid--${browse.view}${searchMode ? '' : ' collection-card-grid'}`}>
             {connection.nodes.map((p, i) =>
-              bestSellers ? (
-                <BestSellerCard
+              !searchMode ? (
+                <CollectionProductCard
                   key={p.id}
                   product={p}
                   loading={i < 3 ? 'eager' : 'lazy'}
-                  favorite={favorites.includes(p.handle)}
-                  onFavorite={() => toggleFavorite(p.handle)}
-                  onPreview={() => setQuickProduct(p)}
                 />
               ) : (
                 <article key={p.id}>
@@ -576,13 +580,6 @@ export function FacetedCollection({collection, browse, searchMode = false}) {
           </nav>
         </section>
       </Form>
-      {quickProduct && (
-        <BestSellerQuickView
-          key={quickProduct.id}
-          product={quickProduct}
-          onClose={() => setQuickProduct(null)}
-        />
-      )}
     </div>
   );
 }
