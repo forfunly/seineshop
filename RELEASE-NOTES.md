@@ -92,7 +92,7 @@ This release replaces the starter storefront with the current SeineShop headless
 
 ## Search and shopping cart
 
-- Global predictive search with debounce, images/prices, query suggestions, keyboard interaction and localized URLs.
+- Global predictive search with debounce, images/prices and localized URLs. The header adds a category picker, quick searches, scoped collection results and merchandise navigation with empty-state pages until matching collections have products.
 - Search result filtering and sorting through native Storefront capabilities and Search & Discovery configuration.
 - Redesigned 520px desktop cart drawer and full-width mobile layout, product cards, compact quantity controls, remove links and clear subtotal/checkout actions.
 - Discount and gift-card inputs in collapsible panels; invalid discount feedback and a useful empty-cart state. No invented free-shipping thresholds or promotions.

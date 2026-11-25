@@ -2,10 +2,12 @@
 import {useEffect, useRef, useState} from 'react';
 import {Form, Link, useFetcher, useLocation} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
+import {categories} from '~/data/navigation';
 import {HeaderIcon} from './HeaderIcon';
 import {useLocale} from '~/lib/i18n';
 import {urlWithTrackingParams} from '~/lib/search';
-import '~/styles/search.css';
+
+const suggestedTerms = ['iPhone case', 'wireless charger', 'screen protector', 'USB cable'];
 
 export function GlobalSearch() {
   const {t, localize} = useLocale();
@@ -13,23 +15,46 @@ export function GlobalSearch() {
   const location = useLocation();
   const [term, setTerm] = useState('');
   const [open, setOpen] = useState(false);
+  const [scope, setScope] = useState('');
+  const [scopeOpen, setScopeOpen] = useState(false);
+  const scopeTrigger = useRef(null);
+  const category = categories.find((item) => item.handle === scope);
   const input = useRef(null);
   const box = useRef(null);
   const query = term.trim();
   const load = fetcher.load;
   const endpoint = localize('/search');
+  const destination = category ? localize(category.url) : endpoint;
+  const resultsUrl = (value) => `${destination}?${new URLSearchParams(category ? {q: value, scope: 'collection'} : {q: value})}`;
   useEffect(() => {
-    if (query.length < 2) return;
+    if (query.length < 2 || scope) return;
     const timer = setTimeout(() => {
       void load(
         `${endpoint}?predictive=true&limit=4&q=${encodeURIComponent(query)}`,
       );
     }, 250);
     return () => clearTimeout(timer);
-  }, [query, load, endpoint]);
+  }, [query, load, endpoint, scope]);
   useEffect(() => {
     setOpen(false);
-  }, [location.key]);
+    setScopeOpen(false);
+    const params = new URLSearchParams(location.search);
+    const scoped = params.get('scope') === 'collection'
+      ? categories.find((item) => location.pathname.endsWith(item.url))
+      : null;
+    setScope(scoped?.handle || '');
+    setTerm(scoped || /\/search$/.test(location.pathname) ? params.get('q') || '' : '');
+  }, [location.key, location.pathname, location.search]);
+  useEffect(() => {
+    const closeOutside = (event) => {
+      if (!box.current?.contains(event.target)) {
+        setOpen(false);
+        setScopeOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => document.removeEventListener('pointerdown', closeOutside);
+  }, []);
   const fresh = fetcher.data?.term === query;
   const items =
     fresh && !fetcher.data?.error ? fetcher.data?.result?.items : null;
@@ -43,13 +68,15 @@ export function GlobalSearch() {
       }),
     );
   function keyboard(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && (open || scopeOpen)) {
+      event.stopPropagation();
+      (scopeOpen ? scopeTrigger : input).current?.focus();
       setOpen(false);
-      input.current?.focus();
+      setScopeOpen(false);
       return;
     }
     if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
-    const links = [...box.current.querySelectorAll('.global-search-panel a')];
+    const links = [...box.current.querySelectorAll(scopeOpen ? '.search-scope-panel button' : '.global-search-panel a')];
     if (!links.length) return;
     event.preventDefault();
     const index = links.indexOf(document.activeElement);
@@ -69,16 +96,35 @@ export function GlobalSearch() {
       ref={box}
       onKeyDown={keyboard}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setOpen(false);
+          setScopeOpen(false);
+        }
       }}
     >
       <Form
         className="market-search"
         method="get"
-        action={localize('/search')}
+        action={destination}
         role="search"
         onSubmit={() => setOpen(false)}
       >
+        <button
+          type="button"
+          className="search-scope-trigger"
+          aria-label={`${t('Search category')}: ${t(category?.title || 'ALL')}`}
+          aria-expanded={scopeOpen}
+          aria-controls="search-scope-panel"
+          ref={scopeTrigger}
+          onClick={() => {
+            setOpen(false);
+            setScopeOpen(!scopeOpen);
+          }}
+        >
+          <span>{t(category?.title || 'ALL')}</span>
+          <i className="header-chevron" aria-hidden="true" />
+        </button>
+        {category && <input type="hidden" name="scope" value="collection" />}
         <label className="sr-only" htmlFor="site-search">
           {t('Search products')}
         </label>
@@ -96,18 +142,34 @@ export function GlobalSearch() {
             setTerm(e.target.value);
             setOpen(true);
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={() => {setScopeOpen(false); setOpen(true);}}
+          onClick={() => {setScopeOpen(false); setOpen(true);}}
           aria-expanded={open}
           aria-controls="global-search-suggestions"
           aria-haspopup="dialog"
-          placeholder={t('Search phone cases, chargers, accessories…')}
+          placeholder={t('Search for Products')}
           required
         />
         <button type="submit" aria-label={t('Search')}>
           <HeaderIcon name="search" />
-          <span>{t('Search')}</span>
         </button>
       </Form>
+      {scopeOpen && (
+        <div className="search-scope-panel" id="search-scope-panel">
+          {[{title: 'All Categories', handle: ''}, ...categories].map((item) => (
+            <button key={item.handle} type="button" aria-pressed={scope === item.handle} onClick={() => {
+              setScope(item.handle);
+              setScopeOpen(false);
+              scopeTrigger.current?.focus();
+            }}>
+              {t(item.title)}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="search-quick-terms">
+        {suggestedTerms.map((value) => <Link key={value} to={resultsUrl(t(value))}>{t(value)}</Link>)}
+      </div>
       {open && (
         <div
           className="global-search-panel"
@@ -116,34 +178,18 @@ export function GlobalSearch() {
           aria-label={t('Search suggestions')}
         >
           <div className="global-search-panel-head">
-            <strong>
-              {t(query.length < 2 ? 'Explore SeineShop' : 'Search suggestions')}
-            </strong>
-            <button
-              type="button"
-              aria-label={t('Close search suggestions')}
-              onClick={() => setOpen(false)}
-            >
-              ×
-            </button>
+            <strong>{t(query.length < 2 ? 'Hot Search:' : 'Search suggestions')}</strong>
           </div>
           {query.length < 2 ? (
             <div className="global-search-explore">
-              <p>{t('Try a product, model or SKU')}</p>
-              {[
-                'iPhone case',
-                'wireless charger',
-                'screen protector',
-                'USB cable',
-              ].map((q) => (
-                <Link
-                  key={q}
-                  to={`${localize('/search')}?q=${encodeURIComponent(q)}`}
-                >
-                  {t(q)} ↗
-                </Link>
+              {suggestedTerms.map((value) => (
+                <Link key={value} to={resultsUrl(t(value))}>{t(value)}</Link>
               ))}
             </div>
+          ) : category ? (
+            <Link className="global-search-all" to={resultsUrl(query)}>
+              {t('Search this collection')} →
+            </Link>
           ) : (
             <>
               <div className="global-search-status" role="status">
@@ -236,7 +282,7 @@ export function GlobalSearch() {
               )}
               <Link
                 className="global-search-all"
-                to={`${localize('/search')}?q=${encodeURIComponent(query)}`}
+                to={resultsUrl(query)}
               >
                 {t('View all results')} →
               </Link>

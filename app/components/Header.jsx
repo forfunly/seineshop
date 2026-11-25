@@ -4,28 +4,86 @@ import {HeaderIcon} from '~/components/HeaderIcon';
 import {MarketSelector} from '~/components/MarketSelector';
 import {useLocale} from '~/lib/i18n';
 import {Suspense, useRef, useEffect, useState} from 'react';
-import {categories, primaryLinks} from '~/data/navigation';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import {catalogSections} from '~/data/catalog-sections';
+import {categories} from '~/data/navigation';
+import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
+
+const primaryLinks = catalogSections.map(([title, handle]) => [title, `/collections/${handle}`]);
+const supportLinks = [
+  ['Contact Us', '/support'],
+  ['FAQs', '/support#compatibility'],
+  ['Blog & News', '/blogs/journal'],
+  ['Track package', '/page/order-tracking'],
+];
 
 /**
  * @param {HeaderProps}
  */
 export function Header({cart, isLoggedIn}) {
   const {t, localize} = useLocale();
-  const menuRef = useRef(null);
+  const navRef = useRef(null);
+  const location = useLocation();
+  const [menu, setMenu] = useState(null);
   const [activeCategory, setActiveCategory] = useState(0);
+  const closeNav = () => setMenu(null);
+  useEffect(() => {setMenu(null);}, [location.key]);
   useEffect(() => {
-    const closeOnEscape = (event) => {
-      if (event.key === 'Escape' && menuRef.current?.open) {
-        menuRef.current.open = false;
-        menuRef.current.querySelector('summary')?.focus();
-      }
+    const dismiss = (event) => {
+      if (!navRef.current?.contains(event.target)) setMenu(null);
     };
-    document.addEventListener('keydown', closeOnEscape);
-    return () => document.removeEventListener('keydown', closeOnEscape);
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
   }, []);
+  useEffect(() => {
+    if (!menu) return;
+    const escape = (event) => {
+      if (event.key !== 'Escape') return;
+      if (navRef.current?.contains(document.activeElement)) document.getElementById(`nav-trigger-${menu}`)?.focus();
+      setMenu(null);
+    };
+    document.addEventListener('keydown', escape);
+    return () => document.removeEventListener('keydown', escape);
+  }, [menu]);
+  function disclosure(name, label, panel, icon) {
+    return (
+      <div className={`header-disclosure header-disclosure--${name}`}
+        onPointerEnter={(event) => {if (event.pointerType === 'mouse') setMenu(name);}}
+        onPointerLeave={(event) => {
+          if (event.pointerType === 'mouse' && !event.currentTarget.contains(document.activeElement)) {
+            setMenu((current) => current === name ? null : current);
+          }
+        }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setMenu((current) => current === name ? null : current);
+        }}
+      >
+        <button type="button" id={`nav-trigger-${name}`} aria-expanded={menu === name}
+          aria-controls={`nav-panel-${name}`}
+          onKeyDown={(event) => {
+            if (event.key === 'ArrowDown') {
+              event.preventDefault();
+              setMenu(name);
+              requestAnimationFrame(() => document.querySelector(`#nav-panel-${name} :is(a, button)`)?.focus());
+            }
+          }}
+          onClick={(event) => {
+            if (event.detail > 0 && event.nativeEvent.pointerType === 'mouse') setMenu(name);
+            else setMenu(menu === name ? null : name);
+          }}
+        >
+          {icon && <HeaderIcon name={icon} />} {t(label)} <i className="header-chevron" aria-hidden="true" />
+        </button>
+        <div className="header-disclosure-panel" id={`nav-panel-${name}`} hidden={menu !== name}>
+          {panel}
+        </div>
+      </div>
+    );
+  }
+  const navLinks = (links) => links.map(([title, url]) => (
+    <NavLink key={title} to={localize(url)} onClick={closeNav}>{t(title)}</NavLink>
+  ));
   return (
     <header className="market-header">
       <a className="skip-content" href={localize('#main-content')}>
@@ -49,11 +107,8 @@ export function Header({cart, isLoggedIn}) {
         <GlobalSearch />
         <HeaderCtas cart={cart} isLoggedIn={isLoggedIn} />
       </div>
-      <div className="market-nav">
-        <details className="category-dropdown" ref={menuRef}>
-          <summary>
-            ☰ <span>{t('All categories')}</span>
-          </summary>
+      <div className="market-nav" ref={navRef}>
+        {disclosure('categories', 'All Categories', (
           <div className="mega-menu taxonomy-mega">
             <nav
               className="mega-category-list"
@@ -65,6 +120,8 @@ export function Header({cart, isLoggedIn}) {
                   type="button"
                   aria-expanded={activeCategory === index}
                   aria-controls={`mega-${category.handle}`}
+                  onPointerEnter={(event) => {if (event.pointerType === 'mouse') setActiveCategory(index);}}
+                  onFocus={() => setActiveCategory(index)}
                   onClick={() => setActiveCategory(index)}
                 >
                   <CategoryIcon category={category.handle} />
@@ -100,9 +157,7 @@ export function Header({cart, isLoggedIn}) {
                       <NavLink
                         key={url}
                         to={localize(url)}
-                        onClick={() => {
-                          if (menuRef.current) menuRef.current.open = false;
-                        }}
+                        onClick={closeNav}
                       >
                         {t(title)}
                         <span aria-hidden="true">↗</span>
@@ -112,9 +167,7 @@ export function Header({cart, isLoggedIn}) {
                   <NavLink
                     className="mega-directory-link"
                     to={localize('/collections')}
-                    onClick={() => {
-                      if (menuRef.current) menuRef.current.open = false;
-                    }}
+                    onClick={closeNav}
                   >
                     {t('View all collections \u2192')}
                   </NavLink>
@@ -122,14 +175,13 @@ export function Header({cart, isLoggedIn}) {
               ))}
             </div>
           </div>
-        </details>
-        <nav aria-label={t('Main navigation')}>
-          {primaryLinks.map(([title, url]) => (
-            <NavLink key={title} to={localize(url)}>
-              {t(title)}
-            </NavLink>
-          ))}
+        ), 'menu')}
+        <nav className="header-primary-links" aria-label={t('Main navigation')}>
+          {navLinks(primaryLinks.slice(0, 3))}
+          <span className="header-wide-links">{navLinks(primaryLinks.slice(3))}</span>
         </nav>
+        {disclosure('more', 'More', navLinks(primaryLinks.slice(3)))}
+        {disclosure('support', 'Support Center', navLinks(supportLinks))}
       </div>
     </header>
   );
@@ -154,7 +206,7 @@ export function HeaderMenu({viewport}) {
       <NavLink to={localize('/')} onClick={close}>
         {t('Home')}
       </NavLink>
-      {primaryLinks.map(([title, url]) => (
+      {[...primaryLinks, ...supportLinks].map(([title, url]) => (
         <NavLink key={title} to={localize(url)} onClick={close}>
           {t(title)}
         </NavLink>

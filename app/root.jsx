@@ -20,6 +20,8 @@ import appStyles from '~/styles/app.css?url';
 import mobileStyles from '~/styles/mobile.css?url';
 import brandStyles from '~/styles/brand.css?url';
 import cartStyles from '~/styles/cart.css?url';
+import headerStyles from '~/styles/header.css?url';
+import searchStyles from '~/styles/search.css?url';
 import {PageLayout} from './components/PageLayout';
 import {CommerceAnalytics} from './components/CommerceAnalytics';
 import {ClarityAnalytics} from './components/ClarityAnalytics';
@@ -191,6 +193,8 @@ export function Layout({children}) {
         <link rel="stylesheet" href={mobileStyles}></link>
         <link rel="stylesheet" href={brandStyles}></link>
         <link rel="stylesheet" href={cartStyles}></link>
+        <link rel="stylesheet" href={headerStyles} />
+        <link rel="stylesheet" href={searchStyles} />
         <SiteSeo />
         <Links />
       </head>

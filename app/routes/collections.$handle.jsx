@@ -8,6 +8,8 @@ import {
   previewCollection,
   collectionNodes,
 } from '~/lib/catalog.server';
+import {catalogSection} from '~/data/catalog-sections';
+import {paginateScopedProducts} from '~/lib/collection-filters';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 export async function loader({context, params, request}) {
   if (
@@ -18,18 +20,24 @@ export async function loader({context, params, request}) {
     return previewCollection(request, params.handle);
   const search = new URL(request.url).searchParams;
   const browse = parseCollectionFilters(search);
+  const section = catalogSection(params.handle);
+  const scopedSearch = search.get('scope') === 'collection' && Boolean(browse.q);
+  if (scopedSearch && !section && !collectionNodes.some((node) => node.handle === params.handle)) {
+    throw new Response('Collection not found', {status: 404});
+  }
+  if (section?.[1] === 'new-arrivals' && !search.has('sort')) browse.sort = 'newest';
   const categories = params.handle === 'iphone-duo' ? browse.filters.filter((filter) => filter.productType).map((filter) => filter.productType) : [];
-  const searching = ['best-sellers', 'iphone-duo'].includes(params.handle) && Boolean(browse.q);
+  const searching = !scopedSearch && ['best-sellers', 'iphone-duo'].includes(params.handle) && Boolean(browse.q);
   if (searching && !browse.sort.startsWith('price-')) browse.sort = 'featured';
   const variables = {
     handle: params.handle,
     filters: categories.length ? browse.filters.filter((filter) => !filter.productType) : browse.filters,
     sortKey: browse.sort.startsWith('price-') ? 'PRICE' : browse.sort === 'newest' ? 'CREATED' : browse.sort === 'best-selling' ? 'BEST_SELLING' : 'COLLECTION_DEFAULT',
     reverse: browse.sort === 'price-desc' || browse.sort === 'newest',
-    ...(categories.length && !searching ? {first: 250} : getPaginationVariables(request, {pageBy: browse.size})),
+    ...((scopedSearch || (categories.length && !searching)) ? {first: 250} : getPaginationVariables(request, {pageBy: browse.size})),
   };
   let {collection} = await context.storefront.query(COLLECTION_QUERY, {variables});
-  if (categories.length && !searching && collection) {
+  if ((scopedSearch || (categories.length && !searching)) && collection) {
     const products = [...collection.products.nodes];
     let pageInfo = collection.products.pageInfo;
     while (pageInfo.hasNextPage) {
@@ -38,7 +46,9 @@ export async function loader({context, params, request}) {
       products.push(...next.products.nodes);
       pageInfo = next.products.pageInfo;
     }
-    const page = paginateCategoryProducts(products, categories, browse.size, search);
+    const page = scopedSearch
+      ? paginateScopedProducts(products, browse.q, browse.size, search)
+      : paginateCategoryProducts(products, categories, browse.size, search);
     collection = {...collection, products: {...collection.products, ...page, filters: collection.products.filters.map((facet) => ({...facet, values: facet.values.map((value) => ({...value, count: undefined}))}))}, searchTotal: page.totalCount};
   }
   if (searching && collection) {
@@ -48,7 +58,9 @@ export async function loader({context, params, request}) {
     collection = {...collection, products: {...results, filters: results.productFilters}, searchTotal: results.totalCount, usesSearch: true};
   }
   if (!collection) {
-    const pending = collectionNodes.find((c) => c.handle === params.handle);
+    const pending = section
+      ? {title: section[0], handle: section[1]}
+      : collectionNodes.find((c) => c.handle === params.handle);
     if (!pending) throw new Response('Collection not found', {status: 404});
     collection = {
       title: pending.title,
@@ -57,6 +69,8 @@ export async function loader({context, params, request}) {
       products: {nodes: []},
     };
   }
+  if (section) collection = {...collection, title: section[0], catalogSection: true};
+  if (scopedSearch) collection = {...collection, scopedSearch: true};
   if (!collection.description)
     collection.description = `Explore ${collection.title.toLowerCase()} at SeineShop. Compare product specifications, materials and compatibility to find the right choice for your everyday needs.`;
   redirectIfHandleIsLocalized(request, {

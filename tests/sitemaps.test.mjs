@@ -83,3 +83,18 @@ test('root sitemap filenames match the router as one parameter', async () => {
   assert.equal(sitemapImageUrl('files/b20a.webp', 'ps83if-c4.myshopify.com'), 'https://ps83if-c4.myshopify.com/cdn/shop/files/b20a.webp');
   assert.equal(sitemapImageUrl('javascript:alert(1)', 'ps83if-c4.myshopify.com'), undefined);
  });
+
+test('navigation sections enter each collection sitemap only once published with products', async () => {
+ const {catalogSections} = await import('../app/data/catalog-sections.js');
+ for (const [language, prefix] of [['en', ''], ['ja', '/jp'], ['de', '/de']]) {
+  const a = args('collections-1');
+  a.params.language = language;
+  a.context.storefront = {query: async (query, options) => query.includes('SeineSitemapCollections')
+    ? {collections: {nodes: catalogSections.slice(0, 2).map(([, handle], index) => ({handle, products: {nodes: index ? [] : [{id: '1'}]}})), pageInfo: {hasNextPage: false}}}
+    : storefront.query(query, options)};
+  const xml = await (await resourceLoader(a)).text();
+  assert.ok(xml.includes(`<loc>${env.PUBLIC_SITE_URL}${prefix}/collections/new-arrivals</loc>`));
+  assert.ok(!xml.includes('/collections/best-sellers'));
+  assert.ok(!xml.includes('/collections/certified-products'));
+ }
+});

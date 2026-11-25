@@ -405,9 +405,10 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
           {!bestSellers && heading}
           <div className="browse-toolbar">
             {bestSellers && heading}
-            {(searchMode ||
+            {(searchMode || collection.scopedSearch ||
               ['best-sellers', 'iphone-duo'].includes(collection.handle)) && (
               <div className="browse-search">
+                {collection.scopedSearch && <input type="hidden" name="scope" value="collection" />}
                 <label className="sr-only" htmlFor="browse-query">
                   {t(
                     searchMode
@@ -551,9 +552,18 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
           </div>
           {!connection.nodes.length && (
             <div className="browse-empty">
-              <h2>{t('No matching products')}</h2>
-              <p>{t('Try a different search or clear your filters.')}</p>
-              <Link to={clearUrl}>{t('Clear filters')}</Link>
+              {collection.catalogSection && !browse.q && !browse.filters.length ? (
+                <>
+                  <h2>{t('No products in this section yet')}</h2>
+                  <Link to={localize('/collections')}>{t('Browse collections')}</Link>
+                </>
+              ) : (
+                <>
+                  <h2>{t('No matching products')}</h2>
+                  <p>{t('Try a different search or clear your filters.')}</p>
+                  <Link to={clearUrl}>{t('Clear filters')}</Link>
+                </>
+              )}
             </div>
           )}
           <nav className="browse-pagination" aria-label={t('Pagination')}>

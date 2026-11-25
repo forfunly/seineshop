@@ -3528,5 +3528,73 @@
   "You have unsubscribed from marketing emails.": {"ja": "マーケティングメールの配信を停止しました。", "de": "Du hast Marketing-E-Mails abbestellt."},
   "Your subscription is awaiting email confirmation.": {"ja": "配信登録はメールの確認待ちです。", "de": "Dein Abonnement wartet auf die E-Mail-Bestätigung."},
   "You are subscribed to marketing emails.": {"ja": "マーケティングメールに登録されています。", "de": "Du hast Marketing-E-Mails abonniert."},
-  "Email": {"ja": "メールアドレス", "de": "E-Mail"}
+  "Email": {"ja": "メールアドレス", "de": "E-Mail"},
+  "ALL": {
+    "ja": "すべて",
+    "de": "Alle"
+  },
+  "All Categories": {
+    "ja": "すべてのカテゴリー",
+    "de": "Alle Kategorien"
+  },
+  "Search category": {
+    "ja": "検索カテゴリー",
+    "de": "Suchkategorie"
+  },
+  "Search for Products": {
+    "ja": "商品を検索",
+    "de": "Produkte suchen"
+  },
+  "Hot Search:": {
+    "ja": "注目の検索：",
+    "de": "Beliebte Suchanfragen:"
+  },
+  "New Arrivals": {
+    "ja": "新着商品",
+    "de": "Neuheiten"
+  },
+  "EU Top Rankings": {
+    "ja": "EUランキング",
+    "de": "EU-Top-Rangliste"
+  },
+  "Trending Products": {
+    "ja": "注目商品",
+    "de": "Trendprodukte"
+  },
+  "Certified Products": {
+    "ja": "認証済み商品",
+    "de": "Zertifizierte Produkte"
+  },
+  "Brand Directory": {
+    "ja": "ブランド一覧",
+    "de": "Markenverzeichnis"
+  },
+  "Handpicked Brands": {
+    "ja": "厳選ブランド",
+    "de": "Ausgewählte Marken"
+  },
+  "Support Center": {
+    "ja": "サポートセンター",
+    "de": "Support-Center"
+  },
+  "Contact Us": {
+    "ja": "お問い合わせ",
+    "de": "Kontakt"
+  },
+  "Blog & News": {
+    "ja": "ブログとニュース",
+    "de": "Blog & News"
+  },
+  "No products in this section yet": {
+    "ja": "このカテゴリーにはまだ商品がありません",
+    "de": "In dieser Rubrik sind noch keine Produkte verfügbar"
+  },
+  "More": {
+    "ja": "その他",
+    "de": "Mehr"
+  },
+  "FAQs": {
+    "ja": "よくある質問",
+    "de": "Häufige Fragen"
+  }
 }

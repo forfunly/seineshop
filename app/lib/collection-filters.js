@@ -37,6 +37,19 @@ export function collectionSearchQuery(q, handle = 'best-sellers', categories = [
 /** Paginate a category from the collection itself, independent of search indexing. */
 export function paginateCategoryProducts(products, categories, size, search) {
   const matching = products.filter((product) => categories.includes(product.productType));
+  return paginateLocalProducts(matching, size, search);
+}
+
+export function paginateScopedProducts(products, term, size, search) {
+  const words = term.toLowerCase().split(/\s+/).filter(Boolean);
+  const matching = products.filter((product) => {
+    const text = [product.title, product.handle, product.vendor, product.productType].join(' ').toLowerCase();
+    return words.every((word) => text.includes(word));
+  });
+  return paginateLocalProducts(matching, size, search);
+}
+
+function paginateLocalProducts(matching, size, search) {
   const cursor = /^category:(\d+)$/.exec(search.get('cursor') || '');
   const boundary = cursor ? Number(cursor[1]) : 0;
   const requested = search.get('direction') === 'previous' ? boundary - size : boundary;
