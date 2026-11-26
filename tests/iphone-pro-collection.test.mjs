@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {browsePhone, indexPhoneProduct, phoneCategory} from '../app/lib/iphone-pro-collection.js';
+import {browsePhone, indexPhoneProduct, phoneCategory, phoneCollection} from '../app/lib/iphone-pro-collection.js';
 
 const product = (id, productType, title, amount, attrs, more = {}) => indexPhoneProduct({id, productType, title, priceRange: {minVariantPrice: {amount}}, specifications: {value: JSON.stringify({attributes: attrs})}, ...more});
 const records = [
@@ -44,4 +44,13 @@ test('imported color aliases merge with existing English results and preserve ol
   assert.deepEqual(page('蓝色').ids, page('Blue').ids);
   assert.deepEqual(page('Orange').ids, ['imported']);
   assert.deepEqual(page().facets.find(({key})=>key==='Color').values, [['Blue',3],['Clear',1],['Green',1],['Orange',1],['Pink',1],['Transparent',1],['Yellow',1]]);
+});
+
+
+test('ordinary iPhone 18 routes use their own collection with only verified child navigation', () => {
+  assert.equal(phoneCollection('iphone-18').series.handle, 'iphone-18');
+  assert.equal(phoneCollection('iphone-18-cases').category.key, 'cases');
+  assert.deepEqual(phoneCollection('iphone-18-screen-protectors').category.topics, []);
+  assert.ok(phoneCollection('iphone-18-pro-screen-protectors').category.topics.length);
+  assert.equal(phoneCollection('iphone-18-pro-max'), null);
 });

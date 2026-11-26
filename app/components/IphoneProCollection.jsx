@@ -2,18 +2,18 @@ import {Form, Link, useLocation, useNavigate, useNavigation} from 'react-router'
 import {useState} from 'react';
 import {useLocale} from '~/lib/i18n';
 import {CollectionCardsProvider, CollectionProductCard} from './BestSellerQuickView';
-import {PHONE_CATEGORIES, PHONE_COLLECTION, phoneCategory} from '~/lib/iphone-pro-collection';
+import {PHONE_CATEGORIES, phoneCategory} from '~/lib/iphone-pro-collection';
 
-const path = `/collections/${PHONE_COLLECTION}`;
 const sorts = [['featured', 'Popularity'], ['price-asc', 'Price Low to High'], ['price-desc', 'Price High to Low'], ['newest', 'Newest'], ['best-selling', 'Best Sellers']];
 const early = new Set(['Product Tags', 'Estimated Lead Time', 'Brand', 'Manufacturer', 'Model', 'Material', 'Color']);
 
-export function IphoneProCollection({collection, phone}) {
+export function IphoneProCollection({collection, phone, series}) {
   const {localize, t} = useLocale();
   const {pathname, search} = useLocation();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const category = phoneCategory(collection.handle);
+  const path = `/collections/${series.handle}`;
   const [expanded, setExpanded] = useState({});
   const [filtersOpen, setFiltersOpen] = useState(false);
   const params = new URLSearchParams(search);
@@ -27,17 +27,17 @@ export function IphoneProCollection({collection, phone}) {
     return `${pathname}${next.size ? `?${next}` : ''}`;
   };
   const preserve = (...keys) => [...new Map([...params].filter(([key]) => key !== 'page' && !keys.includes(key)).map(([key,value]) => [JSON.stringify([key,value]), [key,value]]))].map(([id,[key,value]]) => <input key={id} type="hidden" name={key} value={value} />);
-  const catLinks = PHONE_CATEGORIES.map(({key,title}, i) => <Link key={key} to={localize(`${path}-${key}`)}>{t(`iPhone 18 Pro ${title}`)} <small>[{phone.counts[i]}]</small></Link>);
+  const catLinks = PHONE_CATEGORIES.map(({key,title}, i) => <Link key={key} to={localize(`${path}-${key}`)}>{t(`${series.title} ${title}`)} <small>[{phone.counts[i]}]</small></Link>);
   const currency = collection.products.nodes[0]?.priceRange.minVariantPrice.currencyCode;
   const outline = [['Home','/'], ['Apple Accessories','/collections/apple-accessories'], ['iPhone Accessories','/collections/iphone-accessories']];
-  if (category) outline.push(['iPhone 18 Pro',path]);
+  if (category) outline.push([series.title,path]);
   return <div className="iphone-pro-catalog">
     <nav className="ipc-crumbs" aria-label={t('Breadcrumb')}>
-      {outline.map(([label,url]) => <Link key={url} to={localize(url)}>{t(label)}</Link>)} <span aria-current="page">{t(category ? collection.title : 'Wholesale iPhone 18 Pro')}</span>
+      {outline.map(([label,url]) => <Link key={url} to={localize(url)}>{t(label)}</Link>)} <span aria-current="page">{t(category ? collection.title : `Wholesale ${series.title}`)}</span>
     </nav>
-    <nav className="ipc-chips" aria-label={t('Product categories')}>
+    {(!category || category.topics.length > 0) && <nav className="ipc-chips" aria-label={t('Product categories')}>
       {category ? <>{category.topics.map((topic) => <Link key={topic} to={href({topic: phone.topic === topic ? '' : topic})} aria-current={phone.topic === topic ? 'true' : undefined}>{t(topic)}</Link>)}{PHONE_CATEGORIES.filter(({key}) => key !== category.key).map(({key,title}) => <Link key={key} to={localize(`${path}-${key}`)}>{t(title)}</Link>)}</> : catLinks}
-    </nav>
+    </nav>}
     <div className="ipc-layout">
       <button className="ipc-filter-toggle" type="button" aria-expanded={filtersOpen} aria-controls="ipc-facets" onClick={() => setFiltersOpen(!filtersOpen)}>{t('Filters')}</button>
       <aside id="ipc-facets" className={`ipc-facets${filtersOpen ? ' is-open' : ''}`} aria-label={t('Filters')}>
@@ -47,7 +47,7 @@ export function IphoneProCollection({collection, phone}) {
             const checked = phone.selectedCategories.includes(key);
             const next = checked ? phone.selectedCategories.filter((value) => value !== key) : [...phone.selectedCategories, key];
             return <li key={key}><Link className="ipc-option" aria-current={checked ? 'true' : undefined} to={href({'filter.category': next})}>
-              <span className="ipc-check" aria-hidden="true"/><span>{t(`iPhone 18 Pro ${title}`)} <small>[{phone.counts[i]}]</small></span>
+              <span className="ipc-check" aria-hidden="true"/><span>{t(`${series.title} ${title}`)} <small>[{phone.counts[i]}]</small></span>
             </Link></li>;
           })}</ul>
         </details>}
@@ -110,7 +110,7 @@ export function IphoneProCollection({collection, phone}) {
           {phone.page < phone.pages && <Link to={href({page:phone.page + 1})}>{t('Next')}</Link>}
         </nav>}
         <section className="ipc-editorial"><h2>{t(`Wholesale ${collection.title}`)}</h2><p>{t(collection.description)}</p><h2>{t('FAQs')}</h2>
-          <details><summary>{t('Will an iPhone 18 Pro accessory fit an iPhone 17 Pro?')}</summary><p>{t('Check the compatible models listed on the product page. Some accessories list both models; fit can vary by design.')}</p></details>
+          <details><summary>{t(series.handle === 'iphone-18' ? 'Will an iPhone 18 accessory fit an iPhone 17?' : 'Will an iPhone 18 Pro accessory fit an iPhone 17 Pro?')}</summary><p>{t('Check the compatible models listed on the product page. Some accessories list both models; fit can vary by design.')}</p></details>
           <details><summary>{t('How do I compare materials and features?')}</summary><p>{t('Use the material and feature filters, then check the individual product specifications for details.')}</p></details>
         </section>
       </section>

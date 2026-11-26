@@ -1,5 +1,5 @@
 import {NEW_ARRIVALS_PATH} from '../data/discovery-navigation.js';
-import {PHONE_COLLECTION, PHONE_CATEGORIES, phoneProductKinds} from './iphone-pro-collection.js';
+import {PHONE_COLLECTIONS, PHONE_CATEGORIES, phoneProductKinds} from './iphone-pro-collection.js';
 import {LOCALES, localizePath} from './locale.js';
 import journal from '../data/journal.json' with {type: 'json'};
 import {siteSettings} from './seo.js';
@@ -128,12 +128,12 @@ const PHONE_SITEMAP_MEMBERS = `#graphql
     }
   }
 `;
-async function phoneSitemapEntries(storefront) {
+async function phoneSitemapEntries(storefront, handle) {
   const found = new Set();
   let after = null;
   const seen = new Set();
   while (found.size < PHONE_CATEGORIES.length) {
-    const result = await storefront.query(PHONE_SITEMAP_MEMBERS, {variables: {handle: PHONE_COLLECTION, after}});
+    const result = await storefront.query(PHONE_SITEMAP_MEMBERS, {variables: {handle, after}});
     const products = result.collection?.products;
     if (!products) break;
     for (const product of products.nodes) for (const kind of phoneProductKinds(product)) found.add(kind);
@@ -142,7 +142,7 @@ async function phoneSitemapEntries(storefront) {
     after = products.pageInfo.endCursor;
     seen.add(after);
   }
-  return PHONE_CATEGORIES.filter(({key}) => found.has(key)).map(({key}) => ({path: `/collections/${PHONE_COLLECTION}-${key}`}));
+  return PHONE_CATEGORIES.filter(({key}) => found.has(key)).map(({key}) => ({path: `/collections/${handle}-${key}`}));
 }
 async function collectionEntries(storefront) {
   let after = '';
@@ -165,10 +165,10 @@ async function collectionEntries(storefront) {
       ? collections.pageInfo.endCursor
       : '';
   } while (after);
-  if (entries.some(({path}) => path === `/collections/${PHONE_COLLECTION}`)) {
-    const existing = new Set(entries.map(({path}) => path));
-    entries.push(...(await phoneSitemapEntries(storefront)).filter(({path}) => !existing.has(path)));
-  }
+  const existing = new Set(entries.map(({path}) => path));
+  const families = PHONE_COLLECTIONS.filter(({handle}) => existing.has(`/collections/${handle}`));
+  const childEntries = await Promise.all(families.map(({handle}) => phoneSitemapEntries(storefront, handle)));
+  entries.push(...childEntries.flat().filter(({path}) => !existing.has(path)));
   return entries;
 }
 export async function sitemapCounts(storefront, settings) {

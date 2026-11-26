@@ -83,3 +83,17 @@ test('root sitemap filenames match the router as one parameter', async () => {
   assert.equal(sitemapImageUrl('files/b20a.webp', 'ps83if-c4.myshopify.com'), 'https://ps83if-c4.myshopify.com/cdn/shop/files/b20a.webp');
   assert.equal(sitemapImageUrl('javascript:alert(1)', 'ps83if-c4.myshopify.com'), undefined);
  });
+
+test('base and Pro collections contribute only their own nonempty child URLs', async () => {
+  const a = args('collections-1');
+  a.params.language = 'de';
+  const pageInfo = {hasNextPage: false, endCursor: null};
+  a.context.storefront = {query: (query, options) => {
+    if (query.includes('SeineSitemapCollections')) return {collections:{nodes:['iphone-18','iphone-18-pro'].map(handle=>({handle,products:{nodes:[{id:handle}]}})),pageInfo}};
+    if (query.includes('IphoneProSitemapMembers')) return {collection:{products:{nodes:[{productType:options.variables.handle==='iphone-18'?'Phone Cases':'Screen Protectors'}],pageInfo}}};
+    return storefront.query(query, options);
+  }};
+  const xml = await (await resourceLoader(a)).text();
+  for(const path of ['iphone-18','iphone-18-cases','iphone-18-pro','iphone-18-pro-screen-protectors']) assert.ok(xml.includes(`<loc>https://www.seineshop.com/de/collections/${path}</loc>`),path);
+  for(const path of ['iphone-18-screen-protectors','iphone-18-pro-cases']) assert.ok(!xml.includes(`<loc>https://www.seineshop.com/de/collections/${path}</loc>`),path);
+});

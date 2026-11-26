@@ -1,6 +1,9 @@
 import {catalogColorLabel, catalogDisplayTitle} from './catalog-labels.js';
 
-export const PHONE_COLLECTION = 'iphone-18-pro';
+export const PHONE_COLLECTIONS = [
+  {handle: 'iphone-18-pro', title: 'iPhone 18 Pro'},
+  {handle: 'iphone-18', title: 'iPhone 18', showTopics: false},
+];
 export const PHONE_CATEGORIES = [
   {key: 'cases', title: 'Cases', topics: ['MagSafe Case', 'Silicone Case', 'Clear Case', 'Leather Case', 'Bumper Case', 'Metal Case', 'Slim Case', 'Wallet Case', 'Case with Card Holder', 'Case with Stand']},
   {key: 'screen-protectors', title: 'Screen Protectors', topics: ['Privacy Screen Protector', 'Tempered Glass', 'Camera Cover', 'Camera Lens Protector', 'Matte Screen Protector']},
@@ -14,10 +17,16 @@ const TOPIC_MATCHERS = [
 const TOPICS = new Map(PHONE_CATEGORIES.flatMap((category) => category.topics).map((topic, i) => [topic, TOPIC_MATCHERS[i]]));
 const clean = (value) => String(value || '').trim();
 const parts = (value) => clean(value).split(/[,\n]/).map(clean).filter(Boolean);
-export function phoneCategory(handle) {
-  return PHONE_CATEGORIES.find(({key}) => handle === `${PHONE_COLLECTION}-${key}`);
+export function phoneCollection(handle) {
+  for (const series of PHONE_COLLECTIONS) {
+    if (handle === series.handle) return {series, category: undefined};
+    const category = PHONE_CATEGORIES.find(({key}) => handle === `${series.handle}-${key}`);
+    if (category) return {series, category: series.showTopics === false ? {...category, topics: []} : category};
+  }
+  return null;
 }
-export function isPhoneCollection(handle) {return handle === PHONE_COLLECTION || Boolean(phoneCategory(handle));}
+export function phoneCategory(handle) {return phoneCollection(handle)?.category;}
+export function isPhoneCollection(handle) {return Boolean(phoneCollection(handle));}
 function attributes(product) {
   try {return JSON.parse(product.specifications?.value || '{}').attributes || {};} catch {return {};}
 }

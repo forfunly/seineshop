@@ -1,5 +1,5 @@
 import {catalogDisplayTitle} from './catalog-labels';
-import {PHONE_COLLECTION, browsePhone, indexPhoneProduct, phoneCategory} from './iphone-pro-collection';
+import {browsePhone, indexPhoneProduct, phoneCollection} from './iphone-pro-collection';
 
 const INDEX = `#graphql
   query IphoneProCollectionIndex($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
@@ -40,12 +40,12 @@ const SALES = `#graphql
     }
   }
 `;
-async function readProducts(storefront, query) {
+async function readProducts(storefront, query, handle) {
   const products = [];
   let collection, after = null;
   const seen = new Set();
   for (;;) {
-    const response = await storefront.query(query, {variables: {handle: PHONE_COLLECTION, after}, cache: storefront.CacheShort()});
+    const response = await storefront.query(query, {variables: {handle, after}, cache: storefront.CacheShort()});
     if (!response.collection) return {collection: null, products: []};
     collection ||= response.collection;
     const {nodes, pageInfo} = response.collection.products;
@@ -57,20 +57,22 @@ async function readProducts(storefront, query) {
   }
 }
 export async function loadPhoneCollection({storefront, catalogCache, env}, handle, params) {
-  const cacheOptions = (key) => ({cacheKey: [key, env.PUBLIC_STORE_DOMAIN, storefront.i18n.country, storefront.i18n.language], cacheStrategy: storefront.CacheCustom({mode: 'public', maxAge: 300, staleWhileRevalidate: 3600}), shouldCacheResult: (result) => Boolean(result.collection)});
+  const definition = phoneCollection(handle);
+  if (!definition) throw new Response('Collection not found', {status: 404});
+  const {series, category} = definition;
+  const cacheOptions = (key) => ({cacheKey: [key, series.handle, env.PUBLIC_STORE_DOMAIN, storefront.i18n.country, storefront.i18n.language], cacheStrategy: storefront.CacheCustom({mode: 'public', maxAge: 300, staleWhileRevalidate: 3600}), shouldCacheResult: (result) => Boolean(result.collection)});
   const [{collection, products}, rank] = await Promise.all([
     catalogCache.run(cacheOptions('iphone-pro-index-v2'), async () => {
-      const {collection, products} = await readProducts(storefront, INDEX);
+      const {collection, products} = await readProducts(storefront, INDEX, series.handle);
       return {collection: collection ? {id: collection.id} : null, products: products.map(indexPhoneProduct)};
     }),
-    params.get('sort') === 'best-selling' ? catalogCache.run(cacheOptions('iphone-pro-rank-v1'), () => readProducts(storefront, SALES)) : null,
+    params.get('sort') === 'best-selling' ? catalogCache.run(cacheOptions('iphone-pro-rank-v1'), () => readProducts(storefront, SALES, series.handle)) : null,
   ]);
   if (!collection) throw new Response('Collection not found', {status: 404});
-  const category = phoneCategory(handle);
   const phone = browsePhone(products, category, params, rank?.products.map((p) => p.id));
   const {nodes} = phone.ids.length ? await storefront.query(CARDS, {variables: {ids: phone.ids}}) : {nodes: []};
   const cards = new Map(nodes.filter((node) => node?.handle).map((node) => [node.id, {...node, title: catalogDisplayTitle(node.title), featuredImage: node.featuredImage ? {...node.featuredImage, altText: catalogDisplayTitle(node.featuredImage.altText || node.title)} : null}]));
-  const title = category ? `iPhone 18 Pro ${category.title}` : 'iPhone 18 Pro';
-  const description = category?.key === 'cases' ? 'Explore iPhone 18 Pro cases and compare their materials, features and device compatibility.' : category ? 'Compare iPhone 18 Pro screen and camera lens protectors by material, coverage and finish.' : 'Explore iPhone 18 Pro cases and screen protectors. Compare materials, protection features and device compatibility.';
-  return {phone, collection: {id: collection.id, handle, title, description, seo: {title, description}, products: {nodes: phone.ids.map((id) => cards.get(id)).filter(Boolean)}}};
+  const title = category ? `${series.title} ${category.title}` : series.title;
+  const description = category?.key === 'cases' ? `Explore ${series.title} cases and compare their materials, features and device compatibility.` : category ? `Compare ${series.title} screen and camera lens protectors by material, coverage and finish.` : `Explore ${series.title} cases and screen protectors. Compare materials, protection features and device compatibility.`;
+  return {phone, series, collection: {id: collection.id, handle, title, description, seo: {title, description}, products: {nodes: phone.ids.map((id) => cards.get(id)).filter(Boolean)}}};
 }

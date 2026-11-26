@@ -13,6 +13,7 @@ const SERIES = [
   {label: 'iPhone Duo Accessories', handle: 'iphone-duo', family: 'iphone-accessories', status: 'live'},
   {label: 'iPhone 18 Pro Max Accessories', handle: 'iphone-18-pro-max', family: 'iphone-accessories', status: 'live'},
   {label: 'iPhone 18 Pro Accessories', handle: 'iphone-18-pro', family: 'iphone-accessories', status: 'live'},
+  {label: 'iPhone 18 Accessories', handle: 'iphone-18', family: 'iphone-accessories', status: 'live'},
 ];
 
 export function publishedNavigationSeries(localPreview = false) {
