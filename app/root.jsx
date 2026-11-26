@@ -90,6 +90,7 @@ export async function loader(args) {
     ...deferredData,
     ...criticalData,
     seoSettings: siteSettings(env, args.request.url),
+    localNavigationPreview: ['localhost', '127.0.0.1', '[::1]'].includes(new URL(args.request.url).hostname),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     clarityEnabled: env.PUBLIC_CLARITY_ENABLED === 'true',
     shop: getShopAnalytics({

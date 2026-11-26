@@ -22,7 +22,7 @@ test('catalog indexing gate and staging remain protected',async()=>{
  assert.ok(!(await (await indexLoader(a)).text()).includes('<sitemap>'));
 });
 test('pages fallback lists only real custom routes, collections omit empty ones',async()=>{
- const pages=await (await resourceLoader(args('pages-1'))).text();assert.ok(pages.includes('/support'));assert.ok(!pages.includes('/account'));assert.ok(!pages.includes('/dropshipping'));assert.ok(!pages.includes('/api/'));
+ const pages=await (await resourceLoader(args('pages-1'))).text();assert.ok(pages.includes('/support'));assert.ok(pages.includes('/discover/new-arrivals')); for (const handle of ['eu-top-rankings','trending-products','certified-products','brand-distributor','handpicked-brands']) assert.ok(!pages.includes(`/discover/${handle}`));assert.ok(!pages.includes('/account'));assert.ok(!pages.includes('/dropshipping'));assert.ok(!pages.includes('/api/'));
  const collections=await (await resourceLoader(args('collections-1'))).text();assert.ok(collections.includes('/collections/full'));assert.ok(!collections.includes('/collections/empty'));
 });
 test('blog paths match canonical article and global tag routes',()=>{

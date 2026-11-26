@@ -104,7 +104,7 @@ export function CollectionCardsProvider({children}) {
   );
 }
 
-export function CollectionProductCard({product, loading}) {
+export function CollectionProductCard({product, loading, badge}) {
   const {favorites, toggleFavorite, setQuickProduct} = useContext(CollectionCardsContext);
   const favorite = favorites?.includes(product.handle) ?? false;
   const onFavorite = () => toggleFavorite(product.handle);
@@ -142,7 +142,10 @@ export function CollectionProductCard({product, loading}) {
             sizes="(max-width: 760px) 50vw, 25vw"
           />
         )}
-        <h3 title={title}>{title}</h3>
+        <div className="collection-product-card-copy">
+          {badge && <span className="collection-product-card-badge">{t(badge)}</span>}
+          <h3 title={title}>{title}</h3>
+        </div>
       </Link>
       <div className="collection-product-card-price">
         <Money

@@ -6,7 +6,7 @@ import {useModalDialog} from '~/lib/use-modal-dialog';
 
 const initialView = {scale: 1, rotation: 0};
 
-export function ProductGallery({images, selectedImage, sku, title}) {
+export function ProductGallery({images, selectedImage, sku, title, supplemental = []}) {
   const {t} = useLocale();
   const [active, setActive] = useState(null);
   const [showAll, setShowAll] = useState(false);
@@ -18,7 +18,7 @@ export function ProductGallery({images, selectedImage, sku, title}) {
   const swiped = useRef(false);
   const {dialogRef, triggerRef, closeButtonRef, openDialog, closeDialog} = useModalDialog();
   const dialogTitle = useId();
-  const groups = productGallery(images, selectedImage, sku);
+  const groups = productGallery(images, selectedImage, sku, supplemental);
   const gallery = showAll ? groups.all : groups.selected;
   const index = Math.max(0, gallery.findIndex((image) => image.url === active));
   const current = gallery[index];

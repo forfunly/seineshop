@@ -4,8 +4,9 @@ import {HeaderIcon} from '~/components/HeaderIcon';
 import {MarketSelector} from '~/components/MarketSelector';
 import {useLocale} from '~/lib/i18n';
 import {Suspense, useRef, useEffect, useState} from 'react';
-import {categories, primaryLinks} from '~/data/navigation';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import {categories} from '~/data/navigation';
+import {collectionPrimaryNavigation, navigationColumns} from '~/data/collection-navigation';
+import {Await, NavLink, useAsyncValue, useRouteLoaderData} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 
@@ -15,6 +16,8 @@ import {useAside} from '~/components/Aside';
 export function Header({cart, isLoggedIn}) {
   const {t, localize} = useLocale();
   const menuRef = useRef(null);
+  const localPreview = useRouteLoaderData('root')?.localNavigationPreview;
+  const closeMenu = () => {if (menuRef.current) menuRef.current.open = false;};
   const [activeCategory, setActiveCategory] = useState(0);
   useEffect(() => {
     const closeOnEscape = (event) => {
@@ -24,7 +27,14 @@ export function Header({cart, isLoggedIn}) {
       }
     };
     document.addEventListener('keydown', closeOnEscape);
-    return () => document.removeEventListener('keydown', closeOnEscape);
+    const closeOutside = (event) => {
+      if (menuRef.current?.open && !menuRef.current.contains(event.target)) menuRef.current.open = false;
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener('pointerdown', closeOutside);
+    };
   }, []);
   return (
     <header className="market-header">
@@ -52,7 +62,7 @@ export function Header({cart, isLoggedIn}) {
       <div className="market-nav">
         <details className="category-dropdown" ref={menuRef}>
           <summary>
-            ☰ <span>{t('All categories')}</span>
+            ☰ <span>{t('All Categories')}</span>
           </summary>
           <div className="mega-menu taxonomy-mega">
             <nav
@@ -66,6 +76,7 @@ export function Header({cart, isLoggedIn}) {
                   aria-expanded={activeCategory === index}
                   aria-controls={`mega-${category.handle}`}
                   onClick={() => setActiveCategory(index)}
+                  onPointerEnter={(event) => {if (event.pointerType === 'mouse') setActiveCategory(index);}}
                 >
                   <CategoryIcon category={category.handle} />
                   <span className="mega-category-name">
@@ -93,39 +104,15 @@ export function Header({cart, isLoggedIn}) {
                   id={`mega-${category.handle}`}
                   hidden={activeCategory !== index}
                 >
-                  <p className="eyebrow">{t('EXPLORE THE COLLECTION')}</p>
-                  <h2>{t(category.title)}</h2>
-                  <div className="mega-child-links">
-                    {category.links.map(([title, url]) => (
-                      <NavLink
-                        key={url}
-                        to={localize(url)}
-                        onClick={() => {
-                          if (menuRef.current) menuRef.current.open = false;
-                        }}
-                      >
-                        {t(title)}
-                        <span aria-hidden="true">↗</span>
-                      </NavLink>
-                    ))}
-                  </div>
-                  <NavLink
-                    className="mega-directory-link"
-                    to={localize('/collections')}
-                    onClick={() => {
-                      if (menuRef.current) menuRef.current.open = false;
-                    }}
-                  >
-                    {t('View all collections \u2192')}
-                  </NavLink>
+                  <NavigationFamilies category={category} localPreview={localPreview} close={closeMenu} />
                 </section>
               ))}
             </div>
           </div>
         </details>
         <nav aria-label={t('Main navigation')}>
-          {primaryLinks.map(([title, url]) => (
-            <NavLink key={title} to={localize(url)}>
+          {collectionPrimaryNavigation(localPreview).map(([title, url]) => (
+            <NavLink key={title} to={localize(url)} className={url === '/discover/handpicked-brands' ? 'market-support' : undefined}>
               {t(title)}
             </NavLink>
           ))}
@@ -133,6 +120,21 @@ export function Header({cart, isLoggedIn}) {
       </div>
     </header>
   );
+}
+
+function NavigationFamilies({category, localPreview, close}) {
+  const {t, localize} = useLocale();
+  const columns = navigationColumns(category, localPreview);
+  return <div className="mega-family-grid">
+    {columns.map((column) => <div className="mega-family-column" key={column[0].handle}>
+      {column.map(({handle, title, series}) => <div className="mega-family" key={handle}>
+        <p className="mega-family-heading">{t(title)}</p>
+        {series.length > 0 && <ul>{series.map(({handle: seriesHandle, label}) => <li key={seriesHandle}>
+          <NavLink to={localize(`/collections/${seriesHandle}`)} onClick={close}>{t(label)}</NavLink>
+        </li>)}</ul>}
+      </div>)}
+    </div>)}
+  </div>;
 }
 
 /**
@@ -146,6 +148,7 @@ export function Header({cart, isLoggedIn}) {
 export function HeaderMenu({viewport}) {
   const {t, localize} = useLocale();
   const {close} = useAside();
+  const localPreview = useRouteLoaderData('root')?.localNavigationPreview;
   return (
     <nav
       className={`header-menu-${viewport}`}
@@ -154,7 +157,7 @@ export function HeaderMenu({viewport}) {
       <NavLink to={localize('/')} onClick={close}>
         {t('Home')}
       </NavLink>
-      {primaryLinks.map(([title, url]) => (
+      {collectionPrimaryNavigation(localPreview).map(([title, url]) => (
         <NavLink key={title} to={localize(url)} onClick={close}>
           {t(title)}
         </NavLink>
@@ -165,11 +168,7 @@ export function HeaderMenu({viewport}) {
             <CategoryIcon category={category.handle} />
             <span>{t(category.title)}</span>
           </summary>
-          {category.links.map(([title, url]) => (
-            <NavLink key={title} to={localize(url)} onClick={close}>
-              {t(title)}
-            </NavLink>
-          ))}
+          <NavigationFamilies category={category} localPreview={localPreview} close={close} />
         </details>
       ))}
     </nav>

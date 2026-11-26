@@ -1,3 +1,4 @@
+import {catalogColorLabel} from '~/lib/catalog-labels';
 import {Image, Money} from '@shopify/hydrogen';
 import {MAX_PURCHASE_QUANTITY, validPurchaseQuantity} from '~/lib/wholesale';
 import {useLocale} from '~/lib/i18n';
@@ -42,7 +43,7 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
         if (option.optionValues.length === 1) return null;
         return (
           <div className="product-options" key={option.name}>
-            <div className="product-options-heading"><h5>{t(option.name)} <span className="pdp-option-selected">{t(option.optionValues.find((value) => value.selected)?.name)}</span></h5>{purchaseMode === 'Wholesale' && option.name === bulkOption && <ProductBulkBuy handle={product.handle} title={product.title} disabled={busy}/>}</div>
+            <div className="product-options-heading"><h5>{t(option.name)} <span className="pdp-option-selected">{t(catalogColorLabel(option.optionValues.find((value) => value.selected)?.name))}</span></h5>{purchaseMode === 'Wholesale' && option.name === bulkOption && <ProductBulkBuy handle={product.handle} title={product.title} disabled={busy}/>}</div>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {
@@ -64,7 +65,7 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
                     <Link
                       className="product-options-item"
                       key={option.name + name}
-                      aria-label={t(name)}
+                      aria-label={t(catalogColorLabel(name))}
                       prefetch="intent"
                       preventScrollReset
                       replace
@@ -90,7 +91,7 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
                       type="button"
                       className={`product-options-item${exists && !selected ? ' link' : ''}`}
                       key={option.name + name}
-                      aria-label={t(name)}
+                      aria-label={t(catalogColorLabel(name))}
                       style={{
                         border: selected
                           ? '1px solid black'
@@ -161,13 +162,13 @@ export function ProductForm({product, productOptions, selectedVariant, quantity,
  */
 function ProductOptionSwatch({swatch, name, variantImage}) {
   const {t} = useLocale();
-  if (variantImage) return <span className="pdp-option-photo"><Image data={variantImage} alt="" aria-hidden="true" sizes="64px" loading="lazy" /><span>{t(name)}</span></span>;
+  if (variantImage) return <span className="pdp-option-photo"><Image data={variantImage} alt="" aria-hidden="true" sizes="64px" loading="lazy" /><span>{t(catalogColorLabel(name))}</span></span>;
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
-  if (!image && !color) return <span className="pdp-option-text">{['Black', 'White'].includes(name) && <span className={`pdp-color-dot ${name.toLowerCase()}`} aria-hidden="true" />}{t(name)}</span>;
+  if (!image && !color) return <span className="pdp-option-text">{['Black', 'White'].includes(name) && <span className={`pdp-color-dot ${name.toLowerCase()}`} aria-hidden="true" />}{t(catalogColorLabel(name))}</span>;
   return (
     <div
-      aria-label={t(name)}
+      aria-label={t(catalogColorLabel(name))}
       className="product-option-label-swatch"
       style={{
         backgroundColor: color || 'transparent',

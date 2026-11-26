@@ -1484,5 +1484,3 @@ export const categories = [
     ]
   }
 ];
-export const primaryLinks = [
-  ["Best Sellers", "/collections/best-sellers"], ["iPhone Duo", "/collections/iphone-duo"], ["Browse collections", "/collections"], ["iPhone 18 Pro Max", "/collections/iphone-18-pro-max"], ["Charging edit", "/discover/b20a"], ["Journal", "/blogs/journal"], ["Support", "/support"]];

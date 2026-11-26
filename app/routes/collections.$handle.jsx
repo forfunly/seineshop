@@ -1,3 +1,6 @@
+import {IphoneProCollection} from '~/components/IphoneProCollection';
+import {isPhoneCollection} from '~/lib/iphone-pro-collection';
+import {loadPhoneCollection} from '~/lib/iphone-pro-collection.server';
 import {FacetedCollection} from '~/components/FacetedCollection';
 import {parseCollectionFilters, collectionSearchQuery, paginateCategoryProducts} from '~/lib/collection-filters';
 import {useLoaderData} from 'react-router';
@@ -17,6 +20,7 @@ export async function loader({context, params, request}) {
   )
     return previewCollection(request, params.handle);
   const search = new URL(request.url).searchParams;
+  if (isPhoneCollection(params.handle)) return loadPhoneCollection(context, params.handle, search);
   const browse = parseCollectionFilters(search);
   const categories = params.handle === 'iphone-duo' ? browse.filters.filter((filter) => filter.productType).map((filter) => filter.productType) : [];
   const searching = ['best-sellers', 'iphone-duo'].includes(params.handle) && Boolean(browse.q);
@@ -74,7 +78,7 @@ export default function Collection() {
   const data = useLoaderData();
   return (
     <>
-      {data.preview ? <CollectionTemplate {...data} /> : <FacetedCollection {...data} />}
+      {data.phone ? <IphoneProCollection {...data} /> : data.preview ? <CollectionTemplate {...data} /> : <FacetedCollection {...data} />}
       {!data.preview && data.collection.id && (
         <Analytics.CollectionView
           data={{

@@ -112,6 +112,7 @@ export function SiteSeo() {
       'brand',
       'sort',
       'sort_by',
+      'topic',
       'filter',
       'min',
       'max',
