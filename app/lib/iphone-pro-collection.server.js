@@ -1,19 +1,20 @@
-import {catalogDisplayTitle} from './catalog-labels';
-import {browsePhone, indexPhoneProduct, phoneCollection} from './iphone-pro-collection';
+import {catalogDisplayTitle} from './catalog-labels.js';
+import {browsePhone, indexPhoneProduct, phoneCollection} from './iphone-pro-collection.js';
 
 const INDEX = `#graphql
-  query IphoneProCollectionIndex($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+  fragment PhoneIndexItem on Product {
+    id title vendor productType tags createdAt
+    options { name values }
+    category: metafield(namespace: "custom", key: "category_group") { value }
+    leadTime: metafield(namespace: "custom", key: "lead_time") { value }
+    specifications: metafield(namespace: "custom", key: "technical_specifications") { value }
+    priceRange { minVariantPrice { amount } }
+  }
+  query IphoneProCollectionIndex($handle: String!, $after: String, $reverse: Boolean!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id handle title description seo { title description }
-      products(first: 250, after: $after) {
-        nodes {
-          id title vendor productType tags createdAt
-          options { name values }
-          category: metafield(namespace: "custom", key: "category_group") { value }
-          leadTime: metafield(namespace: "custom", key: "lead_time") { value }
-          specifications: metafield(namespace: "custom", key: "technical_specifications") { value }
-          priceRange { minVariantPrice { amount } }
-        }
+      products(first: 250, after: $after, reverse: $reverse) {
+        nodes { ...PhoneIndexItem }
         pageInfo { hasNextPage endCursor }
       }
     }
@@ -31,29 +32,61 @@ const CARDS = `#graphql
   }
 `;
 const SALES = `#graphql
-  query IphoneProCollectionRank($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+  query IphoneProCollectionRank($handle: String!, $after: String, $reverse: Boolean!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
-      products(first: 250, after: $after, sortKey: BEST_SELLING) {
+      products(first: 250, after: $after, sortKey: BEST_SELLING, reverse: $reverse) {
         nodes { id }
         pageInfo { hasNextPage endCursor }
       }
     }
   }
 `;
+/** @typedef {{id: string, [key: string]: unknown}} IndexProduct */
+/** @typedef {{collection: {id?: string, products: {nodes: IndexProduct[], pageInfo: {hasNextPage: boolean, endCursor?: string | null}}} | null}} IndexResponse */
 async function readProducts(storefront, query, handle) {
-  const products = [];
-  let collection, after = null;
-  const seen = new Set();
+  /** @type {IndexProduct[]} */
+  const head = [];
+  /** @type {IndexProduct[]} */
+  const tail = [];
+  const headIds = new Set(), tailIds = new Set();
+  const afterCursors = new Set(), tailCursors = new Set();
+  let collection, after = null, tailAfter = null;
   for (;;) {
-    const response = await storefront.query(query, {variables: {handle, after}, cache: storefront.CacheShort()});
-    if (!response.collection) return {collection: null, products: []};
-    collection ||= response.collection;
-    const {nodes, pageInfo} = response.collection.products;
-    products.push(...nodes);
-    if (!pageInfo.hasNextPage) return {collection, products};
-    if (!pageInfo.endCursor || seen.has(pageInfo.endCursor)) throw new Error('Incomplete iPhone accessory collection');
-    after = pageInfo.endCursor;
-    seen.add(after);
+    /** @type {[IndexResponse, IndexResponse]} */
+    const [frontResponse, backResponse] = await Promise.all([
+      storefront.query(query, {variables: {handle, after, reverse: false}, cache: storefront.CacheShort()}),
+      storefront.query(query, {variables: {handle, after: tailAfter, reverse: true}, cache: storefront.CacheShort()}),
+    ]);
+    if (!frontResponse.collection && !backResponse.collection) return {collection: null, products: []};
+    collection ||= frontResponse.collection;
+    // Both connections retain the same Shopify order. Walk from both ends to
+    // halve the serial round trips, without inventing or decoding opaque cursors.
+    const forward = frontResponse.collection?.products, backward = backResponse.collection?.products;
+    if (!forward?.nodes || !backward?.nodes || !forward.pageInfo || !backward.pageInfo) throw new Error('Incomplete iPhone accessory collection');
+    for (const node of forward.nodes) {
+      if (!node.id || headIds.has(node.id)) throw new Error('Incomplete iPhone accessory collection');
+      headIds.add(node.id);
+      head.push(node);
+    }
+    for (const node of backward.nodes) {
+      if (!node.id || tailIds.has(node.id)) throw new Error('Incomplete iPhone accessory collection');
+      tailIds.add(node.id);
+    }
+    tail.unshift(...[...backward.nodes].reverse());
+    const overlap = forward.nodes.some(({id}) => tailIds.has(id)) || backward.nodes.some(({id}) => headIds.has(id));
+    if (overlap) {
+      const start = head.findIndex(({id}) => id === tail[0]?.id);
+      if (start < 0 || head.slice(start).some(({id}, i) => id !== tail[i]?.id)) throw new Error('Incomplete iPhone accessory collection');
+    }
+    if (overlap || !forward.pageInfo.hasNextPage || !backward.pageInfo.hasNextPage) {
+      return {collection, products: [...head, ...tail.filter(({id}) => !headIds.has(id))]};
+    }
+    const next = forward.pageInfo.endCursor, previous = backward.pageInfo.endCursor;
+    if (!forward.nodes.length || !backward.nodes.length || !next || !previous || afterCursors.has(next) || tailCursors.has(previous)) throw new Error('Incomplete iPhone accessory collection');
+    after = next;
+    tailAfter = previous;
+    afterCursors.add(after);
+    tailCursors.add(tailAfter);
   }
 }
 export async function loadPhoneCollection({storefront, catalogCache, env}, handle, params) {

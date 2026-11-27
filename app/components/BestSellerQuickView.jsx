@@ -5,10 +5,12 @@ import {CartForm, Image, Money} from '@shopify/hydrogen';
 import {addDownload, useDownloadList} from '~/lib/download-list';
 import {toggleFavorite, useWishlist} from '~/lib/wishlist';
 import {useLocale} from '~/lib/i18n';
+import {canShowBulkBuy} from '~/lib/bulk-buy';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
 import {CheckoutForm} from './CheckoutForm';
 import {CartAnalyticsInput} from './CommerceAnalytics';
+import {ProductBulkBuy} from './ProductBulkBuy';
 
 const icons = {
   cart: (
@@ -88,6 +90,20 @@ export function CollectionProductCard({product, loading, badge}) {
   const {t, localize} = useLocale();
   const title = t(product.title);
   const [requested, setRequested] = useState(false);
+  const cardRef = useRef(null);
+  useEffect(() => {
+    if (requested || !window.matchMedia('(hover: none)').matches) return;
+    // Touchscreens have no hover. Fetch only cards entering the viewport,
+    // rather than adding a variant query to every server-rendered card.
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setRequested(true);
+        observer.disconnect();
+      }
+    });
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [requested]);
   const {result, error} = usePreviewProduct(requested ? product.handle : null);
   const [choice, setChoice] = useState(null);
   const variant =
@@ -102,11 +118,13 @@ export function CollectionProductCard({product, loading, badge}) {
   const detailUrl = choice && options.size ? `${itemUrl}?${options}` : itemUrl;
   return (
     <article
+      ref={cardRef}
       className="collection-product-card"
       onPointerEnter={(event) => {
         if (event.pointerType === 'mouse') setRequested(true);
       }}
       onFocus={() => setRequested(true)}
+      onPointerDown={() => setRequested(true)}
     >
       <Link className="product-item" to={detailUrl} aria-label={title}>
         {image && (
@@ -156,6 +174,7 @@ export function CollectionProductCard({product, loading, badge}) {
         {variant ? (
           <>
             <HoverCart key={variant.id} variant={variant} product={product} />
+            {canShowBulkBuy(result) && <ProductBulkBuy handle={product.handle} title={title} triggerClassName="collection-product-card-bulk"/>}
             {variant.sku && (
               <HoverSku key={`sku-${variant.id}`} sku={variant.sku} />
             )}

@@ -8,6 +8,7 @@ const VARIANTS_QUERY = `#graphql
       variants(first: 50, after: $after) {
         nodes {
           id title sku availableForSale
+          quantityRule { minimum maximum increment }
           image { url altText width height }
           price { amount currencyCode }
         }

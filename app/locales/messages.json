@@ -503,6 +503,14 @@
     "ja": "この商品は配送不要です。",
     "de": "Dieser Artikel erfordert keinen Versand."
   },
+  "Min / Step / Max": {
+    "ja": "最小 / 単位 / 最大",
+    "de": "Min. / Schritt / Max."
+  },
+  "Choose zero or a whole quantity that meets each option’s minimum, step and maximum.": {
+    "ja": "0、または各オプションの最小数・単位・最大数を満たす整数を入力してください。",
+    "de": "Wählen Sie 0 oder eine ganze Zahl gemäß Mindestmenge, Schrittweite und Höchstmenge der jeweiligen Option."
+  },
   "Bulk Buy": {
     "ja": "まとめ買い",
     "de": "Mehrere Varianten kaufen"

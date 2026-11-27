@@ -369,8 +369,9 @@ body {background:#fff;color:var(--brand-ink)}
 .product-options-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}.product-options-heading h5{margin:0}
 .pdp-bulk-entry{min-height:44px;padding:8px 16px;border:1px solid var(--brand-strong);border-radius:6px;background:white;color:var(--brand-strong);font:inherit;font-weight:650;cursor:pointer}
 .pdp-bulk-entry span{margin-left:12px}.pdp-bulk-entry:hover:not(:disabled){background:var(--brand-soft)}
-.pdp-bulk-dialog{width:min(820px,calc(100vw - 28px));max-width:calc(100vw - 28px);max-height:calc(100dvh - 40px);box-sizing:border-box;border:1px solid var(--brand-border);border-radius:12px;padding:0 24px;color:var(--brand-ink);overscroll-behavior:contain}
-.pdp-bulk-dialog::backdrop{background:rgb(0 0 0 / .45)}
+/* The modal lives in a hover panel; top-layer controls must not inherit its inactive pointer state. */
+.pdp-bulk-dialog{width:min(820px,calc(100vw - 28px));max-width:calc(100vw - 28px);max-height:calc(100dvh - 40px);box-sizing:border-box;border:1px solid var(--brand-border);border-radius:12px;padding:0 24px;color:var(--brand-ink);overscroll-behavior:contain;pointer-events:auto}
+.pdp-bulk-dialog::backdrop{background:rgb(0 0 0 / .45);pointer-events:auto}
 .pdp-bulk-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:2;background:white;padding:20px 0 16px;border-bottom:1px solid var(--brand-border)}
 .pdp-bulk-heading h2{font-size:22px;margin:0 0 4px}.pdp-bulk-heading p{font-size:13px;color:var(--brand-muted);margin:0}
 .pdp-bulk-heading>button{min-width:44px;min-height:44px;border:0;border-radius:6px;background:var(--brand-soft);font-size:26px;color:var(--brand-ink);cursor:pointer}
@@ -530,6 +531,8 @@ body {background:#fff;color:var(--brand-ink)}
  .collection-product-card:hover :is(.collection-product-card-tools,.collection-product-card-panel){opacity:1;pointer-events:auto}
 }
 .collection-product-card-buy-row{display:flex;gap:12px;align-items:center}
+.collection-product-card-bulk{justify-self:start;font-size:13px;max-width:100%;white-space:normal}
+.pdp-bulk-row label>small{display:block;margin-top:6px;font-size:11px;line-height:1.4;color:var(--brand-muted)}
 .collection-product-card-buy-row input{width:60px;height:32px;margin:0;padding:0 4px;border:1px solid var(--brand-border);border-radius:6px;background:white;color:var(--brand-ink);text-align:center;font:inherit;font-weight:650;appearance:textfield}
 .collection-product-card-buy-row input::-webkit-inner-spin-button{appearance:none}
 .collection-product-card-buy-row button{width:44px;height:32px;border:0;border-radius:20px;background:var(--brand-green);color:var(--brand-ink);display:grid;place-items:center;padding:0;cursor:pointer}

@@ -10,12 +10,13 @@ const focusableSelector = [
 ].join(',');
 
 /** Keep keyboard focus within an open native modal and restore its trigger. */
-export function useModalDialog({lightDismiss = false} = {}) {
+export function useModalDialog({lightDismiss = false, enabled = true} = {}) {
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
   const closeButtonRef = useRef(null);
 
   useEffect(() => {
+    if (!enabled) return;
     const element = dialogRef.current;
     const restoreFocus = () => triggerRef.current?.focus({preventScroll: true});
     const wrapFocus = (event) => {
@@ -54,7 +55,7 @@ export function useModalDialog({lightDismiss = false} = {}) {
       element.removeEventListener('close', restoreFocus);
       if (!nativeDismiss && lightDismiss) element.removeEventListener('click', dismissBackdrop);
     };
-  }, [lightDismiss]);
+  }, [lightDismiss, enabled]);
 
   const openDialog = useCallback(() => {
     if (!dialogRef.current.open) dialogRef.current.showModal();

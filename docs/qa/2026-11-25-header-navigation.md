@@ -219,3 +219,110 @@ SEO：新增可索引静态页面入口为 `/help/contact`、`/help/faq`、`/hel
 - `tests/wholesale.test.mjs`
 
 - 普通合并后192/192测试再次通过，app/tests/public及生成类型与最终构建候选无差异。实际收件箱显示确认和生产配置/发布/上线验收仍待继续；冷加载性能问题如上保留，不声称整站所有业务均已验完。
+
+
+### 发布执行与真实入箱确认（2026-11-27，北京时间）
+
+- 用户提供收件箱截图：主题 Seine Shop — Feedback、submission 101c3cf7-3720-44ab-9380-5b57d44c4cda 与本次真实留言一致，中文/日文/德文（含 Grüße）正常；本机至实际邮箱的发送链路已确认，不保存截图中的其他邮件或安全信息。
+- 用户明确批准本次推送与生产部署。发布前重新完成192/192测试、lint（0错误/2既有警告）、codegen/build、集合筛选、构建来源暴露审计、diff 检查；源码及生成类型与批准候选一致。
+- 已推送584b6d3c8392a32b0e2b885b80759eef9055bd12，git ls-remote 读回 origin/main 同一完整哈希。未包含三份并行QA及两张历史截图，未改CI/CD或商品数据。CLI env list 确认Production handle=production、branch=main、正式域名www.seineshop.com。
+- 正式环境新增CONTACT_RESEND_API_KEY已单独提出具体范围确认；等待期间不写生产变量、不把留言未配置版本当成完整发布。Shopify后台提示用户安全验证，已请用户本人完成，不索要或代填验证码。部署与正式域名验收结果后补；此新增证据仅本地记录，未再推送。
+
+- 用户明确批准仅在Production新增现有CONTACT_RESEND_API_KEY，且完成后台安全验证。正常后台Add variable保存成功，刷新变量详情读回仅Production、Make this value secret checked/disabled、值已遮罩；未勾选Preview、不新建或轮换密钥、不改其他变量。正常本机剪贴板传值后清空，不回显或写入记录；浏览器剪贴板读取提示被拒绝，未授予持久读取权限。
+- 部署前远程main再次读回584b6d3完整哈希，来源审计通过，app/tests/public及生成类型与批准提交无差异。启动官方CLI Production部署；--force仅允许既有不参与构建的文档/截图差异，未跳过构建或路由验证、不启用客户端source map、不使用env-file覆盖生产配置。
+
+- 官方CLI明确确认Production(handle production, branch main)，部署成功且完成routable验证，部署地址 https://01m8dvcg5d982j1ehhgccgn2ba-d7e83d6aec4307f1a21e.myshopify.dev 。后台导航随后遇Cloudflare安全质询，不绕过或自动解题，独立Deployment ID/Current读回待补；不影响继续正式域名功能验证。
+- 正式站最小Internal QA计划：隔离访客从 /help/contact 提交一条，Internal QA / qa@example.com / reference “Internal QA production 2026-11-27”，含中日德正文，固定hello收件，无访客自动回复，不产生订单/评价/营销。仅观察一次真实提交及服务商事件，不自动重发；实际执行结果后补。
+
+- 正式站隔离访客追加最小购物车回归计划：B20A Black数量1，观察Add to cart/抽屉，不点Buy now、不进入托管结账、不付款/下单/发货；保留测试购物车，不执行删除。
+
+
+#### 正式发布最终读回与验收结果（2026-11-27，北京时间）
+
+- Shopify后台安全质询已自然结束，独立读回 Production/main/584b6d3、Ready/Current，资源5882924、Deployment ID6264446、14:34 GMT+8，与CLI部署一致。未自动解题或放宽安全设置。
+- 正式联系页按上述计划仅发送一次：POST200 accepted、private/no-store/noindex，submission `3c9ab560-7190-48dc-883c-103e97aa39f4`；成功区域获焦点、输入保留、发送按钮禁用。Resend对象 `01a21bb8-6f95-73c6-9ce7-31b448c5b111` 于14:36显示Delivered，固定收件hello@seineshop.com、发件contact@notify.seineshop.com、Reply-To qa@example.com，reference及中日德正文一致，没有重复发信或访客自动回复。正式邮件尚未取得用户实际入箱截图，不把Delivered称为已读；此前截图对应11:16本机邮件。
+- 正式188个导航/语言/首页/工具页样本全200、含h1、无旧邮箱；两处Apple空栏目可访问且noindex/follow、不编造商品。iPhone18 Pro最慢冷请求约7.2秒，保留性能观察。结果保存在Git忽略的 `.cache/contact-production-routes-2026-11-27.json`。
+- 桌面更多菜单ArrowDown聚焦Certified Products，仅Certified Products/Brand Distributor两项，Esc关闭并回More navigation；390px德语/日语联系页无横向溢出、接口配置可用、发送按钮本地化。B20A商品页10个mailto均hello、旧地址0、canonical正常；隔离访客Black数量1真实加购，服务端确认$19，重新访问/cart仍为1件/$19、无溢出且noindex。未点击Buy now/Checkout，未付款/创建订单/发货，保留测试购物车。
+- 正式robots.txt、llms.txt、sitemap.xml及英日德collections-1/pages-1共9项200且Content-Type声明charset=utf-8。浏览器XML解析正常，索引135分片、集合代表分片10loc、页面代表分片13loc且联系页各一次；两个空Apple栏目不收录。另读en products-1为500loc。直接浏览器llms文本及日语pages XML无乱码/U+FFFD，日语含/jp/help/contact。未全爬135分片。结果保存在 `.cache/contact-production-resources-2026-11-27.json`。
+- 发布后来源暴露审计通过，app/tests/public/生成类型与批准提交无差异；既有Clarity/Bing同步像素被原CSP阻止，不放宽保护、不声称控制台零错误。真实非零余额、付款后订单及整站性能不在已通过范围。
+- 本节与项目状态仅本地补充，不自动二次push；并行三份QA、两张历史截图、原缓存均保留。
+
+
+### 冷读取性能根因与局部优化（2026-11-27，未发布）
+
+- 用户要求查真正原因并优化，同时模拟付款/下单。复用主目录；命令级复用系统已配置HTTP代理fetch成功，HEAD/origin/main均584b6d3，无新副本、不改全局配置，保留并行成果。
+- 正式浏览器iPhone18 Pro首访requestStart至responseStart约6.83秒，2274商品、80卡片；后续清浏览器HTTP缓存但命中服务端数据缓存的trace为TTFB704ms、LCP1746ms、CLS0（无节流实验室样本，不是现场分位数）。不能把清浏览器缓存当作清空Oxygen子请求缓存，也不能将该慢请求直接归因于worker冷启动。
+- 只读直接调用同版本Storefront API并逐请求计时：10个顺序索引查询（250×9+24）共约2.61MB，随后80张卡片查询；总8413ms。该探针在本机网络，不是Oxygen内部时钟。源码证实完整索引构建阻塞首屏，投影缓存300秒+SWR3600秒，命中快但未命中需重建；页面仍需完整索引以保持19组全量筛选及准确计数，不能截断成首250条。
+- 局部方案归属既有app/lib/iphone-pro-collection.server.js：利用官方前/后向游标从集合两端读取，每轮两个别名连接，遇真实ID交集后按原顺序去重合并；不解码/伪造游标，不改UI/筛选接口、缓存时限、账户/购物车和支付。增加源模块回归，覆盖空/小集合、整页边界、2274商品、排序、错误及游标不前进；以同一真实集合全量ID/顺序/筛选输出对比，计时不能代替正确性。
+- 付款前只读查验：正式店显示Accepting payments / Can't receive payouts，Manage不可用，未显示测试模式；开发店明确只能测试付款且尚无网关。已集中请求仅开发店测试网关和1个Internal QA测试商品的配置/发布范围，正式店不切测试模式、不扣款、不写正式订单。测试店结果与正式Hydrogen客户订单归属分别记录，不混称验证通过。
+
+- 实际API否决了首版last无before方案（using last without before is not supported）；没有跳过该错误。已改为两个first:250连接，其中尾向显式reverse:true，分别使用API返回的endCursor；尾批翻转回原顺序后合并。原缓存输出类型和时限不变，14项源模块回归通过，真实API性能与输出对比继续。
+- 用户进一步批准仅开发店启用官方测试网关、创建/发布1个Internal QA测试商品并模拟成功/拒付/异常；只在seine-shop-dropship-test执行，不改正式店。商品计划1.00、不追踪库存、非实体，无真实扣款/发货，测试记录保留。
+
+### 商品卡 Bulk Buy 条件与接入范围（2026-11-27，本地候选）
+
+- 用户要求调查部分卡片显示原因并实现本站入口。真实参考列表 `/c/iphone-duo-c131202/`：公开商品卡模块调用的条件为同 SPU 的 Items 数量大于 1 且 BulkBuyAvailable 为真，可购买区域还受销售状态约束；不是价格高、数量多或所有多规格商品必然显示。
+- 浏览器正反例：Clear Case 6601228819A 悬停无入口；DUX DUCIS Expn 6601228897A 悬停有入口。点击后为六颜色逐行数量/价格/MOQ、总量与加购弹窗；未在来源站加购/提交。内部证据来自公开 GoodsItem/entry/BuyBulk 脚本及真实交互，不导入本站源码。
+- 本站没有来源后台的资格开关，不伪造或新增来源字段。按本站现有支持能力映射：同一已发布 Product 至少两个不同 Variant 且有可购买规格时显示；单规格或全部不可售不显示。复用现有 ProductBulkBuy、当前 Shopify 单价及 LinesAdd，不能冒充已接通来源阶梯折扣。
+- 修改归属既有共用集合商品卡、批量组件/公开规格接口、bulk-buy helper、主题样式及对应测试。桌面仍按悬停/键盘意图加载已有预览；触屏仅可见卡片按需加载，不对首屏80卡片新增SSR查询。不改商品/库存/价格/凭据/权限/路由。
+
+- 浏览器续验暴露两个真实集成问题：顶层弹窗继承悬停层 pointer-events:none，且所在列表已有 GET 筛选 form，直接嵌入产生嵌套 form，提交退回文档导航而不是 fetcher。最初单独修 pointer-events 不足；改为将批量 dialog 通过 React portal 放到 document.body，与已有 HoverCart 相同，脱离筛选 form/悬停层。共用 modal hook 仅补可延迟挂载的 enabled 参数，其他调用默认行为不变；补回归并重新验证真实单次 POST/焦点/购物车。先前临时预览适配器还曾丢失请求 method/headers，已按官方 MiniOxygen Request 转换修正；该临时配置错误不算业务接口通过或正式故障。
+
+
+### Bulk Buy、性能与开发店支付最终本机验收（2026-11-27，未推送/部署）
+
+#### 性能实测与边界
+
+- 最终实现是每轮两个独立 Storefront query 的 Promise.all 并发，不是上文试验中的单 query 双 alias；两端 first:250 / reverse:true 使用各自 opaque endCursor。2274条索引仍读取完整数据，共10个索引query+1个实时卡片query，但依赖轮数10→5。检测重复ID、游标停滞和非连续伪交集，不靠截首250条或延长缓存提速。
+- `.cache/phone-loader-concurrent-2026-11-27.json` 交错顺序：after5837、before5813、after3000、before3876、after3207、before5593ms。中位 before5593→after3207ms（约43%），第一组无改善；每个样本2274条索引、顺序、全部筛选和80卡片hash均为 `c8472eb5cced23bdacf2f43ef0cff4d496449ad253efa430d70f9fae06451f8a`。如实保留完整方差，不选择性汇报最快样本。
+- 最终本机构建整页新索引冷样本TTFB6587ms/总6595ms，随后服务端缓存命中156/161ms，均200/80卡；德语及日语Duo为200/40卡。探针在 `.cache/bulk-candidate-routes-2026-11-27.json`。整页还有根loader/渲染和本机网络开销，不能把API中位直接当整页或Oxygen生产指标；仍有冷延迟波动，生产性能待获准部署后实测。
+
+#### Bulk Buy 逐项结果
+
+- 实际多规格商品 SULADA iPhone Duo，Orange/Red/Black SKU6601249790A/B/C，均USD12.46，实际quantityRule minimum1/increment1/maximum null（本站上限9999）。打开全0时提交禁用；1.5触发德语错误/aria-invalid并禁用，改回整数恢复。最小量/步进/上限及重复ID、全部不可售、前100之外可售均有源模块测试。
+- 初始集成发现dialog继承悬停层pointer-events:none；进一步发现外层GET筛选form导致嵌套form，表单退化为文档POST。已将dialog portal到body，表单无form祖先，hook在portal挂载后绑定焦点监听，保留详情页默认行为。CSS指针回归先失败后通过；真实浏览器由空数量的SubmitEvent不被拦截变为正确preventDefault，之后正常fetcher请求通过。没有以原先仅能显示弹窗作为功能通过。
+- 临时构建预览首版适配器误传URL而非Request，导致method/headers丢失、POST被当GET；按官方MiniOxygen toMiniflareRequest修正，保留失败记录，未改业务路由。修正后一次原生提交留下3件/$37.38；portal修复后桌面单次POST `/cart.data` 200、路径仍集合、弹窗关闭并开抽屉，累计Orange4/Red2，共6件/$74.76；手机单次POST `/de/cart.data` 后Orange5/Red3，共8件/$99.68。三次购物车写入按各自版本分开记录，未点击结账或支付正式商品，购物车保留。
+- 给pending cart补充selectedVariant显示数据，服务端既有白名单剥离客户端价格与metadata，Shopify决定实价。最终手机加购后控制台无error/warn；没有用缺失乐观数据错误当成功忽略。
+- 德语390px触屏40卡，只滚动到可见区域加载4个预览，不是40个全发；无需悬停即可显示按钮，页面及dialog无横向溢出。德语、日语弹窗截图人工查看正常，绿色主题、标题/行/粘性合计及按钮可用。
+- 日语离线打开显示本地化加载失败，提交禁用；恢复在线点再试行读取3个真实规格，错误消失。Esc关闭并归还trigger。预期的离线网络错误不冒充正常网络无错误。
+- 单规格反例：Clear TPU Film（handle `1-set-for-iphone-duo-screen-protector-inside-front-back-cover-clear-tpu-film-transparent`），预览200、1个可售规格、hasNextPage false；已实际加载的卡片只有1个规格，无Bulk Buy。全部不可售及极高MOQ的隐藏规则为单元测试证据，没有伪造在线售罄商品。
+- 详情页实际同商品回归：独立body dialog、3规格、全0禁用、Shift+Tab由Close回View cart、Tab回Close、Esc关闭并回Bulk Buy；桌面1280及390px页面无溢出。没有新建路由或改商品/库存/价格/权限/凭据。
+- 规格接口实测合法200/非法handle400/不存在404，全部private,no-store/noindex,nofollow；200仅公开购买数据且含真实quantityRule，不含来源私有字段。网络结果不将会话Cookie或checkout token写入QA。
+
+#### 开发店三种模拟支付
+
+- 用户批准后仅在 `seine-shop-dropship-test.myshopify.com` 激活官方测试网关，并仅发布1个 `Internal QA — Checkout simulation — Do Not Fulfill`，Product15548652192017 / Variant68197750112529、USD1.00、不追踪库存、非实体商品；未改正式支付或库存。
+- 已在开发店Preferences后台查到访问密码并正常输入实际开发店，不改密码保护，不向聊天/日志/文档写入密码。旧shopifypreview购物车不与实际域共用，因此通过保护后从唯一QA商品Buy it now进入真实开发店checkout。
+- 专用保留地址qa@example.com，Internal QA / Do Not Fulfill，无营销勾选、无配送；测试有效期12/29及任意测试安全码。输入格式曾导致前端有效期校验失败，那些未到网关的尝试不算拒付/异常证据。
+- 测试卡2（前台说明declined）返回通用付款失败；后台两次授权Failure，展开一条为Test=True、Bogus Gateway: Forced failure、processing_error。测试卡3（前台说明gateway failure）返回通用失败；后台Authorization/Failure，网关返回其测试规则说明。两者均为模拟器的失败路径，不冒充真实银行拒付或正式网关异常已验证。
+- 卡1成功：确认页Your order is confirmed、Confirmation #M9IIEUXVL；后台订单 **#1001 / 19079881883921**，唯一QA商品1件、USD1.00，网关测试模式提示；展开Capture为Test=True、Success、Bogus Gateway: Forced success。订单Paid/Unfulfilled/Shipping not required；未发货、无真实扣款，不取消/删除测试记录、不擅自停用网关。保留的失败授权与成功Capture属于同一checkout/订单，不伪造三个成功订单。
+- Shopify后台时间以店铺时区显示2:39am；核验日期为北京时间2026-11-27。正式店只读仍显示Accepting payments / Can't receive payouts（无法打款至收款账户），Manage不可用，原因未核实；需商家处理，不擅自更改。开发店结果不等于正式Hydrogen客户付款后订单归属通过。
+
+#### 工程与SEO
+
+- 最终210/210全量Node测试通过，lint0错误/2既有脚本console警告，codegen（含router typegen）及build exit0，集合筛选和构建来源暴露审计、git diff --check通过。新14项完整索引源模块测试含边界数量/排序/筛选/损坏分页/缓存隔离；新增modal portal与pointer回归。证据沿用 `.cache/bulk-buy-*-2026-11-27-final.log`。
+- 官方Storefront 2026-04 GraphQL四个operation验证成功，保留既有ProductOption.values弃用警告；纯JS/JSDoc被独立组件validator当TSX推断any等，不计作通过，不加ignore绕过。实际源码测试、codegen及构建是本次适用工程证据，不声称完成全项目类型检查。
+- URL未变、sitemap生成源及lastmod无需改。正式 `/sitemap.xml`（135分片）及en/ja/de collections-1代表分片均200、charset=utf-8，各含Duo及Pro规范地址一次，无购物车/账户/规格API。结果 `.cache/bulk-production-sitemaps-2026-11-27.json`，未全爬135分片。候选本机保持noindex，sitemap空索引与robots禁止索引是预览预期；最初误用 `/sitemap/collections-1.xml` 的404不算正确分片证据。候选上线后仍需正式页面及性能复验。
+- 正常npm dev/CLI preview会话过期，已停止本任务失效进程；使用同版本官方MiniOxygen构建预览，HTTP127.0.0.1:3077、assets127.0.0.1:9101，未启用公开隧道/改认证。用户截图的设备授权码已过期，旧授权页已关闭，无需再填写。
+
+#### 本次候选文件与发布边界
+
+目标origin/main，以下15文件；不含三份并行QA、历史jpg、.env、缓存、商品或生产配置。完成前再审查本地提交及远程状态；本轮仍须单独批准push与Production部署，不能沿用上轮导航授权。
+
+- README.md
+- RELEASE-NOTES.md
+- app/components/BestSellerQuickView.jsx
+- app/components/ProductBulkBuy.jsx
+- app/lib/bulk-buy.js
+- app/lib/iphone-pro-collection.server.js
+- app/lib/product-variants.server.js
+- app/lib/use-modal-dialog.js
+- app/locales/messages.json
+- app/styles/brand.css
+- storefrontapi.generated.d.ts
+- tests/bulk-buy.test.mjs
+- tests/phone-collection-loading.test.mjs
+- docs/qa/2026-11-25-header-navigation.md
+- docs/project-state.md
+
+- 收尾：本任务标签32/33/34/44/45/46/47/50/51已关闭；保留21/24/27/35等其他任务标签，专用浏览器未退出。仅本机3077/9101预览正常停止，失效3075/3076 CLI已停止；不删除缓存、截图、商品、订单或购物车。后续获准发布时重新检查远程及构建，不复用过期设备码。

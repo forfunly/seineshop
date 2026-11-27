@@ -1,9 +1,26 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {addPurchaseLines, purchaseLines, validBulkQuantity} from '../app/lib/bulk-buy.js';
+import {readFileSync} from 'node:fs';
+import {addPurchaseLines, bulkQuantityLimits, canShowBulkBuy, purchaseLines, validBulkQuantity} from '../app/lib/bulk-buy.js';
 import {productVariantsLoader} from '../app/lib/product-variants.server.js';
 
 const line = (id = 1, quantity = 2) => ({merchandiseId: `gid://shopify/ProductVariant/${id}`, quantity});
+
+test('bulk modal keeps pointer interaction when its hover panel stops receiving pointer events', () => {
+  const styles = readFileSync(new URL('../app/styles/brand.css', import.meta.url), 'utf8');
+  assert.match(styles, /\.pdp-bulk-dialog\{[^}]*pointer-events:auto/);
+  assert.match(styles, /\.pdp-bulk-dialog::backdrop\{[^}]*pointer-events:auto/);
+});
+
+test('bulk modal form is portaled outside collection filter forms after hydration', () => {
+  const component = readFileSync(new URL('../app/components/ProductBulkBuy.jsx', import.meta.url), 'utf8');
+  const hook = readFileSync(new URL('../app/lib/use-modal-dialog.js', import.meta.url), 'utf8');
+  assert.match(component, /setPortalTarget\(document\.body\)/);
+  assert.match(component, /portalTarget && createPortal\(<dialog/);
+  assert.match(component, /enabled: Boolean\(portalTarget\)/);
+  assert.match(hook, /if \(!enabled\) return/);
+  assert.match(hook, /\[lightDismiss, enabled\]/);
+});
 
 test('bulk purchase forwards all chosen variants and strips client prices and optimistic metadata', async () => {
   const inputs = [{...line(), price: '0.01', selectedVariant: {price: '0.01'}, attributes: [{key: 'discount', value: '100%'}]}, line(2, 3)];
@@ -39,12 +56,30 @@ test('bulk quantity input rejects fractions, scientific notation and empty value
   for (const value of ['', ' ', '1.5', '1e2', '-1', '10000', null]) assert.equal(validBulkQuantity(value), false);
 });
 
+test('card bulk entry needs distinct options and a purchasable variant, not a price threshold', () => {
+  const variant = (id, availableForSale = true, quantityRule) => ({id, availableForSale, quantityRule});
+  const product = (nodes) => ({variants: {nodes}});
+  for (const value of [null, {}, product([]), product([variant('a')]), product([variant('a'), variant('a')]), product([variant('a', false), variant('b', false)])]) assert.equal(canShowBulkBuy(value), false);
+  assert.equal(canShowBulkBuy(product([variant('a'), variant('b', false)])), true);
+  assert.equal(canShowBulkBuy(product([variant('a', true, {minimum: 10000}), variant('b', false)])), false);
+  assert.equal(canShowBulkBuy({...product([variant('a', false), variant('b', false)]), selectedOrFirstAvailableVariant: variant('after-first-100')}), true);
+});
+
+test('bulk quantities honor actual minimum, maximum and increments, with zero meaning not selected', () => {
+  const rule = {minimum: 6, maximum: 30, increment: 3};
+  for (const quantity of [0, 6, 9, 30]) assert.equal(validBulkQuantity(quantity, rule), true);
+  for (const quantity of [1, 3, 7, 31, '1e1']) assert.equal(validBulkQuantity(quantity, rule), false);
+  assert.deepEqual(bulkQuantityLimits({minimum: 2, maximum: 20000, increment: 2}), {minimum: 2, maximum: 9999, increment: 2});
+  assert.equal(validBulkQuantity(9999, {increment: 2}), false);
+});
+
 test('variant paging forwards locale and cursor without app credentials or private fields', async () => {
   const product = {id: 'gid://shopify/Product/1', variants: {nodes: [line()], pageInfo: {hasNextPage: true, endCursor: 'next'}}};
   const response = await productVariantsLoader({request: new Request('https://example.com/jp/api/product-variants?handle=charger&after=previous'), context: {storefront: {
     i18n: {country: 'JP', language: 'JA'}, CacheNone: () => 'no-store', query: async (query, options) => {
       assert.deepEqual(options, {variables: {handle: 'charger', after: 'previous', country: 'JP', language: 'JA'}, cache: 'no-store'});
       assert.match(query, /variants\(first: 50, after: \$after\)/);
+      assert.match(query, /quantityRule \{ minimum maximum increment \}/);
       assert.doesNotMatch(query, /metafield|source_|customer|email|token/i);
       return {product};
     },

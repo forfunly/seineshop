@@ -421,9 +421,21 @@ export type FooterQuery = {
   >;
 };
 
+export type PhoneIndexItemFragment = Pick<
+  StorefrontAPI.Product,
+  'id' | 'title' | 'vendor' | 'productType' | 'tags' | 'createdAt'
+> & {
+  options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
+  category?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  leadTime?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  specifications?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  priceRange: {minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount'>};
+};
+
 export type IphoneProCollectionIndexQueryVariables = StorefrontAPI.Exact<{
   handle: StorefrontAPI.Scalars['String']['input'];
   after?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+  reverse: StorefrontAPI.Scalars['Boolean']['input'];
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
@@ -499,6 +511,7 @@ export type IphoneProCollectionCardsQuery = {
 export type IphoneProCollectionRankQueryVariables = StorefrontAPI.Exact<{
   handle: StorefrontAPI.Scalars['String']['input'];
   after?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+  reverse: StorefrontAPI.Scalars['Boolean']['input'];
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
@@ -546,6 +559,10 @@ export type BulkPurchaseVariantsQuery = {
             StorefrontAPI.ProductVariant,
             'id' | 'title' | 'sku' | 'availableForSale'
           > & {
+            quantityRule: Pick<
+              StorefrontAPI.QuantityRule,
+              'minimum' | 'maximum' | 'increment'
+            >;
             image?: StorefrontAPI.Maybe<
               Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
             >;
@@ -2119,7 +2136,7 @@ interface GeneratedQueryTypes {
     return: FooterQuery;
     variables: FooterQueryVariables;
   };
-  '#graphql\n  query IphoneProCollectionIndex($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id handle title description seo { title description }\n      products(first: 250, after: $after) {\n        nodes {\n          id title vendor productType tags createdAt\n          options { name values }\n          category: metafield(namespace: "custom", key: "category_group") { value }\n          leadTime: metafield(namespace: "custom", key: "lead_time") { value }\n          specifications: metafield(namespace: "custom", key: "technical_specifications") { value }\n          priceRange { minVariantPrice { amount } }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
+  '#graphql\n  fragment PhoneIndexItem on Product {\n    id title vendor productType tags createdAt\n    options { name values }\n    category: metafield(namespace: "custom", key: "category_group") { value }\n    leadTime: metafield(namespace: "custom", key: "lead_time") { value }\n    specifications: metafield(namespace: "custom", key: "technical_specifications") { value }\n    priceRange { minVariantPrice { amount } }\n  }\n  query IphoneProCollectionIndex($handle: String!, $after: String, $reverse: Boolean!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id handle title description seo { title description }\n      products(first: 250, after: $after, reverse: $reverse) {\n        nodes { ...PhoneIndexItem }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: IphoneProCollectionIndexQuery;
     variables: IphoneProCollectionIndexQueryVariables;
   };
@@ -2127,7 +2144,7 @@ interface GeneratedQueryTypes {
     return: IphoneProCollectionCardsQuery;
     variables: IphoneProCollectionCardsQueryVariables;
   };
-  '#graphql\n  query IphoneProCollectionRank($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      products(first: 250, after: $after, sortKey: BEST_SELLING) {\n        nodes { id }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
+  '#graphql\n  query IphoneProCollectionRank($handle: String!, $after: String, $reverse: Boolean!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      products(first: 250, after: $after, sortKey: BEST_SELLING, reverse: $reverse) {\n        nodes { id }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: IphoneProCollectionRankQuery;
     variables: IphoneProCollectionRankQueryVariables;
   };
@@ -2135,7 +2152,7 @@ interface GeneratedQueryTypes {
     return: MarketLocalizationQuery;
     variables: MarketLocalizationQueryVariables;
   };
-  '#graphql\n  query BulkPurchaseVariants($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id title handle\n      variants(first: 50, after: $after) {\n        nodes {\n          id title sku availableForSale\n          image { url altText width height }\n          price { amount currencyCode }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
+  '#graphql\n  query BulkPurchaseVariants($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id title handle\n      variants(first: 50, after: $after) {\n        nodes {\n          id title sku availableForSale\n          quantityRule { minimum maximum increment }\n          image { url altText width height }\n          price { amount currencyCode }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: BulkPurchaseVariantsQuery;
     variables: BulkPurchaseVariantsQueryVariables;
   };
