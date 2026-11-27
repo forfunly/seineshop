@@ -155,3 +155,67 @@ SEO：新增可索引静态页面入口为 `/help/contact`、`/help/faq`、`/hel
 - 本机 sitemap.xml 为200/UTF-8有效空索引（预览域名索引保护），因此本机集合/pages分片按保护规则404；不把它们记成线上通过，也未关闭保护或改环境配置绕过。原生成源在英日德自动测试中排除两类空栏目、包含公开联系页，生产分片和实际UTF-8显示待获准发布后验证。robots.txt / llms.txt 本机200并声明charset=utf-8。
 
 - 已将75个明确路径准备为本地提交 `1031165`（含远程已整合文件）；随后普通合并 origin/main=f1b4e71。六个冲突均采用此前已完成三方整合并通过最终验收的候选内容，而不是旧分支内容；合并索引与1031165源码树逐字节一致，未 rebase/reset/强推，未包含三份并行QA及两张历史截图。当前记录补入普通合并提交后，再请求本次 push；生产发布仍单独授权。
+
+#### 本次待批准推送清单
+
+- 目标 `origin/main`；候选包括原导航提交42cb6af、本地功能提交1031165及普通合并783ff8b，另补本节验收清单。相对远程共57个文件，含导航/搜索/功能页、邮箱统一/留言、账户余额、翻译、生成类型、回归和原验收文档；不含 .env、密钥、生产配置、并行QA和截图。生产发布未获本次授权，不随推送自动宣称上线。
+
+- `README.md`
+- `RELEASE-NOTES.md`
+- `app/components/BestSellerQuickView.jsx`
+- `app/components/CatalogSection.jsx`
+- `app/components/FacetedCollection.jsx`
+- `app/components/GlobalSearch.jsx`
+- `app/components/Header.jsx`
+- `app/components/HeaderIcon.jsx`
+- `app/components/ImageSearchUpload.jsx`
+- `app/components/JournalArticle.jsx`
+- `app/components/MarketSelector.jsx`
+- `app/components/SiteSeo.jsx`
+- `app/data/catalog-sections.js`
+- `app/data/header-destinations.js`
+- `app/data/navigation.js`
+- `app/entry.server.jsx`
+- `app/graphql/customer-account/CustomerCreditQuery.js`
+- `app/lib/collection-filters.js`
+- `app/lib/contact.js`
+- `app/lib/contact.server.js`
+- `app/lib/customer-credit.server.js`
+- `app/lib/download-list.js`
+- `app/lib/scoped-search.server.js`
+- `app/lib/sitemaps.server.js`
+- `app/lib/visual-search.js`
+- `app/lib/wholesale.js`
+- `app/lib/wishlist.js`
+- `app/locales/messages.json`
+- `app/root.jsx`
+- `app/routes/_index.jsx`
+- `app/routes/account.credits.jsx`
+- `app/routes/account.jsx`
+- `app/routes/api.catalog.jsx`
+- `app/routes/api.contact.jsx`
+- `app/routes/collections.$handle.jsx`
+- `app/routes/downloads.jsx`
+- `app/routes/help.$handle.jsx`
+- `app/routes/image-search.jsx`
+- `app/routes/products.$handle.jsx`
+- `app/routes/search.jsx`
+- `app/routes/wishlist.jsx`
+- `app/styles/header.css`
+- `app/styles/navigation-pages.css`
+- `app/styles/search.css`
+- `customer-accountapi.generated.d.ts`
+- `docs/project-state.md`
+- `docs/qa/2026-11-25-header-navigation.md`
+- `docs/rules/business-tools.md`
+- `storefrontapi.generated.d.ts`
+- `tests/catalog-sections.test.mjs`
+- `tests/contact.test.mjs`
+- `tests/customer-credit.test.mjs`
+- `tests/header-destinations.test.mjs`
+- `tests/locale.test.mjs`
+- `tests/site-seo-render.test.mjs`
+- `tests/sitemaps.test.mjs`
+- `tests/wholesale.test.mjs`
+
+- 普通合并后192/192测试再次通过，app/tests/public及生成类型与最终构建候选无差异。实际收件箱显示确认和生产配置/发布/上线验收仍待继续；冷加载性能问题如上保留，不声称整站所有业务均已验完。
