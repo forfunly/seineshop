@@ -1,6 +1,7 @@
 import {useId, useRef, useState} from 'react';
 import {useFetcher, useLocation, useRouteLoaderData} from 'react-router';
 import {useLocale} from '~/lib/i18n';
+import {HeaderIcon} from './HeaderIcon';
 import {LOCALES} from '~/lib/locale';
 
 export function MarketSelector() {
@@ -16,8 +17,7 @@ export function MarketSelector() {
   const flag = (code) => String.fromCodePoint(...[...code].map((c) => c.charCodeAt(0) + 127397));
   return <div className="market-selector">
     <button className="market-selector-trigger" type="button" aria-haspopup="dialog" aria-label={`${t('Shopping preferences')}: ${localization.country.name}, ${locale.label}, ${localization.country.currency.isoCode}`} onClick={() => {setCountry(localization.country.isoCode); dialog.current.showModal();}}>
-      <span aria-hidden="true">{flag(localization.country.isoCode)}</span>
-      <span>{locale.label}<strong>{localization.country.currency.isoCode}</strong></span><span aria-hidden="true">⌄</span>
+      <HeaderIcon name="globe" />
     </button>
     {/* Native dialog supports Escape; this handler only adds backdrop dismissal. */}
     {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}

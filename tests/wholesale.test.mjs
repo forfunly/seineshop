@@ -13,7 +13,7 @@ test('bulk quantities reach Shopify without client pricing or an invented discou
 });
 test('inquiry drafts encode user content and include product, variant and requirements',()=>{
  const url=inquiryMailto({product:{title:'Charger & cable',handle:'charger'},variant:{title:'Black',sku:'SKU-1'},quantity:500,type:'OEM',destination:'Germany',requirements:'Logo & packaging\nPlease quote.'});
- assert.ok(url.startsWith('mailto:steven@seineshop.com?'));
+ assert.ok(url.startsWith('mailto:hello@seineshop.com?'));
  const query=new URLSearchParams(url.split('?')[1]);
  assert.equal(query.get('subject'),'OEM inquiry — Charger & cable');
  for(const text of ['SKU: SKU-1','Variant: Black','Quantity: 500','Germany','Logo & packaging\nPlease quote.','https://www.seineshop.com/products/charger'])assert.ok(query.get('body').includes(text));

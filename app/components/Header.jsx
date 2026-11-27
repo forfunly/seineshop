@@ -4,31 +4,45 @@ import {HeaderIcon} from '~/components/HeaderIcon';
 import {MarketSelector} from '~/components/MarketSelector';
 import {useLocale} from '~/lib/i18n';
 import {Suspense, useRef, useEffect, useState} from 'react';
-import {catalogSections} from '~/data/catalog-sections';
+import {supportLinks} from '~/data/header-destinations';
+import {useWishlist} from '~/lib/wishlist';
+import {catalogNavGroups, catalogSections} from '~/data/catalog-sections';
 import {categories} from '~/data/navigation';
-import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
-import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
+import {navigationColumns} from '~/data/collection-navigation';
+import {Await, Link, NavLink, useAsyncValue, useLocation, useRouteLoaderData} from 'react-router';
+import {Money, useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 
-const primaryLinks = catalogSections.map(([title, handle]) => [title, `/collections/${handle}`]);
-const supportLinks = [
-  ['Contact Us', '/support'],
-  ['FAQs', '/support#compatibility'],
-  ['Blog & News', '/blogs/journal'],
-  ['Track package', '/page/order-tracking'],
-];
+const collectionLinks = (sections) => sections.map(([title, handle]) => [title, `/collections/${handle}`]);
+const primaryLinks = collectionLinks(catalogSections);
+
 
 /**
  * @param {HeaderProps}
  */
 export function Header({cart, isLoggedIn}) {
   const {t, localize} = useLocale();
+  const localPreview = useRouteLoaderData('root')?.localNavigationPreview;
+  const headerRef = useRef(null);
   const navRef = useRef(null);
   const location = useLocation();
+  const [scrollHidden, setScrollHidden] = useState(false);
   const [menu, setMenu] = useState(null);
   const [activeCategory, setActiveCategory] = useState(0);
   const closeNav = () => setMenu(null);
-  useEffect(() => {setMenu(null);}, [location.key]);
+  useEffect(() => {setMenu(null); setScrollHidden(false);}, [location.key]);
+  useEffect(() => {
+    let previous = Math.max(0, window.scrollY);
+    const syncVisibility = () => {
+      const current = Math.max(0, window.scrollY);
+      if (current === previous) return;
+      const focused = headerRef.current?.contains(document.activeElement);
+      setScrollHidden(!focused && current > 120 && current > previous);
+      previous = current;
+    };
+    window.addEventListener('scroll', syncVisibility, {passive: true});
+    return () => window.removeEventListener('scroll', syncVisibility);
+  }, []);
   useEffect(() => {
     const dismiss = (event) => {
       if (!navRef.current?.contains(event.target)) setMenu(null);
@@ -46,7 +60,7 @@ export function Header({cart, isLoggedIn}) {
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
   }, [menu]);
-  function disclosure(name, label, panel, icon) {
+  function disclosure(name, label, panel, icon = undefined) {
     return (
       <div className={`header-disclosure header-disclosure--${name}`}
         onPointerEnter={(event) => {if (event.pointerType === 'mouse') setMenu(name);}}
@@ -60,20 +74,23 @@ export function Header({cart, isLoggedIn}) {
         }}
       >
         <button type="button" id={`nav-trigger-${name}`} aria-expanded={menu === name}
-          aria-controls={`nav-panel-${name}`}
+          aria-controls={`nav-panel-${name}`} aria-label={name === 'more' ? t('More navigation') : undefined}
           onKeyDown={(event) => {
             if (event.key === 'ArrowDown') {
               event.preventDefault();
               setMenu(name);
-              requestAnimationFrame(() => document.querySelector(`#nav-panel-${name} :is(a, button)`)?.focus());
+              requestAnimationFrame(() => {
+                const target = document.querySelector(`#nav-panel-${name} :is(a, button)`);
+                if (target instanceof HTMLElement) target.focus();
+              });
             }
           }}
           onClick={(event) => {
-            if (event.detail > 0 && event.nativeEvent.pointerType === 'mouse') setMenu(name);
+            if (event.detail > 0 && 'pointerType' in event.nativeEvent && event.nativeEvent.pointerType === 'mouse') setMenu(name);
             else setMenu(menu === name ? null : name);
           }}
         >
-          {icon && <HeaderIcon name={icon} />} {t(label)} <i className="header-chevron" aria-hidden="true" />
+          {icon && <HeaderIcon name={icon} />} {name === 'more' ? '…' : t(label)} {name !== 'more' && <i className="header-chevron" aria-hidden="true" />}
         </button>
         <div className="header-disclosure-panel" id={`nav-panel-${name}`} hidden={menu !== name}>
           {panel}
@@ -85,13 +102,16 @@ export function Header({cart, isLoggedIn}) {
     <NavLink key={title} to={localize(url)} onClick={closeNav}>{t(title)}</NavLink>
   ));
   return (
-    <header className="market-header">
+    <header ref={headerRef}
+      className={`market-header${scrollHidden ? ' market-header--scroll-hidden' : ''}`}
+      onFocusCapture={() => setScrollHidden(false)}
+    >
       <a className="skip-content" href={localize('#main-content')}>
         {t('Skip to content')}
       </a>
       <div className="utility-bar">
         <span>{t('Everyday tech, thoughtfully chosen.')}</span>
-        <a href="mailto:steven@seineshop.com">
+        <a href="mailto:hello@seineshop.com">
           <HeaderIcon name="mail" />
           {t('Contact us')}
           <span aria-hidden="true">↗</span>
@@ -150,42 +170,38 @@ export function Header({cart, isLoggedIn}) {
                   id={`mega-${category.handle}`}
                   hidden={activeCategory !== index}
                 >
-                  <p className="eyebrow">{t('EXPLORE THE COLLECTION')}</p>
-                  <h2>{t(category.title)}</h2>
-                  <div className="mega-child-links">
-                    {category.links.map(([title, url]) => (
-                      <NavLink
-                        key={url}
-                        to={localize(url)}
-                        onClick={closeNav}
-                      >
-                        {t(title)}
-                        <span aria-hidden="true">↗</span>
-                      </NavLink>
-                    ))}
-                  </div>
-                  <NavLink
-                    className="mega-directory-link"
-                    to={localize('/collections')}
-                    onClick={closeNav}
-                  >
-                    {t('View all collections \u2192')}
-                  </NavLink>
+                  <NavigationFamilies category={category} localPreview={localPreview} close={closeNav} />
                 </section>
               ))}
             </div>
           </div>
         ), 'menu')}
         <nav className="header-primary-links" aria-label={t('Main navigation')}>
-          {navLinks(primaryLinks.slice(0, 3))}
-          <span className="header-wide-links">{navLinks(primaryLinks.slice(3))}</span>
+          {navLinks(collectionLinks(catalogNavGroups.featured))}
+          {disclosure('more', 'More navigation', navLinks(collectionLinks(catalogNavGroups.overflow)))}
+          {navLinks(collectionLinks(catalogNavGroups.brands))}
         </nav>
-        {disclosure('more', 'More', navLinks(primaryLinks.slice(3)))}
         {disclosure('support', 'Support Center', navLinks(supportLinks))}
       </div>
     </header>
   );
 }
+
+function NavigationFamilies({category, localPreview, close}) {
+  const {t, localize} = useLocale();
+  const columns = navigationColumns(category, localPreview);
+  return <div className="mega-family-grid">
+    {columns.map((column) => <div className="mega-family-column" key={column[0].handle}>
+      {column.map(({handle, title, series}) => <div className="mega-family" key={handle}>
+        <NavLink className="mega-family-heading" to={localize(`/collections/${handle}`)} onClick={close}>{t(title)}</NavLink>
+        {series.length > 0 && <ul>{series.map(({handle: seriesHandle, label}) => <li key={seriesHandle}>
+          <NavLink to={localize(`/collections/${seriesHandle}`)} onClick={close}>{t(label)}</NavLink>
+        </li>)}</ul>}
+      </div>)}
+    </div>)}
+  </div>;
+}
+
 
 /**
  * @param {{
@@ -198,6 +214,7 @@ export function Header({cart, isLoggedIn}) {
 export function HeaderMenu({viewport}) {
   const {t, localize} = useLocale();
   const {close} = useAside();
+  const localPreview = useRouteLoaderData('root')?.localNavigationPreview;
   return (
     <nav
       className={`header-menu-${viewport}`}
@@ -217,6 +234,7 @@ export function HeaderMenu({viewport}) {
             <CategoryIcon category={category.handle} />
             <span>{t(category.title)}</span>
           </summary>
+          <NavigationFamilies category={category} localPreview={localPreview} close={close} />
           {category.links.map(([title, url]) => (
             <NavLink key={title} to={localize(url)} onClick={close}>
               {t(title)}
@@ -231,21 +249,54 @@ export function HeaderMenu({viewport}) {
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
+function HeaderActionPopover({className = '', label, name, href, onClick = undefined, children, badge = 0}) {
+  const {t, localize} = useLocale();
+  const wrapper = useRef(null);
+  const trigger = useRef(null);
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => {setOpen(false);}, [location.key]);
+  useEffect(() => {
+    if (!open) return;
+    const dismiss = (event) => {if (!wrapper.current?.contains(event.target)) setOpen(false);};
+    const escape = (event) => {
+      if (event.key !== 'Escape') return;
+      if (wrapper.current?.contains(document.activeElement)) trigger.current?.focus();
+      setOpen(false);
+    };
+    document.addEventListener('pointerdown', dismiss);
+    document.addEventListener('keydown', escape);
+    return () => {document.removeEventListener('pointerdown', dismiss); document.removeEventListener('keydown', escape);};
+  }, [open]);
+  return <div ref={wrapper} className="header-action-popover" onPointerEnter={(event) => {if (event.pointerType === 'mouse') setOpen(true);}}
+    onPointerLeave={(event) => {if (event.pointerType === 'mouse' && !event.currentTarget.contains(document.activeElement)) setOpen(false);}}
+    onBlur={(event) => {if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);}}>
+    <Link ref={trigger} className={`header-action ${className}`} to={localize(href)} aria-label={t(label)} onClick={(event) => {setOpen(false); onClick?.(event);}}
+      onKeyDown={(event) => {if (event.key === 'ArrowDown') {event.preventDefault(); setOpen(true); requestAnimationFrame(() => wrapper.current?.querySelector('.header-action-menu a')?.focus());}}}>
+      <span className="header-action-icon"><HeaderIcon name={name} />{badge > 0 && <span className="header-cart-count" aria-hidden="true">{badge}</span>}</span>
+    </Link>
+    <div className="header-action-menu" hidden={!open}>{children}</div>
+  </div>;
+}
 function AccountLink({loggedIn = false}) {
   const {t, localize} = useLocale();
-  return (
-    <a
-      className="header-action header-account"
-      href={localize(loggedIn ? '/account' : '/account/login')}
-      aria-label={t(loggedIn ? 'My account' : 'Sign in / Register')}
-    >
-      <HeaderIcon name="user" />
-      <span className="header-action-copy">
-        <small>{t('My account')}</small>
-        <strong>{t(loggedIn ? 'My account' : 'Sign in / Register')}</strong>
-      </span>
-    </a>
-  );
+  return <HeaderActionPopover className="header-account" name="user" href={loggedIn ? '/account' : '/account/login'} label={loggedIn ? 'My account' : 'Sign in / Register'}>
+    <div className="header-action-menu-title"><strong>{t(loggedIn ? 'My account' : 'Welcome')}</strong></div>
+    {!loggedIn && <div className="header-account-signin"><a href={localize('/account/login')}>{t('Sign in')}</a><a href={localize('/account/register')}>{t('Register for Free')}</a></div>}
+    {loggedIn && <Link to={localize('/account/profile')}>{t('My account')}</Link>}
+    <Link to={localize('/account/orders')}>{t('My Orders')}</Link>
+    <Link to={localize('/account/credits')}>{t('Account Credits')}</Link>
+    <Link to={localize('/help/coupons')}>{t('My Coupons')}</Link>
+    <Link to={localize('/downloads')}>{t('Images Download List')}</Link>
+  </HeaderActionPopover>;
+}
+function WishlistLink() {
+  const {t, localize} = useLocale();
+  const count = useWishlist().length;
+  return <HeaderActionPopover name="heart" href="/wishlist" label={`${t('Wishlist')} (${count})`} badge={count}>
+    <div className="header-action-menu-title"><strong>{t('Wishlist')}</strong><span>{count} {t('Items')}</span></div>
+    <Link to={localize('/wishlist')}>{t('View wishlist')}</Link>
+  </HeaderActionPopover>;
 }
 function HeaderCtas({cart, isLoggedIn}) {
   const {t} = useLocale();
@@ -257,6 +308,7 @@ function HeaderCtas({cart, isLoggedIn}) {
           {(loggedIn) => <AccountLink loggedIn={loggedIn} />}
         </Await>
       </Suspense>
+      <WishlistLink />
       <CartToggle cart={cart} />
       <HeaderMenuMobileToggle />
     </nav>
@@ -279,38 +331,21 @@ function HeaderMenuMobileToggle() {
 /**
  * @param {{count: number}}
  */
-function CartBadge({count}) {
+function CartBadge({count, summary = null}) {
   const {t, localize} = useLocale();
   const {open} = useAside();
   const {publish, shop, cart, prevCart} = useAnalytics();
-  return (
-    <a
-      href={localize('/cart')}
-      className="header-action header-cart"
-      aria-label={`${t('Cart')} (${count})`}
-      onClick={(e) => {
-        e.preventDefault();
-        open('cart');
-        publish('cart_viewed', {
-          cart,
-          prevCart,
-          shop,
-          url: window.location.href || '',
-        });
-      }}
-    >
-      <span className="header-cart-icon">
-        <HeaderIcon name="bag" />
-        <span className="header-cart-count" aria-hidden="true">
-          {count}
-        </span>
-      </span>
-      <span className="header-action-copy">
-        <small>{t('Shopping bag')}</small>
-        <strong>{t('Cart')}</strong>
-      </span>
-    </a>
-  );
+  return <HeaderActionPopover name="trolley" className="header-cart" href="/cart" label={`${t('Cart')} (${count})`} badge={count}
+    onClick={(event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault(); open('cart');
+      publish('cart_viewed', {cart, prevCart, shop, url: window.location.href});
+    }}>
+    <div className="header-action-menu-title"><strong>{t('Cart')}</strong><span>{count} {t('Items')}</span></div>
+    {summary?.lines?.nodes?.slice(0, 3).map((line) => <Link key={line.id} to={localize(`/products/${line.merchandise.product.handle}`)}>{line.quantity} × {line.merchandise.product.title}</Link>)}
+    {summary?.cost?.subtotalAmount && <div className="header-action-menu-title"><span>{t('Subtotal')}</span><Money data={summary.cost.subtotalAmount} /></div>}
+    <Link to={localize('/cart')}>{t('View cart')}</Link>
+  </HeaderActionPopover>;
 }
 
 /**
@@ -328,7 +363,7 @@ function CartToggle({cart}) {
 function CartBanner() {
   const originalCart = useAsyncValue();
   const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+  return <CartBadge count={cart?.totalQuantity ?? 0} summary={cart} />;
 }
 
 /** @typedef {'desktop' | 'mobile'} Viewport */

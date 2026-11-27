@@ -63,3 +63,21 @@ function paginateLocalProducts(matching, size, search) {
     endCursor: `category:${offset + nodes.length}`,
   }};
 }
+
+
+/** Release facets use actual publication dates, never fabricated merchandising dates. */
+export function paginateReleaseProducts(products, browse, search, now = Date.now()) {
+  const today = new Date(now).toISOString().slice(0, 10);
+  const start = new Date(now - 29 * 86400000).toISOString().slice(0, 10);
+  const dateOf = (product) => /^\d{4}-\d{2}-\d{2}T/.test(product.publishedAt || '') ? product.publishedAt.slice(0, 10) : '';
+  const counts = new Map();
+  for (const product of products) {
+    const date = dateOf(product);
+    if (date >= start && date <= today) counts.set(date, (counts.get(date) || 0) + 1);
+  }
+  const raw = search.get('release') || '';
+  const release = raw === 'recent' || /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : '';
+  let matching = products.filter((product) => !release || (release === 'recent' ? dateOf(product) >= start && dateOf(product) <= today : dateOf(product) === release));
+  if (browse.sort === 'newest') matching = [...matching].sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''));
+  return {...paginateLocalProducts(matching, browse.size, search), release, releaseDates: [...counts].sort(([a], [b]) => b.localeCompare(a)).map(([date, count]) => ({date, count}))};
+}

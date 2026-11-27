@@ -1,8 +1,10 @@
-.market-header.market-header {position: sticky; top: 0;}
+.market-header.market-header {position: sticky; top: 0; transition: transform 200ms ease-in-out, opacity 200ms ease-in-out;}
+.market-header.market-header--scroll-hidden:not(:focus-within) {transform: translateY(calc(-100% + 10px)); opacity: 0; pointer-events: none;}
+@media (prefers-reduced-motion: reduce) {.market-header.market-header {transition: none;}}
 .market-header .market-header-main {align-items: flex-start; padding-block: 12px 8px;}
 .market-header-main > a {align-self: center;}
 .market-header .market-nav {position: relative; display: flex; gap: 14px; align-items: stretch;}
-.market-header .header-primary-links, .header-wide-links {display: flex; align-items: stretch; gap: clamp(12px, 1.25vw, 24px);}
+.market-header .header-primary-links {display: flex; align-items: stretch; gap: clamp(12px, 1.25vw, 24px);}
 .market-header .header-primary-links {min-width: 0; gap: clamp(12px, 1.25vw, 24px);}
 .header-primary-links a {white-space: nowrap;}
 .market-header .header-primary-links a {padding-block: 11px;}
@@ -10,7 +12,8 @@
 [aria-expanded='true'] > .header-chevron {transform: rotate(225deg) translateY(-1px);}
 .header-disclosure {position: relative; display: flex; flex: none;}
 .header-disclosure--support {margin-inline-start: auto;}
-.header-disclosure--more {display: none;}
+.header-disclosure--more > button {width: 40px; justify-content: center;}
+.header-disclosure--more .header-disclosure-panel:not([hidden]) {inset-inline: auto 0; width: 200px; border-radius: 8px; box-shadow: 0 0 12px #0000001f; animation: none;}
 .header-disclosure > button {border: 0; background: transparent; color: var(--brand-ink); display: flex; align-items: center; gap: 8px; padding: 9px 6px; font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer;}
 .header-disclosure--categories > button {font-weight: 700;}
 .header-disclosure > button[aria-expanded='true'], .header-disclosure > button:hover {color: var(--brand-focus);}
@@ -21,9 +24,12 @@
 .header-disclosure--categories .header-disclosure-panel:not([hidden]) {width: min(1040px, 92vw);}
 .header-disclosure-panel .taxonomy-mega.mega-menu {position: static; width: 100%; max-height: min(620px, 68dvh); border-radius: 10px;}
 @keyframes header-panel-in {from {opacity: 0; transform: translateY(-4px);} to {opacity: 1; transform: translateY(0);}}
-@media (max-width: 1410px) {
-  .market-header .header-wide-links {display: none;}
-  .header-disclosure--more {display: flex;}
+@media (761px <= width < 1000px) {
+  .market-header .market-nav, .market-header .header-primary-links {gap: 6px;}
+  .market-header .header-primary-links {flex-wrap: wrap; align-content: center; row-gap: 0;}
+  .market-header .header-primary-links > a {padding-block: 6px;}
+  .market-header .header-primary-links > a, .header-disclosure > button {font-size: 12px;}
+  .header-disclosure--more > button {width: 28px;}
 }
 @media (max-width: 760px) {
   .market-header .market-nav {gap: 6px; padding-inline: 4vw;}
@@ -36,3 +42,32 @@
   .header-disclosure-panel, .market-header .global-search-panel, .market-header .search-scope-panel {animation: none !important;}
   .header-chevron {transition: none;}
 }
+
+/* Icon bar and compact overlaid shopping panels share the storefront palette. */
+.market-header .header-ctas {align-self: stretch; gap: clamp(10px, 1.6vw, 24px); align-items: center;}
+.market-header .header-action {justify-content: center; min-width: 30px; padding-inline: 2px;}
+.market-header .market-selector-trigger {border: none; min-width: 30px; padding: 0; justify-content: center;}
+.market-header .market-selector-trigger .header-icon {display: block; width: 24px; height: 24px;}
+.header-action-icon {display: flex; position: relative;}
+.header-action-icon .header-cart-count {top: -8px; inset-inline-end: -10px;}
+.header-action-popover {position: relative;}
+.header-action-menu:not([hidden]) {
+  width: min(270px, calc(100vw - 24px)); position: absolute; inset-block-start: 100%; inset-inline-end: 0;
+  background: #fff; border: 1px solid var(--brand-border); border-radius: 12px; color: var(--brand-ink);
+  box-shadow: 0 8px 24px #17231c22; z-index: 34; padding: 10px; animation: header-panel-in 160ms ease-out both;
+}
+.header-action-menu > a {display: block; padding: 10px; border-radius: 7px; overflow-wrap: anywhere;}
+.header-action-menu > a:is(:hover, :focus-visible) {background: #e8f8ed;}
+.header-action-menu-title {display: flex; align-items: center; justify-content: space-between; padding: 10px; gap: 10px;}
+.header-account-signin {display: grid; gap: 8px; padding: 0 8px 8px;}
+.header-account-signin a {display: block; border-radius: 999px; padding: 9px; border: 1px solid var(--brand-focus); text-align: center; font-weight: 700;}
+.header-account-signin a:first-child {background: var(--brand-green);}
+.market-header .header-primary-links a, .header-disclosure > button {font-size: clamp(13px, 1vw, 15px);}
+.market-header .header-action:focus-visible, .market-header button:focus-visible, .market-header a:focus-visible {outline-offset: -2px;}
+@media (max-width: 760px) {
+  .market-header .header-ctas {gap: 7px;}
+  .market-header .header-action, .market-header .market-selector-trigger, .market-header .header-menu-mobile-toggle {min-width: 27px;}
+  .market-header .header-ctas .header-icon {width: 21px; height: 21px;}
+  .header-action-menu[hidden] {display: none;}
+}
+@media (prefers-reduced-motion: reduce) {.header-action-menu {animation: none !important;}}

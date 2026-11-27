@@ -84,7 +84,7 @@ export default function Homepage() {
             alt={t('B-20A three-device foldable charging station in black')}
             width="800"
             height="800"
-            fetchPriority="high"
+            loading="eager"
           />
         </section>
         <div className="market-features">

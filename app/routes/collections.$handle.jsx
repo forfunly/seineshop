@@ -1,5 +1,8 @@
-import {FacetedCollection} from '~/components/FacetedCollection';
-import {parseCollectionFilters, collectionSearchQuery, paginateCategoryProducts} from '~/lib/collection-filters';
+import {CatalogSection} from '~/components/CatalogSection';
+import {IphoneProCollection} from '~/components/IphoneProCollection';
+import {isPhoneCollection} from '~/lib/iphone-pro-collection';
+import {loadPhoneCollection} from '~/lib/iphone-pro-collection.server';
+import {parseCollectionFilters, collectionSearchQuery, paginateCategoryProducts, paginateReleaseProducts} from '~/lib/collection-filters';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {CollectionTemplate} from '~/components/CollectionTemplate';
@@ -8,7 +11,7 @@ import {
   previewCollection,
   collectionNodes,
 } from '~/lib/catalog.server';
-import {catalogSection} from '~/data/catalog-sections';
+import {catalogSection, usesCatalogResults} from '~/data/catalog-sections';
 import {paginateScopedProducts} from '~/lib/collection-filters';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 export async function loader({context, params, request}) {
@@ -19,10 +22,14 @@ export async function loader({context, params, request}) {
   )
     return previewCollection(request, params.handle);
   const search = new URL(request.url).searchParams;
+  if (isPhoneCollection(params.handle)) return loadPhoneCollection(context, params.handle, search);
   const browse = parseCollectionFilters(search);
   const section = catalogSection(params.handle);
-  const scopedSearch = search.get('scope') === 'collection' && Boolean(browse.q);
-  if (scopedSearch && !section && !collectionNodes.some((node) => node.handle === params.handle)) {
+  const directoryResults = params.handle === 'brands' && !browse.selected.length;
+  const releaseResults = params.handle === 'new-arrivals';
+  const explicitScope = search.get('scope') === 'collection';
+  const scopedSearch = (explicitScope || usesCatalogResults(params.handle)) && Boolean(browse.q);
+  if (scopedSearch && explicitScope && !section && !collectionNodes.some((node) => node.handle === params.handle)) {
     throw new Response('Collection not found', {status: 404});
   }
   if (section?.[1] === 'new-arrivals' && !search.has('sort')) browse.sort = 'newest';
@@ -34,10 +41,10 @@ export async function loader({context, params, request}) {
     filters: categories.length ? browse.filters.filter((filter) => !filter.productType) : browse.filters,
     sortKey: browse.sort.startsWith('price-') ? 'PRICE' : browse.sort === 'newest' ? 'CREATED' : browse.sort === 'best-selling' ? 'BEST_SELLING' : 'COLLECTION_DEFAULT',
     reverse: browse.sort === 'price-desc' || browse.sort === 'newest',
-    ...((scopedSearch || (categories.length && !searching)) ? {first: 250} : getPaginationVariables(request, {pageBy: browse.size})),
+    ...((directoryResults || releaseResults || scopedSearch || (categories.length && !searching)) ? {first: 250} : getPaginationVariables(request, {pageBy: browse.size})),
   };
   let {collection} = await context.storefront.query(COLLECTION_QUERY, {variables});
-  if ((scopedSearch || (categories.length && !searching)) && collection) {
+  if ((directoryResults || releaseResults || scopedSearch || (categories.length && !searching)) && collection) {
     const products = [...collection.products.nodes];
     let pageInfo = collection.products.pageInfo;
     while (pageInfo.hasNextPage) {
@@ -46,10 +53,14 @@ export async function loader({context, params, request}) {
       products.push(...next.products.nodes);
       pageInfo = next.products.pageInfo;
     }
-    const page = scopedSearch
+    const page = directoryResults
+      ? {nodes: products, pageInfo: {hasNextPage: false, hasPreviousPage: false}}
+      : releaseResults
+      ? paginateReleaseProducts(products, browse, search)
+      : scopedSearch
       ? paginateScopedProducts(products, browse.q, browse.size, search)
       : paginateCategoryProducts(products, categories, browse.size, search);
-    collection = {...collection, products: {...collection.products, ...page, filters: collection.products.filters.map((facet) => ({...facet, values: facet.values.map((value) => ({...value, count: undefined}))}))}, searchTotal: page.totalCount};
+    collection = {...collection, products: {...collection.products, ...page, filters: collection.products.filters.map((facet) => ({...facet, values: facet.values.map((value) => ({...value, count: undefined}))}))}, searchTotal: page.totalCount, ...(releaseResults ? {releaseDates: page.releaseDates, release: page.release} : {})};
   }
   if (searching && collection) {
     const {search: results} = await context.storefront.query(COLLECTION_SEARCH_QUERY, {variables: {
@@ -69,8 +80,12 @@ export async function loader({context, params, request}) {
       products: {nodes: []},
     };
   }
-  if (section) collection = {...collection, title: section[0], catalogSection: true};
-  if (scopedSearch) collection = {...collection, scopedSearch: true};
+  if (releaseResults && !collection.releaseDates) {
+    const page = paginateReleaseProducts([], browse, search);
+    collection = {...collection, releaseDates: page.releaseDates, release: page.release, searchTotal: 0};
+  }
+  if (section) collection = {...collection, title: section[0], catalogSection: true, shopifyDescription: collection.description};
+  if (scopedSearch && explicitScope) collection = {...collection, scopedSearch: true};
   if (!collection.description)
     collection.description = `Explore ${collection.title.toLowerCase()} at SeineShop. Compare product specifications, materials and compatibility to find the right choice for your everyday needs.`;
   redirectIfHandleIsLocalized(request, {
@@ -88,7 +103,7 @@ export default function Collection() {
   const data = useLoaderData();
   return (
     <>
-      {data.preview ? <CollectionTemplate {...data} /> : <FacetedCollection {...data} />}
+      {data.phone ? <IphoneProCollection {...data} /> : data.preview ? <CollectionTemplate {...data} /> : <CatalogSection {...data} />}
       {!data.preview && data.collection.id && (
         <Analytics.CollectionView
           data={{
@@ -113,6 +128,7 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     title
     vendor
     productType
+    publishedAt
     availableForSale
     featuredImage {
       id

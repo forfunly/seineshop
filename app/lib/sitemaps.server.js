@@ -1,5 +1,8 @@
+import {NEW_ARRIVALS_PATH} from '../data/discovery-navigation.js';
+import {PHONE_COLLECTIONS, PHONE_CATEGORIES, phoneProductKinds} from './iphone-pro-collection.js';
 import {LOCALES, localizePath} from './locale.js';
 import journal from '../data/journal.json' with {type: 'json'};
+import {indexableHelpPaths} from '../data/header-destinations.js';
 import {siteSettings} from './seo.js';
 
 export const SITEMAP_LANGUAGE = 'en';
@@ -17,7 +20,7 @@ const REMOTE_TYPES = {
   collections: 'COLLECTION',
   pages: 'PAGE',
 };
-const STATIC_PAGES = ['/', '/collections', '/support', '/page/order-tracking', '/discover/b20a'];
+const STATIC_PAGES = ['/', '/collections', '/support', '/page/order-tracking', '/discover/b20a', ...indexableHelpPaths];
 export const escapeXml = (value) =>
   String(value)
     .replace(/&/g, '&amp;')
@@ -116,6 +119,32 @@ export const COLLECTIONS_QUERY = `#graphql
     }
   }
 `;
+const PHONE_SITEMAP_MEMBERS = `#graphql
+  query IphoneProSitemapMembers($handle: String!, $after: String) {
+    collection(handle: $handle) {
+      products(first: 150, after: $after) {
+        nodes { productType category: metafield(namespace: "custom", key: "category_group") { value } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  }
+`;
+async function phoneSitemapEntries(storefront, handle) {
+  const found = new Set();
+  let after = null;
+  const seen = new Set();
+  while (found.size < PHONE_CATEGORIES.length) {
+    const result = await storefront.query(PHONE_SITEMAP_MEMBERS, {variables: {handle, after}});
+    const products = result.collection?.products;
+    if (!products) break;
+    for (const product of products.nodes) for (const kind of phoneProductKinds(product)) found.add(kind);
+    if (!products.pageInfo.hasNextPage) break;
+    if (!products.pageInfo.endCursor || seen.has(products.pageInfo.endCursor)) throw new Error('Incomplete collection sitemap membership');
+    after = products.pageInfo.endCursor;
+    seen.add(after);
+  }
+  return PHONE_CATEGORIES.filter(({key}) => found.has(key)).map(({key}) => ({path: `/collections/${handle}-${key}`}));
+}
 async function collectionEntries(storefront) {
   let after = '';
   const entries = [];
@@ -137,6 +166,10 @@ async function collectionEntries(storefront) {
       ? collections.pageInfo.endCursor
       : '';
   } while (after);
+  const existing = new Set(entries.map(({path}) => path));
+  const families = PHONE_COLLECTIONS.filter(({handle}) => existing.has(`/collections/${handle}`));
+  const childEntries = await Promise.all(families.map(({handle}) => phoneSitemapEntries(storefront, handle)));
+  entries.push(...childEntries.flat().filter(({path}) => !existing.has(path)));
   return entries;
 }
 export async function sitemapCounts(storefront, settings) {
@@ -200,8 +233,10 @@ export async function resourceLoader({request, context, params}) {
       updatedAt: item.updatedAt,
       image: sitemapImageUrl(item.image?.filepath, context.env.PUBLIC_STORE_DOMAIN),
     }));
-    if (type === 'pages' && page === 1)
-      entries.unshift(...STATIC_PAGES.map((path) => ({path})));
+    if (type === 'pages' && page === 1) {
+      const paths = counts.products ? [...STATIC_PAGES, NEW_ARRIVALS_PATH] : STATIC_PAGES;
+      entries.unshift(...paths.map((path) => ({path})));
+    }
   }
   if (type === 'policies') {
     const {shop} = await context.storefront.query(POLICIES_QUERY);

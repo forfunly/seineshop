@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions -- Delegated arrow and Escape handling for the search input and suggestion links. */
 import {useEffect, useRef, useState} from 'react';
-import {Form, Link, useFetcher, useLocation} from 'react-router';
+import {Form, Link, useFetcher, useLocation, useNavigate} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import {categories} from '~/data/navigation';
+import {ImageSearchUpload} from './ImageSearchUpload';
+import {stageSearchImage} from '~/lib/visual-search';
 import {HeaderIcon} from './HeaderIcon';
 import {useLocale} from '~/lib/i18n';
 import {urlWithTrackingParams} from '~/lib/search';
@@ -13,6 +15,9 @@ export function GlobalSearch() {
   const {t, localize} = useLocale();
   const fetcher = useFetcher();
   const location = useLocation();
+  const navigate = useNavigate();
+  const imageDialog = useRef(null);
+  const imageButton = useRef(null);
   const [term, setTerm] = useState('');
   const [open, setOpen] = useState(false);
   const [scope, setScope] = useState('');
@@ -27,14 +32,14 @@ export function GlobalSearch() {
   const destination = category ? localize(category.url) : endpoint;
   const resultsUrl = (value) => `${destination}?${new URLSearchParams(category ? {q: value, scope: 'collection'} : {q: value})}`;
   useEffect(() => {
-    if (query.length < 2 || scope) return;
+    if (query.length < 2 || !open) return;
     const timer = setTimeout(() => {
       void load(
-        `${endpoint}?predictive=true&limit=4&q=${encodeURIComponent(query)}`,
+        `${endpoint}?${new URLSearchParams({predictive: "true", limit: "4", q: query, ...(scope && {category: scope})})}`,
       );
     }, 250);
     return () => clearTimeout(timer);
-  }, [query, load, endpoint, scope]);
+  }, [query, load, endpoint, scope, open]);
   useEffect(() => {
     setOpen(false);
     setScopeOpen(false);
@@ -55,7 +60,7 @@ export function GlobalSearch() {
     document.addEventListener('pointerdown', closeOutside);
     return () => document.removeEventListener('pointerdown', closeOutside);
   }, []);
-  const fresh = fetcher.data?.term === query;
+  const fresh = fetcher.data?.term === query && (fetcher.data?.scope || '') === scope;
   const items =
     fresh && !fetcher.data?.error ? fetcher.data?.result?.items : null;
   const loading = query.length >= 2 && (!fresh || fetcher.state !== 'idle');
@@ -150,10 +155,23 @@ export function GlobalSearch() {
           placeholder={t('Search for Products')}
           required
         />
+        <button className="search-image-trigger" type="button" aria-haspopup="dialog" aria-label={t('Search by Image')} ref={imageButton} onClick={() => {
+          setOpen(false);
+          setScopeOpen(false);
+          imageDialog.current.showModal();
+        }}><HeaderIcon name="camera" /></button>
         <button type="submit" aria-label={t('Search')}>
           <HeaderIcon name="search" />
         </button>
       </Form>
+      <dialog className="search-image-dialog" ref={imageDialog} aria-labelledby="image-search-dialog-title" onClose={() => imageButton.current?.focus()}>
+        <div className="search-image-heading"><h2 id="image-search-dialog-title">{t('Search by Image')}</h2><button type="button" aria-label={t('Close')} onClick={() => imageDialog.current.close()}>×</button></div>
+        <ImageSearchUpload onFile={(file) => {
+          stageSearchImage(file);
+          imageDialog.current.close();
+          void navigate(localize(`/image-search${scope ? `?category=${encodeURIComponent(scope)}` : ''}`));
+        }} />
+      </dialog>
       {scopeOpen && (
         <div className="search-scope-panel" id="search-scope-panel">
           {[{title: 'All Categories', handle: ''}, ...categories].map((item) => (
@@ -186,10 +204,6 @@ export function GlobalSearch() {
                 <Link key={value} to={resultsUrl(t(value))}>{t(value)}</Link>
               ))}
             </div>
-          ) : category ? (
-            <Link className="global-search-all" to={resultsUrl(query)}>
-              {t('Search this collection')} →
-            </Link>
           ) : (
             <>
               <div className="global-search-status" role="status">
@@ -284,7 +298,7 @@ export function GlobalSearch() {
                 className="global-search-all"
                 to={resultsUrl(query)}
               >
-                {t('View all results')} →
+                {t(category ? 'Search this collection' : 'View all results')} →
               </Link>
             </>
           )}

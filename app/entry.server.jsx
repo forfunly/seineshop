@@ -31,6 +31,7 @@ export default async function handleRequest(
     frameSrc: ["'self'", 'https://cdn.shopify.com', 'https://shopify.com', 'https://extcall.17track.net'],
     connectSrc: [
       "'self'",
+      'https://cdn.shopify.com',
       'https://www.googletagmanager.com',
       'https://*.clarity.ms',
       'https://*.google-analytics.com',

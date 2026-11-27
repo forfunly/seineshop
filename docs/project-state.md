@@ -1,6 +1,56 @@
 # 项目连接状态与授权记录
 
-## 当前：正式账户补验通过，错误页修复待推送/部署（2026-11-18，北京时间）
+## 当前：现用邮箱已统一，真实留言投递成功（2026-11-27，北京时间，本机候选）
+
+- 用户确认现用邮箱为 `hello@seineshop.com`，指出详情页残留旧地址。已统一 app 中导航、页脚、详情、文章、帮助、询价备用及留言固定收件；新增一致性回归测试。旧退信证据保留，不改历史记录中的原地址。
+- 昨日三条 DNS 只验证 `notify.seineshop.com` 发信域名，没有创建或替换飞书邮箱，收件地址纠正无需重配。域名 Verified / Forge Ready、密钥 Sending access 且仅该域名，本机私密配置生效；不读邮箱、不自动回复访客、不装聊天插件。生产私密配置尚未写入。
+- 在整合后的生产构建本机预览，通过真实联系页向 hello 提交一封 Internal QA；submission `101c3cf7-3720-44ab-9380-5b57d44c4cda`，Resend 对象 `01a21b00-a4d1-7505-8233-bab2dcea1db7` 于后台显示 11月27日11:16 Delivered。from/to/reply-to 及 Unicode 正文读回正确；已请用户确认实际邮箱中显示，不将投递事件当作已读证明。
+- 远程 `f1b4e71` 的 31 个路径已与当前工作内容安全三方整合，保留 iPhone18/Pro、导航、图库、缓存和双方测试；原代码快照在 Git 忽略缓存，未删改历史。分支祖先关系仍待后续本地提交和普通合并，未 push/部署；原并行 QA/截图保留。
+- 最终源码复验 192/192 测试、lint 0错误/2既有警告、codegen/build、集合筛选及来源审计通过。补齐 Apple Pencil/HomeView 两个原404的空栏目及17项日德翻译；180个导航与语言样本全部200，手机与键盘代表操作通过。本机实际商品页全部九个邮件链接均 hello、390px 无溢出；app/public/dist 旧邮箱和真实联系私钥扫描均 0 匹配。整合后 iPhone18 Pro 集合 200，首次冷请求约21秒需后续性能观察。完整范围及历史见[导航 QA](qa/2026-11-25-header-navigation.md)。
+
+## 历史：旧固定收件邮箱被飞书拒收（2026-11-27，北京时间，未发布）
+
+- 三条已批准 DNS 经多个公开解析器读回一致，根域名飞书 MX 保留。Resend 域名 `notify.seineshop.com` 已实测 Verified、Forge Ready；收信/点击及打开追踪未启用，未改 DNS 或邮箱配置。
+- 已按本会话授权创建 `Seine Shop contact form` 密钥：Sending access、仅 `notify.seineshop.com`。通过本机剪贴板直存获准的 `.env` `CONTACT_RESEND_API_KEY`，不回显，保留原配置字节、0600/Git 忽略，随后清空剪贴板。未配置 Oxygen 生产环境，未创建全权限或跨域名密钥。
+- 浏览器真实 Internal QA 留言双击只产生一次 POST，200 accepted；忙碌时 fieldset 禁用、受理后按钮禁用、焦点归还结果区域、输入保留。原内容/原 submissionId 再试仍 accepted，Resend 列表只出现一封，幂等未重复发信。
+- 真实投递 **未通过**：邮件 `01a21af8-6318-7a43-94bb-438b06c7428b` 被标为 Bounced，SMTP 原因为 `550 verify address failed, User not found steven@seineshop.com`。实际 from/to/reply-to 和中日德正文读回正确。已请用户让飞书管理员核对地址创建/启用及外部收信，或提供正确店铺收件地址；不猜换地址、不读邮箱，不把 accepted 当送达。
+- 本轮原候选180/180测试、lint 0错误/2既有警告、codegen/build、集合筛选与来源暴露审计通过。远程 main 新增到 `f1b4e71`，与本地导航候选分歧；只做只读合并预检，未覆盖本地或远程，不继续在旧基线修改前台。最终整合与回归、实际入箱和生产部署验收均未完成，未 push、未部署。详见[原导航 QA](qa/2026-11-25-header-navigation.md)。
+
+## 历史：导航联系表单站内发送准备（2026-11-26，北京时间，未发布）
+
+- 用户明确要求完整站内发送，批准 Resend 仅向 `steven@seineshop.com` 发信、仅发信密钥及服务端私密配置；不替换飞书、不读邮箱、不发访客自动回复、不接聊天插件。已由用户完成 Resend 登录并建立 `notify.seineshop.com` 发信域名；未开追踪/收信，尚未验证域名、创建密钥或改环境变量。
+- 用户进一步批准仅新增三条子域名 DNS 记录，具体公开记录见[原导航 QA](qa/2026-11-25-header-navigation.md#已批准的-resend-dns-范围待实际写入读回)；主域名飞书 MX/SPF/DMARC 与网站解析不在授权范围。用户不清楚目标域名的管理账号，要求转交上级配置清单；未作 DNS 写入，不访问或修改其他域名。等待上级添加后再核验。
+- 联系页与私有 `/api/contact` 局部实现已准备，180 项测试、lint/codegen/build/来源审计及 sitemap 检查通过；仍待配置后浏览器完整提交、真实发信与收件，不能称完整验收或已上线。所有旧代码与并行文档保留，未 push、未部署。
+- 上轮账户已真实退出；官方临时 HTTPS CLI 正常退出，3074 监听消失，后台 callback/origin/logout 读回只有生产地址，临时配置已清理。联系页仅本机 3075 的英日德未配置状态已核验，随后本机服务正常停止，不保留公开通道。
+
+## 当前：导航候选账户读回与余额只读权限（2026-11-26，北京时间，未发布）
+
+- 用户本轮完成官方临时 HTTPS 买家登录及商家后台登录，并明确批准新增 `customer_read_store_credit_accounts`。已在 Hydrogen Customer Account API 界面保存并刷新读回，仅此项从未选改为选中；`customer_read_store_credit_account_transactions` 仍未选，其余权限保留。该权限为本店 Hydrogen 渠道共享权限，不是新增余额或充值操作；没有改 `.env`、轮换凭据或改生产回调。
+- 候选 `/account/credits` 原返回 Access denied，添加权限后英/日/德均 200、正常空账户状态、无错误提示，private/no-store/noindex；德语 390px 无横向溢出。真实非零余额、充值/扣款与使用余额支付未测也未执行。订单空状态、搜索/清空、账户资料/地址只读及非法订单 404 已验，未创建订单。
+- 本轮源码仍是本地未发布候选；联系表单站内发送仍未通过，完整验收未完成，未 push、未部署。临时通道与其他细节见[原导航验收](qa/2026-11-25-header-navigation.md)。本条仅增加本轮事实，保留下方既有发布记录和并行修改。
+
+## 当前：集合页共用商品卡已发布 Oxygen Production（2026-11-25，北京时间）
+
+- 用户确认推送与上线。已读回 `origin/main` 指向 `e7a9c0a2f85ae6fa567bae439e3904af033aee08`；Shopify CLI 报告 `production/main` 部署成功并通过可路由验证。部署地址 `https://01m88cnhnj27k60jh65csneq0m-d7e83d6aec4307f1a21e.myshopify.dev`。
+- 正式域名的 Best Sellers、iPhone Duo、iPhone 18 Pro Max、All Products 英日德共 12 个样本均返回 200 并包含新组件。浏览器实测 iPhone Duo 两图标过渡及延迟样式、Quick View、Esc 焦点归还、隔离访客卡片加购 1 件；未结账或下单。正式 sitemap、集合分片、robots.txt 与 llms.txt 均返回 200 并声明 UTF-8。本条仅作本地验收记录，未另行推送。
+
+## 当前：Best Sellers 集合已发布 Oxygen Production（2026-11-24，北京时间）
+
+- 用户确认推送与生产部署。已推送 `372a1b3`、`0c6e816` 并读回 `origin/main` 为 `0c6e8165f8de15d42d514284627d945f77c267ef`。Shopify CLI 确认 SeineShop Production（`production/main`），部署成功并通过可路由验证，部署地址为 `https://01m86ewnvg7rfaajdypc5y8k0k-d7e83d6aec4307f1a21e.myshopify.dev`。
+- 本机 Chrome 已补测悬停不挤动网格、键盘关闭后焦点归还、390px 触屏模拟下的筛选和 Quick View。正式域名英、日、德集合与 Quick View API 返回 200；正式站隔离访客浏览器验证主题按钮、Esc 焦点归还及单件直接加购、购物车抽屉打开，未进入结账或创建订单。正式 sitemap 和英、日、德集合分片及 robots.txt、llms.txt 返回 200，声明 UTF-8；未更改生产配置。本证据仅补在本地，不另行推送。
+
+## 当前：商品图库交互与悬停放大已发布 Oxygen Production（2026-11-19，北京时间）
+
+- 用户明确批准生产部署；已核对本地与 `origin/main` 均为 `bd306c595a6dbe31c3c4e41f3c0c5521df311dc9`。Shopify CLI 对 SeineShop `production/main` 部署成功并通过可路由验证，返回 `https://01m7rs1rpyj4bvyffpd979dbmy-d7e83d6aec4307f1a21e.myshopify.dev`。正式域名已复验新交互，未改商品数据、凭据或发布配置。
+- 发布前 152 项测试、lint（0 错误、2 条既有警告）、codegen、build、集合筛选及来源暴露审计通过。详见[图库验收](qa/2026-11-12-product-details-collection.md)。本次未再次推送。
+
+## 当前：错误页 SEO 修复已发布 Oxygen Production（2026-11-18，北京时间）
+
+- 本会话批准的 7 文件提交 `878f3898b2988e9d424fef872774b67ba1f1019f` 已推送，实时读回 `origin/main` 完整哈希一致。Oxygen CLI 确认 Production/main，并完成构建、上传与可路由验证，返回部署地址 `https://01m7pq7z5246sp4bmqq95hx0hz-d7e83d6aec4307f1a21e.myshopify.dev`。后台页面要求安全验证，未读回独立部署编号或 Ready/Current 标签。
+- 正式域名复测 `/ja`、普通和德语不存在地址均 404/noindex，无 canonical、hreflang、分享 URL 或结构化数据；英日德首页 canonical 与语言替代链接正常。发布前 148 项测试及相关工程检查通过；发布后来源审计通过。详见[原验收记录](qa/2026-11-17-customer-account.md)。
+- 正式账户补验结果见下；测试地址保留，付款后正式订单的创建及客户归属仍待验证。本条和 QA 发布证据仅补在本地。
+
+## 前一轮：正式账户补验与错误页修复准备（2026-11-18，北京时间）
 
 - 用户要求继续处理剩余项。重新fetch确认HEAD/origin/main均为7ecfcd5，生产仍为下方Deployment ID6155709；本轮未再次push或部署，未改凭据、环境或支付设置。
 - 正式域名已存在有效登录会话；姓名从本轮实际初始Internal QA / Do Not Ship改为带QA标记后恢复，前台重新请求及后台时间线均确认。营销从Subscribed退订至Unsubscribed，后台客户行读回，再订阅恢复Subscribed，前后台再次读回一致。未新增地址或正式订单。

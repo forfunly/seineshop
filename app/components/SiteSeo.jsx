@@ -46,6 +46,9 @@ export function SiteSeo() {
     '/collections/all': 'Shop All Accessories',
     '/search': 'Search',
     '/cart': 'Your Shopping Bag',
+    '/wishlist': 'Wishlist',
+    '/image-search': 'Search by Image',
+    '/downloads': 'Images Download List',
     '/policies': 'Store Policies',
     '/support': 'Support & Product Help',
     '/page/order-tracking': 'Order Tracking',
@@ -72,7 +75,7 @@ export function SiteSeo() {
   };
   const commerce = data.product ? commerceMetadata(data.product, 'product') : data.collection ? commerceMetadata(data.collection, 'collection') : null;
   const baseTitle =
-    commerce?.title || content?.seo?.title || content?.title || labels[pathname] || 'SeineShop';
+    (data.collection?.catalogSection ? data.collection.title : commerce?.title) || content?.seo?.title || content?.title || labels[pathname] || 'SeineShop';
   const pageNumber = new URLSearchParams(location.search).get('page');
   const title = error
     ? `${isRouteErrorResponse(error) ? error.status : 'Error'} | SeineShop`
@@ -104,7 +107,7 @@ export function SiteSeo() {
     location.search,
   );
   const params = new URLSearchParams(location.search);
-  const utility = /^\/(account|cart|search|preview|dropshipping)(\/|$)/.test(pathname);
+  const utility = /^\/(account|cart|search|preview|dropshipping|wishlist|downloads|image-search|help\/coupons)(\/|$)/.test(pathname);
   const filtered =
     [
       'q',
@@ -112,11 +115,13 @@ export function SiteSeo() {
       'brand',
       'sort',
       'sort_by',
+      'topic',
       'filter',
       'min',
       'max',
       'size',
       'view',
+      'release',
     ].some((key) => params.has(key)) ||
     [...params.keys()].some((key) => key.startsWith('filter.'));
   const noindex =

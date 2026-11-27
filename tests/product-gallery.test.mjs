@@ -74,3 +74,11 @@ test('hover magnifier follows the image, clamps to edges, and excludes letterbox
     {left: 310, top: 220, size: 100, positionX: 100, positionY: 100, ratio: 2});
   assert.equal(galleryLens(frame, 0, 0, 210, 220), null);
 });
+
+test('variant file references join the selected gallery even when filenames do not contain the SKU', () => {
+  const cover = {id: 'cover', url: 'https://cdn.shopify.com/123A-1.webp'};
+  const other = {id: 'other', url: 'https://cdn.shopify.com/123B-1.webp'};
+  const extra = {id: 'extra', url: 'https://cdn.shopify.com/additional.webp'};
+  assert.deepEqual(productGallery([cover, other], cover, '123A', [extra, extra]).selected, [cover, extra]);
+  assert.deepEqual(productGallery([cover, other], other, '123B').selected, [other]);
+});

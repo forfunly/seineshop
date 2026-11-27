@@ -1,6 +1,7 @@
 /** Keep every image available, while matching imported SKU galleries by filename. */
-export function productGallery(images = [], selectedImage, sku = '') {
-  const all = [...new Map([selectedImage, ...images].filter(Boolean).map((image) => [image.url, image])).values()];
+export function productGallery(images = [], selectedImage, sku = '', supplemental = []) {
+  const unique = (items) => [...new Map(items.filter((image) => image?.url).map((image) => [image.id || image.url.split('?')[0], image])).values()];
+  const all = unique([selectedImage, ...images, ...supplemental]);
   const escaped = sku.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const pattern = escaped ? new RegExp(`(?:^|/)(?:800x800_|seineshop-)?${escaped}-\\d+(?:[_.]|$)`, 'i') : null;
   const coverPattern = escaped ? new RegExp(`(?:^|/)(?:400x400_|800x800_|seineshop-)?${escaped}\\.[a-z]+$`, 'i') : null;
@@ -11,7 +12,7 @@ export function productGallery(images = [], selectedImage, sku = '') {
   const detailPhotos = all.filter((image) => image.altText?.startsWith('Product detail — '));
   const detailPattern = escaped ? new RegExp(`1000x1000_${escaped}-\\d+(?:[_.]|$)`, 'i') : null;
   const details = detailPhotos.filter((image) => !/1000x1000_\d+[a-z]-\d+/i.test(image.url) || detailPattern?.test(image.url));
-  return {all, details, selected: matching.length ? [...new Map([selectedImage, ...matching].filter(Boolean).map((image) => [image.url, image])).values()] : all};
+  return {all, details, selected: matching.length || supplemental.length ? unique([selectedImage, ...matching, ...supplemental]) : all};
 }
 
 export function galleryStep(index, direction, count, wrap = false) {

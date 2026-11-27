@@ -69,6 +69,26 @@ export type CustomerAddressCreateMutation = {
   }>;
 };
 
+export type CustomerCreditQueryVariables = CustomerAccountAPI.Exact<{
+  after?: CustomerAccountAPI.InputMaybe<
+    CustomerAccountAPI.Scalars['String']['input']
+  >;
+  language?: CustomerAccountAPI.InputMaybe<CustomerAccountAPI.LanguageCode>;
+}>;
+
+export type CustomerCreditQuery = {
+  customer: {
+    storeCreditAccounts: {
+      nodes: Array<
+        Pick<CustomerAccountAPI.StoreCreditAccount, 'id'> & {
+          balance: Pick<CustomerAccountAPI.MoneyV2, 'amount' | 'currencyCode'>;
+        }
+      >;
+      pageInfo: Pick<CustomerAccountAPI.PageInfo, 'hasNextPage' | 'endCursor'>;
+    };
+  };
+};
+
 export type CustomerFragment = Pick<
   CustomerAccountAPI.Customer,
   'id' | 'firstName' | 'lastName'
@@ -564,6 +584,10 @@ export type DropshipCustomerIdentityQuery = {
 };
 
 interface GeneratedQueryTypes {
+  '#graphql\n  query CustomerCredit($after: String, $language: LanguageCode) @inContext(language: $language) {\n    customer {\n      storeCreditAccounts(first: 50, after: $after) {\n        nodes { id balance { amount currencyCode } }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
+    return: CustomerCreditQuery;
+    variables: CustomerCreditQueryVariables;
+  };
   '#graphql\n  query CustomerDetails($language: LanguageCode) @inContext(language: $language) {\n    customer {\n      ...Customer\n    }\n  }\n  #graphql\n  fragment Customer on Customer {\n    id\n    firstName\n    lastName\n    emailAddress {\n      emailAddress\n      marketingState\n    }\n    defaultAddress {\n      ...Address\n    }\n    addresses(first: 6) {\n      nodes {\n        ...Address\n      }\n    }\n  }\n  fragment Address on CustomerAddress {\n    id\n    formatted\n    firstName\n    lastName\n    company\n    address1\n    address2\n    territoryCode\n    zoneCode\n    city\n    zip\n    phoneNumber\n  }\n\n': {
     return: CustomerDetailsQuery;
     variables: CustomerDetailsQueryVariables;

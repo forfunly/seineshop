@@ -1,117 +1,572 @@
 {
-  "Copy item number": {"ja": "商品番号をコピー", "de": "Artikelnummer kopieren"},
-  "Copied": {"ja": "コピーしました", "de": "Kopiert"},
-  "Could not copy": {"ja": "コピーできませんでした", "de": "Kopieren fehlgeschlagen"},
-  "Price Low to High": {"ja": "価格の安い順", "de": "Preis aufsteigend"},
-  "Price High to Low": {"ja": "価格の高い順", "de": "Preis absteigend"},
-  "Group Items": {"ja": "商品グループ", "de": "Produktgruppen"},
-  "Product Categories": {"ja": "商品カテゴリー", "de": "Produktkategorien"},
-  "Estimated Lead Time": {"ja": "出荷準備の目安", "de": "Voraussichtliche Bearbeitungszeit"},
-  "Search in results": {"ja": "結果内を検索", "de": "In Ergebnissen suchen"},
-  "Popularity": {"ja": "人気順", "de": "Beliebtheit"},
-  "OK": {"ja": "適用", "de": "OK"},
-  "Quick View": {"ja": "クイックビュー", "de": "Schnellansicht"},
-  "Item No.": {"ja": "商品番号", "de": "Art.-Nr."},
-  "View full details": {"ja": "商品詳細を見る", "de": "Alle Details ansehen"},
-  "Options": {"ja": "オプション", "de": "Optionen"},
-  "Next image": {"ja": "次の画像", "de": "Nächstes Bild"},
-  "Previous image": {"ja": "前の画像", "de": "Vorheriges Bild"},
-  "Add to Cart": {"ja": "カートに追加", "de": "In den Warenkorb"},
-  "Save on this device": {"ja": "この端末に保存", "de": "Auf diesem Gerät speichern"},
-  "Quick View is unavailable.": {"ja": "クイックビューを表示できません。", "de": "Die Schnellansicht ist nicht verfügbar."},
-  "View More": {"ja": "もっと見る", "de": "Mehr anzeigen"},
-  "View Less": {"ja": "閉じる", "de": "Weniger anzeigen"},
-  "Seine Shop product link": {"ja": "Seine Shopの商品リンク", "de": "Seine Shop-Produktlink"},
-  "Paste the product page link from Seine Shop.": {"ja": "Seine Shopの商品ページのリンクを貼り付けてください。", "de": "Fügen Sie den Link zur Produktseite bei Seine Shop ein."},
-  "Dropshipping workspace": {"ja": "ドロップシッピング管理", "de": "Dropshipping-Arbeitsbereich"},
-  "Manage your store connection and product imports with Seine Shop.": {"ja": "Seine Shopでストア接続と商品インポートを管理できます。", "de": "Verwalten Sie Ihre Shop-Verbindung und Produktimporte mit Seine Shop."},
-  "Workspace sections": {"ja": "管理メニュー", "de": "Arbeitsbereiche"},
-  "Store connection": {"ja": "ストア接続", "de": "Shop-Verbindung"},
-  "Product imports": {"ja": "商品インポート", "de": "Produktimporte"},
-  "Dropshipping orders": {"ja": "ドロップシッピング注文", "de": "Dropshipping-Bestellungen"},
-  "Sign in to your Seine Shop account": {"ja": "Seine Shopアカウントにログイン", "de": "Bei Ihrem Seine Shop-Konto anmelden"},
-  "Your connections and import history are private to your account.": {"ja": "接続情報とインポート履歴はご自身のアカウントでのみ確認できます。", "de": "Ihre Verbindungen und Ihr Importverlauf sind nur in Ihrem Konto sichtbar."},
-  "Sign in to continue": {"ja": "ログインして続ける", "de": "Anmelden und fortfahren"},
-  "Connect a Shopify store before importing products.": {"ja": "商品をインポートする前にShopifyストアを接続してください。", "de": "Verbinden Sie vor dem Produktimport einen Shopify-Shop."},
-  "Development preview: only the designated test store is enabled. Products remain unpublished drafts.": {"ja": "開発プレビュー：指定のテストストアのみ利用できます。商品は未公開の下書きとして保存されます。", "de": "Entwicklungsvorschau: Nur der vorgesehene Test-Shop ist freigeschaltet. Produkte bleiben unveröffentlichte Entwürfe."},
-  "Connected": {"ja": "接続済み", "de": "Verbunden"},
-  "Disconnected": {"ja": "未接続", "de": "Getrennt"},
-  "Development connection": {"ja": "開発用接続", "de": "Entwicklungsverbindung"},
-  "Shopify authorization": {"ja": "Shopify認証", "de": "Shopify-Autorisierung"},
-  "Disconnect": {"ja": "接続を解除", "de": "Verbindung trennen"},
-  "Connect Shopify store": {"ja": "Shopifyストアを接続", "de": "Shopify-Shop verbinden"},
-  "Connect development store": {"ja": "開発用ストアを接続", "de": "Test-Shop verbinden"},
-  "The workspace service is not ready. Please try again later.": {"ja": "管理サービスを現在利用できません。後ほどお試しください。", "de": "Der Arbeitsbereich ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut."},
-  "Sign in to view your store connections.": {"ja": "ログインしてストア接続を確認してください。", "de": "Melden Sie sich an, um Ihre Shop-Verbindungen zu sehen."},
-  "Disconnecting stops workspace access. App removal and access revocation are managed in Shopify.": {"ja": "接続解除すると管理機能からアクセスできなくなります。アプリの削除と権限の取り消しはShopifyで行ってください。", "de": "Das Trennen beendet den Zugriff über diesen Arbeitsbereich. Die App und ihre Berechtigungen verwalten Sie in Shopify."},
-  "Import a product as a draft, then review it in your Shopify admin.": {"ja": "商品を下書きとしてインポートし、Shopify管理画面で確認してください。", "de": "Importieren Sie ein Produkt als Entwurf und prüfen Sie es in Ihrer Shopify-Verwaltung."},
-  "Destination store": {"ja": "インポート先ストア", "de": "Ziel-Shop"},
-  "Connect a store first": {"ja": "先にストアを接続してください", "de": "Zuerst einen Shop verbinden"},
-  "Product handle": {"ja": "商品ハンドル", "de": "Produkt-Handle"},
-  "Use the last part of a Seine Shop product URL, after /products/.": {"ja": "Seine Shop商品URLの /products/ より後ろの部分を入力してください。", "de": "Verwenden Sie den letzten Teil einer Seine Shop-Produkt-URL nach /products/."},
-  "Import as draft": {"ja": "下書きとしてインポート", "de": "Als Entwurf importieren"},
-  "View imported products": {"ja": "インポート済み商品を表示", "de": "Importierte Produkte anzeigen"},
-  "Imports copy product details, variants and prices. Stock is set to zero. Repeated imports reuse the existing draft.": {"ja": "商品情報・バリエーション・価格をコピーします。在庫は0に設定されます。再インポート時は既存の下書きを使用します。", "de": "Importiert werden Produktdetails, Varianten und Preise. Der Bestand wird auf null gesetzt. Wiederholte Importe verwenden den bestehenden Entwurf."},
-  "Shopify product": {"ja": "Shopify商品", "de": "Shopify-Produkt"},
-  "variants": {"ja": "バリエーション", "de": "Varianten"},
-  "No imported products found.": {"ja": "インポート済み商品はありません。", "de": "Keine importierten Produkte gefunden."},
-  "Showing the first 50 imported products.": {"ja": "最初の50件を表示しています。", "de": "Die ersten 50 importierten Produkte werden angezeigt."},
-  "Import history": {"ja": "インポート履歴", "de": "Importverlauf"},
-  "Completed": {"ja": "完了", "de": "Abgeschlossen"},
-  "Needs review": {"ja": "要確認", "de": "Prüfung erforderlich"},
-  "Check and retry": {"ja": "確認して再試行", "de": "Prüfen und erneut versuchen"},
-  "Refresh status": {"ja": "状態を更新", "de": "Status aktualisieren"},
-  "Order synchronization is not yet available.": {"ja": "注文の同期はまだ利用できません。", "de": "Die Bestellsynchronisierung ist noch nicht verfügbar."},
-  "Customer payments in your store and purchases from Seine Shop are separate. Our warehouse ships only after the purchase is paid and confirmed.": {"ja": "お客様のストアでの決済とSeine Shopからの仕入れは別です。仕入れの決済・確認後に当社倉庫から発送します。", "de": "Kundenzahlungen in Ihrem Shop und Einkäufe bei Seine Shop sind getrennt. Unser Lager versendet erst nach Zahlung und Bestätigung des Einkaufs."},
-  "Open dropshipping workspace": {"ja": "ドロップシッピング管理を開く", "de": "Dropshipping-Arbeitsbereich öffnen"},
-  "Open your workspace to check store connections and product imports. Order synchronization is not yet available.": {"ja": "管理ページでストア接続と商品インポートを確認できます。注文の同期はまだ利用できません。", "de": "Prüfen Sie Shop-Verbindungen und Produktimporte im Arbeitsbereich. Die Bestellsynchronisierung ist noch nicht verfügbar."},
-  "Sign in again to continue.": {"ja": "再度ログインしてください。", "de": "Melden Sie sich erneut an, um fortzufahren."},
-  "Refresh this page and try again.": {"ja": "ページを更新して再度お試しください。", "de": "Laden Sie diese Seite neu und versuchen Sie es erneut."},
-  "Too many requests. Please wait a minute and try again.": {"ja": "リクエストが多すぎます。1分後に再度お試しください。", "de": "Zu viele Anfragen. Warten Sie eine Minute und versuchen Sie es erneut."},
-  "This store is already linked to another account.": {"ja": "このストアは別のアカウントに接続されています。", "de": "Dieser Shop ist bereits mit einem anderen Konto verknüpft."},
-  "This store is not enabled for this development preview.": {"ja": "このストアは開発プレビューの対象外です。", "de": "Dieser Shop ist für die Entwicklungsvorschau nicht freigeschaltet."},
-  "Choose an active store connection.": {"ja": "接続済みのストアを選択してください。", "de": "Wählen Sie eine aktive Shop-Verbindung."},
-  "Reconnect your store before continuing.": {"ja": "ストアを再接続してください。", "de": "Verbinden Sie Ihren Shop erneut, bevor Sie fortfahren."},
-  "This import is still processing. Refresh its status before retrying.": {"ja": "インポート処理中です。再試行の前に状態を更新してください。", "de": "Dieser Import wird noch verarbeitet. Aktualisieren Sie vor einem erneuten Versuch den Status."},
-  "The import result is not confirmed. Refresh first; retrying checks for an existing draft.": {"ja": "結果を確認できません。まず状態を更新してください。再試行時は既存の下書きを確認します。", "de": "Das Importergebnis ist unklar. Aktualisieren Sie zuerst den Status. Ein erneuter Versuch prüft auf einen vorhandenen Entwurf."},
-  "The development workspace has reached its capacity. Please contact support.": {"ja": "開発環境の保存上限に達しました。サポートへご連絡ください。", "de": "Die Entwicklungsvorschau hat ihre Kapazitätsgrenze erreicht. Bitte kontaktieren Sie den Support."},
-  "This action is unavailable. Your input has been kept.": {"ja": "操作を実行できません。入力内容は保持されています。", "de": "Diese Aktion ist nicht verfügbar. Ihre Eingaben bleiben erhalten."},
-  "Draft import checked. See the task status below.": {"ja": "下書きのインポートを確認しました。以下の処理状況をご覧ください。", "de": "Entwurfsimport geprüft. Den Aufgabenstatus finden Sie unten."},
-  "Store connection updated.": {"ja": "ストア接続を更新しました。", "de": "Shop-Verbindung aktualisiert."},
-  "Processing…": {"ja": "処理中…", "de": "Wird verarbeitet…"},
-  "Shipping estimate": {"ja": "送料の見積もり", "de": "Versandkostenschätzung"},
-  "Estimate shipping": {"ja": "送料を見積もる", "de": "Versandkosten berechnen"},
-  "Check delivery options for this item and quantity.": {"ja": "この商品と数量の配送方法を確認できます。", "de": "Lieferoptionen für diesen Artikel und diese Menge prüfen."},
-  "Estimate for this item only. Other cart items, taxes and checkout adjustments are not included. Final delivery options and charges are confirmed at checkout.": {"ja": "この商品のみの概算です。カート内の他の商品、税金、決済時の調整は含まれません。最終的な配送方法と送料は決済時に確定します。", "de": "Schätzung nur für diesen Artikel. Andere Warenkorbartikel, Steuern und Anpassungen beim Checkout sind nicht enthalten. Die endgültigen Versandoptionen und Kosten werden beim Checkout bestätigt."},
-  "Country / region": {"ja": "国・地域", "de": "Land / Region"},
-  "State / province": {"ja": "都道府県・州", "de": "Bundesland / Provinz"},
-  "Select a state / province": {"ja": "都道府県・州を選択", "de": "Bundesland / Provinz auswählen"},
-  "Postal code": {"ja": "郵便番号", "de": "Postleitzahl"},
-  "Street address": {"ja": "町名・番地", "de": "Straße und Hausnummer"},
-  "Calculating…": {"ja": "計算中…", "de": "Wird berechnet…"},
-  "Calculate shipping": {"ja": "送料を計算", "de": "Versand berechnen"},
-  "Available delivery options": {"ja": "利用可能な配送方法", "de": "Verfügbare Versandoptionen"},
-  "Shipment": {"ja": "配送", "de": "Sendung"},
-  "The available quantity changed. Check the product quantity before requesting shipping again.": {"ja": "購入可能な数量が変更されました。商品の数量を確認してから送料を再計算してください。", "de": "Die verfügbare Menge hat sich geändert. Prüfen Sie die Artikelmenge, bevor Sie den Versand erneut berechnen."},
-  "Shipping estimates are temporarily unavailable. Try again or check delivery at checkout.": {"ja": "送料を一時的に確認できません。再試行するか、決済時にご確認ください。", "de": "Die Versandkostenschätzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder prüfen Sie den Versand beim Checkout."},
-  "No shipping options were returned for this address and quantity. Check your address or contact us before ordering.": {"ja": "この住所と数量で利用可能な配送方法が見つかりません。住所をご確認いただくか、ご注文前にお問い合わせください。", "de": "Für diese Adresse und Menge wurden keine Versandoptionen zurückgegeben. Prüfen Sie Ihre Adresse oder kontaktieren Sie uns vor der Bestellung."},
-  "This item does not require shipping.": {"ja": "この商品は配送不要です。", "de": "Dieser Artikel erfordert keinen Versand."},
-  "Bulk Buy": {"ja": "まとめ買い", "de": "Mehrere Varianten kaufen"},
-  "View cart": {"ja": "カートを見る", "de": "Warenkorb ansehen"},
-  "Choose quantities for multiple options": {"ja": "複数のバリエーションの数量を選択", "de": "Mengen für mehrere Varianten auswählen"},
-  "Current unit prices apply. Shipping, taxes and any discounts are confirmed in your cart and at checkout.": {"ja": "表示の単価が適用されます。送料・税金・割引はカートと決済時に確認できます。", "de": "Es gelten die aktuellen Stückpreise. Versand, Steuern und eventuelle Rabatte werden im Warenkorb und beim Checkout bestätigt."},
-  "Options and quantities": {"ja": "バリエーションと数量", "de": "Varianten und Mengen"},
-  "Unit price": {"ja": "単価", "de": "Stückpreis"},
-  "Loading options…": {"ja": "バリエーションを読み込み中…", "de": "Varianten werden geladen…"},
-  "Options could not be loaded. Your quantities have been kept.": {"ja": "バリエーションを読み込めませんでした。入力した数量は保持されています。", "de": "Die Varianten konnten nicht geladen werden. Ihre eingegebenen Mengen bleiben erhalten."},
-  "Load more options": {"ja": "さらにバリエーションを表示", "de": "Weitere Varianten laden"},
-  "No options available.": {"ja": "選択できるバリエーションはありません。", "de": "Keine Varianten verfügbar."},
-  "Choose a whole quantity from 0 to 9999 for each option.": {"ja": "各バリエーションの数量を0～9999の整数で入力してください。", "de": "Geben Sie für jede Variante eine ganze Zahl zwischen 0 und 9999 ein."},
-  "Choose up to 250 different options per purchase.": {"ja": "1回に選択できるバリエーションは250種類までです。", "de": "Wählen Sie höchstens 250 verschiedene Varianten pro Einkauf."},
-  "Choose up to 250 different options with quantities from 1 to 9999.": {"ja": "250種類までのバリエーションを選択し、数量は1～9999で入力してください。", "de": "Wählen Sie bis zu 250 verschiedene Varianten mit Mengen zwischen 1 und 9999."},
-  "We could not confirm your cart update. Check your cart before trying again.": {"ja": "カートの更新を確認できませんでした。再試行する前にカートを確認してください。", "de": "Die Aktualisierung konnte nicht bestätigt werden. Prüfen Sie vor einem erneuten Versuch Ihren Warenkorb."},
-  "Review your cart before adding these items again. Shopify may have adjusted quantities or availability.": {"ja": "再度追加する前にカートを確認してください。Shopifyにより数量や在庫状況が調整された可能性があります。", "de": "Prüfen Sie Ihren Warenkorb, bevor Sie diese Artikel erneut hinzufügen. Shopify hat Mengen oder Verfügbarkeit möglicherweise angepasst."},
-  "Total quantity": {"ja": "合計数量", "de": "Gesamtmenge"},
+  "iPhone 18 Accessories": {
+    "ja": "iPhone 18 アクセサリー",
+    "de": "iPhone 18 Zubehör"
+  },
+  "iPhone 18 Cases": {
+    "ja": "iPhone 18 ケース",
+    "de": "iPhone 18 Hüllen"
+  },
+  "iPhone 18 Screen Protectors": {
+    "ja": "iPhone 18 用保護フィルム",
+    "de": "iPhone 18 Displayschutz"
+  },
+  "Wholesale iPhone 18": {
+    "ja": "iPhone 18 アクセサリー卸売",
+    "de": "iPhone 18 Zubehör im Großhandel"
+  },
+  "Will an iPhone 18 accessory fit an iPhone 17?": {
+    "ja": "iPhone 18 用アクセサリーは iPhone 17 に対応していますか？",
+    "de": "Passt ein iPhone 18 Zubehör zum iPhone 17?"
+  },
+  "Explore iPhone 18 cases and screen protectors. Compare materials, protection features and device compatibility.": {
+    "ja": "iPhone 18 用ケースと保護フィルムの素材、保護機能、対応機種を比較できます。",
+    "de": "Vergleichen Sie Materialien, Schutzfunktionen und Kompatibilität von iPhone 18 Hüllen und Displayschutz."
+  },
+  "Explore iPhone 18 cases and compare their materials, features and device compatibility.": {
+    "ja": "iPhone 18 用ケースの素材、機能、対応機種を比較できます。",
+    "de": "Vergleichen Sie Materialien, Funktionen und Kompatibilität von iPhone 18 Hüllen."
+  },
+  "Compare iPhone 18 screen and camera lens protectors by material, coverage and finish.": {
+    "ja": "iPhone 18 用の画面・カメラレンズ保護製品を素材、保護範囲、仕上げ別に比較できます。",
+    "de": "Vergleichen Sie iPhone 18 Schutz für Display und Kameralinsen nach Material, Abdeckung und Oberfläche."
+  },
+  "iPhone 18 Pro Max": {
+    "ja": "iPhone 18 Pro Max",
+    "de": "iPhone 18 Pro Max"
+  },
+  "iPhone 18 Pro": {
+    "ja": "iPhone 18 Pro",
+    "de": "iPhone 18 Pro"
+  },
+  "Browse the latest products added to the Seine Shop catalog.": {
+    "ja": "Seine Shop の最新追加商品をご覧ください。",
+    "de": "Entdecken Sie die neuesten Produkte im Katalog von Seine Shop."
+  },
+  "Explore product rankings for the European market when available.": {
+    "ja": "公開された欧州市場の商品ランキングをご覧いただけます。",
+    "de": "Entdecken Sie verfügbare Produktranglisten für den europäischen Markt."
+  },
+  "No European market rankings are available yet.": {
+    "ja": "現在、欧州市場のランキングはありません。",
+    "de": "Für den europäischen Markt sind noch keine Ranglisten verfügbar."
+  },
+  "Discover products that are gaining interest.": {
+    "ja": "注目を集めている商品をご覧ください。",
+    "de": "Entdecken Sie Produkte, die zunehmend Interesse wecken."
+  },
+  "No verified trends are available yet.": {
+    "ja": "現在、確認済みのトレンドはありません。",
+    "de": "Es liegen noch keine bestätigten Trends vor."
+  },
+  "Explore products with verified certification information.": {
+    "ja": "認証情報を確認できた商品をご覧ください。",
+    "de": "Entdecken Sie Produkte mit geprüften Zertifizierungsangaben."
+  },
+  "No products with verified certification information are listed here yet.": {
+    "ja": "現在、認証情報を確認できた商品は掲載されていません。",
+    "de": "Hier sind noch keine Produkte mit geprüften Zertifizierungsangaben gelistet."
+  },
+  "Explore available brand distribution information.": {
+    "ja": "ブランドの販売代理店情報をご覧ください。",
+    "de": "Finden Sie verfügbare Informationen zum Markenvertrieb."
+  },
+  "No confirmed brand distribution information is listed here yet.": {
+    "ja": "現在、確認済みのブランド販売代理店情報はありません。",
+    "de": "Hier sind noch keine bestätigten Informationen zum Markenvertrieb verfügbar."
+  },
+  "Browse the brands selected for this directory.": {
+    "ja": "この一覧に掲載されたブランドをご覧ください。",
+    "de": "Entdecken Sie die Marken in diesem Verzeichnis."
+  },
+  "No brands have been added to this directory yet.": {
+    "ja": "この一覧にはまだブランドが追加されていません。",
+    "de": "Diesem Verzeichnis wurden noch keine Marken hinzugefügt."
+  },
+  "Brand directory": {
+    "ja": "ブランド一覧",
+    "de": "Markenverzeichnis"
+  },
+  "Product listings": {
+    "ja": "商品一覧",
+    "de": "Produktübersicht"
+  },
+  "There are no new arrivals to show yet.": {
+    "ja": "表示できる新着商品はまだありません。",
+    "de": "Derzeit sind keine Neuheiten verfügbar."
+  },
+  "iPhone Duo Accessories": {
+    "ja": "iPhone Duo アクセサリー",
+    "de": "iPhone Duo Zubehör"
+  },
+  "iPhone 18 Pro Accessories": {
+    "ja": "iPhone 18 Pro アクセサリー",
+    "de": "iPhone 18 Pro Zubehör"
+  },
+  "AirTag Accessories": {
+    "ja": "AirTag アクセサリー",
+    "de": "AirTag Zubehör"
+  },
+  "Apple Pencil Accessories": {
+    "ja": "Apple Pencil アクセサリー",
+    "de": "Apple Pencil Zubehör"
+  },
+  "Apple HomeView Accessories": {
+    "ja": "Apple HomeView アクセサリー",
+    "de": "Apple HomeView Zubehör"
+  },
+  "Copy item number": {
+    "ja": "商品番号をコピー",
+    "de": "Artikelnummer kopieren"
+  },
+  "Copied": {
+    "ja": "コピーしました",
+    "de": "Kopiert"
+  },
+  "Could not copy": {
+    "ja": "コピーできませんでした",
+    "de": "Kopieren fehlgeschlagen"
+  },
+  "Price Low to High": {
+    "ja": "価格の安い順",
+    "de": "Preis aufsteigend"
+  },
+  "Price High to Low": {
+    "ja": "価格の高い順",
+    "de": "Preis absteigend"
+  },
+  "Group Items": {
+    "ja": "商品グループ",
+    "de": "Produktgruppen"
+  },
+  "Product Categories": {
+    "ja": "商品カテゴリー",
+    "de": "Produktkategorien"
+  },
+  "Estimated Lead Time": {
+    "ja": "出荷準備の目安",
+    "de": "Voraussichtliche Bearbeitungszeit"
+  },
+  "Search in results": {
+    "ja": "結果内を検索",
+    "de": "In Ergebnissen suchen"
+  },
+  "Popularity": {
+    "ja": "人気順",
+    "de": "Beliebtheit"
+  },
+  "OK": {
+    "ja": "適用",
+    "de": "OK"
+  },
+  "Quick View": {
+    "ja": "クイックビュー",
+    "de": "Schnellansicht"
+  },
+  "Item No.": {
+    "ja": "商品番号",
+    "de": "Art.-Nr."
+  },
+  "View full details": {
+    "ja": "商品詳細を見る",
+    "de": "Alle Details ansehen"
+  },
+  "Options": {
+    "ja": "オプション",
+    "de": "Optionen"
+  },
+  "Next image": {
+    "ja": "次の画像",
+    "de": "Nächstes Bild"
+  },
+  "Previous image": {
+    "ja": "前の画像",
+    "de": "Vorheriges Bild"
+  },
+  "Add to Cart": {
+    "ja": "カートに追加",
+    "de": "In den Warenkorb"
+  },
+  "Save on this device": {
+    "ja": "この端末に保存",
+    "de": "Auf diesem Gerät speichern"
+  },
+  "Quick View is unavailable.": {
+    "ja": "クイックビューを表示できません。",
+    "de": "Die Schnellansicht ist nicht verfügbar."
+  },
+  "View More": {
+    "ja": "もっと見る",
+    "de": "Mehr anzeigen"
+  },
+  "View Less": {
+    "ja": "閉じる",
+    "de": "Weniger anzeigen"
+  },
+  "Seine Shop product link": {
+    "ja": "Seine Shopの商品リンク",
+    "de": "Seine Shop-Produktlink"
+  },
+  "Paste the product page link from Seine Shop.": {
+    "ja": "Seine Shopの商品ページのリンクを貼り付けてください。",
+    "de": "Fügen Sie den Link zur Produktseite bei Seine Shop ein."
+  },
+  "Dropshipping workspace": {
+    "ja": "ドロップシッピング管理",
+    "de": "Dropshipping-Arbeitsbereich"
+  },
+  "Manage your store connection and product imports with Seine Shop.": {
+    "ja": "Seine Shopでストア接続と商品インポートを管理できます。",
+    "de": "Verwalten Sie Ihre Shop-Verbindung und Produktimporte mit Seine Shop."
+  },
+  "Workspace sections": {
+    "ja": "管理メニュー",
+    "de": "Arbeitsbereiche"
+  },
+  "Store connection": {
+    "ja": "ストア接続",
+    "de": "Shop-Verbindung"
+  },
+  "Product imports": {
+    "ja": "商品インポート",
+    "de": "Produktimporte"
+  },
+  "Dropshipping orders": {
+    "ja": "ドロップシッピング注文",
+    "de": "Dropshipping-Bestellungen"
+  },
+  "Sign in to your Seine Shop account": {
+    "ja": "Seine Shopアカウントにログイン",
+    "de": "Bei Ihrem Seine Shop-Konto anmelden"
+  },
+  "Your connections and import history are private to your account.": {
+    "ja": "接続情報とインポート履歴はご自身のアカウントでのみ確認できます。",
+    "de": "Ihre Verbindungen und Ihr Importverlauf sind nur in Ihrem Konto sichtbar."
+  },
+  "Sign in to continue": {
+    "ja": "ログインして続ける",
+    "de": "Anmelden und fortfahren"
+  },
+  "Connect a Shopify store before importing products.": {
+    "ja": "商品をインポートする前にShopifyストアを接続してください。",
+    "de": "Verbinden Sie vor dem Produktimport einen Shopify-Shop."
+  },
+  "Development preview: only the designated test store is enabled. Products remain unpublished drafts.": {
+    "ja": "開発プレビュー：指定のテストストアのみ利用できます。商品は未公開の下書きとして保存されます。",
+    "de": "Entwicklungsvorschau: Nur der vorgesehene Test-Shop ist freigeschaltet. Produkte bleiben unveröffentlichte Entwürfe."
+  },
+  "Connected": {
+    "ja": "接続済み",
+    "de": "Verbunden"
+  },
+  "Disconnected": {
+    "ja": "未接続",
+    "de": "Getrennt"
+  },
+  "Development connection": {
+    "ja": "開発用接続",
+    "de": "Entwicklungsverbindung"
+  },
+  "Shopify authorization": {
+    "ja": "Shopify認証",
+    "de": "Shopify-Autorisierung"
+  },
+  "Disconnect": {
+    "ja": "接続を解除",
+    "de": "Verbindung trennen"
+  },
+  "Connect Shopify store": {
+    "ja": "Shopifyストアを接続",
+    "de": "Shopify-Shop verbinden"
+  },
+  "Connect development store": {
+    "ja": "開発用ストアを接続",
+    "de": "Test-Shop verbinden"
+  },
+  "The workspace service is not ready. Please try again later.": {
+    "ja": "管理サービスを現在利用できません。後ほどお試しください。",
+    "de": "Der Arbeitsbereich ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut."
+  },
+  "Sign in to view your store connections.": {
+    "ja": "ログインしてストア接続を確認してください。",
+    "de": "Melden Sie sich an, um Ihre Shop-Verbindungen zu sehen."
+  },
+  "Disconnecting stops workspace access. App removal and access revocation are managed in Shopify.": {
+    "ja": "接続解除すると管理機能からアクセスできなくなります。アプリの削除と権限の取り消しはShopifyで行ってください。",
+    "de": "Das Trennen beendet den Zugriff über diesen Arbeitsbereich. Die App und ihre Berechtigungen verwalten Sie in Shopify."
+  },
+  "Import a product as a draft, then review it in your Shopify admin.": {
+    "ja": "商品を下書きとしてインポートし、Shopify管理画面で確認してください。",
+    "de": "Importieren Sie ein Produkt als Entwurf und prüfen Sie es in Ihrer Shopify-Verwaltung."
+  },
+  "Destination store": {
+    "ja": "インポート先ストア",
+    "de": "Ziel-Shop"
+  },
+  "Connect a store first": {
+    "ja": "先にストアを接続してください",
+    "de": "Zuerst einen Shop verbinden"
+  },
+  "Product handle": {
+    "ja": "商品ハンドル",
+    "de": "Produkt-Handle"
+  },
+  "Use the last part of a Seine Shop product URL, after /products/.": {
+    "ja": "Seine Shop商品URLの /products/ より後ろの部分を入力してください。",
+    "de": "Verwenden Sie den letzten Teil einer Seine Shop-Produkt-URL nach /products/."
+  },
+  "Import as draft": {
+    "ja": "下書きとしてインポート",
+    "de": "Als Entwurf importieren"
+  },
+  "View imported products": {
+    "ja": "インポート済み商品を表示",
+    "de": "Importierte Produkte anzeigen"
+  },
+  "Imports copy product details, variants and prices. Stock is set to zero. Repeated imports reuse the existing draft.": {
+    "ja": "商品情報・バリエーション・価格をコピーします。在庫は0に設定されます。再インポート時は既存の下書きを使用します。",
+    "de": "Importiert werden Produktdetails, Varianten und Preise. Der Bestand wird auf null gesetzt. Wiederholte Importe verwenden den bestehenden Entwurf."
+  },
+  "Shopify product": {
+    "ja": "Shopify商品",
+    "de": "Shopify-Produkt"
+  },
+  "variants": {
+    "ja": "バリエーション",
+    "de": "Varianten"
+  },
+  "No imported products found.": {
+    "ja": "インポート済み商品はありません。",
+    "de": "Keine importierten Produkte gefunden."
+  },
+  "Showing the first 50 imported products.": {
+    "ja": "最初の50件を表示しています。",
+    "de": "Die ersten 50 importierten Produkte werden angezeigt."
+  },
+  "Import history": {
+    "ja": "インポート履歴",
+    "de": "Importverlauf"
+  },
+  "Completed": {
+    "ja": "完了",
+    "de": "Abgeschlossen"
+  },
+  "Needs review": {
+    "ja": "要確認",
+    "de": "Prüfung erforderlich"
+  },
+  "Check and retry": {
+    "ja": "確認して再試行",
+    "de": "Prüfen und erneut versuchen"
+  },
+  "Refresh status": {
+    "ja": "状態を更新",
+    "de": "Status aktualisieren"
+  },
+  "Order synchronization is not yet available.": {
+    "ja": "注文の同期はまだ利用できません。",
+    "de": "Die Bestellsynchronisierung ist noch nicht verfügbar."
+  },
+  "Customer payments in your store and purchases from Seine Shop are separate. Our warehouse ships only after the purchase is paid and confirmed.": {
+    "ja": "お客様のストアでの決済とSeine Shopからの仕入れは別です。仕入れの決済・確認後に当社倉庫から発送します。",
+    "de": "Kundenzahlungen in Ihrem Shop und Einkäufe bei Seine Shop sind getrennt. Unser Lager versendet erst nach Zahlung und Bestätigung des Einkaufs."
+  },
+  "Open dropshipping workspace": {
+    "ja": "ドロップシッピング管理を開く",
+    "de": "Dropshipping-Arbeitsbereich öffnen"
+  },
+  "Open your workspace to check store connections and product imports. Order synchronization is not yet available.": {
+    "ja": "管理ページでストア接続と商品インポートを確認できます。注文の同期はまだ利用できません。",
+    "de": "Prüfen Sie Shop-Verbindungen und Produktimporte im Arbeitsbereich. Die Bestellsynchronisierung ist noch nicht verfügbar."
+  },
+  "Sign in again to continue.": {
+    "ja": "再度ログインしてください。",
+    "de": "Melden Sie sich erneut an, um fortzufahren."
+  },
+  "Refresh this page and try again.": {
+    "ja": "ページを更新して再度お試しください。",
+    "de": "Laden Sie diese Seite neu und versuchen Sie es erneut."
+  },
+  "Too many requests. Please wait a minute and try again.": {
+    "ja": "リクエストが多すぎます。1分後に再度お試しください。",
+    "de": "Zu viele Anfragen. Warten Sie eine Minute und versuchen Sie es erneut."
+  },
+  "This store is already linked to another account.": {
+    "ja": "このストアは別のアカウントに接続されています。",
+    "de": "Dieser Shop ist bereits mit einem anderen Konto verknüpft."
+  },
+  "This store is not enabled for this development preview.": {
+    "ja": "このストアは開発プレビューの対象外です。",
+    "de": "Dieser Shop ist für die Entwicklungsvorschau nicht freigeschaltet."
+  },
+  "Choose an active store connection.": {
+    "ja": "接続済みのストアを選択してください。",
+    "de": "Wählen Sie eine aktive Shop-Verbindung."
+  },
+  "Reconnect your store before continuing.": {
+    "ja": "ストアを再接続してください。",
+    "de": "Verbinden Sie Ihren Shop erneut, bevor Sie fortfahren."
+  },
+  "This import is still processing. Refresh its status before retrying.": {
+    "ja": "インポート処理中です。再試行の前に状態を更新してください。",
+    "de": "Dieser Import wird noch verarbeitet. Aktualisieren Sie vor einem erneuten Versuch den Status."
+  },
+  "The import result is not confirmed. Refresh first; retrying checks for an existing draft.": {
+    "ja": "結果を確認できません。まず状態を更新してください。再試行時は既存の下書きを確認します。",
+    "de": "Das Importergebnis ist unklar. Aktualisieren Sie zuerst den Status. Ein erneuter Versuch prüft auf einen vorhandenen Entwurf."
+  },
+  "The development workspace has reached its capacity. Please contact support.": {
+    "ja": "開発環境の保存上限に達しました。サポートへご連絡ください。",
+    "de": "Die Entwicklungsvorschau hat ihre Kapazitätsgrenze erreicht. Bitte kontaktieren Sie den Support."
+  },
+  "This action is unavailable. Your input has been kept.": {
+    "ja": "操作を実行できません。入力内容は保持されています。",
+    "de": "Diese Aktion ist nicht verfügbar. Ihre Eingaben bleiben erhalten."
+  },
+  "Draft import checked. See the task status below.": {
+    "ja": "下書きのインポートを確認しました。以下の処理状況をご覧ください。",
+    "de": "Entwurfsimport geprüft. Den Aufgabenstatus finden Sie unten."
+  },
+  "Store connection updated.": {
+    "ja": "ストア接続を更新しました。",
+    "de": "Shop-Verbindung aktualisiert."
+  },
+  "Processing…": {
+    "ja": "処理中…",
+    "de": "Wird verarbeitet…"
+  },
+  "Shipping estimate": {
+    "ja": "送料の見積もり",
+    "de": "Versandkostenschätzung"
+  },
+  "Estimate shipping": {
+    "ja": "送料を見積もる",
+    "de": "Versandkosten berechnen"
+  },
+  "Check delivery options for this item and quantity.": {
+    "ja": "この商品と数量の配送方法を確認できます。",
+    "de": "Lieferoptionen für diesen Artikel und diese Menge prüfen."
+  },
+  "Estimate for this item only. Other cart items, taxes and checkout adjustments are not included. Final delivery options and charges are confirmed at checkout.": {
+    "ja": "この商品のみの概算です。カート内の他の商品、税金、決済時の調整は含まれません。最終的な配送方法と送料は決済時に確定します。",
+    "de": "Schätzung nur für diesen Artikel. Andere Warenkorbartikel, Steuern und Anpassungen beim Checkout sind nicht enthalten. Die endgültigen Versandoptionen und Kosten werden beim Checkout bestätigt."
+  },
+  "Country / region": {
+    "ja": "国・地域",
+    "de": "Land / Region"
+  },
+  "State / province": {
+    "ja": "都道府県・州",
+    "de": "Bundesland / Provinz"
+  },
+  "Select a state / province": {
+    "ja": "都道府県・州を選択",
+    "de": "Bundesland / Provinz auswählen"
+  },
+  "Postal code": {
+    "ja": "郵便番号",
+    "de": "Postleitzahl"
+  },
+  "Street address": {
+    "ja": "町名・番地",
+    "de": "Straße und Hausnummer"
+  },
+  "Calculating…": {
+    "ja": "計算中…",
+    "de": "Wird berechnet…"
+  },
+  "Calculate shipping": {
+    "ja": "送料を計算",
+    "de": "Versand berechnen"
+  },
+  "Available delivery options": {
+    "ja": "利用可能な配送方法",
+    "de": "Verfügbare Versandoptionen"
+  },
+  "Shipment": {
+    "ja": "配送",
+    "de": "Sendung"
+  },
+  "The available quantity changed. Check the product quantity before requesting shipping again.": {
+    "ja": "購入可能な数量が変更されました。商品の数量を確認してから送料を再計算してください。",
+    "de": "Die verfügbare Menge hat sich geändert. Prüfen Sie die Artikelmenge, bevor Sie den Versand erneut berechnen."
+  },
+  "Shipping estimates are temporarily unavailable. Try again or check delivery at checkout.": {
+    "ja": "送料を一時的に確認できません。再試行するか、決済時にご確認ください。",
+    "de": "Die Versandkostenschätzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder prüfen Sie den Versand beim Checkout."
+  },
+  "No shipping options were returned for this address and quantity. Check your address or contact us before ordering.": {
+    "ja": "この住所と数量で利用可能な配送方法が見つかりません。住所をご確認いただくか、ご注文前にお問い合わせください。",
+    "de": "Für diese Adresse und Menge wurden keine Versandoptionen zurückgegeben. Prüfen Sie Ihre Adresse oder kontaktieren Sie uns vor der Bestellung."
+  },
+  "This item does not require shipping.": {
+    "ja": "この商品は配送不要です。",
+    "de": "Dieser Artikel erfordert keinen Versand."
+  },
+  "Bulk Buy": {
+    "ja": "まとめ買い",
+    "de": "Mehrere Varianten kaufen"
+  },
+  "View cart": {
+    "ja": "カートを見る",
+    "de": "Warenkorb ansehen"
+  },
+  "Choose quantities for multiple options": {
+    "ja": "複数のバリエーションの数量を選択",
+    "de": "Mengen für mehrere Varianten auswählen"
+  },
+  "Current unit prices apply. Shipping, taxes and any discounts are confirmed in your cart and at checkout.": {
+    "ja": "表示の単価が適用されます。送料・税金・割引はカートと決済時に確認できます。",
+    "de": "Es gelten die aktuellen Stückpreise. Versand, Steuern und eventuelle Rabatte werden im Warenkorb und beim Checkout bestätigt."
+  },
+  "Options and quantities": {
+    "ja": "バリエーションと数量",
+    "de": "Varianten und Mengen"
+  },
+  "Unit price": {
+    "ja": "単価",
+    "de": "Stückpreis"
+  },
+  "Loading options…": {
+    "ja": "バリエーションを読み込み中…",
+    "de": "Varianten werden geladen…"
+  },
+  "Options could not be loaded. Your quantities have been kept.": {
+    "ja": "バリエーションを読み込めませんでした。入力した数量は保持されています。",
+    "de": "Die Varianten konnten nicht geladen werden. Ihre eingegebenen Mengen bleiben erhalten."
+  },
+  "Load more options": {
+    "ja": "仕様をさらに表示",
+    "de": "Weitere Varianten laden"
+  },
+  "No options available.": {
+    "ja": "選択できるバリエーションはありません。",
+    "de": "Keine Varianten verfügbar."
+  },
+  "Choose a whole quantity from 0 to 9999 for each option.": {
+    "ja": "各バリエーションの数量を0～9999の整数で入力してください。",
+    "de": "Geben Sie für jede Variante eine ganze Zahl zwischen 0 und 9999 ein."
+  },
+  "Choose up to 250 different options per purchase.": {
+    "ja": "1回に選択できるバリエーションは250種類までです。",
+    "de": "Wählen Sie höchstens 250 verschiedene Varianten pro Einkauf."
+  },
+  "Choose up to 250 different options with quantities from 1 to 9999.": {
+    "ja": "250種類までのバリエーションを選択し、数量は1～9999で入力してください。",
+    "de": "Wählen Sie bis zu 250 verschiedene Varianten mit Mengen zwischen 1 und 9999."
+  },
+  "We could not confirm your cart update. Check your cart before trying again.": {
+    "ja": "カートの更新を確認できませんでした。再試行する前にカートを確認してください。",
+    "de": "Die Aktualisierung konnte nicht bestätigt werden. Prüfen Sie vor einem erneuten Versuch Ihren Warenkorb."
+  },
+  "Review your cart before adding these items again. Shopify may have adjusted quantities or availability.": {
+    "ja": "再度追加する前にカートを確認してください。Shopifyにより数量や在庫状況が調整された可能性があります。",
+    "de": "Prüfen Sie Ihren Warenkorb, bevor Sie diese Artikel erneut hinzufügen. Shopify hat Mengen oder Verfügbarkeit möglicherweise angepasst."
+  },
+  "Total quantity": {
+    "ja": "合計数量",
+    "de": "Gesamtmenge"
+  },
   "Home": {
     "ja": "ホーム",
     "de": "Startseite"
@@ -2552,11 +3007,26 @@
     "ja": "拡大",
     "de": "Vergrößern"
   },
-  "Zoom out": {"ja": "縮小", "de": "Verkleinern"},
-  "Zoom in": {"ja": "拡大", "de": "Vergrößern"},
-  "Rotate left": {"ja": "左に回転", "de": "Nach links drehen"},
-  "Rotate right": {"ja": "右に回転", "de": "Nach rechts drehen"},
-  "Reset photo view": {"ja": "表示をリセット", "de": "Bildansicht zurücksetzen"},
+  "Zoom out": {
+    "ja": "縮小",
+    "de": "Verkleinern"
+  },
+  "Zoom in": {
+    "ja": "拡大",
+    "de": "Vergrößern"
+  },
+  "Rotate left": {
+    "ja": "左に回転",
+    "de": "Nach links drehen"
+  },
+  "Rotate right": {
+    "ja": "右に回転",
+    "de": "Nach rechts drehen"
+  },
+  "Reset photo view": {
+    "ja": "表示をリセット",
+    "de": "Bildansicht zurücksetzen"
+  },
   "Close enlarged photo": {
     "ja": "拡大画像を閉じる",
     "de": "Vergrößertes Foto schließen"
@@ -3301,10 +3771,6 @@
     "ja": "仕様を削除",
     "de": "Variante entfernen"
   },
-  "Load more options": {
-    "ja": "仕様をさらに表示",
-    "de": "Weitere Varianten laden"
-  },
   "Minimum total quantity": {
     "ja": "最低合計数量",
     "de": "Mindestgesamtmenge"
@@ -3509,26 +3975,86 @@
     "ja": "通常商品の参考単価です。カスタム製品は別途お見積もりします。",
     "de": "Referenzstückpreis. Individuelle Produkte werden separat angeboten."
   },
-  "Email preferences": {"ja": "メール配信設定", "de": "E-Mail-Einstellungen"},
-  "Subscription status": {"ja": "配信登録の状態", "de": "Abonnementstatus"},
-  "Awaiting email confirmation": {"ja": "メール確認待ち", "de": "E-Mail-Bestätigung ausstehend"},
-  "Subscribed": {"ja": "登録済み", "de": "Abonniert"},
-  "Not subscribed": {"ja": "未登録", "de": "Nicht abonniert"},
-  "Unavailable": {"ja": "利用できません", "de": "Nicht verfügbar"},
-  "Choose whether to receive product news and offers by email. You can change your preference here.": {"ja": "商品情報やお得な情報のメール配信を選択できます。設定はこちらで変更できます。", "de": "Wähle, ob du Produktneuigkeiten und Angebote per E-Mail erhalten möchtest. Du kannst deine Auswahl hier ändern."},
-  "Unsubscribe from marketing emails": {"ja": "マーケティングメールの配信を停止", "de": "Marketing-E-Mails abbestellen"},
-  "Subscribe to marketing emails": {"ja": "マーケティングメールを購読", "de": "Marketing-E-Mails abonnieren"},
-  "Email preferences are unavailable. Please try again later.": {"ja": "メール配信設定を利用できません。しばらくしてから再度お試しください。", "de": "Die E-Mail-Einstellungen sind nicht verfügbar. Bitte versuche es später erneut."},
-  "Please reload this page and try again.": {"ja": "ページを再読み込みして、もう一度お試しください。", "de": "Bitte lade diese Seite neu und versuche es erneut."},
-  "Please sign in again.": {"ja": "もう一度ログインしてください。", "de": "Bitte melde dich erneut an."},
-  "Enter a valid name of up to 255 characters.": {"ja": "255文字以内の有効な名前を入力してください。", "de": "Gib einen gültigen Namen mit bis zu 255 Zeichen ein."},
-  "Your changes could not be confirmed. Refresh this page to check before trying again.": {"ja": "変更を確認できませんでした。再試行する前にページを再読み込みして状態をご確認ください。", "de": "Deine Änderungen konnten nicht bestätigt werden. Lade die Seite neu und prüfe den Status, bevor du es erneut versuchst."},
-  "Your account could not be loaded. Please refresh this page and try again.": {"ja": "アカウントを読み込めませんでした。ページを再読み込みして、もう一度お試しください。", "de": "Dein Konto konnte nicht geladen werden. Bitte lade die Seite neu und versuche es erneut."},
-  "Your profile has been saved.": {"ja": "プロフィールを保存しました。", "de": "Dein Profil wurde gespeichert."},
-  "You have unsubscribed from marketing emails.": {"ja": "マーケティングメールの配信を停止しました。", "de": "Du hast Marketing-E-Mails abbestellt."},
-  "Your subscription is awaiting email confirmation.": {"ja": "配信登録はメールの確認待ちです。", "de": "Dein Abonnement wartet auf die E-Mail-Bestätigung."},
-  "You are subscribed to marketing emails.": {"ja": "マーケティングメールに登録されています。", "de": "Du hast Marketing-E-Mails abonniert."},
-  "Email": {"ja": "メールアドレス", "de": "E-Mail"},
+  "Email preferences": {
+    "ja": "メール配信設定",
+    "de": "E-Mail-Einstellungen"
+  },
+  "Subscription status": {
+    "ja": "配信登録の状態",
+    "de": "Abonnementstatus"
+  },
+  "Awaiting email confirmation": {
+    "ja": "メール確認待ち",
+    "de": "E-Mail-Bestätigung ausstehend"
+  },
+  "Subscribed": {
+    "ja": "登録済み",
+    "de": "Abonniert"
+  },
+  "Not subscribed": {
+    "ja": "未登録",
+    "de": "Nicht abonniert"
+  },
+  "Unavailable": {
+    "ja": "利用できません",
+    "de": "Nicht verfügbar"
+  },
+  "Choose whether to receive product news and offers by email. You can change your preference here.": {
+    "ja": "商品情報やお得な情報のメール配信を選択できます。設定はこちらで変更できます。",
+    "de": "Wähle, ob du Produktneuigkeiten und Angebote per E-Mail erhalten möchtest. Du kannst deine Auswahl hier ändern."
+  },
+  "Unsubscribe from marketing emails": {
+    "ja": "マーケティングメールの配信を停止",
+    "de": "Marketing-E-Mails abbestellen"
+  },
+  "Subscribe to marketing emails": {
+    "ja": "マーケティングメールを購読",
+    "de": "Marketing-E-Mails abonnieren"
+  },
+  "Email preferences are unavailable. Please try again later.": {
+    "ja": "メール配信設定を利用できません。しばらくしてから再度お試しください。",
+    "de": "Die E-Mail-Einstellungen sind nicht verfügbar. Bitte versuche es später erneut."
+  },
+  "Please reload this page and try again.": {
+    "ja": "ページを再読み込みして、もう一度お試しください。",
+    "de": "Bitte lade diese Seite neu und versuche es erneut."
+  },
+  "Please sign in again.": {
+    "ja": "もう一度ログインしてください。",
+    "de": "Bitte melde dich erneut an."
+  },
+  "Enter a valid name of up to 255 characters.": {
+    "ja": "255文字以内の有効な名前を入力してください。",
+    "de": "Gib einen gültigen Namen mit bis zu 255 Zeichen ein."
+  },
+  "Your changes could not be confirmed. Refresh this page to check before trying again.": {
+    "ja": "変更を確認できませんでした。再試行する前にページを再読み込みして状態をご確認ください。",
+    "de": "Deine Änderungen konnten nicht bestätigt werden. Lade die Seite neu und prüfe den Status, bevor du es erneut versuchst."
+  },
+  "Your account could not be loaded. Please refresh this page and try again.": {
+    "ja": "アカウントを読み込めませんでした。ページを再読み込みして、もう一度お試しください。",
+    "de": "Dein Konto konnte nicht geladen werden. Bitte lade die Seite neu und versuche es erneut."
+  },
+  "Your profile has been saved.": {
+    "ja": "プロフィールを保存しました。",
+    "de": "Dein Profil wurde gespeichert."
+  },
+  "You have unsubscribed from marketing emails.": {
+    "ja": "マーケティングメールの配信を停止しました。",
+    "de": "Du hast Marketing-E-Mails abbestellt."
+  },
+  "Your subscription is awaiting email confirmation.": {
+    "ja": "配信登録はメールの確認待ちです。",
+    "de": "Dein Abonnement wartet auf die E-Mail-Bestätigung."
+  },
+  "You are subscribed to marketing emails.": {
+    "ja": "マーケティングメールに登録されています。",
+    "de": "Du hast Marketing-E-Mails abonniert."
+  },
+  "Email": {
+    "ja": "メールアドレス",
+    "de": "E-Mail"
+  },
   "ALL": {
     "ja": "すべて",
     "de": "Alle"
@@ -3557,6 +4083,10 @@
     "ja": "EUランキング",
     "de": "EU-Top-Rangliste"
   },
+  "Trending": {
+    "ja": "トレンド順",
+    "de": "Im Trend"
+  },
   "Trending Products": {
     "ja": "注目商品",
     "de": "Trendprodukte"
@@ -3565,7 +4095,11 @@
     "ja": "認証済み商品",
     "de": "Zertifizierte Produkte"
   },
-  "Brand Directory": {
+  "More navigation": {
+    "ja": "その他のナビゲーション",
+    "de": "Weitere Navigation"
+  },
+  "Brand Distributor": {
     "ja": "ブランド一覧",
     "de": "Markenverzeichnis"
   },
@@ -3596,5 +4130,653 @@
   "FAQs": {
     "ja": "よくある質問",
     "de": "Häufige Fragen"
+  },
+  "Search by Image": {
+    "ja": "画像で検索",
+    "de": "Bildersuche"
+  },
+  "Upload a product image": {
+    "ja": "商品画像を選択",
+    "de": "Produktbild hochladen"
+  },
+  "Comparing product images…": {
+    "ja": "商品画像を比較中…",
+    "de": "Produktbilder werden verglichen …"
+  },
+  "No similar images found": {
+    "ja": "類似画像が見つかりませんでした",
+    "de": "Keine ähnlichen Bilder gefunden"
+  },
+  "Product images are temporarily unavailable.": {
+    "ja": "商品画像を一時的に利用できません。",
+    "de": "Produktbilder sind vorübergehend nicht verfügbar."
+  },
+  "JPG, PNG or WebP. Up to 8 MB. Your image stays on this device.": {
+    "ja": "JPG、PNG、WebP に対応（8 MB 以下）。画像はこの端末内で処理されます。",
+    "de": "JPG, PNG oder WebP bis 8 MB. Ihr Bild bleibt auf diesem Gerät."
+  },
+  "Wishlist": {
+    "ja": "お気に入り",
+    "de": "Merkliste"
+  },
+  "View wishlist": {
+    "ja": "お気に入りを見る",
+    "de": "Merkliste ansehen"
+  },
+  "Saved on this device.": {
+    "ja": "この端末に保存されます。",
+    "de": "Auf diesem Gerät gespeichert."
+  },
+  "Your wishlist is empty": {
+    "ja": "お気に入りは空です",
+    "de": "Ihre Merkliste ist leer"
+  },
+  "Register for Free": {
+    "ja": "無料で登録",
+    "de": "Kostenlos registrieren"
+  },
+  "My Orders": {
+    "ja": "注文履歴",
+    "de": "Meine Bestellungen"
+  },
+  "My Coupons": {
+    "ja": "クーポン",
+    "de": "Meine Gutscheine"
+  },
+  "Seine Shop API": {
+    "ja": "Seine Shop API",
+    "de": "Seine Shop API"
+  },
+  "Get Coupons": {
+    "ja": "クーポン",
+    "de": "Gutscheine"
+  },
+  "Why Choose Us": {
+    "ja": "選ばれる理由",
+    "de": "Warum Seine Shop?"
+  },
+  "AI Assistant Setup Guide": {
+    "ja": "AI アシスタント設定ガイド",
+    "de": "Einrichtung des KI-Assistenten"
+  },
+  "No public coupon offers right now": {
+    "ja": "現在公開中のクーポンはありません",
+    "de": "Derzeit gibt es keine öffentlichen Gutscheinangebote"
+  },
+  "Search FAQs": {
+    "ja": "よくある質問を検索",
+    "de": "FAQ durchsuchen"
+  },
+  "Frequently Asked Questions": {
+    "ja": "よくある質問",
+    "de": "Häufig gestellte Fragen"
+  },
+  "All FAQ topics": {
+    "ja": "すべての質問トピック",
+    "de": "Alle FAQ-Themen"
+  },
+  "Hi, how can we help you?": {
+    "ja": "お困りのことは何ですか？",
+    "de": "Wie können wir Ihnen helfen?"
+  },
+  "Hot Brands": {
+    "ja": "注目のブランド",
+    "de": "Beliebte Marken"
+  },
+  "Brands in All Categories": {
+    "ja": "すべてのカテゴリーのブランド",
+    "de": "Marken in allen Kategorien"
+  },
+  "Search brands": {
+    "ja": "ブランドを検索",
+    "de": "Marken suchen"
+  },
+  "Browse by brand": {
+    "ja": "ブランドで探す",
+    "de": "Nach Marke stöbern"
+  },
+  "No brands in this directory yet": {
+    "ja": "この一覧にはまだブランドがありません",
+    "de": "In diesem Verzeichnis gibt es noch keine Marken"
+  },
+  "No featured brands yet": {
+    "ja": "注目ブランドはまだありません",
+    "de": "Noch keine vorgestellten Marken"
+  },
+  "Prepare email": {
+    "ja": "メールの下書きを作成",
+    "de": "E-Mail vorbereiten"
+  },
+  "Public product lookup": {
+    "ja": "公開商品情報の検索",
+    "de": "Öffentliche Produktsuche"
+  },
+  "Open JSON result": {
+    "ja": "JSON 結果を表示",
+    "de": "JSON-Ergebnis öffnen"
+  },
+  "Compare your photo with product photos. Matches are based on visual similarity.": {
+    "ja": "写真を商品画像と比較します。画像の見た目の類似度を使用します。",
+    "de": "Vergleiche dein Foto mit Produktfotos. Treffer basieren auf visueller Ähnlichkeit."
+  },
+  "Product photos compared": {
+    "ja": "比較した商品画像",
+    "de": "Verglichene Produktfotos"
+  },
+  "Search more product photos": {
+    "ja": "さらに商品画像を検索",
+    "de": "Weitere Produktfotos durchsuchen"
+  },
+  "Account Credits": {
+    "ja": "アカウント残高",
+    "de": "Kontoguthaben"
+  },
+  "Images Download List": {
+    "ja": "画像ダウンロードリスト",
+    "de": "Bilder-Downloadliste"
+  },
+  "Store credit balances are shown in their original currencies. Eligible credit can be used at checkout when signed in.": {
+    "ja": "ストアクレジット残高は元の通貨で表示されます。ログイン時に、対象の残高をチェックアウトで利用できます。",
+    "de": "Guthaben werden in ihrer jeweiligen Währung angezeigt. Angemeldet kannst du berechtigtes Guthaben an der Kasse nutzen."
+  },
+  "Your store credit balance is temporarily unavailable. Please try again later.": {
+    "ja": "ストアクレジット残高を取得できません。後でもう一度お試しください。",
+    "de": "Dein Guthaben ist vorübergehend nicht verfügbar. Bitte versuche es später erneut."
+  },
+  "No store credit accounts are available.": {
+    "ja": "利用可能なストアクレジット口座はありません。",
+    "de": "Es sind keine Guthabenkonten verfügbar."
+  },
+  "Find product images": {
+    "ja": "商品画像を探す",
+    "de": "Produktbilder suchen"
+  },
+  "Saved products": {
+    "ja": "保存済み商品",
+    "de": "Gespeicherte Produkte"
+  },
+  "Your image download list is empty": {
+    "ja": "画像ダウンロードリストは空です",
+    "de": "Deine Bilder-Downloadliste ist leer"
+  },
+  "Save to download list": {
+    "ja": "ダウンロードリストに保存",
+    "de": "Zur Downloadliste hinzufügen"
+  },
+  "Remove from download list": {
+    "ja": "ダウンロードリストから削除",
+    "de": "Aus der Downloadliste entfernen"
+  },
+  "No product images available.": {
+    "ja": "商品画像はありません。",
+    "de": "Keine Produktbilder verfügbar."
+  },
+  "Download image": {
+    "ja": "画像をダウンロード",
+    "de": "Bild herunterladen"
+  },
+  "Next images": {
+    "ja": "次の画像",
+    "de": "Weitere Bilder"
+  },
+  "Image download started.": {
+    "ja": "画像のダウンロードを開始しました。",
+    "de": "Der Bilddownload wurde gestartet."
+  },
+  "The image could not be downloaded. Please try again.": {
+    "ja": "画像をダウンロードできません。もう一度お試しください。",
+    "de": "Das Bild konnte nicht heruntergeladen werden. Bitte versuche es erneut."
+  },
+  "Saved to download list": {
+    "ja": "ダウンロードリストに保存済み",
+    "de": "In der Downloadliste gespeichert"
+  },
+  "Save images to download list": {
+    "ja": "画像をダウンロードリストに保存",
+    "de": "Bilder zur Downloadliste hinzufügen"
+  },
+  "Browse by Release Date": {
+    "ja": "公開日で探す",
+    "de": "Nach Veröffentlichungsdatum suchen"
+  },
+  "All dates": {
+    "ja": "すべての日付",
+    "de": "Alle Daten"
+  },
+  "Recent 30 Days": {
+    "ja": "過去30日間",
+    "de": "Letzte 30 Tage"
+  },
+  "No releases in the last 30 days.": {
+    "ja": "過去30日間の新着商品はありません。",
+    "de": "Keine Neuerscheinungen in den letzten 30 Tagen."
+  },
+  "No options available yet.": {
+    "ja": "選択肢はまだありません。",
+    "de": "Noch keine Optionen verfügbar."
+  },
+  "Certificate": {
+    "ja": "認証",
+    "de": "Zertifikat"
+  },
+  "All topics": {
+    "ja": "すべてのトピック",
+    "de": "Alle Themen"
+  },
+  "Back to brand directory": {
+    "ja": "ブランド一覧に戻る",
+    "de": "Zurück zum Markenverzeichnis"
+  },
+  "Browse products from selected brands.": {
+    "ja": "厳選ブランドの商品を探す。",
+    "de": "Produkte ausgewählter Marken entdecken."
+  },
+  "Browse products selected for this trend feature.": {
+    "ja": "この特集で紹介する注目商品を探す。",
+    "de": "Für diese Trendübersicht ausgewählte Produkte entdecken."
+  },
+  "Browse recently added products by category.": {
+    "ja": "最近追加された商品をカテゴリー別に探す。",
+    "de": "Neu hinzugefügte Produkte nach Kategorie entdecken."
+  },
+  "Browse selected products and check the certification details available on each product page.": {
+    "ja": "選ばれた商品を探し、各商品ページの認証情報をご確認ください。",
+    "de": "Ausgewählte Produkte entdecken und verfügbare Zertifizierungsangaben auf den Produktseiten prüfen."
+  },
+  "Explore the brands included in the Seine Shop catalog directory.": {
+    "ja": "Seine Shopの商品一覧にあるブランドを探す。",
+    "de": "Marken im Katalogverzeichnis von Seine Shop entdecken."
+  },
+  "Explore the products selected for this European market ranking.": {
+    "ja": "ヨーロッパ市場向けランキングに選ばれた商品を探す。",
+    "de": "Die für diese europäische Marktrangliste ausgewählten Produkte entdecken."
+  },
+  "Check an existing shipment using its tracking number.": {
+    "ja": "追跡番号で配送状況を確認できます。",
+    "de": "Eine bestehende Sendung anhand ihrer Sendungsnummer prüfen."
+  },
+  "Check current Seine Shop offers and how to apply a discount at checkout.": {
+    "ja": "Seine Shopの現在の特典と、購入手続きでの割引の使い方をご確認ください。",
+    "de": "Aktuelle Angebote von Seine Shop und die Einlösung von Rabatten an der Kasse prüfen."
+  },
+  "Developer information for accessing published Seine Shop catalog information.": {
+    "ja": "公開されているSeine Shopの商品情報にアクセスするための開発者向け情報。",
+    "de": "Entwicklerinformationen zum Zugriff auf veröffentlichte Katalogdaten von Seine Shop."
+  },
+  "Explore FAQs": {
+    "ja": "よくある質問を見る",
+    "de": "FAQs ansehen"
+  },
+  "Explore how Seine Shop helps shoppers and wholesale buyers choose mobile accessories.": {
+    "ja": "Seine Shopでのモバイルアクセサリー選びについてご案内します。",
+    "de": "Erfahren, wie Seine Shop Privat- und Großhandelskunden bei der Auswahl von Mobilzubehör unterstützt."
+  },
+  "Feedback": {
+    "ja": "ご意見・ご感想",
+    "de": "Feedback"
+  },
+  "Find Seine Shop answers about orders, shipping, returns and product compatibility.": {
+    "ja": "ご注文、配送、返品、商品の互換性に関するSeine Shopの回答をご確認ください。",
+    "de": "Antworten von Seine Shop zu Bestellungen, Versand, Rückgaben und Produktkompatibilität finden."
+  },
+  "Find answers to common product and order questions.": {
+    "ja": "商品やご注文に関するよくある質問をご確認ください。",
+    "de": "Antworten auf häufige Produkt- und Bestellfragen finden."
+  },
+  "General Inquiry": {
+    "ja": "一般のお問い合わせ",
+    "de": "Allgemeine Anfrage"
+  },
+  "Get help with a Seine Shop order, product or wholesale inquiry.": {
+    "ja": "Seine Shopのご注文、商品、卸売についてお問い合わせください。",
+    "de": "Hilfe zu Bestellungen, Produkten oder Großhandelsanfragen bei Seine Shop erhalten."
+  },
+  "Get in Touch": {
+    "ja": "お問い合わせ",
+    "de": "Kontakt aufnehmen"
+  },
+  "Give Feedback": {
+    "ja": "ご意見を送る",
+    "de": "Feedback geben"
+  },
+  "If you already have a discount code, enter it at checkout. Eligibility is confirmed there.": {
+    "ja": "割引コードをお持ちの場合は購入手続きで入力してください。適用条件は購入手続きで確認できます。",
+    "de": "Wenn Sie bereits einen Rabattcode haben, geben Sie ihn an der Kasse ein. Dort wird die Gültigkeit geprüft."
+  },
+  "Loading…": {
+    "ja": "読み込み中…",
+    "de": "Wird geladen…"
+  },
+  "Message": {
+    "ja": "メッセージ",
+    "de": "Nachricht"
+  },
+  "Name": {
+    "ja": "お名前",
+    "de": "Name"
+  },
+  "Order number or item number": {
+    "ja": "注文番号または商品番号",
+    "de": "Bestell- oder Artikelnummer"
+  },
+  "Product no longer available": {
+    "ja": "この商品は現在利用できません",
+    "de": "Produkt nicht mehr verfügbar"
+  },
+  "No answers found. Try a different search.": {
+    "ja": "回答が見つかりません。別のキーワードで検索してください。",
+    "de": "Keine Antworten gefunden. Versuchen Sie eine andere Suche."
+  },
+  "Open API guide": {
+    "ja": "APIガイドを開く",
+    "de": "API-Anleitung öffnen"
+  },
+  "Still need help?": {
+    "ja": "お困りのことはありますか？",
+    "de": "Benötigen Sie weitere Hilfe?"
+  },
+  "Tell us about your shopping experience.": {
+    "ja": "お買い物のご感想をお聞かせください。",
+    "de": "Berichten Sie uns von Ihrem Einkaufserlebnis."
+  },
+  "The handle is the last part of a product page URL, after /products/.": {
+    "ja": "ハンドルは商品ページURLの /products/ に続く末尾の文字列です。",
+    "de": "Der Handle ist der letzte Teil einer Produkt-URL nach /products/."
+  },
+  "This image could not be read. Try another file.": {
+    "ja": "この画像を読み込めませんでした。別のファイルをお試しください。",
+    "de": "Dieses Bild konnte nicht gelesen werden. Versuchen Sie eine andere Datei."
+  },
+  "Use public Seine Shop catalog information with your AI assistant.": {
+    "ja": "AIアシスタントでSeine Shopの公開商品情報をご利用いただけます。",
+    "de": "Öffentliche Kataloginformationen von Seine Shop mit Ihrem KI-Assistenten verwenden."
+  },
+  "Use public catalog data with your assistant": {
+    "ja": "アシスタントで公開商品情報を使う",
+    "de": "Öffentliche Katalogdaten mit Ihrem Assistenten nutzen"
+  },
+  "Use this form to prepare an email to our support team. Nothing is sent until you send it in your email app.": {
+    "ja": "このフォームでサポート宛てのメール下書きを作成できます。メールアプリで送信するまで何も送信されません。",
+    "de": "Mit diesem Formular bereiten Sie eine E-Mail an unser Supportteam vor. Erst beim Senden in Ihrer E-Mail-App wird sie verschickt."
+  },
+  "Read title, description, price range and availability for a published product. This API cannot access accounts, place orders or modify data.": {
+    "ja": "公開商品のタイトル、説明、価格帯、販売状況を取得できます。このAPIではアカウントへのアクセス、注文、データの変更はできません。",
+    "de": "Titel, Beschreibung, Preisspanne und Verfügbarkeit eines veröffentlichten Produkts abrufen. Diese API kann weder auf Konten zugreifen noch Bestellungen aufgeben oder Daten ändern."
+  },
+  "Open a Seine Shop product and copy its product handle.": {
+    "ja": "Seine Shopの商品ページを開き、商品ハンドルをコピーします。",
+    "de": "Ein Produkt von Seine Shop öffnen und seinen Produkt-Handle kopieren."
+  },
+  "Open the product lookup in the API guide and give the resulting URL to a web-enabled assistant.": {
+    "ja": "APIガイドの商品検索を開き、生成されたURLをウェブアクセス可能なアシスタントに渡します。",
+    "de": "Die Produktsuche in der API-Anleitung öffnen und die Ergebnis-URL einem Assistenten mit Webzugriff geben."
+  },
+  "Ask it to summarize the product specifications. Confirm current prices and availability on the storefront before ordering.": {
+    "ja": "商品の仕様を要約するよう依頼します。注文前にストアで最新の価格と販売状況をご確認ください。",
+    "de": "Die Produktspezifikationen zusammenfassen lassen. Aktuelle Preise und Verfügbarkeit vor der Bestellung im Shop prüfen."
+  },
+  "No account authorization or private credentials are needed. Do not share an order number or customer information with this public workflow.": {
+    "ja": "アカウント認証や秘密の認証情報は不要です。この公開ワークフローで注文番号や顧客情報を共有しないでください。",
+    "de": "Eine Kontoautorisierung oder private Zugangsdaten sind nicht erforderlich. Teilen Sie in diesem öffentlichen Ablauf keine Bestellnummern oder Kundendaten."
+  },
+  "Product categories": {
+    "ja": "商品カテゴリー",
+    "de": "Produktkategorien"
+  },
+  "Product Inquiry": {
+    "ja": "商品のお問い合わせ",
+    "de": "Produktanfrage"
+  },
+  "Existing Order Issues": {
+    "ja": "ご注文に関する問題",
+    "de": "Probleme mit bestehenden Bestellungen"
+  },
+  "Wholesale Inquiry": {
+    "ja": "卸売のお問い合わせ",
+    "de": "Großhandelsanfrage"
+  },
+  "Account & Registration": {
+    "ja": "アカウントと登録",
+    "de": "Konto und Registrierung"
+  },
+  "Products & Service": {
+    "ja": "商品とサービス",
+    "de": "Produkte und Service"
+  },
+  "Your Orders": {
+    "ja": "ご注文",
+    "de": "Ihre Bestellungen"
+  },
+  "Shipping & Delivery": {
+    "ja": "配送とお届け",
+    "de": "Versand und Lieferung"
+  },
+  "Returns & Refunds": {
+    "ja": "返品と返金",
+    "de": "Rückgaben und Erstattungen"
+  },
+  "Payment, Pricing & Promotions": {
+    "ja": "お支払い・価格・キャンペーン",
+    "de": "Zahlung, Preise und Aktionen"
+  },
+  "How do I create an account?": {
+    "ja": "アカウントを作成するには？",
+    "de": "Wie erstelle ich ein Konto?"
+  },
+  "Open Sign in and follow the email verification steps. Shopify creates your customer account when you first sign in successfully.": {
+    "ja": "ログインを開き、メール認証の手順に従ってください。初回ログインの完了時にShopifyがお客様のアカウントを作成します。",
+    "de": "Öffnen Sie die Anmeldung und folgen Sie der E-Mail-Verifizierung. Shopify erstellt Ihr Kundenkonto bei der ersten erfolgreichen Anmeldung."
+  },
+  "How do I check product compatibility?": {
+    "ja": "商品の互換性を確認するには？",
+    "de": "Wie prüfe ich die Produktkompatibilität?"
+  },
+  "Compare the exact device model, connector and charging standard with the information on the product page.": {
+    "ja": "お使いの端末の正確なモデル、端子、充電規格を商品ページの情報と照合してください。",
+    "de": "Vergleichen Sie das genaue Gerätemodell, den Anschluss und den Ladestandard mit den Angaben auf der Produktseite."
+  },
+  "Where can I find my orders?": {
+    "ja": "注文はどこで確認できますか？",
+    "de": "Wo finde ich meine Bestellungen?"
+  },
+  "Sign in with the email used at checkout and open My Orders.": {
+    "ja": "購入時のメールアドレスでログインし、注文一覧を開いてください。",
+    "de": "Melden Sie sich mit der beim Kauf verwendeten E-Mail-Adresse an und öffnen Sie Meine Bestellungen."
+  },
+  "How do I track my order?": {
+    "ja": "注文の配送状況を確認するには？",
+    "de": "Wie verfolge ich meine Bestellung?"
+  },
+  "Enter the tracking number provided for your shipment on the tracking page.": {
+    "ja": "配送追跡ページで、お知らせした追跡番号を入力してください。",
+    "de": "Geben Sie die Sendungsnummer auf der Seite zur Sendungsverfolgung ein."
+  },
+  "Where can I see shipping options?": {
+    "ja": "配送方法はどこで確認できますか？",
+    "de": "Wo sehe ich die Versandoptionen?"
+  },
+  "Available delivery methods and charges are shown in checkout for your shipping address.": {
+    "ja": "配送先に対応する配送方法と料金は購入手続きで表示されます。",
+    "de": "Verfügbare Versandarten und Kosten für Ihre Lieferadresse werden an der Kasse angezeigt."
+  },
+  "What is the returns policy?": {
+    "ja": "返品ポリシーについて教えてください。",
+    "de": "Welche Rückgabebedingungen gelten?"
+  },
+  "Review the published store policies. Include your order number when contacting support.": {
+    "ja": "公開されているストアポリシーをご確認ください。お問い合わせの際は注文番号をお知らせください。",
+    "de": "Lesen Sie die veröffentlichten Shoprichtlinien. Geben Sie bei Supportanfragen Ihre Bestellnummer an."
+  },
+  "How do I apply a coupon?": {
+    "ja": "クーポンを使うには？",
+    "de": "Wie löse ich einen Gutschein ein?"
+  },
+  "Enter a valid discount code in Shopify checkout. The checkout shows whether the code applies before you pay.": {
+    "ja": "Shopifyの購入手続きで有効な割引コードを入力してください。お支払い前に適用結果を確認できます。",
+    "de": "Geben Sie einen gültigen Rabattcode an der Shopify-Kasse ein. Vor der Zahlung sehen Sie, ob der Code anwendbar ist."
+  },
+  "Device compatibility": {
+    "ja": "端末の互換性",
+    "de": "Gerätekompatibilität"
+  },
+  "Check exact fit and charging specifications before you choose.": {
+    "ja": "ご購入前に、対応機種と充電仕様を正確にご確認ください。",
+    "de": "Prüfen Sie vor der Auswahl die genaue Passform und Ladespezifikationen."
+  },
+  "Wholesale & custom orders": {
+    "ja": "卸売・カスタム注文",
+    "de": "Großhandel und Sonderanfertigungen"
+  },
+  "Use the inquiry option on eligible product pages to discuss your buying needs.": {
+    "ja": "対応する商品ページのお問い合わせから、ご購入についてご相談ください。",
+    "de": "Nutzen Sie die Anfragefunktion auf geeigneten Produktseiten, um Ihren Einkaufsbedarf zu besprechen."
+  },
+  "Order support": {
+    "ja": "注文サポート",
+    "de": "Bestellservice"
+  },
+  "Get help with account access, shipment tracking and store policies.": {
+    "ja": "ログイン、配送追跡、ストアポリシーについてサポートします。",
+    "de": "Hilfe zu Kontozugriff, Sendungsverfolgung und Shoprichtlinien erhalten."
+  },
+  "Send your inquiry directly to our support team using this form.": {
+    "ja": "このフォームからサポートチームにお問い合わせを送信できます。",
+    "de": "Senden Sie Ihre Anfrage über dieses Formular direkt an unser Support-Team."
+  },
+  "Your message has been accepted for sending. Thank you for contacting us.": {
+    "ja": "お問い合わせの送信を受け付けました。ありがとうございます。",
+    "de": "Ihre Nachricht wurde zum Versand angenommen. Vielen Dank für Ihre Anfrage."
+  },
+  "Please check the highlighted fields and submit again.": {
+    "ja": "表示された項目を確認して、もう一度送信してください。",
+    "de": "Bitte prüfen Sie die markierten Felder und senden Sie das Formular erneut ab."
+  },
+  "Your form session has expired. Reload the form and try again.": {
+    "ja": "フォームの有効期限が切れました。再読み込みしてお試しください。",
+    "de": "Ihre Formularsitzung ist abgelaufen. Laden Sie das Formular neu und versuchen Sie es erneut."
+  },
+  "Too many attempts. Please wait ten minutes before trying again.": {
+    "ja": "送信回数が上限に達しました。10分後にお試しください。",
+    "de": "Zu viele Versuche. Bitte warten Sie zehn Minuten und versuchen Sie es erneut."
+  },
+  "This submission reference was already used. Edit your message before submitting again.": {
+    "ja": "この送信番号は使用済みです。内容を編集してから、もう一度送信してください。",
+    "de": "Diese Übermittlungsreferenz wurde bereits verwendet. Bearbeiten Sie Ihre Nachricht vor dem erneuten Senden."
+  },
+  "We could not confirm the send result. Your message is still here. Retry without changing it to reuse the same submission reference.": {
+    "ja": "送信結果を確認できませんでした。入力内容は保持されています。同じ送信番号で再試行するには、内容を変更せずにもう一度送信してください。",
+    "de": "Das Sendeergebnis konnte nicht bestätigt werden. Ihre Nachricht bleibt erhalten. Versuchen Sie es ohne Änderungen erneut, um dieselbe Übermittlungsreferenz zu verwenden."
+  },
+  "We could not send your message. Your details have been kept. Please try again or contact us by email.": {
+    "ja": "送信できませんでした。入力内容は保持されています。再試行するか、メールでお問い合わせください。",
+    "de": "Ihre Nachricht konnte nicht gesendet werden. Ihre Eingaben bleiben erhalten. Versuchen Sie es erneut oder kontaktieren Sie uns per E-Mail."
+  },
+  "The contact form is temporarily unavailable. Please use the email address shown here.": {
+    "ja": "お問い合わせフォームは一時的に利用できません。表示されているメールアドレスをご利用ください。",
+    "de": "Das Kontaktformular ist vorübergehend nicht verfügbar. Bitte verwenden Sie die hier angegebene E-Mail-Adresse."
+  },
+  "Enter a valid email address.": {
+    "ja": "有効なメールアドレスを入力してください。",
+    "de": "Geben Sie eine gültige E-Mail-Adresse ein."
+  },
+  "Please check this field.": {
+    "ja": "この項目を確認してください。",
+    "de": "Bitte prüfen Sie dieses Feld."
+  },
+  "Leave this field empty": {
+    "ja": "この欄は空欄にしてください",
+    "de": "Dieses Feld bitte leer lassen"
+  },
+  "Sending message…": {
+    "ja": "送信中…",
+    "de": "Nachricht wird gesendet…"
+  },
+  "Loading form…": {
+    "ja": "フォームを読み込み中…",
+    "de": "Formular wird geladen…"
+  },
+  "Send message": {
+    "ja": "メッセージを送信",
+    "de": "Nachricht senden"
+  },
+  "Reload form": {
+    "ja": "フォームを再読み込み",
+    "de": "Formular neu laden"
+  },
+  "Submission reference": {
+    "ja": "送信番号",
+    "de": "Übermittlungsreferenz"
+  },
+  "Enable JavaScript to use this form, or contact us by email.": {
+    "ja": "フォームを使用するにはJavaScriptを有効にするか、メールでお問い合わせください。",
+    "de": "Aktivieren Sie JavaScript für dieses Formular oder kontaktieren Sie uns per E-Mail."
+  },
+  "Best selling": {
+    "ja": "売れ筋順",
+    "de": "Bestseller"
+  },
+  "Filters": {
+    "ja": "絞り込み",
+    "de": "Filter"
+  },
+  "Grid view": {
+    "ja": "グリッド表示",
+    "de": "Rasteransicht"
+  },
+  "List view": {
+    "ja": "リスト表示",
+    "de": "Listenansicht"
+  },
+  "Maximum price": {
+    "ja": "最高価格",
+    "de": "Höchstpreis"
+  },
+  "Minimum price": {
+    "ja": "最低価格",
+    "de": "Mindestpreis"
+  },
+  "Newest": {
+    "ja": "新着順",
+    "de": "Neueste"
+  },
+  "No matching products": {
+    "ja": "該当する商品はありません",
+    "de": "Keine passenden Produkte"
+  },
+  "Relevance": {
+    "ja": "関連度順",
+    "de": "Relevanz"
+  },
+  "SEARCH SEINESHOP": {
+    "ja": "Seine Shop を検索",
+    "de": "Seine Shop durchsuchen"
+  },
+  "Show": {
+    "ja": "表示件数",
+    "de": "Anzeigen"
+  },
+  "Sort products": {
+    "ja": "商品の並べ替え",
+    "de": "Produkte sortieren"
+  },
+  "Try a different search or clear your filters.": {
+    "ja": "検索条件を変更するか、絞り込みを解除してください。",
+    "de": "Versuchen Sie eine andere Suche oder setzen Sie Ihre Filter zurück."
+  },
+  "View": {
+    "ja": "表示方法",
+    "de": "Ansicht"
+  },
+  "products on this page": {
+    "ja": "件の商品を表示中",
+    "de": "Produkte auf dieser Seite"
+  },
+  "results": {
+    "ja": "件の結果",
+    "de": "Ergebnisse"
+  },
+  "products": {
+    "ja": "商品",
+    "de": "Produkte"
   }
 }

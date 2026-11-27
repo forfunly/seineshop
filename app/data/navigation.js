@@ -231,6 +231,14 @@ export const categories = [
       [
         "Apple AirTag Accessories",
         "/collections/apple-airtag-accessories"
+      ],
+      [
+        "Apple Pencil Accessories",
+        "/collections/apple-pencil-accessories"
+      ],
+      [
+        "Apple HomeView Accessories",
+        "/collections/apple-homeview-accessories"
       ]
     ],
     "children": [
@@ -263,6 +271,16 @@ export const categories = [
         "title": "Apple AirTag Accessories",
         "handle": "apple-airtag-accessories",
         "url": "/collections/apple-airtag-accessories"
+      },
+      {
+        "title": "Apple Pencil Accessories",
+        "handle": "apple-pencil-accessories",
+        "url": "/collections/apple-pencil-accessories"
+      },
+      {
+        "title": "Apple HomeView Accessories",
+        "handle": "apple-homeview-accessories",
+        "url": "/collections/apple-homeview-accessories"
       }
     ]
   },
@@ -1484,5 +1502,3 @@ export const categories = [
     ]
   }
 ];
-export const primaryLinks = [
-  ["Best Sellers", "/collections/best-sellers"], ["iPhone Duo", "/collections/iphone-duo"], ["Browse collections", "/collections"], ["iPhone 18 Pro Max", "/collections/iphone-18-pro-max"], ["Charging edit", "/discover/b20a"], ["Journal", "/blogs/journal"], ["Support", "/support"]];

@@ -1,7 +1,9 @@
+import {loadScopedSuggestions} from '~/lib/scoped-search.server';
 import {useLocale} from '~/lib/i18n';
 import {useLoaderData} from 'react-router';
 import {Analytics} from '@shopify/hydrogen';
 import {FacetedCollection} from '~/components/FacetedCollection';
+import {categories} from '~/data/navigation';
 import {parseCollectionFilters} from '~/lib/collection-filters';
 import {SearchForm} from '~/components/SearchForm';
 import {SearchResults} from '~/components/SearchResults';
@@ -36,6 +38,7 @@ export async function loader({request, context}) {
   return await searchPromise.catch(() => {
     return {
       term: (url.searchParams.get('q') || '').trim().slice(0, 120),
+      scope: url.searchParams.get('category') || '',
       result: null,
       type: isPredictive ? 'predictive' : 'regular',
       error: 'Search is temporarily unavailable. Please try again.',
@@ -474,6 +477,13 @@ async function predictiveSearch({request, context}) {
       result: getEmptyPredictiveSearchResult(),
     };
 
+  const scope = url.searchParams.get('category') || '';
+  if (scope) {
+    if (!categories.some(({handle}) => handle === scope)) return {type, term, scope, result: getEmptyPredictiveSearchResult()};
+    const matches = await loadScopedSuggestions(storefront, SCOPED_SUGGESTIONS_QUERY, {handle: scope, term, limit});
+    return {type, term, scope, result: {items: {products: matches}, total: matches.length}};
+  }
+
   // Predictively search articles, collections, pages, products, and queries (suggestions)
   const {predictiveSearch: items, errors} = await storefront.query(
     PREDICTIVE_SEARCH_QUERY,
@@ -501,6 +511,7 @@ async function predictiveSearch({request, context}) {
   return {
     type,
     term,
+    scope,
     result: {
       items,
       total,
@@ -514,3 +525,15 @@ async function predictiveSearch({request, context}) {
 /** @typedef {import('storefrontapi.generated').RegularSearchQuery} RegularSearchQuery */
 /** @typedef {import('storefrontapi.generated').PredictiveSearchQuery} PredictiveSearchQuery */
 /** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */
+
+const SCOPED_SUGGESTIONS_QUERY = `#graphql
+  query ScopedSuggestions($handle: String!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) { products(first: 250, after: $after) { pageInfo { hasNextPage endCursor } nodes {
+      id handle title vendor productType
+      selectedOrFirstAvailableVariant {
+        price { amount currencyCode }
+        image { id url altText width height }
+      }
+    } } }
+  }
+`;

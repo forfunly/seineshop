@@ -348,7 +348,7 @@ export function JournalArticle({article, products = {}}) {
                   ) : (
                     <a
                       className="journal-button"
-                      href={`mailto:steven@seineshop.com?subject=${encodeURIComponent(`Case enquiry: ${p.sku}`)}`}
+                      href={`mailto:hello@seineshop.com?subject=${encodeURIComponent(`Case enquiry: ${p.sku}`)}`}
                     >
                       {t('Ask about this case')} ↗
                     </a>
@@ -408,7 +408,7 @@ export function JournalArticle({article, products = {}}) {
                 {t('Apple’s model-identification guide')}
               </a>
               . {t('For SKU-specific fit or dispatch questions, contact')}{' '}
-              <a href="mailto:steven@seineshop.com">steven@seineshop.com</a>.
+              <a href="mailto:hello@seineshop.com">hello@seineshop.com</a>.
             </p>
           </section>
           <nav

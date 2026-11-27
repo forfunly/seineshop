@@ -78,6 +78,9 @@ function AccountMenu() {
       <NavLink to={localize('/account/addresses')} style={isActiveStyle}>
         {t('Addresses')}
       </NavLink>
+      <NavLink to={localize('/account/credits')} style={isActiveStyle}>{t('Account Credits')}</NavLink>
+      <NavLink to={localize('/help/coupons')} style={isActiveStyle}>{t('My Coupons')}</NavLink>
+      <NavLink to={localize('/downloads')} style={isActiveStyle}>{t('Images Download List')}</NavLink>
       <NavLink to={localize('/dropshipping')} style={isActiveStyle}>
         {t('Dropshipping workspace')}
       </NavLink>

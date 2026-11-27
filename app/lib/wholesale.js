@@ -1,6 +1,6 @@
 export const MAX_PURCHASE_QUANTITY = 9999;
 export const QUANTITY_TIERS = [1, 10, 50, 100];
-export const SALES_EMAIL = 'steven@seineshop.com';
+export const SALES_EMAIL = 'hello@seineshop.com';
 export const PURCHASE_MODES = ['Wholesale', 'Dropshipping', 'Customization'];
 export const INQUIRY_TYPES = ['Wholesale', 'Dropshipping', 'Customization', 'OEM', 'ODM'];
 export const validPurchaseQuantity = (quantity) => Number.isInteger(Number(quantity)) && Number(quantity) >= 1 && Number(quantity) <= MAX_PURCHASE_QUANTITY;

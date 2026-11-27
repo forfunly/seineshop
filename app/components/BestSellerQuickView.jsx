@@ -2,6 +2,8 @@ import {createContext, useContext, useEffect, useId, useRef, useState} from 'rea
 import {createPortal} from 'react-dom';
 import {Link, useFetcher} from 'react-router';
 import {CartForm, Image, Money} from '@shopify/hydrogen';
+import {addDownload, useDownloadList} from '~/lib/download-list';
+import {toggleFavorite, useWishlist} from '~/lib/wishlist';
 import {useLocale} from '~/lib/i18n';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
@@ -59,37 +61,11 @@ export function CatalogIcon({name}) {
   );
 }
 
-// Keep the original key so saved items carry over to every collection.
-const favoritesKey = 'seine-best-seller-favorites';
 const CollectionCardsContext = createContext(null);
 
 export function CollectionCardsProvider({children}) {
-  const [favorites, setFavorites] = useState(null);
+  const favorites = useWishlist();
   const [quickProduct, setQuickProduct] = useState(null);
-  useEffect(() => {
-    try {
-      const stored = JSON.parse(window.localStorage.getItem(favoritesKey) || '[]');
-      setFavorites(Array.isArray(stored) ? stored.filter((value) => typeof value === 'string') : []);
-    } catch {
-      setFavorites([]);
-    }
-  }, []);
-  useEffect(() => {
-    if (!favorites) return;
-    try {
-      window.localStorage.setItem(favoritesKey, JSON.stringify(favorites));
-    } catch {
-      /* Continue to work in memory when storage is unavailable. */
-    }
-  }, [favorites]);
-  const toggleFavorite = (handle) => {
-    setFavorites((current) => {
-      const saved = current || [];
-      return saved.includes(handle)
-        ? saved.filter((value) => value !== handle)
-        : [...saved, handle];
-    });
-  };
   return (
     <CollectionCardsContext.Provider value={{favorites, toggleFavorite, setQuickProduct}}>
       {children}
@@ -104,7 +80,7 @@ export function CollectionCardsProvider({children}) {
   );
 }
 
-export function CollectionProductCard({product, loading}) {
+export function CollectionProductCard({product, loading, badge}) {
   const {favorites, toggleFavorite, setQuickProduct} = useContext(CollectionCardsContext);
   const favorite = favorites?.includes(product.handle) ?? false;
   const onFavorite = () => toggleFavorite(product.handle);
@@ -142,7 +118,10 @@ export function CollectionProductCard({product, loading}) {
             sizes="(max-width: 760px) 50vw, 25vw"
           />
         )}
-        <h3 title={title}>{title}</h3>
+        <div className="collection-product-card-copy">
+          {badge && <span className="collection-product-card-badge">{t(badge)}</span>}
+          <h3 title={title}>{title}</h3>
+        </div>
       </Link>
       <div className="collection-product-card-price">
         <Money
@@ -421,6 +400,7 @@ function CollectionQuickView({product: card, onClose}) {
         trigger.focus({preventScroll: true});
     };
   }, []);
+  const downloadList = useDownloadList();
   const detailsUrl = localize(`/products/${card.handle}`);
   return createPortal(
     <dialog
@@ -454,6 +434,7 @@ function CollectionQuickView({product: card, onClose}) {
         />
         <div className="collection-card-preview-details">
           <h2 id={titleId}>{t(result?.title || card.title)}</h2>
+          <div className="download-list-action"><button type="button" onClick={() => addDownload(card.handle)} disabled={downloadList.includes(card.handle)}>{t(downloadList.includes(card.handle) ? 'Saved to download list' : 'Save images to download list')}</button> <Link to={localize('/downloads')}>{t('Images Download List')}</Link></div>
           {error ? (
             <p role="alert">
               {t('Quick View is unavailable.')}{' '}

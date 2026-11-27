@@ -22,7 +22,7 @@ test('catalog indexing gate and staging remain protected',async()=>{
  assert.ok(!(await (await indexLoader(a)).text()).includes('<sitemap>'));
 });
 test('pages fallback lists only real custom routes, collections omit empty ones',async()=>{
- const pages=await (await resourceLoader(args('pages-1'))).text();assert.ok(pages.includes('/support'));assert.ok(!pages.includes('/account'));assert.ok(!pages.includes('/dropshipping'));assert.ok(!pages.includes('/api/'));
+ const pages=await (await resourceLoader(args('pages-1'))).text();assert.ok(pages.includes('/support'));assert.ok(pages.includes('/discover/new-arrivals')); for (const handle of ['eu-top-rankings','trending-products','certified-products','brand-distributor','handpicked-brands']) assert.ok(!pages.includes(`/discover/${handle}`));assert.ok(!pages.includes('/account'));assert.ok(!pages.includes('/dropshipping'));assert.ok(!pages.includes('/api/'));
  const collections=await (await resourceLoader(args('collections-1'))).text();assert.ok(collections.includes('/collections/full'));assert.ok(!collections.includes('/collections/empty'));
 });
 test('blog paths match canonical article and global tag routes',()=>{
@@ -97,4 +97,42 @@ test('navigation sections enter each collection sitemap only once published with
   assert.ok(!xml.includes('/collections/best-sellers'));
   assert.ok(!xml.includes('/collections/certified-products'));
  }
+});
+
+test('public support pages are present and personal tooling and empty offers are absent', async () => {
+ const {indexableHelpPaths} = await import('../app/data/header-destinations.js');
+ for (const [language, prefix] of [['en', ''], ['ja', '/jp'], ['de', '/de']]) {
+  const a = args('pages-1');
+  a.params.language = language;
+  const xml = await (await resourceLoader(a)).text();
+  for (const path of indexableHelpPaths) assert.equal(xml.split(`<loc>${env.PUBLIC_SITE_URL}${prefix}${path}</loc>`).length - 1, 1);
+  for (const path of ['/wishlist', '/downloads', '/account/credits', '/image-search', '/help/coupons', '/api/catalog', '/api/contact']) assert.ok(!xml.includes(path));
+ }
+});
+
+test('base and Pro collections contribute only their own nonempty child URLs', async () => {
+  const a = args('collections-1');
+  a.params.language = 'de';
+  const pageInfo = {hasNextPage: false, endCursor: null};
+  a.context.storefront = {query: (query, options) => {
+    if (query.includes('SeineSitemapCollections')) return {collections:{nodes:['iphone-18','iphone-18-pro'].map(handle=>({handle,products:{nodes:[{id:handle}]}})),pageInfo}};
+    if (query.includes('IphoneProSitemapMembers')) return {collection:{products:{nodes:[{productType:options.variables.handle==='iphone-18'?'Phone Cases':'Screen Protectors'}],pageInfo}}};
+    return storefront.query(query, options);
+  }};
+  const xml = await (await resourceLoader(a)).text();
+  for(const path of ['iphone-18','iphone-18-cases','iphone-18-pro','iphone-18-pro-screen-protectors']) assert.ok(xml.includes(`<loc>https://www.seineshop.com/de/collections/${path}</loc>`),path);
+  for(const path of ['iphone-18-screen-protectors','iphone-18-pro-cases']) assert.ok(!xml.includes(`<loc>https://www.seineshop.com/de/collections/${path}</loc>`),path);
+});
+
+
+test('registered empty Apple navigation pages stay outside every collection sitemap', async () => {
+  for (const language of ['en', 'ja', 'de']) {
+    const a = args('collections-1');
+    a.params.language = language;
+    a.context.storefront = {query: async (query, options) => query.includes('SeineSitemapCollections')
+      ? {collections: {nodes: [{handle: 'full', products: {nodes: [{id: '1'}]}}, ...['apple-pencil-accessories', 'apple-homeview-accessories'].map((handle) => ({handle, products: {nodes: []}}))], pageInfo: {hasNextPage: false}}}
+      : storefront.query(query, options)};
+    const xml = await (await resourceLoader(a)).text();
+    for (const handle of ['apple-pencil-accessories', 'apple-homeview-accessories']) assert.ok(!xml.includes(`/collections/${handle}`));
+  }
 });

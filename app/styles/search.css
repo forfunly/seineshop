@@ -200,17 +200,16 @@
 .market-header .global-search button[type='submit'] {flex: 0 0 var(--search-submit-width); padding: 0;}
 .search-scope-panel, .market-header .global-search-panel {
   position: absolute;
-  top: 52px;
+  top: 49px;
   z-index: 45;
   border: 1px solid var(--brand-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
-  box-shadow: 0 8px 24px #17231c22;
-  animation: header-panel-in 160ms ease-out both;
+  box-shadow: 0 0 12px #0000001f;
 }
-.search-scope-panel {left: 0; width: min(308px, 100%); padding: 8px 0; max-height: min(410px, 53dvh); overflow: auto;}
+.search-scope-panel {left: 1px; box-sizing: border-box; width: min(260px, 100%); padding: 8px 0; max-height: min(338px, 53dvh); overflow: auto;}
 .search-scope-panel button {
-  display: block; width: 100%; border: 0; padding: 11px 16px;
+  display: block; width: 100%; border: 0; min-height: 32px; padding: 6px 16px;
   color: var(--brand-ink); background: transparent; text-align: start; cursor: pointer;
 }
 .search-scope-panel button:is(:hover, :focus-visible, [aria-pressed='true']) {background: #e8f8ed; color: var(--brand-focus);}
@@ -228,3 +227,20 @@
   .market-header .global-search-panel {left: 0; right: 0;}
   .market-header .global-search .market-search > input {font-size: 16px; padding-inline: 10px;}
 }
+
+.market-header .global-search {--search-image-width: 42px;}
+.market-header .global-search .search-image-trigger {flex: 0 0 var(--search-image-width); color: var(--brand-ink); background: white; padding: 0;}
+.market-header .global-search .search-image-trigger:hover {background: #f2f5f2; color: var(--brand-focus);}
+.market-header .market-search .search-image-trigger .header-icon {width: 23px; height: 23px;}
+.search-image-dialog {width: min(500px, calc(100vw - 30px)); max-height: min(80dvh, 800px); border: 1px solid var(--brand-border); border-radius: 14px; padding: 24px; color: var(--brand-ink);}
+.search-image-dialog:not([open]) {display: none;}
+.search-image-dialog::backdrop {background: #17231c60;}
+.search-image-heading {display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px;}
+.search-image-heading h2 {margin: 0; font-size: 20px;}
+.search-image-heading button {border: 0; background: #f2f5f2; font-size: 23px; min-width: 38px; min-height: 38px; border-radius: 999px; cursor: pointer;}
+.image-upload {background: #f7faf7; padding: 24px; border: 1px dashed var(--brand-focus); border-radius: 12px; display: grid; gap: 12px;}
+.image-upload label {font-weight: 700;}
+.image-upload input {max-width: 100%;}
+.image-upload p {margin: 0;}
+.search-quick-terms {overflow-x: auto; scrollbar-width: none;}
+@media (max-width: 760px) {.market-header .global-search {--search-image-width: 35px;}}

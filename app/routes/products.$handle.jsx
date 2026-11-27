@@ -1,3 +1,4 @@
+import {catalogColorLabel, catalogDisplayTitle} from '~/lib/catalog-labels';
 import {readProductReviews} from '~/lib/business-tools.server';
 import {productRating} from '~/lib/business-tools';
 import {ProductRating, ProductReviews} from '~/components/ProductReviews';
@@ -99,7 +100,7 @@ async function loadCriticalData({context, params, request}) {
     data: product,
   });
   return {
-    product,
+    product: {...product, title: catalogDisplayTitle(product.title)},
   };
 }
 
@@ -145,7 +146,9 @@ export default function Product() {
   });
   const {title, descriptionHtml} = product;
   const details = prepareProductDetails(descriptionHtml);
-  const gallery = productGallery(product.images.nodes, selectedVariant?.image, selectedVariant?.sku);
+  const supplemental = (selectedVariant?.supplementalGallery?.references?.nodes || [])
+    .map((node) => node?.image).filter(Boolean);
+  const gallery = productGallery(product.images.nodes, selectedVariant?.image, selectedVariant?.sku, supplemental);
   const detailImages = gallery.details.length ? gallery.details : gallery.selected;
   return (
     <div className="pdp-page">
@@ -154,7 +157,7 @@ export default function Product() {
         <Link to={localize('/collections/all')}>{t('Shop')}</Link><span aria-hidden="true">/</span><span>{t(title)}</span>
       </nav>
       <div className="pdp-layout">
-        <div className="pdp-visual-column"><ProductGallery key={selectedVariant?.id} images={product.images.nodes} selectedImage={selectedVariant?.image} sku={selectedVariant?.sku} title={t(title)} /><SalesContact/></div>
+        <div className="pdp-visual-column"><ProductGallery key={selectedVariant?.id} images={product.images.nodes} selectedImage={selectedVariant?.image} sku={selectedVariant?.sku} title={t(title)} supplemental={supplemental} /><SalesContact/></div>
         <div className="pdp-summary">
           <ProductPurchaseModes mode={purchaseMode} onChange={setPurchaseMode} disabled={busy}/>
           <p className="pdp-eyebrow">SEINESHOP / {t('Everyday essentials')}</p>
@@ -201,7 +204,7 @@ export default function Product() {
         <div><span aria-hidden="true">↗</span><div><strong>{t('Secure checkout')}</strong><p>{t('Pay through Shopify')}</p></div></div>
         <div><span aria-hidden="true">□</span><div><strong>{t('Delivery options')}</strong><p>{t('See rates before you pay')}</p></div></div>
         <div><span aria-hidden="true">↺</span><div><strong>{t('Returns & refunds')}</strong><Link to={localize('/policies')}>{t('View store policies')}</Link></div></div>
-        <div><span aria-hidden="true">?</span><div><strong>{t('Here to help')}</strong><a href="mailto:steven@seineshop.com">steven@seineshop.com</a></div></div>
+        <div><span aria-hidden="true">?</span><div><strong>{t('Here to help')}</strong><a href="mailto:hello@seineshop.com">hello@seineshop.com</a></div></div>
       </div>
       <nav className="pdp-section-nav" aria-label={t('Explore this product')}>
         {hasBuyingGuide && <><a href="#product-features">{t('Features')}</a><a href="#product-compatibility">{t('Compatibility')}</a></>}
@@ -220,7 +223,7 @@ export default function Product() {
       </section>
       <section className="pdp-more-images" id="product-photos" aria-labelledby="product-photos-heading">
         <h2 id="product-photos-heading">{t('More images')}</h2>
-        <p>{selectedVariant?.title === 'Default Title' ? t(title) : selectedVariant?.title}</p>
+        <p>{selectedVariant?.title === 'Default Title' ? t(title) : t(catalogColorLabel(selectedVariant?.title))}</p>
         <div>{detailImages.map((image) => <Image key={image.url} data={image} alt={image.altText || title} loading="lazy" sizes="(min-width: 900px) 700px, 100vw" />)}</div>
       </section>
       <ProductReviews key={`reviews-${product.id}`} product={product} initialData={reviews}/>
@@ -274,6 +277,9 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       value
     }
     technicalSpecifications: metafield(namespace: "custom", key: "technical_specifications") { value }
+    supplementalGallery: metafield(namespace: "custom", key: "supplemental_gallery") {
+      references(first: 25) { nodes { ... on MediaImage { image { id url altText width height } } } }
+    }
     sku
     title
     unitPrice {

@@ -1,3 +1,29 @@
+# 首页导航与功能页续验（2026-11-27，本地候选，未发布）
+
+- 补齐 Apple Pencil / Apple HomeView 导航空栏目注册，未添加商品；补齐集合筛选及空状态的日德翻译和回归检查。仅本地候选，未发布。
+
+- 按用户确认统一导航、页脚、商品详情、文章及询价备用链接到 `hello@seineshop.com`；固定留言收件地址同步，增加跨入口一致性回归，避免回退到旧邮箱。
+- 发信域名已验证，域名限定的仅发信密钥仅存服务端；本机真实留言投递到新地址，Resend 显示 Delivered。旧地址退信证据保留，实际邮箱显示仍待用户确认；未配置生产环境或部署。
+- 安全整合远程 iPhone18/Pro 集合、图库、缓存和系列菜单；保留本地搜索、账户及帮助功能，不覆盖并行验收记录。
+
+## Contact form candidate — 2026-11-26 (not deployed)
+
+- Added same-origin, server-side contact submission to the fixed support inbox, English/Japanese/German pending/error/accepted states and unchanged-message retry idempotency. No email-app launch is required.
+- Added input/body validation, session CSRF, honeypot and bounded per-worker rate protection. Provider acceptance is not claimed as confirmed inbox delivery.
+- Resend integration is authorized; actual sending-domain DNS, restricted key configuration and real receipt validation remain separate gates. No production release or online-chat integration is included.
+
+- 补齐真实商品图片下载清单与原生账户余额入口；下载清单与收藏独立且仅保存当前设备，账户余额不冒充积分。联系表单由原邮件草稿升级为站内提交，服务受理与实际投递分开验收。
+- 图搜可按每批 60 张继续比较，更换图片重置结果；分类联想继续读取后续商品页，并检测分页停滞或循环。新品按实际发布时间提供最近 30 天、单日筛选和分页；品牌目录提供真实分类及完整字母索引。
+- 修复下载直达链接、下载页误用商品 SEO、栏目多语言标题和文案回退，以及 768px 德语导航文字重叠。颜色仍沿用本站主题；没有更改商品、后台定义、凭据或生产配置。
+- 当前验收证据和真实业务依赖见 [首页导航 QA](docs/qa/2026-11-25-header-navigation.md)。未将页面可达或工程检查等同于全功能验收通过。
+
+# 集合导航与 iPhone 18 Pro 桌面布局（2026-11-25，本地预览）
+
+- All Categories 使用左侧分类、右侧分栏标题和已登记系列；桌面和手机共用名单。iPhone 18 Pro 系列入口仅在本机显示，待集合发布验收后纳入公开菜单。
+- 修正筛选栏误用抽屉固定定位的样式；桌面左侧筛选、右侧五列商品，手机两列且筛选可展开。
+- 完成 iPhone 18 Pro 分类入口、筛选和排序排版，合并已知颜色别名。新增导航栏目接入真实新品列表，其余未接数据的栏目显示空状态。集合同步维护站点地图和语言版本。
+- 商品详情读入 Shopify 补充图库；真店草稿已核对 26 SKU 和 286 张图片，正式前台部署及该商品发布仍单独审批。
+
 # 集合页共用商品卡与动效（2026-11-25，本地候选）
 
 - 所有正式集合页及 `/collections/all` 共用同一商品卡、网格、设备本地收藏和 Quick View；沿用原收藏存储，保留各页筛选、排序与分页。首页、搜索和不可下单的离线预览保持不变。
@@ -93,6 +119,7 @@ This release replaces the starter storefront with the current SeineShop headless
 ## Search and shopping cart
 
 - Global predictive search with debounce, images/prices and localized URLs. The header adds a category picker, quick searches, scoped collection results and merchandise navigation with empty-state pages until matching collections have products.
+- Local header navigation update: icon panels, browser-side image matching, shared device wishlist, distinct catalog presentations and help destinations. The follow-up aligns desktop overflow, scroll-direction header visibility, search panel placement, and trending/ranking result controls. See [header navigation QA](docs/qa/2026-11-25-header-navigation.md) for test evidence and gaps; not yet released to production.
 - Search result filtering and sorting through native Storefront capabilities and Search & Discovery configuration.
 - Redesigned 520px desktop cart drawer and full-width mobile layout, product cards, compact quantity controls, remove links and clear subtotal/checkout actions.
 - Discount and gift-card inputs in collapsible panels; invalid discount feedback and a useful empty-cart state. No invented free-shipping thresholds or promotions.

@@ -67,9 +67,13 @@ export function FacetedCollection(props) {
   );
 }
 
-function FacetedCollectionContent({collection, browse, searchMode = false}) {
+function FacetedCollectionContent({collection, browse, searchMode = false, sectionKind, sectionNavigation}) {
   const {t, localize} = useLocale();
   const bestSellers = !searchMode && collection.handle === 'best-sellers';
+  const featureResults = ['ranking', 'trending'].includes(sectionKind);
+  const releaseResults = sectionKind === 'newest';
+  const sectionResults = Boolean(sectionKind) && sectionKind !== 'directory';
+  const compactResults = bestSellers || sectionResults;
   const [expandedFacets, setExpandedFacets] = useState({});
   const [filtersOpen, setFiltersOpen] = useState(true);
   useEffect(() => {
@@ -100,7 +104,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
       ),
   );
   const labels = {
-    'filter.p.product_type': 'Product categories',
+    'filter.p.product_type': 'Product Categories',
     'filter.p.vendor': 'Brand',
     'filter.p.m.custom.category_group': 'Category',
     'filter.p.m.custom.lead_time': 'Preparation time',
@@ -130,6 +134,15 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
       })),
     });
   }
+  if (sectionResults && !facets.some((facet) => facet.id === 'filter.p.product_type')) {
+    facets.unshift({id: 'filter.p.product_type', label: 'Product Categories', type: 'LIST', values: []});
+  }
+  if (sectionResults && !facets.some((facet) => facet.id === 'filter.p.m.custom.lead_time')) {
+    facets.push({id: 'filter.p.m.custom.lead_time', label: 'Estimated Lead Time', type: 'LIST', values: []});
+  }
+  if (sectionKind === 'certificates' && !facets.some((facet) => facet.label === 'Certificate')) {
+    facets.unshift({id: 'certificate-empty', label: 'Certificate', type: 'LIST', values: []});
+  }
   const bestSellerFacets = bestSellers
     ? [...facets, {id: 'price'}].sort((a, b) => {
         const rank = (id) =>
@@ -144,6 +157,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
   );
   const resultCount =
     collection.searchTotal ??
+    (!connection.nodes.length && !connection.pageInfo?.hasPreviousPage ? 0 : undefined) ??
     (availability
       ? availability.values.reduce((sum, value) => sum + (value.count ?? 0), 0)
       : undefined);
@@ -180,21 +194,24 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
   const sortOptions = [
     [
       'featured',
-      browse.q || collection.usesSearch
-        ? 'Relevance'
-        : bestSellers
+      sectionKind === 'trending'
+        ? 'Trending'
+        : browse.q || collection.usesSearch
+          ? 'Relevance'
+        : bestSellers || sectionKind
           ? 'Popularity'
           : 'Featured',
     ],
-    ['price-asc', bestSellers ? 'Price Low to High' : 'Price: low to high'],
-    ['price-desc', bestSellers ? 'Price High to Low' : 'Price: high to low'],
-    ...(!(browse.q || collection.usesSearch)
+    ['price-asc', bestSellers || sectionKind ? 'Price Low to High' : 'Price: low to high'],
+    ['price-desc', bestSellers || sectionKind ? 'Price High to Low' : 'Price: high to low'],
+    ...(featureResults || !(browse.q || collection.usesSearch)
       ? [
           ['newest', 'Newest'],
-          ['best-selling', bestSellers ? 'Best Sellers' : 'Best selling'],
+          ['best-selling', compactResults ? 'Best Sellers' : 'Best selling'],
         ]
       : []),
   ];
+  if (releaseResults) sortOptions.sort((a, b) => (a[0] === 'newest' ? -1 : b[0] === 'newest' ? 1 : 0));
   const price = (
     <fieldset className="browse-price">
       <legend>
@@ -234,7 +251,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
   );
   const heading = (
     <header className="browse-heading">
-      {!bestSellers && (
+      {!compactResults && (
         <p className="eyebrow">
           {searchMode ? t('SEARCH SEINESHOP') : 'SEINE SHOP COLLECTION'}
         </p>
@@ -243,23 +260,24 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
         {t(collection.title)}{' '}
         {resultCount !== undefined && (
           <small>
-            ({resultCount} {t(bestSellers ? 'Group Items' : 'products')})
+            ({resultCount} {t(bestSellers || sectionKind ? 'Group Items' : 'products')})
           </small>
         )}
       </h1>
-      {!bestSellers && <p>{t(collection.description)}</p>}
+      {!compactResults && <p>{t(collection.description)}</p>}
     </header>
   );
   return (
     <div
-      className={`browse-page ${collection.handle === 'iphone-duo' ? 'browse-page--catalog' : ''} ${bestSellers ? 'browse-page--best-sellers' : ''}`}
+      className={`browse-page ${collection.handle === 'iphone-duo' ? 'browse-page--catalog' : ''} ${bestSellers ? 'browse-page--best-sellers' : ''} ${sectionKind ? `browse-page--section-${sectionKind}` : ''}`}
     >
       <nav className="browse-breadcrumb" aria-label={t('Breadcrumb')}>
         <Link to={localize('/')}>{t('Home')}</Link>
         <span aria-hidden="true">{bestSellers ? '›' : '/'}</span>
         <span>{t(collection.title)}</span>
       </nav>
-      {!bestSellers &&
+      {sectionNavigation}
+      {!sectionKind && !bestSellers &&
         facets.find((facet) => facet.id === 'filter.p.product_type') && (
           <nav
             className="browse-category-links"
@@ -292,6 +310,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
             <span aria-hidden="true">⌄</span>
           </summary>
           <div className="browse-filter-body">
+            {releaseResults && collection.release && <input type="hidden" name="release" value={collection.release} />}
             {bestSellerFacets.map((f) => {
               if (f.id === 'price') return <div key={f.id}>{price}</div>;
               const category = [
@@ -319,17 +338,18 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
                 >
                   <summary>
                     {t(
-                      bestSellers && f.id === 'filter.p.m.custom.category_group'
+                      (bestSellers || sectionResults) && f.id === 'filter.p.m.custom.category_group'
                         ? 'Product Categories'
-                        : bestSellers && f.id === 'filter.p.m.custom.lead_time'
+                        : (bestSellers || sectionResults) && f.id === 'filter.p.m.custom.lead_time'
                           ? 'Estimated Lead Time'
-                          : bestSellers &&
+                          : (bestSellers || sectionResults) &&
                               f.id === 'filter.p.m.custom.compatible_models'
                             ? 'Model'
                             : labels[f.id] || f.label,
                     )}
                   </summary>
                   <div className="browse-facet-values">
+                    {sectionResults && !values.length && <p>{t('No options available yet.')}</p>}
                     {values.map((v, index) => {
                       const input = JSON.stringify(JSON.parse(v.input));
                       return (
@@ -392,6 +412,15 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
                 </details>
               );
             })}
+            {releaseResults && <details className="browse-facet" open>
+              <summary>{t('Browse by Release Date')}</summary>
+              <div className="release-date-links">
+                <Link to={href({release: null})} aria-current={!collection.release ? 'page' : undefined}>{t('All dates')}</Link>
+                <Link to={href({release: 'recent'})} aria-current={collection.release === 'recent' ? 'page' : undefined}>{t('Recent 30 Days')}</Link>
+                {(collection.releaseDates || []).map(({date, count}) => <Link key={date} to={href({release: date})} aria-current={collection.release === date ? 'page' : undefined}><time dateTime={date}>{date}</time><small>[{count}]</small></Link>)}
+                {!collection.releaseDates?.length && <p>{t('No releases in the last 30 days.')}</p>}
+              </div>
+            </details>}
             {!bestSellers && price}
             <button className="browse-apply" type="submit" disabled={pending}>
               {t(pending ? 'Loading...' : 'Apply filters')}
@@ -402,10 +431,10 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
           </div>
         </details>
         <section className="browse-results" aria-label={t('Products')}>
-          {!bestSellers && heading}
+          {!compactResults && heading}
           <div className="browse-toolbar">
-            {bestSellers && heading}
-            {(searchMode || collection.scopedSearch ||
+            {compactResults && heading}
+            {(searchMode || featureResults || collection.scopedSearch ||
               ['best-sellers', 'iphone-duo'].includes(collection.handle)) && (
               <div className="browse-search">
                 {collection.scopedSearch && <input type="hidden" name="scope" value="collection" />}
@@ -413,7 +442,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
                   {t(
                     searchMode
                       ? 'Search products'
-                      : bestSellers
+                      : compactResults
                         ? 'Search in results'
                         : 'Search this collection',
                   )}
@@ -424,14 +453,14 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
                   placeholder={t(
                     searchMode
                       ? 'Search products'
-                      : bestSellers
+                      : compactResults
                         ? 'Search in results'
                         : 'Search this collection',
                   )}
                   defaultValue={browse.q}
                 />
                 <button type="submit" aria-label={t('Search')}>
-                  {bestSellers ? <CatalogIcon name="search" /> : t('Search')}
+                  {compactResults ? <CatalogIcon name="search" /> : t('Search')}
                 </button>
               </div>
             )}
@@ -442,7 +471,7 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
                 defaultValue={browse.size}
                 onChange={(e) => submit(e.currentTarget.form)}
               >
-                {(bestSellers && browse.size !== 24
+                {(compactResults && browse.size !== 24
                   ? [40, 60, 80]
                   : [24, 40, 60, 80]
                 ).map((n) => (
@@ -468,8 +497,9 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
             </div>
             <input type="hidden" name="view" value={browse.view} />
           </div>
+          {sectionResults && <p className="catalog-results-description">{t(collection.description)}</p>}
           <nav className="browse-sort-tabs" aria-label={t('Sort products')}>
-            {bestSellers && <strong>{t('Sort by')}:</strong>}
+            {compactResults && <strong>{t('Sort by')}:</strong>}
             {sortOptions.map(([value, label]) => (
               <Link
                 key={value}
@@ -480,10 +510,10 @@ function FacetedCollectionContent({collection, browse, searchMode = false}) {
               </Link>
             ))}
           </nav>
-          {bestSellers && currentSort && (
+          {compactResults && currentSort && (
             <input type="hidden" name="sort" value={currentSort} />
           )}
-          {!bestSellers && (
+          {!compactResults && (
             <div className="browse-sort">
               <label>
                 {t('Sort by')}

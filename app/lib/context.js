@@ -1,6 +1,6 @@
 import {marketCountry} from './markets';
 import {localeFromPath} from './locale';
-import {createHydrogenContext} from '@shopify/hydrogen';
+import {createHydrogenContext, createWithCache} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 
@@ -55,7 +55,7 @@ export async function createHydrogenRouterContext(
         buyerIdentity: {countryCode: marketCountry(session.get('marketCountry'))},
       },
     },
-    additionalContext,
+    {...additionalContext, catalogCache: createWithCache({cache, waitUntil, request})},
   );
 
   return hydrogenContext;

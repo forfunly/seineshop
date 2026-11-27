@@ -22,6 +22,7 @@ import brandStyles from '~/styles/brand.css?url';
 import cartStyles from '~/styles/cart.css?url';
 import headerStyles from '~/styles/header.css?url';
 import searchStyles from '~/styles/search.css?url';
+import navigationPageStyles from '~/styles/navigation-pages.css?url';
 import {PageLayout} from './components/PageLayout';
 import {CommerceAnalytics} from './components/CommerceAnalytics';
 import {ClarityAnalytics} from './components/ClarityAnalytics';
@@ -92,6 +93,7 @@ export async function loader(args) {
     ...deferredData,
     ...criticalData,
     seoSettings: siteSettings(env, args.request.url),
+    localNavigationPreview: ['localhost', '127.0.0.1', '[::1]'].includes(new URL(args.request.url).hostname),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     clarityEnabled: env.PUBLIC_CLARITY_ENABLED === 'true',
     shop: getShopAnalytics({
@@ -195,6 +197,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={cartStyles}></link>
         <link rel="stylesheet" href={headerStyles} />
         <link rel="stylesheet" href={searchStyles} />
+        <link rel="stylesheet" href={navigationPageStyles} />
         <SiteSeo />
         <Links />
       </head>

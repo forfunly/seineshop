@@ -16,7 +16,7 @@ await build({
 });
 const {SiteSeo} = await import(output.href);
 
-async function renderHead(path, {rootError = false, childError = false, missingSettings = false} = {}) {
+async function renderHead(path, {rootError = false, childError = false, missingSettings = false, childData = null} = {}) {
   const head = createElement(SiteSeo);
   const routes = [{
     id: 'root', path: '/', element: head, errorElement: head,
@@ -28,7 +28,7 @@ async function renderHead(path, {rootError = false, childError = false, missingS
     },
     children: [{path: '*', element: createElement('span'), loader: () => {
       if (childError) throw new Response('Not found', {status: 404});
-      return null;
+      return childData;
     }}],
   }];
   const handler = createStaticHandler(routes);
@@ -63,4 +63,19 @@ test('healthy localized pages retain production canonical and language alternate
   assert.match(html, /hrefLang="ja" href="https:\/\/www.seineshop.com\/jp\/"/);
   assert.match(html, /index, follow, max-image-preview:large/);
   assert.match(html, /application\/ld\+json/);
+});
+
+
+test('merchandise navigation titles translate and release filters remain noindex', async () => {
+  const {html} = await renderHead('/de/collections/new-arrivals?release=recent', {childData: {collection: {title: 'New Arrivals', catalogSection: true, handle: 'new-arrivals', products: {nodes: [{handle: 'real-product', title: 'Real product'}]}}}});
+  assert.match(html, /<title>Neuheiten \| SeineShop<\/title>/);
+  assert.match(html, /noindex, follow/);
+  assert.match(html, /rel="canonical" href="https:\/\/www.seineshop.com\/de\/collections\/new-arrivals"/);
+});
+
+test('personal image tools stay noindex without product structured data', async () => {
+  const {html} = await renderHead('/downloads?handle=real-product', {childData: {downloadProduct: {handle: 'real-product', title: 'Real product'}, handle: 'real-product'}});
+  assert.match(html, /<title>Images Download List \| SeineShop<\/title>/);
+  assert.match(html, /noindex, follow/);
+  assert.doesNotMatch(html, /"@type":"Product"/);
 });
